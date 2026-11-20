@@ -12,8 +12,6 @@ import 'package:huda/presentation/widgets/settings/language_picker.dart';
 import 'package:huda/presentation/widgets/settings/settings_choice_sheet.dart';
 import 'package:huda/presentation/widgets/widget_management/widget_settings_parts.dart';
 
-/// The Prayer Times widget: its live preview, how to add it, and its
-/// design, theme, size, language and time format.
 class PrayerWidgetTab extends StatefulWidget {
   const PrayerWidgetTab({super.key});
 
@@ -328,7 +326,6 @@ class _PrayerWidgetTabState extends State<PrayerWidgetTab> {
   }
 }
 
-/// A prayer widget theme's colors.
 class PrayerWidgetColors {
   const PrayerWidgetColors({
     required this.background,
@@ -354,9 +351,6 @@ Color? _hex(String? hex) {
   return v == null ? null : Color(v);
 }
 
-/// The colors the native prayer widget uses for [theme]. "Automatic"
-/// follows the app's palette: drawn here on the app's chrome, an
-/// approximation of the native renderer.
 PrayerWidgetColors prayerWidgetColors(
   BuildContext context,
   PrayerWidgetVisualTheme theme,
@@ -402,9 +396,6 @@ String prayerWidgetThemeLabel(
   PrayerWidgetVisualTheme.sage => l10n.themeSage,
 };
 
-/// The prayer widget as it will look, with sample times (Asr next):
-/// Spotlight leads with the next prayer; Almanac lists all five. Names
-/// come in the widget's language and direction, times in its format.
 class PrayerWidgetPreview extends StatelessWidget {
   const PrayerWidgetPreview({
     super.key,
@@ -539,7 +530,6 @@ class PrayerWidgetPreview extends StatelessWidget {
           SizedBox(height: space.sm),
           Row(
             children: [
-              // A small gap keeps the five times apart when they scale down.
               for (var i = 0; i < prayers.length; i++)
                 Expanded(
                   child: Padding(
@@ -615,7 +605,6 @@ class PrayerWidgetPreview extends StatelessWidget {
   }
 }
 
-/// A design's thumbnail in the chosen theme's colors.
 class _DesignMiniaturePainter extends CustomPainter {
   const _DesignMiniaturePainter({required this.design, required this.colors});
 

@@ -13,20 +13,11 @@ import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 import 'package:huda/presentation/widgets/khatma/khatma_identity.dart';
 
-/// The Khatma's views inside its sheet: setup (choose a pace and where to
-/// start), today's portion with the road, the completed khatma, and the
-/// schedule of every portion. `KhatmaPage` holds the state and switches
-/// between them.
 
-/// The paces a khatma can take, in days, shortest first. "By meaning" and
-/// "by juz" were two lists of the same plans (the service divides the 604
-/// pages evenly), so they are one choice now.
 const khatmaPaces = [3, 6, 7, 10, 15, 20, 29, 30, 40, 60, 80, 120, 240];
 
-/// The suggested pace: a month.
 const khatmaSuggestedPace = 29;
 
-/// The portion a pace reads each day, in the words people know it by.
 String khatmaPortionLabel(AppLocalizations l10n, int days, int pagesPerDay) =>
     switch (days) {
       3 => l10n.khatmaDailyWird10Juz,
@@ -43,13 +34,11 @@ String khatmaPortionLabel(AppLocalizations l10n, int days, int pagesPerDay) =>
       _ => l10n.khatmaDailyWirdPages(pagesPerDay),
     };
 
-/// "From Al-Baqarah: 142" in the app's language.
 String khatmaFrom(BuildContext context, int surah, int verse) =>
     AppLocalizations.of(
       context,
     )!.khatmaFromSurah(_surah(context, surah), verse);
 
-/// "To Al-Baqarah: 202" in the app's language.
 String khatmaTo(BuildContext context, int surah, int verse) =>
     AppLocalizations.of(context)!.khatmaToSurah(_surah(context, surah), verse);
 
@@ -58,8 +47,6 @@ String _surah(BuildContext context, int surah) => quran.getSurahNameLocalized(
   Localizations.localeOf(context).languageCode,
 );
 
-/// A step's heading inside the sheet, under the sheet's "Khatma": Back
-/// and the step's title.
 class KhatmaStepHeader extends StatelessWidget {
   const KhatmaStepHeader({
     super.key,
@@ -118,20 +105,12 @@ class KhatmaStepHeader extends StatelessWidget {
   }
 }
 
-// Layout --------------------------------------------------------------------
 
-/// Whether a view splits into two columns: in the wide dialog (from 760),
-/// or side by side on a short window (phone landscape, the Duo closed in
-/// landscape) so the main action stays in view.
 bool _twoColumns(BuildContext context, double width) =>
     width >= 760 || (_short(context) && width >= 460);
 
 bool _short(BuildContext context) => MediaQuery.sizeOf(context).height < 480;
 
-/// A view's parts in one column, or in two: [lead] always leads; [middle]
-/// follows it in the wide dialog but opens the second column on a short
-/// window (so today's portion is in view next to the road); [rest] fills
-/// the second column.
 class _KhatmaColumns extends StatelessWidget {
   const _KhatmaColumns({
     required this.lead,
@@ -140,7 +119,6 @@ class _KhatmaColumns extends StatelessWidget {
     this.wide = true,
   });
 
-  /// Whether the wide dialog splits too (not only a short window).
   final bool wide;
   final List<Widget> lead;
   final List<Widget> middle;
@@ -183,8 +161,6 @@ class _KhatmaColumns extends StatelessWidget {
   }
 }
 
-/// An eyebrow on the plate. Arabic script keeps its letters and digits
-/// together (no tracking).
 class _PlateEyebrow extends StatelessWidget {
   const _PlateEyebrow(this.text);
 
@@ -204,10 +180,7 @@ class _PlateEyebrow extends StatelessWidget {
   }
 }
 
-// Setup ---------------------------------------------------------------------
 
-/// No plan yet (or a new one after a khatma): the empty road, the paces,
-/// and where to start.
 class KhatmaSetupView extends StatelessWidget {
   const KhatmaSetupView({
     super.key,
@@ -225,7 +198,6 @@ class KhatmaSetupView extends StatelessWidget {
   final VoidCallback onFromBeginning;
   final VoidCallback onChooseDay;
 
-  /// Set when a finished khatma led here.
   final VoidCallback? onBack;
 
   @override
@@ -236,13 +208,10 @@ class KhatmaSetupView extends StatelessWidget {
     final space = tokens.space;
     final onBack = this.onBack;
     final suggested = days == khatmaSuggestedPace;
-    // Small phones keep "Start from Al-Fatihah" in view: no description.
     final roomy = MediaQuery.sizeOf(context).height >= 700;
     final finish = DateFormat.MMMEd(
       Localizations.localeOf(context).toLanguageTag(),
     ).format(DateTime.now().add(Duration(days: days - 1)));
-    // The plan as chosen: its days, its daily portion and when it ends.
-    // It follows the pace tiles as they change.
     final plate = KhatmaPlate(
       child: Row(
         children: [
@@ -341,7 +310,6 @@ class KhatmaSetupView extends StatelessWidget {
             ),
           ),
           SizedBox(width: space.md),
-          // The khatm star the plan ends at.
           Ornament(
             size: Size.square(_short(context) ? 48 : 72),
             painter: KhatmMedallionPainter(color: tokens.gilt),
@@ -352,7 +320,6 @@ class KhatmaSetupView extends StatelessWidget {
     final paces = Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // What a khatma is, where there's room for it.
         if (roomy) ...[
           Text(
             l10n.khatmaDescription,
@@ -389,16 +356,12 @@ class KhatmaSetupView extends StatelessWidget {
       children: [
         if (onBack != null)
           KhatmaStepHeader(title: l10n.khatmaNewTitle, onBack: onBack),
-        // The paces want the whole width of a wide dialog (a grid of 7 and
-        // 6); only a short window sets them beside the road.
         _KhatmaColumns(lead: [plate], rest: [paces, start], wide: false),
       ],
     );
   }
 }
 
-/// The paces: one row that scrolls sideways where the room is narrow
-/// (phones, a column), a grid where there's room. The chosen one is lit.
 class _Paces extends StatefulWidget {
   const _Paces({
     required this.days,
@@ -439,9 +402,6 @@ class _PacesState extends State<_Paces> {
       builder: (context, constraints) {
         final width = constraints.maxWidth;
         if (width < 480) {
-          // One row, the chosen pace centered when it first shows.
-          // Large text still shows more than one pace, so the row reads as
-          // a row.
           final tile = math.min(104 * scale, (width - gap) / 2.3);
           final index = khatmaPaces.indexOf(widget.days);
           final extent = khatmaPaces.length * (tile + gap) - gap;
@@ -449,7 +409,6 @@ class _PacesState extends State<_Paces> {
             initialScrollOffset: (index * (tile + gap) - (width - tile) / 2)
                 .clamp(0.0, math.max(0.0, extent - width)),
           );
-          // Mouse and trackpad drag it too (a narrow desktop window).
           return ScrollConfiguration(
             behavior: ScrollConfiguration.of(
               context,
@@ -472,10 +431,6 @@ class _PacesState extends State<_Paces> {
             ),
           );
         }
-        // A grid whose last row isn't a lone tile: the most columns that
-        // fit, stepping down while the last row would be under half full.
-        // Across a vertical fold, an even count (8 + 5) puts a gap on the
-        // crease when one works.
         final fit = ((width + gap) / (96 * scale + gap)).floor();
         int? pick(int most, int step) {
           for (var c = most; c >= 2; c -= step) {
@@ -501,7 +456,6 @@ class _PacesState extends State<_Paces> {
                 padding: EdgeInsets.only(top: i == 0 ? 0 : gap),
                 child: IntrinsicHeight(
                   child: Row(
-                    // A short last row sits in the middle.
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
@@ -553,8 +507,6 @@ class _PaceTile extends StatelessWidget {
       button: true,
       inMutuallyExclusiveGroup: true,
       child: HudaPressable(
-        // The fill and the text change together, so the tile never loses
-        // its contrast mid-change.
         child: TweenAnimationBuilder<double>(
           key: ValueKey('khatma-pace-$days'),
           tween: Tween(end: selected ? 1 : 0),
@@ -631,11 +583,7 @@ class _PaceTile extends StatelessWidget {
   }
 }
 
-// Schedule ------------------------------------------------------------------
 
-/// Every portion of a plan, day by day. While setting up, a tap starts the
-/// plan from that day; otherwise the days read are ticked and today's is
-/// lit (and scrolled to).
 class KhatmaScheduleView extends StatefulWidget {
   const KhatmaScheduleView({
     super.key,
@@ -651,7 +599,6 @@ class KhatmaScheduleView extends StatefulWidget {
   final KhatmaService service;
   final int days;
 
-  /// Today's portion, or -1 while setting up.
   final int currentDay;
   final String title;
   final String? message;
@@ -669,8 +616,6 @@ class _KhatmaScheduleViewState extends State<KhatmaScheduleView> {
   void initState() {
     super.initState();
     if (widget.currentDay > 0) {
-      // After the step has switched in (the sheet's height eases while it
-      // does), bring today's row into view.
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         if (!mounted) return;
         final motion = context.tokens.motion;
@@ -828,11 +773,7 @@ class _ScheduleRow extends StatelessWidget {
   }
 }
 
-// Progress ------------------------------------------------------------------
 
-/// A khatma under way: the road with today's portion on it, the portion
-/// itself (open it at its start or end, mark it done), the numbers, the
-/// reminder and the plan.
 class KhatmaActiveView extends StatelessWidget {
   const KhatmaActiveView({
     super.key,
@@ -851,7 +792,6 @@ class KhatmaActiveView extends StatelessWidget {
   final Widget reminder;
   final Widget plan;
 
-  /// Opens the reader at a surah and ayah.
   final void Function(int surah, int verse) onOpen;
   final VoidCallback onMarkDone;
 
@@ -975,8 +915,6 @@ class KhatmaActiveView extends StatelessWidget {
   }
 }
 
-/// Where today's portion starts or ends; a tap opens the reader there. Its
-/// mark is the road's: the walker for the start, a waymark for the end.
 class _RangeRow extends StatelessWidget {
   const _RangeRow({
     super.key,
@@ -1064,8 +1002,6 @@ class _RangeMark extends CustomPainter {
   bool shouldRepaint(_RangeMark old) => old.end != end || old.color != color;
 }
 
-/// The numbers: pages read and left, days left, and how well the reading
-/// keeps to the plan.
 class _Stats extends StatelessWidget {
   const _Stats({required this.service});
 
@@ -1164,10 +1100,6 @@ class _Stat extends StatelessWidget {
   }
 }
 
-/// A finished khatma: a celebration. The khatm medallion draws itself in
-/// over the plate, a light runs once along the whole road that was walked,
-/// and the journey is counted up (30 juz, 604 pages, the days it took).
-/// Then: read it again, or begin another.
 class KhatmaCompletedView extends StatelessWidget {
   const KhatmaCompletedView({
     super.key,
@@ -1181,7 +1113,6 @@ class KhatmaCompletedView extends StatelessWidget {
 
   final double trailFrom;
 
-  /// The days the khatma took.
   final int days;
   final Widget reminder;
   final Widget plan;
@@ -1270,7 +1201,6 @@ class _CompletionHeroState extends State<_CompletionHero>
     final medallion = _phase(0, 0.8, Curves.easeInOut);
     final words = _phase(0.3, 0.65);
     final count = _phase(0.45, 0.95);
-    // Rises a little as it fades in.
     Widget arrive(Animation<double> a, Widget child) => FadeTransition(
       opacity: a,
       child: SlideTransition(
@@ -1327,7 +1257,6 @@ class _CompletionHeroState extends State<_CompletionHero>
             ),
           ),
           SizedBox(height: space.md),
-          // The journey, counted up.
           FadeTransition(
             opacity: count,
             child: IntrinsicHeight(
@@ -1389,10 +1318,7 @@ class _CompletionHeroState extends State<_CompletionHero>
   }
 }
 
-// Reminder and plan ---------------------------------------------------------
 
-/// The daily reminder: what notifications still need, the switch and the
-/// time.
 class KhatmaReminderSection extends StatelessWidget {
   const KhatmaReminderSection({
     super.key,
@@ -1452,7 +1378,6 @@ class KhatmaReminderSection extends StatelessWidget {
   }
 }
 
-/// The plan's rarer actions: every portion, and deleting it.
 class KhatmaPlanSection extends StatelessWidget {
   const KhatmaPlanSection({
     super.key,

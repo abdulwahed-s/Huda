@@ -18,9 +18,6 @@ import 'package:huda/presentation/widgets/prayer_times/prayer_palette.dart';
 import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 
-/// The one prayer alert card on Prayer Times: how prayers alert, each
-/// prayer at a glance, whether alerts are set, and Stop while one plays.
-/// A tap opens the settings sheet.
 class PrayerAlertSummaryCard extends StatefulWidget {
   const PrayerAlertSummaryCard({
     super.key,
@@ -32,7 +29,6 @@ class PrayerAlertSummaryCard extends StatefulWidget {
 
   final void Function([String? prayer]) onOpen;
 
-  /// Coverage and schedule problems ([buildPrayerAlertStatus]).
   final PrayerAlertStatus? status;
   final PrayerAlertController<Object?>? controller;
   final PrayerAudioLibrary? library;
@@ -196,8 +192,6 @@ class _StatusLine extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Problems and work speak like the page's notices: a lamp with a
-          // piece of the day path. Ready keeps its plain mark.
           if (status.tone == PrayerAlertTone.ready && !status.busy)
             SizedBox.square(
               dimension: 36,
@@ -259,7 +253,6 @@ class _StatusLine extends StatelessWidget {
   }
 }
 
-/// An adhan or Focus that is playing now, with how to stop it.
 class PrayerLiveSession {
   const PrayerLiveSession({this.stopAudio, this.endFocus});
 

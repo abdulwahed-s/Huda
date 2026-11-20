@@ -7,10 +7,6 @@ import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:huda/presentation/widgets/tasbih/tasbih_dhikr_row.dart';
 
-/// A dhikr just removed, and how to put it back. The screen owns one, so
-/// Undo outlives the list that showed it: the pane emptying, or the phone
-/// sheet closing (the chip row then offers Undo, or the empty state when no
-/// dhikr is left).
 class TasbihUndo extends ChangeNotifier {
   static const undoFor = Duration(seconds: 6);
 
@@ -24,7 +20,6 @@ class TasbihUndo extends ChangeNotifier {
   bool get expiring => _expiring;
   int? get index => _note == null ? null : _index;
 
-  /// The removed dhikr itself: a new removal is a new Undo row.
   TasbihNote? get note => _note;
 
   void remove(TasbihCubit cubit, TasbihLoaded state, int index) {
@@ -34,7 +29,6 @@ class TasbihUndo extends ChangeNotifier {
     _wasSelected = index == state.selectedNoteIndex;
     _expiring = false;
     cubit.removeNote(index);
-    // Then the Undo row folds away (`medium`) and is gone.
     _timer = Timer(undoFor, () {
       _expiring = true;
       notifyListeners();
@@ -43,8 +37,6 @@ class TasbihUndo extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Where the last Undo put a dhikr back: that row takes the Undo row's
-  /// place, so it fades in at its height instead of opening.
   int? restoredAt;
 
   void undo(TasbihCubit cubit) {
@@ -70,11 +62,6 @@ class TasbihUndo extends ChangeNotifier {
   }
 }
 
-/// The dhikr with their counts: tap a row to count it, the trash icon to
-/// remove it. A removed dhikr leaves an "Undo" row in its place for a few
-/// seconds, so removing needs no confirmation. Added and restored rows
-/// open to their height. Used inline by the list pane and inside the phone
-/// sheet, so both work the same way.
 class TasbihDhikrList extends StatefulWidget {
   const TasbihDhikrList({
     super.key,
@@ -88,8 +75,6 @@ class TasbihDhikrList extends StatefulWidget {
   final TasbihCubit cubit;
   final TasbihUndo undo;
 
-  /// The first [HudaReveal] index for the rows when the list arrives with
-  /// the screen; null when it opens in a sheet.
   final int? revealFrom;
 
   @override
@@ -99,8 +84,6 @@ class TasbihDhikrList extends StatefulWidget {
 class _TasbihDhikrListState extends State<TasbihDhikrList> {
   final _lastKey = GlobalKey();
 
-  /// The row that just arrived (added or restored), and a token that
-  /// makes it open again for the next arrival.
   int? _entering;
   int _enterToken = 0;
   bool _entersInPlace = false;
@@ -121,7 +104,6 @@ class _TasbihDhikrListState extends State<TasbihDhikrList> {
     final before = old.state.notes;
     final after = widget.state.notes;
     if (after.length != before.length + 1) return;
-    // The first place the lists differ is the row that arrived.
     var at = 0;
     while (at < before.length && identical(before[at], after[at])) {
       at++;
@@ -130,7 +112,6 @@ class _TasbihDhikrListState extends State<TasbihDhikrList> {
     _enterToken++;
     _entersInPlace = at == widget.undo.restoredAt;
     widget.undo.restoredAt = null;
-    // A new dhikr at the end comes into view.
     if (at == after.length - 1) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         final last = _lastKey.currentContext;
@@ -213,8 +194,6 @@ class _TasbihDhikrListState extends State<TasbihDhikrList> {
   }
 }
 
-/// A row that just arrived opens to its height and fades in, so the rows
-/// below move instead of jumping.
 class _Enter extends StatefulWidget {
   const _Enter({
     super.key,
@@ -225,7 +204,6 @@ class _Enter extends StatefulWidget {
 
   final bool animate;
 
-  /// False for a row restored where its Undo row was: it only fades in.
   final bool grow;
   final Widget child;
 
@@ -267,8 +245,6 @@ class _EnterState extends State<_Enter> with SingleTickerProviderStateMixin {
   }
 }
 
-/// Where a removed dhikr was: "Dhikr removed · Undo". It fades in where
-/// the row was, and folds away (its height animating) when Undo expires.
 class _UndoRow extends StatefulWidget {
   const _UndoRow({
     super.key,
@@ -360,8 +336,6 @@ class _UndoRowState extends State<_UndoRow> with TickerProviderStateMixin {
   }
 }
 
-/// Adds a dhikr: a text field and a lit "+" (Enter also adds). Stays
-/// focused after adding, so several can be added in a row.
 class TasbihDhikrComposer extends StatefulWidget {
   const TasbihDhikrComposer({super.key, required this.cubit});
 
@@ -404,14 +378,12 @@ class _TasbihDhikrComposerState extends State<TasbihDhikrComposer> {
             decoration: InputDecoration(hintText: l10n.enterDhikrHint),
             minLines: 1,
             maxLines: 3,
-            // Wraps long dhikr, and Enter adds instead of a new line.
             keyboardType: TextInputType.text,
             textInputAction: TextInputAction.done,
             onSubmitted: (_) => _submit(),
           ),
         ),
         SizedBox(width: space.xs),
-        // Adding is the primary action here: lit.
         Tooltip(
           message: l10n.addDhikr,
           child: Semantics(

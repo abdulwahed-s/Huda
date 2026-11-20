@@ -10,10 +10,6 @@ import 'package:huda/presentation/widgets/hijri_calendar/calendar_identity.dart'
 import 'package:huda/presentation/widgets/hijri_calendar/calendar_month.dart';
 import 'package:huda/presentation/widgets/hijri_calendar/islamic_calendar_event.dart';
 
-/// The day plate, the calendar's signature: the day's moon in luminous
-/// gilt on the chrome beside the date in both calendars, and the day's
-/// occasions. Another day turns the moon to its phase and the words
-/// cross-fade.
 class CalendarDayPlate extends StatelessWidget {
   const CalendarDayPlate({
     super.key,
@@ -169,8 +165,6 @@ class _Occasion extends StatelessWidget {
   }
 }
 
-/// The person's events on the selected day, with the one Add event
-/// button. A row opens its sheet (edit, delete).
 class CalendarEventsSection extends StatelessWidget {
   const CalendarEventsSection({
     super.key,
@@ -184,7 +178,6 @@ class CalendarEventsSection extends StatelessWidget {
   final VoidCallback onAdd;
   final ValueChanged<HijriEvent> onOpen;
 
-  /// Cross-fades the list when the day changes.
   final String dayKey;
 
   @override

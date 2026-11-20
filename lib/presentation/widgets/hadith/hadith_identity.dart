@@ -7,9 +7,6 @@ import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/presentation/widgets/design/feature_identity.dart';
 import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 
-/// The Six Books (Kutub al-Sittah) by their sunnah.com slugs, in the order
-/// they lead the collections. The identity's count: six, and the header
-/// folio's chain has six narrators.
 const hadithSixBooks = [
   'bukhari',
   'muslim',
@@ -19,9 +16,6 @@ const hadithSixBooks = [
   'ibnmajah',
 ];
 
-/// Hadith's voice: a manuscript folio, ruled with a jadwal, its isnad drawn
-/// as a chain of ink nodes running down the margin into a seal. Paper and
-/// ink. See `design/IDENTITIES.md` and `design/features/hadith/brief.md`.
 final FeatureIdentity hadithIdentity = FeatureIdentity(
   id: 'hadith',
   motif:
@@ -33,13 +27,6 @@ final FeatureIdentity hadithIdentity = FeatureIdentity(
   headerArt: (style) => HadithFolioPainter(style: style),
 );
 
-/// A folio: a page with a wide outer margin, a jadwal (a double rule)
-/// around the text block, a rubric line and lines of text, and the isnad
-/// in the margin, [nodes] linked ink nodes running down into a seal.
-///
-/// [ink] draws it: the rules first, then the lines, then the chain node by
-/// node (0 nothing, 1 complete). Pass an animation as [inkOf] to animate it
-/// without rebuilding. [small] is the tile mark: no chain, fewer lines.
 class HadithFolioPainter extends CustomPainter {
   HadithFolioPainter({
     required this.style,
@@ -58,7 +45,6 @@ class HadithFolioPainter extends CustomPainter {
 
   double get ink => inkOf?.value ?? _ink;
 
-  /// The portion of [path] drawn by [t] (0–1), along its length.
   static Path _partial(Path path, double t) {
     if (t >= 1) return path;
     final out = Path();
@@ -77,7 +63,6 @@ class HadithFolioPainter extends CustomPainter {
     final t = Curves.easeOut.transform(ink.clamp(0.0, 1.0));
     if (t <= 0) return;
     final pad = style.stroke * 3;
-    // A portrait page, as large as the box allows.
     const ratio = 0.74;
     var h = size.height - pad * 2;
     var w = h * ratio;
@@ -95,8 +80,6 @@ class HadithFolioPainter extends CustomPainter {
     final lines = _phase(t, 0.25, 0.6);
     final chain = _phase(t, 0.5, 1);
 
-    // The page and the jadwal around the text block, the outer margin
-    // (the chain's) on the end.
     style.draw(canvas, _partial(Path()..addRect(page), rules));
     final block = Rect.fromLTRB(
       page.left + w * 0.11,
@@ -109,7 +92,6 @@ class HadithFolioPainter extends CustomPainter {
     rule.draw(canvas, _partial(Path()..addRect(block), rules));
     rule.draw(canvas, _partial(Path()..addRect(block.deflate(gap)), rules));
 
-    // A rubric, then lines of text.
     final text = block.deflate(gap * 2.6);
     final count = small ? 3 : 7;
     final step = text.height / (count + 0.5);
@@ -134,7 +116,6 @@ class HadithFolioPainter extends CustomPainter {
     }
     if (small || nodes <= 0) return;
 
-    // The isnad down the margin: nodes linked one by one, the last a seal.
     final x = (block.right + page.right) / 2;
     final top = block.top + gap;
     final sealR = math.min(w * 0.09, (page.right - block.right) * 0.42);
@@ -180,9 +161,6 @@ class HadithFolioPainter extends CustomPainter {
       old.inkOf != inkOf;
 }
 
-/// Plays the ink once: [builder] gets a listenable from 0 to 1 that draws
-/// the folio's rules, lines and chain. Complete from the first frame under
-/// reduce motion.
 class HadithInk extends StatefulWidget {
   const HadithInk({
     super.key,
@@ -226,11 +204,9 @@ class _HadithInkState extends State<HadithInk>
   Widget build(BuildContext context) => widget.builder(context, _controller);
 }
 
-/// A collection's mark on its tile: a small folio.
 class HadithFolioMark extends StatelessWidget {
   const HadithFolioMark({super.key, this.quiet = false});
 
-  /// A collection that isn't available yet.
   final bool quiet;
 
   @override
@@ -246,10 +222,6 @@ class HadithFolioMark extends StatelessWidget {
   );
 }
 
-/// The isnad as a line of linked nodes at an even step, from the first
-/// narrator to the last, filled node: the source, the Prophet ﷺ. It runs
-/// from the start of [textDirection] (beside the hadith's seal) to its
-/// end. Decorative.
 class HadithChainPainter extends CustomPainter {
   const HadithChainPainter({
     required this.style,
@@ -265,7 +237,6 @@ class HadithChainPainter extends CustomPainter {
   static const double _r = 3.5;
   static const double _end = _r * 2.2;
 
-  /// The width the chain of [nodes] narrators takes at its step.
   static double widthFor(int nodes) => nodes <= 0 ? 0 : nodes * step + _end * 2;
 
   @override
@@ -310,8 +281,6 @@ class HadithChainPainter extends CustomPainter {
       old.textDirection != textDirection;
 }
 
-/// How many narrators a chain names: runs marked as narrators, counting
-/// neighbors (one name split by formatting) once.
 int hadithNarratorCount(Iterable<bool> narratorRuns) {
   var count = 0;
   var previous = false;
@@ -322,9 +291,6 @@ int hadithNarratorCount(Iterable<bool> narratorRuns) {
   return count;
 }
 
-/// A round ink seal: a ring, a beaded ring inside it, and [child] in the
-/// middle. Hadith numbers sit in small ones; the share card's carries the
-/// collection.
 class HadithSeal extends StatelessWidget {
   const HadithSeal({
     super.key,
@@ -336,7 +302,6 @@ class HadithSeal extends StatelessWidget {
   final double size;
   final Widget child;
 
-  /// The ink; defaults to the theme's primary.
   final Color? color;
 
   @override
@@ -368,8 +333,6 @@ class _SealPainter extends CustomPainter {
       ..color = color.withValues(alpha: color.a * 0.85);
     canvas.drawCircle(c, r, line);
     canvas.drawCircle(c, r * 0.8, line..strokeWidth = stroke * 0.6);
-    // A milled edge between the rings, like a stamp's: fine radial ticks
-    // (not beads, which are Tasbih's).
     final ticks = math.max(24, (r * 1.6).round());
     final tick = Paint()
       ..strokeWidth = stroke * 0.6

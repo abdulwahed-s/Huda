@@ -7,15 +7,6 @@ import 'package:huda/presentation/widgets/audio/audiobooks_identity.dart';
 import 'package:huda/presentation/widgets/design/huda_states.dart';
 import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 
-/// A recording as a woven swatch: its cloth (shade and border from
-/// [seed]), the plait across it and a fringe at the foot.
-///
-/// With [chapters], the plait is the recording: an eye per chapter, those
-/// heard filled, the [current] one ringed and filling by [fraction] (the
-/// part of it played). [weaveIn] weaves the ribbon in once as the swatch
-/// first appears; when [current] changes, the ribbon weaves forward (the
-/// window slides one eye along). Without [chapters] the plait is
-/// decorative (library tiles). Reduce motion: woven and in place.
 class AudiobookSwatch extends StatefulWidget {
   const AudiobookSwatch({
     super.key,
@@ -27,7 +18,6 @@ class AudiobookSwatch extends StatefulWidget {
     this.semanticLabel,
   });
 
-  /// Width over height, fringe included.
   static const double aspect = 1.32;
 
   final int seed;
@@ -36,8 +26,6 @@ class AudiobookSwatch extends StatefulWidget {
   final double fraction;
   final bool weaveIn;
 
-  /// Read out instead of "Chapter n of m"; decorative when null and there
-  /// are no [chapters].
   final String? semanticLabel;
 
   @override
@@ -178,7 +166,6 @@ class _AudiobookSwatchState extends State<AudiobookSwatch>
   }
 }
 
-/// Paints the ribbon in the swatch's ribbon band.
 class _BandPainter extends CustomPainter {
   _BandPainter({
     required this.windowFor,
@@ -238,7 +225,6 @@ class _BandPainter extends CustomPainter {
       old.rtl != rtl;
 }
 
-/// A swatch-shaped skeleton for the library while it loads.
 class AudiobookSwatchSkeleton extends StatelessWidget {
   const AudiobookSwatchSkeleton({super.key, this.announce = false});
 

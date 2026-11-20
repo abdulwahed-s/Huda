@@ -4,18 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 
-/// Huda's progress indicator: the khatam turning steadily, its second
-/// square breathing like a lantern's lattice catching the light, while
-/// work runs (changed in `athkar`, owner round 4: eased eighths read as a
-/// stutter). It stops when
-/// removed (continuous motion only for live state) and rests as a still
-/// khatam under reduce motion.
 class HudaLampSpinner extends StatefulWidget {
   const HudaLampSpinner({super.key, this.size = 20, this.color});
 
   final double size;
 
-  /// Defaults to the theme's gilt-tinted ornament color.
   final Color? color;
 
   @override
@@ -51,7 +44,6 @@ class _HudaLampSpinnerState extends State<HudaLampSpinner>
         widget.color ??
         Theme.of(context).extension<HudaTokens>()?.ornament ??
         Theme.of(context).colorScheme.primary;
-    // Decorative: what is loading is said by the banner or button around it.
     return ExcludeSemantics(
       child: RepaintBoundary(
         child: SizedBox.square(
@@ -79,9 +71,6 @@ class _LampPainter extends CustomPainter {
     final c = size.center(Offset.zero);
     final r = size.shortestSide / 2 - 1.2;
     final stroke = (size.shortestSide / 12).clamp(1.2, 2.4);
-    // One rigid khatam (its squares always 45° apart, so every frame reads
-    // as the star) turning at one speed, a full turn per cycle, so the
-    // repeat has no seam; the back square breathes twice a turn.
     final turn = t * math.pi * 2;
     final breath = 0.5 + 0.2 * math.sin(t * math.pi * 4);
     final side = r * math.sqrt1_2 * 2;
@@ -106,16 +95,12 @@ class _LampPainter extends CustomPainter {
   bool shouldRepaint(_LampPainter old) => old.t != t || old.color != color;
 }
 
-/// The lamp: a small disc of the deep chrome holding a gilt mark (the
-/// spinner while working, a khatam or an icon otherwise). Leads status
-/// banners and lit tiles.
 class HudaLamp extends StatelessWidget {
   const HudaLamp({super.key, required this.child, this.size = 40, this.ring});
 
   final Widget child;
   final double size;
 
-  /// The fine ring's color; defaults to the gilt at half strength.
   final Color? ring;
 
   @override
@@ -141,7 +126,6 @@ class HudaLamp extends StatelessWidget {
   }
 }
 
-/// A still khatam in a color, for the lamp's resting and failed marks.
 class HudaKhatamMark extends StatelessWidget {
   const HudaKhatamMark({super.key, required this.color, this.size = 18});
 

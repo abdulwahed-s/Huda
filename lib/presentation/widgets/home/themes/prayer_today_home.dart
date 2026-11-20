@@ -13,14 +13,6 @@ import 'package:huda/presentation/widgets/home/home_identity.dart';
 import 'package:huda/presentation/widgets/home/home_prayer_dial.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_identity.dart';
 
-/// Path of Prayer: Home as the day of prayer. Its hero is the prayer dial
-/// on the deep chrome ([HomePrayerDial]): Huda's logo above it, the place,
-/// the day's arc with the five prayers as lamps and the sun at now, the
-/// next prayer and the time left inside, the five times in a row under it.
-/// Then the day's event and the tools, as round medallions, on the page,
-/// the Quran Kit always first (the dial is Prayer Times). The frame is
-/// [HomeHeroPage]: the hero above the page on phones, a still pane beside
-/// it on wide windows and folds, above the fold on a tabletop.
 class PrayerTodayHome extends StatelessWidget {
   const PrayerTodayHome({
     super.key,
@@ -60,9 +52,6 @@ class PrayerTodayHome extends StatelessWidget {
   }
 }
 
-/// Path of Prayer's hero: Huda's logo, the place, the dial and the five
-/// times, on the chrome; the light behind the dial is warm by day and pale
-/// by night.
 class _DialHero extends StatelessWidget {
   const _DialHero({required this.actions, required this.fill});
 

@@ -7,18 +7,9 @@ import 'package:huda/core/theme/huda_haptics_setting.dart';
 import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:vibration/vibration.dart';
 
-/// Shared motion, built once so features don't write their own controllers
-/// for these jobs. Rules in `design/LANGUAGE.md`, "Motion": every piece
-/// uses the motion tokens and goes instant under reduce motion.
 
-// Confirm: haptics ---------------------------------------------------------------
 
-/// The only way features vibrate. Phones and tablets only; a feature's own
-/// vibration setting is passed as [enabled]. Reduce motion doesn't silence
-/// haptics.
 abstract final class HudaHaptics {
-  /// Whether this device plays haptics at all (phones and tablets): where
-  /// Settings offers the app's "Haptic feedback" switch.
   static bool supported(BuildContext context) =>
       switch (Theme.of(context).platform) {
         TargetPlatform.android ||
@@ -27,34 +18,23 @@ abstract final class HudaHaptics {
         _ => false,
       };
 
-  /// Whether Huda plays haptics here and now: a supported device with the
-  /// app's "Haptic feedback" switch on. Show a feature's own vibration
-  /// setting (Tasbih's Vibrate) only where it does something.
   static bool available(BuildContext context) => _touch(context);
 
-  // The app's switch silences every level (changed in `settings`).
   static bool _touch(BuildContext context) =>
       HudaHapticsSetting.enabled && supported(context);
 
-  /// Ticks: each count, a picker step.
   static void selection(BuildContext context, {bool enabled = true}) {
     if (enabled && _touch(context)) unawaited(HapticFeedback.selectionClick());
   }
 
-  /// Confirmations: saved, shared, toggled something that matters.
   static void light(BuildContext context, {bool enabled = true}) {
     if (enabled && _touch(context)) unawaited(HapticFeedback.lightImpact());
   }
 
-  /// Milestones: 33, qiblah alignment, a completed khatma.
   static void medium(BuildContext context, {bool enabled = true}) {
     if (enabled && _touch(context)) unawaited(HapticFeedback.mediumImpact());
   }
 
-  /// A counter's tick that is felt without looking (Tasbih, with its
-  /// Vibrate setting on): a short 50 ms buzz, firmer than [selection] and
-  /// independent of the system's touch-feedback setting. Falls back to
-  /// [selection] where the device has no vibrator. Added by `tasbih`.
   static void count(BuildContext context, {bool enabled = true}) {
     if (!enabled || !_touch(context)) return;
     unawaited(() async {
@@ -70,10 +50,7 @@ abstract final class HudaHaptics {
   static bool? _hasVibrator;
 }
 
-// Confirm: press-in --------------------------------------------------------------
 
-/// A slight press-in (scale 0.98) while a pointer is down, on top of the
-/// ink. Built into `HudaCard`; use it for large buttons and tiles.
 class HudaPressable extends StatefulWidget {
   const HudaPressable({super.key, required this.child, this.enabled = true});
 
@@ -105,8 +82,6 @@ class _HudaPressableState extends State<HudaPressable> {
         scale: _down ? 0.97 : 1,
         duration: duration,
         curve: motion.standard,
-        // A tinted highlight from the moment of touch (ink in a scroll
-        // view waits for the tap timeout).
         child: AnimatedContainer(
           duration: duration,
           curve: motion.standard,
@@ -121,19 +96,12 @@ class _HudaPressableState extends State<HudaPressable> {
   }
 }
 
-// Reveal ---------------------------------------------------------------------------
 
-/// Marks a screen whose first screenful reveals once: items in a
-/// [HudaReveal] built while the scope is fresh rise and fade in, staggered
-/// 30 ms apart (up to 6). Items built later (scrolling, refresh) appear
-/// as they are. Put one at the top of a screen, below its route.
 class HudaRevealScope extends StatefulWidget {
   const HudaRevealScope({super.key, required this.child});
 
   final Widget child;
 
-  /// How long after the screen appears items still count as its first
-  /// screenful.
   static const window = Duration(milliseconds: 500);
 
   @override
@@ -170,9 +138,6 @@ class _RevealScope extends InheritedWidget {
   bool updateShouldNotify(_RevealScope oldWidget) => false;
 }
 
-/// One item of a screen's first screenful. [index] staggers it; items past
-/// the sixth, items built after the scope's window, and everything under
-/// reduce motion appear without motion.
 class HudaReveal extends StatefulWidget {
   const HudaReveal({super.key, required this.child, this.index = 0});
 
@@ -206,7 +171,6 @@ class _HudaRevealState extends State<HudaReveal>
         scope._fresh &&
         !MediaQuery.disableAnimationsOf(context);
     if (!animate) return;
-    // Items past the sixth arrive with the sixth, never before the first.
     final delay = HudaReveal._stagger * _slot;
     _controller
       ..duration = motion.medium + delay
@@ -247,10 +211,7 @@ class _HudaRevealState extends State<HudaReveal>
   }
 }
 
-// Reveal: state changes --------------------------------------------------------
 
-/// Cross-fades between states (loading, empty, error, offline, content)
-/// when [stateKey] changes, and animates the size change.
 class HudaStateSwitcher extends StatelessWidget {
   const HudaStateSwitcher({
     super.key,
@@ -260,21 +221,16 @@ class HudaStateSwitcher extends StatelessWidget {
     this.sequential = false,
   });
 
-  /// Changes when the state changes (the state's type or an enum value).
   final Object stateKey;
   final Widget child;
   final AlignmentGeometry alignment;
 
-  /// Fades the old child out before the new one fades in, instead of
-  /// cross-fading, so text (Arabic above all) never sits on top of text.
   final bool sequential;
 
   @override
   Widget build(BuildContext context) {
     final motion = const HudaMotion();
     final duration = motion.of(context, motion.medium);
-    // Reduce motion: swap instantly. A zero-length AnimatedSize finishes
-    // inside its own layout, which Flutter rejects.
     if (duration == Duration.zero) {
       return KeyedSubtree(key: ValueKey(stateKey), child: child);
     }
@@ -284,8 +240,6 @@ class HudaStateSwitcher extends StatelessWidget {
       alignment: alignment,
       child: AnimatedSwitcher(
         duration: duration,
-        // Sequential: the old child is gone by half time (it runs in
-        // reverse), the new one fades in over the second half.
         switchInCurve: sequential
             ? Interval(0.5, 1, curve: motion.standard)
             : motion.standard,
@@ -300,9 +254,6 @@ class HudaStateSwitcher extends StatelessWidget {
   }
 }
 
-/// [HudaStateSwitcher] for slivers (a state below a landing header). Slivers
-/// can't overlap, so the old state (a skeleton) dims to half, the new one
-/// takes its place and brightens from half: the page is never blank.
 class SliverHudaStateSwitcher extends StatefulWidget {
   const SliverHudaStateSwitcher({
     super.key,
@@ -365,12 +316,7 @@ class _SliverHudaStateSwitcherState extends State<SliverHudaStateSwitcher>
   );
 }
 
-// Confirm: number roll ---------------------------------------------------------
 
-/// A number that rolls digit by digit when it changes, with tabular
-/// figures, so counters, countdowns and totals don't jump. Only the digits
-/// that change move: up when the value grows, down when it shrinks.
-/// [format] turns the value into text (locale digits, grouping).
 class HudaNumberRoll extends StatefulWidget {
   const HudaNumberRoll({
     super.key,
@@ -384,7 +330,6 @@ class HudaNumberRoll extends StatefulWidget {
   final TextStyle? style;
   final String Function(int value)? format;
 
-  /// Read out instead of the digits; defaults to the formatted value.
   final String? semanticsLabel;
 
   @override
@@ -416,14 +361,11 @@ class _HudaNumberRollState extends State<HudaNumberRoll> {
       excludeSemantics: true,
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        // Digits read left to right in every script Huda uses.
         textDirection: TextDirection.ltr,
         children: [
           for (var i = 0; i < chars.length; i++)
             ClipRect(
               child: AnimatedSwitcher(
-                // Keyed from the end, so a digit keeps its place as the
-                // number grows (9 → 10 rolls only the new digits).
                 key: ValueKey(chars.length - i),
                 duration: motion.of(context, motion.short),
                 switchInCurve: motion.standard,
@@ -452,12 +394,7 @@ class _HudaNumberRollState extends State<HudaNumberRoll> {
   }
 }
 
-// Orient: card to page --------------------------------------------------------
 
-/// Opens [builder]'s page growing out of the tapped card: the page is
-/// revealed from the card's rectangle and corner radius to the full
-/// screen, never scaled (scaling text is expensive to raster). Pass the
-/// card's own `BuildContext`.
 Future<T?> pushFromCard<T>(BuildContext cardContext, WidgetBuilder builder) {
   final box = cardContext.findRenderObject() as RenderBox?;
   final navigator = Navigator.of(cardContext);
@@ -474,7 +411,6 @@ Future<T?> pushFromCard<T>(BuildContext cardContext, WidgetBuilder builder) {
     PageRouteBuilder<T>(
       transitionDuration: duration,
       reverseTransitionDuration: duration,
-      // Like sheets and dialogs, the page keeps the opener's themes.
       pageBuilder: (context, _, _) => themes.wrap(builder(context)),
       transitionsBuilder: (context, animation, _, child) {
         if (origin == null) {
@@ -525,12 +461,7 @@ class _RectClipper extends CustomClipper<RRect> {
       old.rect != rect || old.radius != radius;
 }
 
-// Continue: size --------------------------------------------------------------
 
-/// Eases its child's size changes (`medium`, `standard`). Under reduce
-/// motion it lays the child out directly: a zero-length `AnimatedSize`
-/// throws "mutated in its own performLayout" (found by `tasbih`). Added by
-/// `settings`.
 class HudaAnimatedSize extends StatelessWidget {
   const HudaAnimatedSize({
     super.key,
@@ -555,15 +486,7 @@ class HudaAnimatedSize extends StatelessWidget {
   }
 }
 
-// Reveal: landing art -----------------------------------------------------------
 
-/// Plays a landing header's art in once: [builder] gets an animation from
-/// 0 to 1 (eased with [curve]; pass `Curves.linear` when the painter eases
-/// its own pieces in turn) to pass to the art's painter, which
-/// draws itself partly until it ends. Every landing header's art arrives
-/// this way and then rests (`design/LANGUAGE.md`, "Motion"). Under reduce
-/// motion it's complete from the first frame. Added by the landing-art
-/// pass (books, audiobooks, Quran audio and radio).
 class HudaDrawIn extends StatefulWidget {
   const HudaDrawIn({
     super.key,

@@ -11,8 +11,6 @@ import 'package:huda/presentation/widgets/settings/language_picker.dart';
 import 'package:huda/presentation/widgets/settings/settings_choice_sheet.dart';
 import 'package:huda/presentation/widgets/widget_management/widget_settings_parts.dart';
 
-/// The Quran Verse widget: its live preview, how to add it, and its
-/// translation, text style and theme.
 class QuranVerseWidgetTab extends StatefulWidget {
   const QuranVerseWidgetTab({super.key});
 
@@ -270,8 +268,6 @@ class _QuranVerseWidgetTabState extends State<QuranVerseWidgetTab> {
   }
 }
 
-/// One text's style: fit to the widget, its size (off while fitting) and
-/// bold.
 class _TypeGroup extends StatelessWidget {
   const _TypeGroup({
     required this.sizeLabel,
@@ -330,9 +326,6 @@ class _TypeGroup extends StatelessWidget {
   }
 }
 
-/// The Quran widget as it will look: the ayah in its theme, size and
-/// weight, and the translation's line (its source) under it. Colors and
-/// sizes ease to each new choice.
 class QuranWidgetPreview extends StatelessWidget {
   const QuranWidgetPreview({
     super.key,
@@ -344,10 +337,8 @@ class QuranWidgetPreview extends StatelessWidget {
   final QuranWidgetSettings settings;
   final QuranWidgetPalette palette;
 
-  /// The translation's source, or null for the Arabic-only widget.
   final String? source;
 
-  // Inshirah 94:5, a short ayah that fits a small widget.
   static const _ayah = 'فَإِنَّ مَعَ ٱلْعُسْرِ يُسْرًا';
 
   @override
@@ -420,7 +411,6 @@ class QuranWidgetPreview extends StatelessWidget {
   }
 }
 
-/// A Quran widget theme's colors (as the native widget draws them).
 class QuranWidgetPalette {
   const QuranWidgetPalette({
     required this.background,
@@ -433,7 +423,6 @@ class QuranWidgetPalette {
   final Color translation;
 }
 
-/// The translation's source for a language code.
 String quranTranslationSource(String? code) =>
     const {
       'en': 'Saheeh International',
@@ -467,8 +456,6 @@ String quranWidgetThemeLabel(
   QuranWidgetVisualTheme.sage => l10n.themeSage,
 };
 
-/// The colors the native Quran widget uses for [theme]; "Automatic"
-/// follows the app's palette and light or dark.
 QuranWidgetPalette quranWidgetPalette(
   BuildContext context,
   QuranWidgetVisualTheme theme,
@@ -539,8 +526,6 @@ QuranWidgetPalette quranWidgetPalette(
 QuranWidgetPalette _autoPalette(BuildContext context) {
   final theme = Theme.of(context);
   final isDark = theme.brightness == Brightness.dark;
-  // The palette's own primary, as the native widget reads it (the Lantern
-  // scheme's primary is derived from it and differs).
   final primary = AppColors.getColorScheme(
     context.read<ThemeCubit>().state.colorTheme,
   ).primary;

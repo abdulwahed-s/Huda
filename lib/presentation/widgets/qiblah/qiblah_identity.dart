@@ -5,16 +5,6 @@ import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/presentation/widgets/design/feature_identity.dart';
 import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 
-/// Qiblah's voice: an astrolabe in brass on the night chrome (see
-/// `design/IDENTITIES.md`). A graduated limb (72 marks, numbered every
-/// 30°), a 16-point wind rose, the Kaaba on the limb at the Qibla's
-/// bearing, an alidade (the sighting rule) that points to it, and a fixed
-/// index at the top: the way the phone faces. Facing the Qibla brings the
-/// Kaaba to the index; then the limb's outer ring locks around the dial.
-///
-/// The dial is three layers, so turning never repaints line work: the face
-/// (limb and rose) rotated by the heading, the alidade and Kaaba rotated
-/// to the Qibla, and the fixed index.
 final FeatureIdentity qiblahIdentity = FeatureIdentity(
   id: 'qiblah',
   motif:
@@ -26,14 +16,10 @@ final FeatureIdentity qiblahIdentity = FeatureIdentity(
   headerArt: (style) => QiblahStateArtPainter(style: style),
 );
 
-/// The limb sits inside the dial's square, leaving a band for the index.
 const double _limbRatio = 0.88;
 
-/// The Kaaba's distance from the center, as a share of the limb's radius.
 const double _kaabaRadius = 0.72;
 
-/// The face: the graduated limb, numerals, cardinal letters and the wind
-/// rose, drawn with north at the top. Rotate it by the heading.
 class QiblahFacePainter extends CustomPainter {
   QiblahFacePainter({
     required this.style,
@@ -47,14 +33,11 @@ class QiblahFacePainter extends CustomPainter {
 
   final OrnamentStyle style;
 
-  /// The chrome under the dial, so upper rose points hide lower ones.
   final Color fill;
 
-  /// Warm text on the chrome: east, south and west, and the numerals.
   final Color ink;
   final Color muted;
 
-  /// N, E, S, W in the app's language.
   final List<String> cardinals;
   final TextStyle letterStyle;
   final TextStyle numeralStyle;
@@ -72,7 +55,6 @@ class QiblahFacePainter extends CustomPainter {
       ..strokeCap = StrokeCap.round
       ..color = style.color.withValues(alpha: style.color.a * 0.55);
 
-    // The limb: two rings, a graduated band between them.
     final inner = r * 0.86;
     style.draw(canvas, Path()..addOval(Rect.fromCircle(center: c, radius: r)));
     canvas.drawCircle(c, inner, line);
@@ -88,7 +70,6 @@ class QiblahFacePainter extends CustomPainter {
       );
     }
 
-    // Numerals every 30°, off the cardinals, where there's room to read.
     if (r >= 120) {
       for (var d = 30; d < 360; d += 30) {
         if (d % 90 == 0) continue;
@@ -103,8 +84,6 @@ class QiblahFacePainter extends CustomPainter {
       }
     }
 
-    // The wind rose: 16 kites from the center, the minor points first so
-    // the major ones lie over them.
     for (final tier in const [3, 2, 1]) {
       for (var i = 0; i < 16; i++) {
         final t = i % 4 == 0 ? 1 : (i % 2 == 0 ? 2 : 3);
@@ -126,7 +105,6 @@ class QiblahFacePainter extends CustomPainter {
           ..lineTo(right.dx, right.dy)
           ..close();
         canvas.drawPath(kite, Paint()..color = fill);
-        // One half shaded, as on an engraved rose.
         final half = Path()
           ..moveTo(c.dx, c.dy)
           ..lineTo(left.dx, left.dy)
@@ -142,7 +120,6 @@ class QiblahFacePainter extends CustomPainter {
     canvas.drawCircle(c, r * 0.07, Paint()..color = fill);
     canvas.drawCircle(c, r * 0.07, line);
 
-    // Cardinal letters inside the limb; north in gilt.
     for (var i = 0; i < 4; i++) {
       _text(
         canvas,
@@ -166,11 +143,6 @@ class QiblahFacePainter extends CustomPainter {
       !_sameList(old.cardinals, cardinals);
 }
 
-/// The lock's stages, read from its controller (0–1, about a second):
-/// the index clicks in and the alidade warms, the ring traces round and
-/// closes with a spark where its ends meet, and the Kaaba swells once and
-/// settles in a steady light with a crown of fine rays that fade. On
-/// release ([releasing]) only the warmth and the ring run back.
 @immutable
 class QiblahLockStages {
   const QiblahLockStages(this.t, {this.releasing = false});
@@ -180,31 +152,22 @@ class QiblahLockStages {
 
   double _span(double a, double b) => ((t - a) / (b - a)).clamp(0.0, 1.0);
 
-  /// The alidade and the index warming to gilt.
   double get warm =>
       releasing ? t : Curves.easeOutCubic.transform(_span(0, 0.35));
 
-  /// The index pointer settling toward the limb (overshoots a touch).
   double get click =>
       releasing ? t : Curves.easeOutBack.transform(_span(0, 0.3));
 
-  /// The ring tracing round from the index, both ways.
   double get trace =>
       releasing ? t : Curves.easeInOutCubic.transform(_span(0.05, 0.55));
 
-  /// The spark where the ring's two ends meet (0 → 1, then gone).
   double get spark => releasing ? 0 : _span(0.48, 0.68);
 
-  /// The Kaaba's swell and light pulse (0 → 1, then settled).
   double get bloom => releasing ? 0 : _span(0.55, 1);
 
-  /// 0 at both ends of [x] (0–1), 1 in the middle.
   static double pulse(double x) => math.sin(math.pi * x);
 }
 
-/// The alidade and the Kaaba: a sighting rule from the center to the
-/// Kaaba on the limb. Rotate it to the Qibla (its bearing minus the
-/// heading). [lock] warms the rule to gilt and lights the Kaaba.
 class QiblahAlidadePainter extends CustomPainter {
   QiblahAlidadePainter({
     required this.style,
@@ -216,7 +179,6 @@ class QiblahAlidadePainter extends CustomPainter {
 
   final OrnamentStyle style;
 
-  /// The rule's color while turning (warm text); it turns gilt on lock.
   final Color rule;
   final Color fill;
   final QiblahLockStages lock;
@@ -237,7 +199,6 @@ class QiblahAlidadePainter extends CustomPainter {
     if (showRule) {
       final width = math.max(3.0, r * 0.045);
       final tip = r * _kaabaRadius - r * 0.13 * 0.95;
-      // The pointing arm, tapering to the Kaaba.
       final arm = Path()
         ..moveTo(c.dx - width, c.dy)
         ..lineTo(c.dx - width * 0.45, c.dy - tip + width * 2.2)
@@ -245,7 +206,6 @@ class QiblahAlidadePainter extends CustomPainter {
         ..lineTo(c.dx + width * 0.45, c.dy - tip + width * 2.2)
         ..lineTo(c.dx + width, c.dy)
         ..close();
-      // The counter arm, shorter, ending square.
       final tail = Rect.fromLTRB(
         c.dx - width * 0.7,
         c.dy,
@@ -254,7 +214,6 @@ class QiblahAlidadePainter extends CustomPainter {
       );
       final paint = Paint()..color = color;
       if (warm > 0) {
-        // A soft glow along the warmed rule.
         canvas.drawPath(
           arm,
           Paint()
@@ -265,7 +224,6 @@ class QiblahAlidadePainter extends CustomPainter {
       canvas
         ..drawPath(arm, paint)
         ..drawRect(tail, Paint()..color = color.withValues(alpha: 0.55));
-      // Sight vanes (pinnules) across the rule.
       for (final at in [-r * 0.36, r * 0.3]) {
         canvas.drawRRect(
           RRect.fromRectAndRadius(
@@ -291,8 +249,6 @@ class QiblahAlidadePainter extends CustomPainter {
         ..drawCircle(c, width * 0.55, Paint()..color = gilt);
     }
 
-    // The Kaaba's light: steady once locked, with one brighter pulse as it
-    // swells, and a crown of 16 fine rays that reach out and fade.
     final light = 0.26 * warm + 0.22 * swell;
     if (light > 0) {
       canvas.drawCircle(
@@ -322,7 +278,6 @@ class QiblahAlidadePainter extends CustomPainter {
       }
     }
 
-    // The Kaaba: a cube on a round plate, the kiswa's gilt band and door.
     canvas
       ..drawCircle(kaabaCenter, kaaba * 1.05, Paint()..color = fill)
       ..drawCircle(
@@ -371,10 +326,6 @@ class QiblahAlidadePainter extends CustomPainter {
       old.showRule != showRule;
 }
 
-/// What doesn't turn: the index at the top (where the phone faces), the
-/// ±5° window beside it, and the lock: on facing the Qibla, the index
-/// clicks in toward the limb, an outer ring traces itself from it both ways
-/// round and closes at the bottom with a spark.
 class QiblahIndexPainter extends CustomPainter {
   QiblahIndexPainter({
     required this.style,
@@ -386,7 +337,6 @@ class QiblahIndexPainter extends CustomPainter {
   final OrnamentStyle style;
   final QiblahLockStages lock;
 
-  /// Degrees either side of the index that count as facing the Qibla.
   final double tolerance;
   final bool showIndex;
 
@@ -420,7 +370,6 @@ class QiblahIndexPainter extends CustomPainter {
           ..drawArc(rect, -math.pi / 2, sweep, false, p)
           ..drawArc(rect, -math.pi / 2, -sweep, false, p);
       }
-      // The two ends' leading lights while they run.
       if (trace < 1) {
         for (final a in [sweep, -sweep]) {
           canvas.drawCircle(
@@ -437,7 +386,6 @@ class QiblahIndexPainter extends CustomPainter {
       }
     }
 
-    // Where the ends meet: a small four-pointed spark that flares and goes.
     final spark = lock.spark;
     if (spark > 0 && spark < 1) {
       final at = Offset(c.dx, c.dy + ring);
@@ -465,13 +413,11 @@ class QiblahIndexPainter extends CustomPainter {
     }
     if (!showIndex) return;
 
-    // The window: two short ticks at ±tolerance on the ring.
     final quiet = Paint()
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
       ..strokeWidth = style.stroke
       ..color = gilt.withValues(alpha: 0.6 + 0.4 * warm);
-    // drawArc counts from three o'clock; the index is at twelve.
     canvas.drawArc(
       Rect.fromCircle(center: c, radius: ring),
       -math.pi / 2 - _rad(tolerance),
@@ -492,8 +438,6 @@ class QiblahIndexPainter extends CustomPainter {
       );
     }
 
-    // The index: a gilt pointer above the limb, aimed at the center. On
-    // lock it clicks in a little toward the limb and glows.
     final w = math.max(6.0, band * 0.42);
     final drop = band * 0.16 * lock.click;
     final tip = Offset(c.dx, c.dy - r - band * 0.08 + drop);
@@ -523,8 +467,6 @@ class QiblahIndexPainter extends CustomPainter {
       old.showIndex != showIndex;
 }
 
-/// The astrolabe at rest, for state art and small marks: the limb, the
-/// rose and the Kaaba at the top, all line work in the given style.
 class QiblahStateArtPainter extends CustomPainter {
   const QiblahStateArtPainter({required this.style});
 
@@ -571,7 +513,6 @@ class QiblahStateArtPainter extends CustomPainter {
   bool shouldRepaint(QiblahStateArtPainter old) => old.style != style;
 }
 
-/// The dial's colors on the night chrome.
 class QiblahDialColors {
   const QiblahDialColors({
     required this.gilt,
@@ -598,11 +539,9 @@ class QiblahDialColors {
 
 double _rad(num degrees) => degrees * math.pi / 180;
 
-/// A point at [radius] from [c], [a] radians clockwise from the top.
 Offset _polar(Offset c, double radius, double a) =>
     Offset(c.dx + radius * math.sin(a), c.dy - radius * math.cos(a));
 
-/// Text centered at [radius] on the bearing [degrees], its top outward.
 void _text(
   Canvas canvas,
   Offset c,

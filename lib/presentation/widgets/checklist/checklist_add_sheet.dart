@@ -5,14 +5,12 @@ import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/checklist/checklist_items.dart';
 import 'package:huda/presentation/widgets/design/huda_sheet.dart';
 
-/// What the add sheet returns.
 typedef ChecklistNewItem = ({
   String title,
   ChecklistItemType type,
   RepetitionFrequency frequency,
 });
 
-/// The add sheet's choices, shared by its form and its pinned actions.
 class ChecklistAddController extends ChangeNotifier {
   ChecklistAddController() {
     name.addListener(notifyListeners);
@@ -46,14 +44,8 @@ class ChecklistAddController extends ChangeNotifier {
   }
 }
 
-/// "New item": a name, the group it goes under and how often it repeats,
-/// each a row of chips (one tap), and Cancel / Add pinned under them so
-/// they stay in reach on short windows. A bottom sheet on phones, a
-/// dialog from medium.
 Future<ChecklistNewItem?> showChecklistAddSheet(BuildContext context) {
   final l10n = AppLocalizations.of(context)!;
-  // Not disposed here: the route's exit animation still builds the form
-  // after the future completes; it's collected with the route.
   final controller = ChecklistAddController();
   return showHudaSheet<ChecklistNewItem>(
     context: context,
@@ -80,8 +72,6 @@ class ChecklistAddForm extends StatelessWidget {
       child: Text(text, style: theme.textTheme.titleSmall),
     );
 
-    // One row of chips that scrolls sideways when it doesn't fit, so the
-    // sheet stays short.
     Widget chips<T>(
       List<T> values,
       T selected,

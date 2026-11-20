@@ -10,8 +10,6 @@ import 'package:huda/data/models/reciter_model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// The mp3quran catalog in one language: reciters (sorted by their
-/// letter), the riwayat and the surah names.
 @immutable
 class ReciterCatalog {
   const ReciterCatalog({
@@ -23,20 +21,14 @@ class ReciterCatalog {
   final List<Reciter> reciters;
   final List<Moshaf> riwayat;
 
-  /// `{id, name}` per surah, in the catalog's language.
   final List suwar;
 }
 
-/// Where the reciters screen gets its catalog, connectivity and download
-/// folder. The screen's own loading code, moved here unchanged so the
-/// device matrix can hand the screen a catalog without the network
-/// (`test/redesign/features/quran_audio_screens_test.dart`).
 class ReciterCatalogSource {
   const ReciterCatalogSource();
 
   Future<bool> isOnline() => NetworkInfo.checkInternetConnectivity();
 
-  /// The folder downloaded surahs are saved in (created when missing).
   Future<String> downloadDir() async {
     final dir = await getApplicationDocumentsDirectory();
     final audioDir = Directory('${dir.path}/huda_audio');
@@ -46,9 +38,6 @@ class ReciterCatalogSource {
     return audioDir.path;
   }
 
-  /// The saved catalog for [lang] (an mp3quran language code), fetched and
-  /// saved first when there is none and the device is [online]. Null when
-  /// there's no catalog. Throws when the saved data is incomplete.
   Future<ReciterCatalog?> load(String lang, {required bool online}) async {
     final prefs = await SharedPreferences.getInstance();
     final contentStore = getIt<QuranContentStore>();

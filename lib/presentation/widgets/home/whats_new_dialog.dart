@@ -6,9 +6,6 @@ import 'package:huda/presentation/widgets/design/huda_lamp.dart';
 import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 
-/// What's new in this version (shown once by `WhatsNewService`): led by
-/// the lit lamp, the version, then each new thing with its mark, rising in
-/// the shared stagger; one lit button closes it.
 class WhatsNewDialog extends StatelessWidget {
   const WhatsNewDialog({super.key, required this.content});
 

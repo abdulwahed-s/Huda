@@ -3,8 +3,6 @@ import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/design/huda_lamp.dart';
 
-/// Explains why Huda needs an access before the system asks for it.
-/// Returns true when the user chose to continue to the system prompt.
 Future<bool> showPermissionExplainer(
   BuildContext context, {
   required IconData icon,
@@ -55,7 +53,6 @@ class _PermissionExplainer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Center(
-            // Lantern screens: a lit lamp (an invitation).
             child: lantern
                 ? HudaLamp(
                     size: 64,
@@ -94,7 +91,6 @@ class _PermissionExplainer extends StatelessWidget {
           FilledButton(
             key: const ValueKey('permission-explainer-continue'),
             onPressed: () => Navigator.of(context).pop(true),
-            // Lantern keeps the theme's lit shape and its engraving.
             style: lantern
                 ? FilledButton.styleFrom(minimumSize: const Size.fromHeight(52))
                 : FilledButton.styleFrom(

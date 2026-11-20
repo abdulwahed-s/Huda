@@ -7,9 +7,6 @@ import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:huda/presentation/widgets/design/huda_time_picker.dart';
 import 'package:huda/presentation/widgets/hijri_calendar/calendar_format.dart';
 
-/// Today's fast on the Ramadan plate: Imsaak and Iftar at the ends of a
-/// gilt bar that fills toward the next one, and how long until it.
-/// Between Iftar and the next Imsaak it shows the night the same way.
 class RamadanFast extends StatefulWidget {
   const RamadanFast({
     super.key,
@@ -19,7 +16,6 @@ class RamadanFast extends StatefulWidget {
     this.isRamadan = true,
   });
 
-  /// Outside Ramadan the same times are today's, for a voluntary fast.
   final bool isRamadan;
   final DateTime fajrTime;
   final DateTime maghribTime;
@@ -35,7 +31,6 @@ class _RamadanFastState extends State<RamadanFast> {
   @override
   void initState() {
     super.initState();
-    // Minutes are what's shown: refresh a few times a minute.
     _timer = Timer.periodic(const Duration(seconds: 20), (_) {
       if (mounted) setState(() {});
     });
@@ -108,7 +103,6 @@ class _RamadanFastState extends State<RamadanFast> {
           style: context.type.eyebrow.copyWith(color: tokens.gilt),
         ),
         SizedBox(height: space.sm),
-        // Side by side; stacked when large text leaves no room.
         Wrap(
           alignment: WrapAlignment.spaceBetween,
           crossAxisAlignment: WrapCrossAlignment.end,
@@ -196,7 +190,6 @@ class _FastBar extends CustomPainter {
       RRect.fromRectAndRadius(rect, radius),
       Paint()..color = fill,
     );
-    // Where now is: a bright bead at the bar's leading end.
     final x = rtl ? rect.left + size.height / 2 : rect.right - size.height / 2;
     canvas.drawCircle(
       Offset(x, size.height / 2),

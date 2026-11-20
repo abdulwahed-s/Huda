@@ -12,10 +12,8 @@ import 'package:huda/presentation/widgets/design/huda_states.dart';
 import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 import 'package:intl/intl.dart' show Bidi, DateFormat;
 
-/// Someone who prepared the book, by role.
 typedef BookPerson = ({String role, String name});
 
-/// One of the book's files.
 class BookFile {
   const BookFile({
     required this.type,
@@ -34,7 +32,6 @@ class BookFile {
   bool get isPdf => type.toUpperCase() == 'PDF';
 }
 
-/// What the page shows of a book, from the catalogue or a saved copy.
 class BookView {
   const BookView({
     required this.title,
@@ -93,11 +90,9 @@ class BookView {
   final String description;
   final List<BookPerson> people;
 
-  /// The language this copy is in.
   final String language;
   final List<BookFile> files;
 
-  /// When it was downloaded, for a saved copy read offline.
   final DateTime? savedOn;
 
   BookFile? get main => files.isEmpty ? null : files.first;
@@ -112,8 +107,6 @@ String bookRoleLabel(AppLocalizations l10n, String role) => switch (role) {
   _ => l10n.booksRoleOther,
 };
 
-/// The open binding with the book's title page: the title, a gilt rule,
-/// who prepared it, and its language, format and size.
 class BookBindingHero extends StatelessWidget {
   const BookBindingHero({super.key, required this.book, required this.seed});
 
@@ -199,9 +192,6 @@ class BookBindingHero extends StatelessWidget {
   }
 }
 
-/// Read (lit) and Download / Remove download (quiet), side by side, or
-/// stacked when narrow or at large text. While a download runs, its button
-/// is a progress bar that says how far it got.
 class BookActions extends StatelessWidget {
   const BookActions({
     super.key,
@@ -220,7 +210,6 @@ class BookActions extends StatelessWidget {
   final double progress;
   final VoidCallback onRead;
 
-  /// Null hides Download (web, or a saved copy read offline).
   final VoidCallback? onDownload;
   final VoidCallback onRemove;
 
@@ -361,8 +350,6 @@ class BookActions extends StatelessWidget {
   }
 }
 
-/// What the book is about, the languages it also comes in, and its other
-/// formats (the first file is the Read button).
 class BookDetails extends StatelessWidget {
   const BookDetails({
     super.key,
@@ -377,7 +364,6 @@ class BookDetails extends StatelessWidget {
   final BookView book;
   final String? selectedLanguage;
 
-  /// Null for a saved copy read offline (no other languages then).
   final ValueChanged<String?>? onLanguage;
   final String originalLanguage;
   final ValueChanged<dynamic> onFile;
@@ -396,8 +382,6 @@ class BookDetails extends StatelessWidget {
         if (book.description.trim().isNotEmpty) ...[
           HudaSectionHeader(l10n.bookDetails),
           SizedBox(height: space.xs),
-          // Runs in the book's own direction, not the app's: an English
-          // description in the Arabic app keeps its full stop at the end.
           SelectableText(
             book.description.trim(),
             style: theme.textTheme.bodyLarge,
@@ -459,8 +443,6 @@ class BookDetails extends StatelessWidget {
   }
 }
 
-/// "Also in": the book's own language first, then its translations, as
-/// chips; the chosen one is lit.
 class _Languages extends StatelessWidget {
   const _Languages({
     required this.selected,
@@ -529,7 +511,6 @@ class _Languages extends StatelessWidget {
   }
 }
 
-/// The page while the book loads: the binding's shape, the buttons, lines.
 class BookPageSkeleton extends StatelessWidget {
   const BookPageSkeleton({super.key});
 

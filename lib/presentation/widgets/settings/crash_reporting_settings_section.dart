@@ -7,13 +7,9 @@ import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 import 'package:huda/presentation/widgets/design/huda_toast.dart';
 
-/// The FOSS build's crash-reporting switch, as a settings row. The lamp
-/// spinner holds its place while the saved choice loads; a failed save
-/// flips the switch back and says so.
 class CrashReportingSwitchRow extends StatefulWidget {
   const CrashReportingSwitchRow({super.key, this.initialDecision});
 
-  /// Seeds the choice without reading storage (tests and the harness).
   final bool? initialDecision;
 
   @override

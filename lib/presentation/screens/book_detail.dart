@@ -22,11 +22,6 @@ import 'package:huda/presentation/widgets/design/huda_states.dart';
 import 'package:huda/presentation/widgets/design/huda_toast.dart';
 import 'package:huda/presentation/widgets/share/huda_share_sheet.dart';
 
-/// A book's page: the open binding (its title page beside the board's
-/// inside), Read and Download, what it is about, the other languages it
-/// comes in and its other formats. Standard tier; the binding opens on its
-/// spine as the page appears. Two panes from 840 wide and on open folds.
-/// See `design/features/books/brief.md`.
 class BookDetailScreen extends StatefulWidget {
   const BookDetailScreen({
     super.key,
@@ -39,7 +34,6 @@ class BookDetailScreen extends StatefulWidget {
   final String language;
   final String title;
 
-  /// The cubits the page creates, replaced by the redesign harness.
   @visibleForTesting
   static BookDetailCubit Function() createCubit = BookDetailCubit.new;
   @visibleForTesting
@@ -49,8 +43,6 @@ class BookDetailScreen extends StatefulWidget {
   static DownloadManagerCubit Function() createDownloadCubit =
       DownloadManagerCubit.new;
 
-  /// The page with its cubits and the Lantern theme, as the route and the
-  /// library's covers open it.
   static Widget page({
     required int bookId,
     required String language,
@@ -323,16 +315,12 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
     if (remove != true || !context.mounted) return;
     HudaHaptics.light(context);
     await controller.deleteOfflineBook(widget.bookId);
-    // Offline, the page showed the saved copy: now there is none.
     if (state is BookDetailOfflineLoaded && mounted) {
       controller.retryBookDetail();
     }
   }
 }
 
-/// The page's layout for a loaded book: one column on phones, the binding
-/// beside the details from 840 wide and on open folds, the binding above
-/// a tabletop fold.
 class _BookLayout extends StatelessWidget {
   const _BookLayout({
     required this.book,
@@ -415,8 +403,6 @@ class _BookLayout extends StatelessWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        // Short windows (phone landscape) put them side by side sooner,
-        // with a wider binding pane so the title page keeps its words.
         final short = context.windowClass.isCompactHeight;
         final minWidth = short ? 760.0 : 840.0;
         final twoPanes = AdaptivePanes.showsTwoPanes(

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/design/huda_states.dart';
 
-/// Location services are off on the device. "Turn on location" opens the
-/// device's settings; the screen checks again when Huda comes back.
 class QiblahLocationOffView extends StatelessWidget {
   const QiblahLocationOffView({
     super.key,
@@ -29,8 +27,6 @@ class QiblahLocationOffView extends StatelessWidget {
   }
 }
 
-/// Location permission isn't granted yet: explain, then ask (the system
-/// prompt comes after the tap).
 class QiblahAllowLocationView extends StatelessWidget {
   const QiblahAllowLocationView({super.key, required this.onAllow});
 
@@ -49,8 +45,6 @@ class QiblahAllowLocationView extends StatelessWidget {
   }
 }
 
-/// Location was denied for good: only the app's settings can change it.
-/// The screen checks again when Huda comes back.
 class QiblahLocationBlockedView extends StatelessWidget {
   const QiblahLocationBlockedView({super.key, required this.onOpenSettings});
 
@@ -69,8 +63,6 @@ class QiblahLocationBlockedView extends StatelessWidget {
   }
 }
 
-/// The location or the compass failed. Retry shows "Retrying…" until the
-/// next answer.
 class QiblahErrorView extends StatelessWidget {
   const QiblahErrorView({
     super.key,

@@ -7,10 +7,6 @@ import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:huda/presentation/widgets/hadith/hadith_refs.dart';
 import 'package:huda/presentation/widgets/hadith_details/hadith_reader.dart';
 
-/// A book's hadith on a page of its own, for `AppRoute.hadithDetails`.
-/// The collection screen opens books inside itself (pushed on phones, in
-/// its reader pane on wide windows); this is the same reader for other
-/// callers. Standard tier.
 class HadithDetails extends StatefulWidget {
   const HadithDetails({
     super.key,
@@ -20,19 +16,14 @@ class HadithDetails extends StatefulWidget {
     this.collectionTitle,
   });
 
-  /// The book's number in the collection.
   final String chapterNumber;
 
-  /// The collection's slug.
   final String bookName;
 
-  /// The book's name.
   final String chapterName;
 
-  /// The collection's name; the slug when not given.
   final String? collectionTitle;
 
-  /// The page with its cubit, asking for the book's first page.
   static Widget page({
     required String chapterNumber,
     required String bookName,

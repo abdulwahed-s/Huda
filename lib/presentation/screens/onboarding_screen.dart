@@ -18,11 +18,6 @@ import 'package:huda/presentation/widgets/onboarding/onboarding_shell.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_alerts_ready_card.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_setup_checklist.dart';
 
-/// The first-run setup wizard (`AppRoute.onboarding`): a short, skippable
-/// set of steps that each make one real choice (language, look, Home focus,
-/// the permissions, prayer times, Asr, the adhan, reliability, Mushaf,
-/// reminders, crash reports on FOSS), then Home. See `docs/onboarding_setup_redesign.md` and
-/// `design/features/onboarding/`.
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
 
@@ -41,12 +36,9 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       );
   late final Listenable _sources = prayerReadinessSources(_access);
 
-  /// Times the doorway's flood before Home opens (a ticker, not a timer,
-  /// so leaving mid-way cancels it cleanly).
   late final AnimationController _flood;
   late final StreamSubscription<OnboardingState> _steps;
 
-  /// The words' opacity while the language changes.
   late final AnimationController _veil = AnimationController(
     vsync: this,
     value: 1,
@@ -70,7 +62,6 @@ class _OnboardingScreenState extends State<OnboardingScreen>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Prayer names in the location step follow the wizard's language.
     final l10n = AppLocalizations.of(context);
     if (l10n != null) _prayer.setLocalizations(l10n);
   }
@@ -86,8 +77,6 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     super.dispose();
   }
 
-  /// Steps that depend on notifications: reliability shows when something
-  /// still keeps alerts from arriving, reminders when notifications are on.
   void _syncAvailability() {
     if (!mounted) return;
     final access = _access.access;
@@ -106,10 +95,6 @@ class _OnboardingScreenState extends State<OnboardingScreen>
                 item.kind,
               ),
         );
-    // Until notifications have been asked about (the permissions step, or
-    // the adhan step after skipping it), count both steps as coming, so
-    // "Step 3 of 9" doesn't grow mid-way; after it, only what applies (the
-    // total can only shrink, which reads as progress).
     final alertsOpen =
         _cubit.state.outcomeOf(OnboardingStep.permissions) ==
             StepOutcome.pending &&
@@ -137,8 +122,6 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     }
   }
 
-  /// Back from Settings with location allowed: load the times by itself,
-  /// as the Prayer screen does.
   Future<void> _retryLocationIfAccessRestored() async {
     try {
       if (!await Geolocator.isLocationServiceEnabled()) return;
@@ -154,11 +137,6 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     await _prayer.refreshLocationAndPrayerTimes();
   }
 
-  /// Changes the language behind the veil: the words fade out, the
-  /// language and its direction change while nothing reads, and the words
-  /// fade back in. The chrome, the arcade (symmetric, so the mirror can't
-  /// be seen) and the sheet stay put. Under reduce motion it switches at
-  /// once.
   Future<void> _switchLanguage(Locale locale) async {
     final languages = context.read<LocalizationCubit>();
     if (_switching ||
@@ -194,7 +172,6 @@ class _OnboardingScreenState extends State<OnboardingScreen>
       _veil.duration = fadeOut;
       await _veil.reverse().orCancel;
       await apply();
-      // Let the new words and direction lay out before they show.
       await WidgetsBinding.instance.endOfFrame;
       if (!mounted) return;
       _veil.duration = fadeIn;
@@ -207,8 +184,6 @@ class _OnboardingScreenState extends State<OnboardingScreen>
     }
   }
 
-  /// Ends setup: the doorway floods with light while the keys are written,
-  /// then Home opens.
   Future<void> _finish() async {
     if (_cubit.state.finishing) return;
     HudaHaptics.medium(context);
@@ -232,13 +207,10 @@ class _OnboardingScreenState extends State<OnboardingScreen>
 
   @override
   Widget build(BuildContext context) {
-    // On the first step (and not changing it from the summary) system
-    // Back leaves the app, as before.
     final first = context.select<OnboardingCubit, bool>(
       (cubit) => !cubit.state.canGoBack,
     );
     return PopScope(
-      // System Back is the previous step; on the first it leaves the app.
       canPop: first,
       onPopInvokedWithResult: (didPop, _) {
         if (!didPop) _cubit.back();

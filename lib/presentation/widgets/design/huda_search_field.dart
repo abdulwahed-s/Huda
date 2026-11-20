@@ -3,12 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
-/// A search field that lives in the page (not behind an icon), so finding
-/// something is typing: a filled field with a hairline, a search mark, and
-/// a clear button once there's text. Esc clears it too.
-///
-/// The same shape as Athkar's and Hadith's own fields (built before this
-/// was shared); later features use this one.
 class HudaSearchField extends StatelessWidget {
   const HudaSearchField({
     super.key,
@@ -23,7 +17,6 @@ class HudaSearchField extends StatelessWidget {
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
 
-  /// Enter or the keyboard's search key (added in `prayer`).
   final ValueChanged<String>? onSubmitted;
   final String hintText;
   final FocusNode? focusNode;

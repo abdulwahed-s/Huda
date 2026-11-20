@@ -5,11 +5,6 @@ import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/presentation/widgets/design/feature_identity.dart';
 import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 
-/// Checklist's voice: the inlaid star. A seven-pointed star set like
-/// marquetry, each point a kite of two inlaid halves around a heptagon
-/// heart, gilt fillets between the pieces. The day's progress fills the
-/// points in turn; the heart sets when every item is done. See
-/// `design/IDENTITIES.md`.
 final FeatureIdentity checklistIdentity = FeatureIdentity(
   id: 'checklist',
   motif: 'An inlaid seven-pointed star whose points fill as the day is done',
@@ -19,8 +14,6 @@ final FeatureIdentity checklistIdentity = FeatureIdentity(
   headerArt: (style) => ChecklistStarPainter.outline(style: style),
 );
 
-/// The star's colors, from the scheme: the deep half of each point in
-/// `primary`, the light half in a tint of it, gilt fillets and heart.
 @immutable
 class ChecklistInlay {
   const ChecklistInlay({
@@ -57,8 +50,6 @@ class ChecklistInlay {
   final Color glint;
 }
 
-/// The geometry of the inlaid star, shared by the large star and the
-/// path's small ones.
 class _Star {
   _Star(this.center, this.radius, {required this.clockwise});
 
@@ -73,7 +64,6 @@ class _Star {
   double get inner => radius * innerRatio;
   double get heart => radius * heartRatio;
 
-  /// The axis of point [i], starting at the top, in reading direction.
   double angle(int i) =>
       -math.pi / 2 + (clockwise ? 1 : -1) * i * 2 * math.pi / points;
 
@@ -101,8 +91,6 @@ class _Star {
     return path..close();
   }
 
-  /// The two halves of point [i]'s kite: the one before its axis and the
-  /// one after it.
   (Path, Path) halves(int i) {
     final a = angle(i);
     final tip = at(a, radius);
@@ -123,8 +111,6 @@ class _Star {
     );
   }
 
-  /// Clips to the part of point [i] from its base out to [fill] (0 to 1)
-  /// of its length.
   void clipPoint(Canvas canvas, int i, double fill) {
     final a = angle(i);
     canvas
@@ -143,10 +129,6 @@ class _Star {
   }
 }
 
-/// Paints the inlaid star at [progress] (0 to 1 of the day's items): the
-/// points fill in turn, each from its base to its tip; [heart] (0 to 1)
-/// sets the heptagon at the center; [glint] (0 to 1) runs one band of
-/// light across the star.
 class ChecklistStarPainter extends CustomPainter {
   const ChecklistStarPainter({
     required this.inlay,
@@ -157,7 +139,6 @@ class ChecklistStarPainter extends CustomPainter {
     this.fillets = true,
   }) : _style = null;
 
-  /// The empty star in an ornament style (state art).
   const ChecklistStarPainter.outline({required OrnamentStyle style})
     : _style = style,
       inlay = null,
@@ -174,8 +155,6 @@ class ChecklistStarPainter extends CustomPainter {
   final double glint;
   final TextDirection textDirection;
 
-  /// Draws the gilt fillets and open outlines. Small stars (the path) set
-  /// without them, as solid two-tone pieces, so they don't blur to gilt.
   final bool fillets;
 
   @override
@@ -210,9 +189,6 @@ class ChecklistStarPainter extends CustomPainter {
       ..strokeJoin = StrokeJoin.round
       ..color = inlay.open;
 
-    // The ground: the star's body is one quiet inlaid piece, and the
-    // shoulders between the points are set from the start, so the star
-    // reads whole while its points are still open.
     canvas.drawPath(
       star.outline(),
       Paint()
@@ -251,7 +227,6 @@ class ChecklistStarPainter extends CustomPainter {
           ..drawPath(after, Paint()..color = inlay.light);
         canvas.restore();
       }
-      // The fillets: gilt where the piece is set, engraved where it's open.
       if (fillets) {
         canvas
           ..drawPath(before, fill >= 1 ? fillet : open)
@@ -259,7 +234,6 @@ class ChecklistStarPainter extends CustomPainter {
       }
     }
 
-    // The heart: open until the day is done, then it sets from the center.
     if (fillets) {
       canvas.drawPath(star.heartPath(), heart >= 1 ? fillet : open);
     }
@@ -282,7 +256,6 @@ class ChecklistStarPainter extends CustomPainter {
       );
     }
 
-    // One glint across the set star, in reading direction.
     if (glint > 0 && glint < 1) {
       final rect = Rect.fromCircle(center: star.center, radius: r);
       final t = Curves.easeInOut.transform(glint);
@@ -327,10 +300,6 @@ class ChecklistStarPainter extends CustomPainter {
       old.inlay?.fillet != inlay?.fillet;
 }
 
-/// The streak as a straight row of small inlaid stars on one gilt fillet,
-/// ending at today's: [past] stars set for the days already in the run,
-/// then today's, set as far as [today] (0 to 1). Longer runs fade in from
-/// the leading edge.
 class ChecklistPathPainter extends CustomPainter {
   const ChecklistPathPainter({
     required this.inlay,
@@ -344,7 +313,6 @@ class ChecklistPathPainter extends CustomPainter {
   final int past;
   final double today;
 
-  /// How many stars fit; the row shows the last [slots] days of the run.
   final int slots;
   final TextDirection textDirection;
 
@@ -361,7 +329,6 @@ class ChecklistPathPainter extends CustomPainter {
     final shown = math.min(past, slots - 1);
     final first = slots - 1 - shown;
 
-    // The fillet the stars sit on, from the first star of the run.
     final line = Paint()
       ..strokeWidth = 1
       ..color = inlay.open.withValues(alpha: inlay.open.a * 0.7);
@@ -376,7 +343,6 @@ class ChecklistPathPainter extends CustomPainter {
 
     for (var slot = first; slot < slots; slot++) {
       final isToday = slot == slots - 1;
-      // The oldest shown star fades when the run is longer than the row.
       final faded = !isToday && slot == first && past > shown;
       final star = ChecklistStarPainter(
         inlay: faded
@@ -410,11 +376,6 @@ class ChecklistPathPainter extends CustomPainter {
       old.textDirection != textDirection;
 }
 
-/// The celebration when the day completes, around the star: a soft pool
-/// of gilt light swells behind it and fades ([behind]); in front, seven
-/// inlaid lozenges fly out from the points' tips, turning as they go,
-/// with seven gilt motes from the shoulders a beat later, all fading as
-/// they land ([behind] false). [t] runs 0 to 1 once.
 class ChecklistBurstPainter extends CustomPainter {
   const ChecklistBurstPainter({
     required this.inlay,
@@ -439,7 +400,6 @@ class ChecklistBurstPainter extends CustomPainter {
       clockwise: textDirection == TextDirection.ltr,
     );
     if (behind) {
-      // Swells over the first third, then fades slowly.
       final swell = t < 0.3
           ? Curves.easeOut.transform(t / 0.3)
           : 1 - Curves.easeIn.transform((t - 0.3) / 0.7);
@@ -476,7 +436,6 @@ class ChecklistBurstPainter extends CustomPainter {
       canvas.restore();
     }
 
-    // The tips' lozenges: out from the point, turning a quarter, fading.
     final out = Curves.easeOutCubic.transform(t);
     final fade = math.pow(1 - t, 1.4).toDouble();
     for (var i = 0; i < _Star.points; i++) {
@@ -490,7 +449,6 @@ class ChecklistBurstPainter extends CustomPainter {
         (i.isEven ? inlay.deep : inlay.fillet).withValues(alpha: fade),
       );
     }
-    // The shoulders' motes follow a beat later.
     final late = ((t - 0.12) / 0.88).clamp(0.0, 1.0);
     if (late <= 0) return;
     final lateOut = Curves.easeOutCubic.transform(late);
@@ -514,11 +472,6 @@ class ChecklistBurstPainter extends CustomPainter {
       old.textDirection != textDirection;
 }
 
-/// The inlaid frame inside the day card: a stringing of small lozenges,
-/// alternating deep and gilt, between two gilt fillets, running round all
-/// four sides; at each corner a square block holding a twisted knot (two
-/// interlaced loops, over and under), where the bands meet like the
-/// corner pieces of a marquetry panel.
 class ChecklistInlayFramePainter extends CustomPainter {
   const ChecklistInlayFramePainter({
     required this.inlay,
@@ -529,16 +482,12 @@ class ChecklistInlayFramePainter extends CustomPainter {
 
   final ChecklistInlay inlay;
 
-  /// From the card's edge to the frame's outer fillet.
   final double inset;
 
-  /// The band's width between its fillets.
   final double band;
 
-  /// The outer corner's rounding.
   final double radius;
 
-  /// How far the content must stay from the card's edge.
   static double clearance({double inset = 6, double band = 10}) =>
       inset + band + 1;
 
@@ -557,10 +506,8 @@ class ChecklistInlayFramePainter extends CustomPainter {
 
     final deep = Paint()..color = inlay.deep.withValues(alpha: 0.78);
     final gilt = Paint()..color = inlay.fillet.withValues(alpha: 0.72);
-    // The corner blocks are a little larger than the band.
     final block = band + 6;
 
-    // One run of lozenges between two corner blocks, along [from] → [to].
     void run(Offset from, Offset to) {
       final length = (to - from).distance;
       final dir = (to - from) / length;
@@ -612,8 +559,6 @@ class ChecklistInlayFramePainter extends CustomPainter {
     }
   }
 
-  /// A square block with a twisted knot: two loops crossing at right
-  /// angles, each passing over the other once and under once.
   void _knot(Canvas canvas, Offset c, double size) {
     final rect = Rect.fromCenter(center: c, width: size, height: size);
     final surface = Paint()..color = inlay.light;
@@ -649,8 +594,6 @@ class ChecklistInlayFramePainter extends CustomPainter {
       ..strokeWidth = 0.8
       ..color = inlay.fillet;
 
-    // Loop A, then loop B over it, then A over B at two opposite
-    // crossings: the over-and-under that makes the twist.
     canvas
       ..drawRRect(a, band)
       ..drawRRect(a, line)
@@ -658,8 +601,6 @@ class ChecklistInlayFramePainter extends CustomPainter {
       ..drawRRect(b, band)
       ..drawRRect(b, line);
     for (final sign in [-1.0, 1.0]) {
-      // Re-lay loop A across loop B at the top-left and bottom-right
-      // crossings.
       final clip = Rect.fromCenter(
         center: c + Offset(sign * short / 2, sign * short / 2) * 0.9,
         width: strand * 2.6,

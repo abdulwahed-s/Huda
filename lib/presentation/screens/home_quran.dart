@@ -24,21 +24,15 @@ import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 import 'package:huda/presentation/widgets/quran_home/quran_identity.dart';
 import 'package:huda/presentation/widgets/quran_home/quran_index_widgets.dart';
 
-/// The Quran's front screen: the 114 surahs, where the reader stopped, and
-/// a search over surah names and the ayat's words. Landing tier; the
-/// header's star medallion draws itself in as it opens. See
-/// `design/features/quran/brief.md`.
 class HomeQuran extends StatefulWidget {
   const HomeQuran({super.key});
 
-  /// Content is capped at this width and centered, with the header.
   static const double maxContentWidth = 1280;
 
   @override
   State<HomeQuran> createState() => _HomeQuranState();
 }
 
-/// An ayah found by its words.
 typedef _AyahHit = ({int surah, int ayah, String text});
 
 class _HomeQuranState extends State<HomeQuran> {
@@ -49,7 +43,6 @@ class _HomeQuranState extends State<HomeQuran> {
   List<_AyahHit> _ayahHits = const [];
   Map<String, dynamic>? _lastRead;
 
-  /// After a tap on Retry, until the cubit answers.
   bool _retrying = false;
 
   static const _maxAyahHits = 20;
@@ -122,7 +115,6 @@ class _HomeQuranState extends State<HomeQuran> {
           ).contains(normalized);
     }).toList();
 
-    // Ayat whose words match, outside the surahs already found by name.
     final ayahHits = <_AyahHit>[];
     final matched = {for (final s in surahHits) s.number};
     final arabicQuery = TextUtils.removeDiacriticsAndNormalize(q);
@@ -194,7 +186,6 @@ class _HomeQuranState extends State<HomeQuran> {
           }
         },
         builder: (context, state) {
-          // While retrying, the failure stays with "Retrying…".
           final shown = _retrying && state is QuranLoading
               ? QuranError('')
               : state;
@@ -240,7 +231,6 @@ class _HomeQuranState extends State<HomeQuran> {
     _ => 'loading',
   };
 
-  /// The search field and, when not searching, where the reader stopped.
   List<Widget> _top(BuildContext context, QuranState state) {
     final l10n = AppLocalizations.of(context)!;
     final space = context.tokens.space;
@@ -286,8 +276,6 @@ class _HomeQuranState extends State<HomeQuran> {
     ];
   }
 
-  /// Tiles at least this wide: one column on phones, two on portrait
-  /// tablets and in phone landscape, three or four wider.
   static double _minTileWidth(BuildContext context) => AdaptiveGrid.tileWidth(
     context,
     context.windowClass.isCompactHeight ? 280 : 320,
@@ -394,14 +382,11 @@ class _HomeQuranState extends State<HomeQuran> {
   }
 }
 
-/// The page's content column: the gutters and side insets, capped at
-/// [HomeQuran.maxContentWidth] and centered, ending above the bottom inset.
 class _Page extends StatelessWidget {
   const _Page({required this.children, this.tight = false});
 
   final List<Widget> children;
 
-  /// Above a tabletop band: no bottom inset.
   final bool tight;
 
   @override

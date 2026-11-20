@@ -18,14 +18,9 @@ import 'package:huda/presentation/widgets/ramadan/qadhaa_tracker_widget.dart';
 import 'package:huda/presentation/widgets/ramadan/ramadan_header_widget.dart';
 import 'package:huda/presentation/widgets/ramadan/ramadan_loading_widget.dart';
 
-/// Ramadan: the plate (the night's moon, the day or the days until it,
-/// today's fast) and the 30 nights to mark fasted or missed. One column
-/// on phones; the nights beside the plate from 840 and on open folds; the
-/// plate above a tabletop fold.
 class RamadanScreen extends StatefulWidget {
   const RamadanScreen({super.key, this.debugClock});
 
-  /// The device matrix's fixed "now".
   final DateTime Function()? debugClock;
 
   @override
@@ -122,7 +117,6 @@ class _RamadanScreenState extends State<RamadanScreen> {
           if (state is RamadanError) _failure = state;
           if (state is RamadanLoaded) _failure = null;
           final failure = _failure;
-          // After Retry, the failure stays with "Retrying…" until it ends.
           if (failure != null && (state is RamadanError || _retrying)) {
             return HudaScaffold(
               title: l10n.ramadan,
@@ -136,7 +130,6 @@ class _RamadanScreenState extends State<RamadanScreen> {
             );
           }
 
-          // Short windows put the nights beside the plate from 600 wide.
           final short = context.windowClass.isCompactHeight && width >= 600;
           final twoPaneMinWidth = short ? 600.0 : 840.0;
           if (AdaptivePanes.showsTwoPanes(

@@ -10,12 +10,8 @@ import 'package:huda/presentation/widgets/design/huda_states.dart';
 import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 
-/// Hisn al-Muslim chapters read every day, in the order they lead the
-/// list: morning and evening, waking up, before sleeping, after the
-/// prayer. Chapters missing from the API are skipped.
 const athkarDailyChapters = [27, 1, 28, 25];
 
-/// A chapter of athkar. It grows into the chapter's page when tapped.
 class AthkarCategoryTile extends StatelessWidget {
   const AthkarCategoryTile({super.key, required this.item});
 
@@ -41,8 +37,6 @@ class AthkarCategoryTile extends StatelessWidget {
           ),
           arabicTitle: arabic ? null : item.titleAr,
           title: title,
-          // The medallion's 8-petal rosette, with no horizon or rays: a
-          // chapter isn't a time of day (owner round 1).
           leading: SizedBox.square(
             dimension: 40,
             child: Ornament(
@@ -61,12 +55,9 @@ class AthkarCategoryTile extends StatelessWidget {
   }
 }
 
-/// A loading tile shaped like [AthkarCategoryTile].
-/// The sheen runs inside the card, so it keeps its surface.
 class AthkarCategoryTileSkeleton extends StatelessWidget {
   const AthkarCategoryTileSkeleton({super.key, this.announce = false});
 
-  /// Reads "Loading" (one tile per screen does).
   final bool announce;
 
   @override
@@ -93,8 +84,6 @@ class AthkarCategoryTileSkeleton extends StatelessWidget {
   }
 }
 
-/// The chapter search: always in the page, so finding a chapter is typing.
-/// Esc or the clear button empties it.
 class AthkarSearchField extends StatelessWidget {
   const AthkarSearchField({
     super.key,

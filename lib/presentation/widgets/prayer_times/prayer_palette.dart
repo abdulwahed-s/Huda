@@ -58,9 +58,6 @@ class PrayerPalette {
     );
   }
 
-  /// The Lantern system (`HudaTheme`): cards and outlines from the
-  /// scheme, the hero on the chrome. Themes without Lantern tokens (the
-  /// Linux tray renderer) keep the mapping above.
   factory PrayerPalette._lantern(ThemeData theme, HudaTokens tokens) {
     final scheme = theme.colorScheme;
     final dark = theme.brightness == Brightness.dark;
@@ -109,7 +106,6 @@ class PrayerPalette {
   final Color heroStart;
   final Color heroEnd;
 
-  /// Card radius: Lantern's `radius.lg` (16).
   static const double cardRadius = 16;
 
   BoxDecoration cardDecoration({double radius = cardRadius, Color? color}) =>

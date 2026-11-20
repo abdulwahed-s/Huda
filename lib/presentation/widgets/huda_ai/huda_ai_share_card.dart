@@ -9,27 +9,15 @@ import 'package:huda/presentation/widgets/huda_ai/huda_ai_identity.dart';
 import 'package:huda/presentation/widgets/huda_ai/huda_ai_text.dart';
 import 'package:huda/presentation/widgets/share/share_image_frame.dart';
 
-/// Huda AI's share image: a calm page in the app's light or dark, with no
-/// frame or rule around it, and a gathering of light (noor) bleeding off
-/// its top corner. Under "Huda AI" the person's words (what they asked or
-/// shared), three motes, then the answer; at the foot the AI note and
-/// Huda's logo. Only the capture pipeline is shared (Athkar's card is a
-/// night horizon, Hadith's a paper folio, Quran's an illuminated page).
-///
-/// Width: [width]; as tall as the answer needs, never shorter than square.
 class HudaAiShareCard extends StatelessWidget {
   const HudaAiShareCard({super.key, required this.messageText, this.question});
 
-  /// The answer, in Markdown.
   final String messageText;
 
-  /// What was asked, if known.
   final String? question;
 
   static const double width = BrandedShareFrame.width;
 
-  /// The card's height over its width, estimated from the text's length
-  /// (no measure-and-retry): the share sheet scrolls a tall card.
   static double cardRatio({required String answer, String? question}) {
     final text =
         _lines(answer, 15) * 15 * 1.55 +
@@ -62,9 +50,6 @@ class HudaAiShareCard extends StatelessWidget {
   }
 }
 
-/// Counseling's share image: the same page, with what the person shared,
-/// then Guidance, the ayah and the duaa, each under its name and parted by
-/// three motes.
 class CounselingShareCard extends StatelessWidget {
   const CounselingShareCard({super.key, required this.response, this.feeling});
 
@@ -158,14 +143,12 @@ class _NoorPage extends StatelessWidget {
         ? scheme.surfaceContainerLow
         : scheme.surfaceContainerLowest;
     final asked = this.asked;
-    // An image: the reader's text size doesn't apply.
     return MediaQuery.withNoTextScaling(
       child: Material(
         type: MaterialType.transparency,
         child: Container(
           width: HudaAiShareCard.width,
           constraints: const BoxConstraints(minHeight: HudaAiShareCard.width),
-          // A breath of the light pooling from the corner.
           decoration: BoxDecoration(
             color: page,
             gradient: RadialGradient(
@@ -346,7 +329,6 @@ class _Reference extends StatelessWidget {
   );
 }
 
-/// The AI note at the start, Huda's logo above its name at the end.
 class _Foot extends StatelessWidget {
   const _Foot({required this.color, required this.ink});
 

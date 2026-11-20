@@ -18,18 +18,6 @@ import 'package:huda/presentation/widgets/home/home_gallery.dart';
 import 'package:huda/presentation/widgets/home/home_identity.dart';
 import 'package:huda/presentation/widgets/home/home_reading.dart';
 
-/// Quran Journey: Home as the reading, on a paper page with Huda's logo at
-/// its head. First the bookmark where the reading stopped
-/// ([HomeContinueCard], small, on the night chrome), then the day's event
-/// and the first section in the editor's order (Today's Ayah, a paper card
-/// that only reads, by default), the tools as round medallions (the
-/// Quran's own first), the other section (the Khatma) and the listening
-/// left off. On phones the first row of tools shows without scrolling.
-///
-/// Wide windows, short windows and folds get two panes: the reading at
-/// the start (split at a vertical fold), the tools at the end. On a
-/// tabletop and the Duo upright, the bookmark and the first section sit
-/// above the fold, the rest below.
 class QuranJourneyHome extends StatelessWidget {
   const QuranJourneyHome({
     super.key,
@@ -63,7 +51,6 @@ class QuranJourneyHome extends StatelessWidget {
     final gap = homeBlockGap(context);
     final split = homeSplitsAtFold(context);
     final panes = !split && HomePanes.applies(context);
-    // A larger script where there's room: wide windows that aren't short.
     final short = context.windowClass.isCompactHeight;
     final roomy = !short && (panes || !context.windowClass.isCompact);
     final logo = Center(
@@ -74,7 +61,6 @@ class QuranJourneyHome extends StatelessWidget {
       ),
     );
 
-    // The bookmark and the sections, by state.
     Widget reading;
     final sections = <Widget>[];
     if (state is HomeLoaded) {
@@ -101,7 +87,6 @@ class QuranJourneyHome extends StatelessWidget {
               HomeKhatmaRibbon(
                 khatma: state.khatma,
                 actions: actions,
-                // The bookmark already shows where today's portion starts.
                 showStart: !place.fromKhatma,
               ),
             );
@@ -110,8 +95,6 @@ class QuranJourneyHome extends StatelessWidget {
         }
       }
     } else if (state is HomeError) {
-      // The rest of the page still works: the failure sits inline, with
-      // Retry, where the bookmark would be.
       reading = HudaStatusBanner(
         key: const ValueKey('quran-journey-error'),
         status: HudaStatus.failed,
@@ -124,7 +107,6 @@ class QuranJourneyHome extends StatelessWidget {
     reading = HudaStateSwitcher(stateKey: state.runtimeType, child: reading);
 
     final event = HomeEventCard(padding: EdgeInsets.only(bottom: gap));
-    // The listening left off, only when there is some (no empty gap).
     final listened =
         state is HomeLoaded &&
         (state.hasLastQuranAudio || state.hasLastRadioStation);
@@ -212,8 +194,6 @@ class QuranJourneyHome extends StatelessWidget {
           reading,
           SizedBox(height: gap),
           event,
-          // The first section (Today's Ayah by default) above the tools,
-          // the rest after them, so the tools are on a phone's first screen.
           HomeColumn(
             children: [
               ...sections.take(1),
@@ -228,7 +208,6 @@ class QuranJourneyHome extends StatelessWidget {
   }
 }
 
-/// While Home's data loads: the bookmark and the ayah card, as blocks.
 class _ReadingSkeleton extends StatelessWidget {
   const _ReadingSkeleton();
 

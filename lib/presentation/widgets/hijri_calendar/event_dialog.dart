@@ -12,7 +12,6 @@ import 'package:huda/presentation/widgets/hijri_calendar/calendar_format.dart';
 import 'package:huda/presentation/widgets/notifications/permission_handlers.dart';
 import 'package:uuid/uuid.dart';
 
-/// What the event sheet ended with.
 sealed class EventSheetResult {
   const EventSheetResult();
 }
@@ -26,9 +25,6 @@ class EventDeleted extends EventSheetResult {
   const EventDeleted();
 }
 
-/// Adds an event to [dateLabel]'s day, or edits [event] (which can then
-/// also be deleted). One sheet: title, notes, all day or a time range,
-/// the reminder, and the color inline.
 Future<EventSheetResult?> showEventSheet(
   BuildContext context, {
   required String dateLabel,
@@ -50,7 +46,6 @@ class EventSheet extends StatefulWidget {
   final HijriEvent? event;
   final String dateLabel;
 
-  /// Event colors (the person's data, kept as they were).
   static const palette = <Color>[
     Color(0xFFE53935),
     Color(0xFFD81B60),
@@ -99,7 +94,6 @@ class _EventSheetState extends State<EventSheet> {
     super.dispose();
   }
 
-  /// Why the times can't be saved yet, if they can't.
   String? _timeProblem(AppLocalizations l10n) {
     if (_allDay) return null;
     if (_start == null) return l10n.startTimeRequired;
@@ -195,7 +189,6 @@ class _EventSheetState extends State<EventSheet> {
       key: const ValueKey('calendar-event-sheet'),
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // Header: what this is, for which day, and Close.
         Padding(
           padding: EdgeInsetsDirectional.fromSTEB(
             space.xl + insets.left,
@@ -329,8 +322,6 @@ class _EventSheetState extends State<EventSheet> {
             ],
           ),
         ),
-        // Pinned: its surface reaches the edge, its buttons sit above the
-        // navigation bar, so Save is always in reach.
         DecoratedBox(
           decoration: BoxDecoration(
             border: Border(top: BorderSide(color: scheme.outlineVariant)),

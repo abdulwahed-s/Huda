@@ -15,11 +15,7 @@ import 'package:huda/presentation/widgets/tasbih/tasbih_dhikr_row.dart';
 import 'package:huda/presentation/widgets/tasbih/tasbih_identity.dart';
 import 'package:huda/presentation/widgets/tasbih/tasbih_medallion.dart';
 
-/// Counts one for the selected dhikr, with exactly one haptic, and only
-/// when Vibrate is on: the count buzz, or instead a stronger milestone
-/// haptic on the tap that finishes a round (33, 66, 99 …).
 void countTasbih(BuildContext context, TasbihLoaded state) {
-  // Counting takes the keyboard back from the add field.
   final focus = FocusManager.instance.primaryFocus;
   if (focus?.context?.findAncestorStateOfType<EditableTextState>() != null) {
     focus!.unfocus(disposition: UnfocusDisposition.previouslyFocusedChild);
@@ -33,11 +29,6 @@ void countTasbih(BuildContext context, TasbihLoaded state) {
   }
 }
 
-/// The counter: the selected dhikr's words, the medallion, the round and
-/// a way to step back. A tap anywhere in the pane counts. With
-/// [showChips] (phones) the dhikr to count are chips at the bottom.
-/// [sideBySide] puts the medallion beside the words (short windows and
-/// the top half of a tabletop fold); compact height always does.
 class TasbihCounterPane extends StatelessWidget {
   const TasbihCounterPane({
     super.key,
@@ -49,7 +40,6 @@ class TasbihCounterPane extends StatelessWidget {
 
   final TasbihLoaded state;
 
-  /// A just-removed dhikr: the chip row offers Undo after the sheet closes.
   final TasbihUndo undo;
   final bool showChips;
   final bool sideBySide;
@@ -60,7 +50,6 @@ class TasbihCounterPane extends StatelessWidget {
     final note = state.notes[state.selectedNoteIndex];
     final count = state.currentCount;
     return GestureDetector(
-      // The whole pane counts: people count without looking.
       behavior: HitTestBehavior.opaque,
       excludeFromSemantics: true,
       onTap: () => countTasbih(context, state),
@@ -89,7 +78,6 @@ class TasbihCounterPane extends StatelessWidget {
   }
 }
 
-/// The counter's arrangement, shared by the counter and its skeleton.
 class TasbihCounterFrame extends StatelessWidget {
   const TasbihCounterFrame({
     super.key,
@@ -104,8 +92,6 @@ class TasbihCounterFrame extends StatelessWidget {
   final Widget Function(double diameter) medallion;
   final Widget minus;
 
-  /// The chip row, given its scroll padding: it runs under the side insets
-  /// (the iPhone Duo's side column) and rests clear of them.
   final Widget Function(EdgeInsets padding)? chips;
   final bool sideBySide;
 
@@ -127,8 +113,6 @@ class TasbihCounterFrame extends StatelessWidget {
               : 380.0;
 
           if (sideBySide) {
-            // The medallion at full height (the scaffold's top padding
-            // already clears the transparent bar).
             final diameter = math
                 .min(
                   constraints.maxHeight - space.md,
@@ -136,10 +120,6 @@ class TasbihCounterFrame extends StatelessWidget {
                 )
                 .clamp(120.0, maxDiameter);
             final rtl = Directionality.of(context) == TextDirection.rtl;
-            // Everything stops at a trailing inset: here the chips sit at
-            // mid-height, beside the side column's icons, not below them.
-            // The words and minus keep the gutter; the chips scroll to the
-            // inset's edge and rest a gutter inside it.
             final trailingInset = rtl ? insets.left : insets.right;
             final trailing = EdgeInsetsDirectional.only(end: gutter);
             final chips = this.chips?.call(
@@ -186,11 +166,6 @@ class TasbihCounterFrame extends StatelessWidget {
             );
           }
 
-          // The chips stay pinned above the bottom inset at their own
-          // (text-scaled) height; the words and the medallion share the
-          // rest and scroll only when even a small ring doesn't fit. The
-          // words start at the top (on the list's top line beside a pane),
-          // and the medallion and minus center in the room below them.
           final chips = this.chips?.call(
             EdgeInsets.only(
               left: gutter + insets.left,
@@ -205,7 +180,6 @@ class TasbihCounterFrame extends StatelessWidget {
                   padding: sides,
                   child: LayoutBuilder(
                     builder: (context, inner) {
-                      // Room for the words (they grow with text) and minus.
                       final reserved = 170 * math.min(textScale, 2.0);
                       final diameter = math
                           .min(
@@ -220,18 +194,12 @@ class TasbihCounterFrame extends StatelessWidget {
                           ),
                           child: Padding(
                             padding: EdgeInsets.only(
-                              // No bar above beside the iPhone Duo's side
-                              // column: a little more air before the words.
                               top: HudaChromeFrame.hasSideChrome(context)
                                   ? space.xxl
                                   : space.md,
                               bottom: space.md,
                             ),
                             child: Column(
-                              // The words on the top line, and the medallion
-                              // with minus centered in the rest (above the
-                              // chips on phones), so the page starts with the
-                              // dhikr instead of a band of empty night.
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Padding(
@@ -249,9 +217,6 @@ class TasbihCounterFrame extends StatelessWidget {
                                   children: [
                                     Padding(
                                       padding: EdgeInsets.only(
-                                        // With chips the ring keeps close
-                                        // to its words (it has its own
-                                        // margin for the glow).
                                         top: chips != null
                                             ? space.xs
                                             : space.xl,
@@ -271,9 +236,6 @@ class TasbihCounterFrame extends StatelessWidget {
                                   ],
                                 ),
                                 const SizedBox.shrink(),
-                                // With chips, the room left over goes 1:2:
-                                // less between the words and the medallion,
-                                // more above the chips.
                                 if (chips != null) const SizedBox.shrink(),
                               ],
                             ),
@@ -297,9 +259,6 @@ class TasbihCounterFrame extends StatelessWidget {
   }
 }
 
-/// The selected dhikr's words: Arabic in the dhikr role, other languages
-/// in a Latin headline. Switching fades the old words out first, so the
-/// two never overlap.
 class TasbihWords extends StatelessWidget {
   const TasbihWords({super.key, required this.index, required this.text});
 
@@ -329,7 +288,6 @@ class TasbihWords extends StatelessWidget {
   }
 }
 
-/// Step back one. No "tap to count" line: the strand says it.
 class _Minus extends StatelessWidget {
   const _Minus({required this.onMinus});
 

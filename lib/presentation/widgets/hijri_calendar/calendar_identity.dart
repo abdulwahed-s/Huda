@@ -5,10 +5,6 @@ import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/presentation/widgets/design/feature_identity.dart';
 import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 
-/// The calendar's voice: the moon's month. A Hijri date is the moon's age,
-/// so the calendar draws it: an engraved moon whose lit part follows the
-/// day (a crescent on the 1st, full on the 14th, a waning sliver on the
-/// 28th). In Ramadan, 30 moons, one a night. See `design/IDENTITIES.md`.
 final calendarIdentity = FeatureIdentity(
   id: 'calendar',
   motif: "The moon's month: an engraved moon in the day's phase",
@@ -18,15 +14,9 @@ final calendarIdentity = FeatureIdentity(
   headerArt: (style) => CalendarMoonPainter.styled(phase: 0.12, style: style),
 );
 
-/// The moon's phase on the night of Hijri [day], from 0 (new) through 0.5
-/// (full) to 1: the month starts with the first visible crescent, about a
-/// day and a half old.
 double moonPhaseForDay(int day) =>
     ((day + 0.5) / 29.53).clamp(0.0, 0.995).toDouble();
 
-/// The lit part of a moon of radius [r] at [center] in [phase]: the limb
-/// on the lit side (the right while waxing, as seen from the north) closed
-/// by the terminator, an ellipse through the poles.
 Path moonLitPath(Offset center, double r, double phase) {
   final waxing = phase <= 0.5;
   final cos = math.cos(2 * math.pi * phase);
@@ -46,8 +36,6 @@ Path moonLitPath(Offset center, double r, double phase) {
     ..close();
 }
 
-/// A moon in [phase]: a faint earthshine on the dark side, the lit part
-/// filled, the limb as a ring. Luminous (a soft halo) on the chrome.
 class CalendarMoonPainter extends CustomPainter {
   const CalendarMoonPainter({
     required this.phase,
@@ -58,7 +46,6 @@ class CalendarMoonPainter extends CustomPainter {
     this.glow = false,
   });
 
-  /// From an [OrnamentStyle]: the identity art on chrome or a surface.
   factory CalendarMoonPainter.styled({
     required double phase,
     required OrnamentStyle style,
@@ -68,8 +55,6 @@ class CalendarMoonPainter extends CustomPainter {
       phase: phase,
       lit: style.color.withValues(alpha: style.color.a * (glow ? 0.92 : 0.8)),
       ring: style.color,
-      // Earthshine only on the chrome: on a light page a tinted dark side
-      // reads brighter than the gilt and the phase looks reversed.
       shine: glow ? style.color.withValues(alpha: style.color.a * 0.16) : null,
       stroke: style.stroke,
       glow: glow,
@@ -122,9 +107,6 @@ class CalendarMoonPainter extends CustomPainter {
       old.glow != glow;
 }
 
-/// The day's moon. When the day changes it turns to the new phase: the
-/// terminator sweeps across (the signature motion, ~700 ms; reduce motion
-/// jumps). Decorative: the date beside it is what's read.
 class CalendarMoon extends StatelessWidget {
   const CalendarMoon({
     super.key,
@@ -133,7 +115,6 @@ class CalendarMoon extends StatelessWidget {
     this.onChrome = false,
   });
 
-  /// The Hijri day of the month, 1–30.
   final int day;
   final double size;
   final bool onChrome;

@@ -12,14 +12,8 @@ import 'package:huda/presentation/widgets/onboarding/steps/location_step.dart';
 import 'package:huda/presentation/widgets/onboarding/steps/prayer_alerts_step.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_setup_checklist.dart';
 
-/// Where a permission stands, as the step shows it.
 enum OnboardingPermissionStatus { notAsked, working, allowed, problem }
 
-/// Step 3: the two permissions Huda needs, side by side and explained:
-/// location (prayer times and the Qibla where you are) and notifications
-/// (the adhan and reminders). Each card says why and where it stands, and
-/// what to do when it was refused. The lit button asks for the next one in
-/// turn ("Allow location", then "Allow notifications"), then continues.
 class PermissionsStep extends StatefulWidget {
   const PermissionsStep({super.key});
 
@@ -62,11 +56,9 @@ class _PermissionsStepState extends State<PermissionsStep> {
       _requesting = false;
       _declined = !granted;
     });
-    // The adhan step offers the fix instead of asking again.
     scope.sheet.notificationsDeclined = !granted;
     if (granted) {
       HudaHaptics.light(context);
-      // The Prayer screen's checklist reads this: alerts are answered.
       await scope.environment.cache.saveData(
         key: PrayerAlertsStep.answeredKey,
         value: true,
@@ -84,7 +76,6 @@ class _PermissionsStepState extends State<PermissionsStep> {
     return ListenableBuilder(
       listenable: scope.access,
       builder: (context, _) {
-        // Location.
         final locating = _locating || prayer is PrayerTimesLoading;
         final issue = locating
             ? null
@@ -147,7 +138,6 @@ class _PermissionsStepState extends State<PermissionsStep> {
           locationDetail = l10n.setupPermissionNotAsked;
         }
 
-        // Notifications.
         final access = scope.access.access;
         final granted = access?.notificationsEnabled ?? false;
         final needsSettings =
@@ -176,7 +166,6 @@ class _PermissionsStepState extends State<PermissionsStep> {
           alertsDetail = l10n.setupPermissionNotAsked;
         }
 
-        // The lit button asks for the next one in turn, then continues.
         final answered =
             locationStatus != OnboardingPermissionStatus.notAsked ||
             alertsStatus != OnboardingPermissionStatus.notAsked;
@@ -253,9 +242,6 @@ class _PermissionsStepState extends State<PermissionsStep> {
   }
 }
 
-/// A permission, explained: its mark, what it's for, and a status line
-/// that says where it stands ("Not asked yet", "Locating…", "Allowed ·
-/// Istanbul", "Not allowed") with the way to fix it when refused.
 class OnboardingPermissionCard extends StatelessWidget {
   const OnboardingPermissionCard({
     super.key,

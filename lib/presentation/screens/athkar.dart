@@ -17,13 +17,9 @@ import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:huda/presentation/widgets/design/huda_states.dart';
 import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 
-/// The Athkar landing screen: the Hisn al-Muslim chapters, the daily ones
-/// first, with the search in the page. Landing tier; the sun rises in the
-/// header as it opens. See `design/features/athkar/brief.md`.
 class AthkarScreen extends StatefulWidget {
   const AthkarScreen({super.key});
 
-  /// Content is capped at this width and centered, with the header.
   static const double maxContentWidth = 1280;
 
   @override
@@ -34,8 +30,6 @@ class _AthkarScreenState extends State<AthkarScreen> {
   final _search = TextEditingController();
   String _query = '';
 
-  /// After a tap on Retry, until the cubit answers: the failure stays on
-  /// screen with "Retrying…" instead of turning into a skeleton.
   bool _retrying = false;
   AthkarState? _failure;
 
@@ -85,10 +79,6 @@ class _AthkarScreenState extends State<AthkarScreen> {
               slivers: slivers,
             ),
           );
-          // Tabletop: the search with the daily chapters (or, while
-          // searching, every result: the keyboard takes the lower half)
-          // above the band; the rest of the chapters below it. Loading
-          // takes the same shape.
           final tabletop = AthkarTabletop.applies(context);
           if (tabletop && shown is AthkarLoading) {
             return AthkarTabletop(
@@ -175,8 +165,6 @@ class _AthkarScreenState extends State<AthkarScreen> {
       AthkarOffline() => fill(
         HudaOfflineState(onRetry: _retry, retrying: _retrying),
       ),
-      // The page's real shape: the search, "Every day", and a long run of
-      // chapters (Hisn al-Muslim has over a hundred), not a short list.
       _ => _AthkarPage(
         children: [
           const SliverToBoxAdapter(
@@ -194,7 +182,6 @@ class _AthkarScreenState extends State<AthkarScreen> {
     };
   }
 
-  /// A section label's place while loading.
   Widget _skeletonLabel() => Builder(
     builder: (context) {
       final space = context.tokens.space;
@@ -212,7 +199,6 @@ class _AthkarScreenState extends State<AthkarScreen> {
     },
   );
 
-  /// Loading tiles in the chapters' grid.
   Widget _skeletonGrid(int count, {int maxColumns = 4}) => Builder(
     builder: (context) => SliverAdaptiveGrid(
       minTileWidth: _minTileWidth(context),
@@ -224,23 +210,16 @@ class _AthkarScreenState extends State<AthkarScreen> {
     ),
   );
 
-  /// Tiles at least this wide, so long titles don't wrap into narrow
-  /// columns (owner round 1): one column on phones, two on portrait
-  /// tablets, three on landscape tablets and laptops. Short windows (phone
-  /// and Duo-cover landscape) take two narrower ones.
   static double _minTileWidth(BuildContext context) => AdaptiveGrid.tileWidth(
     context,
     context.windowClass.isCompactHeight ? 260 : 320,
   );
 
-  /// The search, the page's full width (owner round 1). On a half-open
-  /// vertical fold (book) it keeps to the leading half, off the crease.
   Widget _searchField() => LayoutBuilder(
     builder: (context, constraints) {
       final fold = FoldInfo.of(context);
       var cap = double.infinity;
       if (fold.isBook) {
-        // The page is centered in the window.
         final window = MediaQuery.sizeOf(context).width;
         final left = (window - constraints.maxWidth) / 2;
         final gap = context.tokens.space.md / 2;
@@ -262,8 +241,6 @@ class _AthkarScreenState extends State<AthkarScreen> {
     },
   );
 
-  /// The chapters under the search: the daily ones, then the rest; or the
-  /// search results.
   List<Widget> _chapters(
     BuildContext context,
     List<AthkarItem> athkar, {
@@ -278,8 +255,6 @@ class _AthkarScreenState extends State<AthkarScreen> {
       int revealFrom = 0,
       int maxColumns = 4,
     }) => Builder(
-      // Sized by the space the grid is in (a tabletop half, not the
-      // window).
       builder: (context) => SliverAdaptiveGrid(
         minTileWidth: _minTileWidth(context),
         spacing: space.md,
@@ -304,8 +279,6 @@ class _AthkarScreenState extends State<AthkarScreen> {
             item,
       ];
       if (results.isEmpty) {
-        // Right under the field, so it shows on short windows too; the
-        // field's × clears the search.
         return [
           SliverToBoxAdapter(
             child: SizedBox(
@@ -342,7 +315,6 @@ class _AthkarScreenState extends State<AthkarScreen> {
     return [
       if (showDaily) ...[
         label(HudaSectionHeader(l10n.athkarDaily), top: space.lg),
-        // Two by two: the four daily chapters stay wide and even.
         grid(daily, maxColumns: 2),
       ],
       if (showOthers) ...[
@@ -356,18 +328,13 @@ class _AthkarScreenState extends State<AthkarScreen> {
   }
 }
 
-/// Which chapters a part of a split (tabletop) page shows.
 enum _Part { all, daily, rest }
 
-/// The page's content column: the gutters and side insets, capped at
-/// [AthkarScreen.maxContentWidth] and centered, ending above the bottom
-/// inset.
 class _AthkarPage extends StatelessWidget {
   const _AthkarPage({required this.children, this.tight = false});
 
   final List<Widget> children;
 
-  /// Above a tabletop band: tighter top and bottom, no bottom inset.
   final bool tight;
 
   @override

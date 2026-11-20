@@ -9,11 +9,6 @@ import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 import 'package:huda/presentation/widgets/onboarding/onboarding_frame.dart';
 import 'package:huda/presentation/widgets/surah/quran_mushaf_page_view.dart';
 
-/// Step 7: how the Quran reader opens: the scroll list or one of the three
-/// Mushaf page sets, each with a preview and its download size. A Mushaf
-/// downloads in the background when "Download now" is on: by default on
-/// Wi-Fi, off on mobile data (it then downloads when the Quran opens).
-/// Saved on Continue to the key the reader reads.
 class MushafStep extends StatefulWidget {
   const MushafStep({super.key});
 
@@ -29,7 +24,6 @@ class _MushafStepState extends State<MushafStep> {
         as String?,
   );
 
-  /// Null while checking the connection.
   bool? _wifi;
   bool? _download;
 
@@ -158,10 +152,6 @@ class _MushafStepState extends State<MushafStep> {
   }
 }
 
-/// A slice of the reading mode's page: the first lines of page 3 for the
-/// Mushaf sets (bundled, so nothing downloads for a preview; Hafs and
-/// IndoPak are ink masks tinted like the reader does), and the scroll
-/// list drawn live with the Uthmanic font over two translation lines.
 class _MushafPreview extends StatelessWidget {
   const _MushafPreview({required this.mode});
 
@@ -236,13 +226,10 @@ class _MushafPreview extends StatelessWidget {
         aspectRatio: 16 / 9,
         child: DecoratedBox(
           decoration: BoxDecoration(
-            // Tajweed's colors come with black ink baked in: at night it
-            // sits on a light page, as printed.
             color:
                 mode.pack != null &&
                     !mode.pack!.tinted &&
                     theme.brightness == Brightness.dark
-                // A dimmed paper, so it doesn't glare among dark cards.
                 ? Color.alphaBlend(
                     scheme.surface.withValues(alpha: 0.32),
                     scheme.inverseSurface,
@@ -256,9 +243,6 @@ class _MushafPreview extends StatelessWidget {
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(tokens.radius.sm),
-            // A clear margin at the top of the page images keeps the
-            // tile's mark off their first line (the drawn scroll list is
-            // centered, clear of it).
             child: Padding(
               padding: EdgeInsets.fromLTRB(4, path == null ? 4 : 28, 4, 4),
               child: page,

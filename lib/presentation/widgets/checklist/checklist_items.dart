@@ -8,7 +8,6 @@ import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:huda/presentation/widgets/design/huda_states.dart';
 import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 
-/// The groups, in the order the day runs.
 const checklistGroupOrder = [
   ChecklistItemType.prayer,
   ChecklistItemType.quran,
@@ -37,9 +36,6 @@ String checklistFrequencyName(
   RepetitionFrequency.weekly => l10n.frequencyWeekly,
 };
 
-/// The day's items in their groups (Prayers, Quran, Athkar, Other), each a
-/// card of rows under a header with its count. In [columns] 2, Prayers
-/// sit beside the rest.
 class ChecklistGroups extends StatelessWidget {
   const ChecklistGroups({
     super.key,
@@ -55,7 +51,6 @@ class ChecklistGroups extends StatelessWidget {
   final List<ChecklistItem> items;
   final Map<String, bool> completed;
 
-  /// Today: rows check, custom items can be removed.
   final bool editable;
   final void Function(ChecklistItem item, bool done) onToggle;
   final void Function(ChecklistItem item) onRemove;
@@ -132,7 +127,6 @@ class ChecklistGroups extends StatelessWidget {
         ],
       );
     }
-    // The first group (usually the five prayers) beside the others.
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -152,9 +146,6 @@ class ChecklistGroups extends StatelessWidget {
   }
 }
 
-/// One item: the tick, its name and (when it doesn't repeat daily) how
-/// often it comes, and for custom items on today a Remove button. The
-/// whole row toggles; only today's rows can.
 class ChecklistRow extends StatelessWidget {
   const ChecklistRow({
     super.key,
@@ -254,8 +245,6 @@ class ChecklistRow extends StatelessWidget {
   }
 }
 
-/// The check box: an open square (3:1) that lights and draws its check
-/// when the item is done.
 class ChecklistTick extends StatelessWidget {
   const ChecklistTick({super.key, required this.done, this.enabled = true});
 
@@ -335,7 +324,6 @@ class _CheckPainter extends CustomPainter {
       old.progress != progress || old.color != color;
 }
 
-/// The page while the checklist loads, in the shape of what's coming.
 class ChecklistSkeleton extends StatelessWidget {
   const ChecklistSkeleton({super.key, this.card = true, this.rows = true});
 

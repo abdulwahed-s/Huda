@@ -5,30 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 
-/// Khatma's identity: the road of thirty. The Quran as a journey of 30
-/// juz, drawn as one trail that winds back and forth across the plate
-/// (boustrophedon), a stretch per juz with a waymark between them, from a
-/// trailhead to a ten-pointed star at the khatm. The walked road is gilt,
-/// the road ahead an engraved dotted line, today's portion a soft band,
-/// and a passed waymark becomes a small star. See `design/IDENTITIES.md`.
-///
-/// Distinct from Tasbih's ring of beads (circular, counted per tap),
-/// Hadith's isnad chain (a straight chain of nodes), Onboarding's row of
-/// arches and Quran's 12-lobed rosettes: a road that turns, measured in
-/// juz, with 10-pointed stars.
 abstract final class KhatmaJourney {
   static const juzCount = 30;
   static const totalPages = 604;
 
-  /// The first page of each juz in the 604-page Madinah Mushaf.
   static const juzStartPages = [
-    1, 22, 42, 62, 82, 102, 121, 142, 162, 182, //
-    201, 222, 242, 262, 282, 302, 322, 342, 362, 382, //
+    1, 22, 42, 62, 82, 102, 121, 142, 162, 182,
+    201, 222, 242, 262, 282, 302, 322, 342, 362, 382,
     402, 422, 442, 462, 482, 502, 522, 542, 562, 582,
   ];
 
-  /// Where the reader is on the road (0–30, in juz) after reading the
-  /// first [pagesRead] pages.
   static double position(int pagesRead) {
     final read = pagesRead.clamp(0, totalPages);
     if (read == 0) return 0;
@@ -41,15 +27,9 @@ abstract final class KhatmaJourney {
     return juz + (read - start + 1) / (end - start);
   }
 
-  /// The juz completed after reading [pagesRead] pages.
   static int juzDone(int pagesRead) => position(pagesRead).floor();
 }
 
-/// The road on a chrome plate: [walked] and [todayEnd] are positions in
-/// juz (see [KhatmaJourney.position]). Draws itself in from [from] when it
-/// appears and walks on whenever [walked] grows: each waymark it passes
-/// swells into its star, and reaching 30 lights the khatm star. Under
-/// reduce motion it shows the end state.
 class KhatmaTrail extends StatefulWidget {
   const KhatmaTrail({
     super.key,
@@ -63,15 +43,11 @@ class KhatmaTrail extends StatefulWidget {
 
   final double walked;
 
-  /// A light that runs once along the walked road (0 → 1), for the
-  /// completion.
   final Animation<double>? glint;
 
-  /// Ten juz a row wherever it fits: a shorter road (the setup).
   final bool flat;
   final double? todayEnd;
 
-  /// Where the walk starts when the road first appears.
   final double from;
   final String? semanticLabel;
 
@@ -85,22 +61,16 @@ class _KhatmaTrailState extends State<KhatmaTrail>
   late double _from = widget.from;
   late double _to = widget.walked;
 
-  /// Today's portion's end moves with the walk: from where the road starts
-  /// drawing on open, from the old portion's end when one is marked done.
   late double? _endFrom = widget.todayEnd == null ? null : widget.from;
   late double? _endTo = widget.todayEnd;
   bool _started = false;
 
   double get _t => Curves.easeInOutCubic.transform(_controller.value);
 
-  /// The road as last laid out, so the walk moves along the path itself
-  /// (at an even speed, through the turns too) rather than juz by juz,
-  /// where a turn would take no time at all.
   KhatmaTrailLayout? _layout;
 
   double _d(double t) => _layout?.distance(t) ?? t;
 
-  /// Along the road from [from] to [to] (positions in juz), as a distance.
   double _along(double from, double to) => ui.lerpDouble(_d(from), _d(to), _t)!;
 
   double get _headDistance => _along(_from, _to);
@@ -110,7 +80,6 @@ class _KhatmaTrailState extends State<KhatmaTrail>
     return to == null ? null : _along(_endFrom ?? to, to);
   }
 
-  /// The walk's current position in juz (for a walk that starts mid-way).
   double get _head => _layout?.position(_headDistance) ?? _along(_from, _to);
 
   double? get _end {
@@ -123,7 +92,6 @@ class _KhatmaTrailState extends State<KhatmaTrail>
     super.didChangeDependencies();
     if (_started) return;
     _started = true;
-    // The road draws in once, as the plate appears (signature motion).
     _walk(const Duration(milliseconds: 1100));
   }
 
@@ -167,7 +135,6 @@ class _KhatmaTrailState extends State<KhatmaTrail>
     final scaler = MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 1.3);
     return LayoutBuilder(
       builder: (context, constraints) {
-        // Short windows (phone landscape) get a flatter road.
         final layout = KhatmaTrailLayout(
           constraints.maxWidth,
           flat: widget.flat,
@@ -201,7 +168,6 @@ class _KhatmaTrailState extends State<KhatmaTrail>
   }
 }
 
-/// How the road lies in a given width: juz per row, rows and spacing.
 class KhatmaTrailLayout {
   KhatmaTrailLayout(this.width, {this.rowGap = 40, bool flat = false}) {
     final inner = width - 2 * margin;
@@ -226,15 +192,12 @@ class KhatmaTrailLayout {
   double get height => top + (rows - 1) * rowGap + bottom;
   double get bend => math.pi * rowGap / 2;
 
-  /// Distance along the road to position [t] (in juz).
   double distance(double t) {
     if (t <= 0) return 0;
     final bends = ((t / perRow).ceil() - 1).clamp(0, rows - 1);
     return t * stretch + bends * bend;
   }
 
-  /// The position (in juz) at [d] along the road: inside a turn it's the
-  /// juz the turn follows.
   double position(double d) {
     final row = perRow * stretch;
     final unit = row + bend;
@@ -244,7 +207,6 @@ class KhatmaTrailLayout {
     return t.clamp(0, KhatmaJourney.juzCount).toDouble();
   }
 
-  /// The road as one path (left to right on the first row in LTR).
   Path path(bool rtl) {
     double x(double v) => rtl ? width - v : v;
     final left = margin;
@@ -255,7 +217,6 @@ class KhatmaTrailLayout {
       final forward = r.isEven;
       p.lineTo(x(forward ? right : left), y);
       if (r < rows - 1) {
-        // A half turn down to the next row, on the outside.
         p.arcToPoint(
           Offset(x(forward ? right : left), y + rowGap),
           radius: Radius.circular(rowGap / 2),
@@ -296,8 +257,6 @@ class _TrailFrame extends CustomPainter {
 
   final Animation<double>? glint;
 
-  /// How far along the road the walker is, and where today's portion
-  /// ends, as distances (so turns are walked too).
   final double Function() walkedDistance;
   final KhatmaTrailLayout layout;
   final double? Function() endDistance;
@@ -315,7 +274,6 @@ class _TrailFrame extends CustomPainter {
     final walkedD = walkedDistance().clamp(0.0, metric.length);
     final walked = layout.position(walkedD);
 
-    // Today's portion: a soft band under the road.
     final endD = endDistance();
     if (endD != null && endD > walkedD) {
       canvas.drawPath(
@@ -328,13 +286,11 @@ class _TrailFrame extends CustomPainter {
       );
     }
 
-    // The road ahead: an engraved dotted line.
     final dots = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1.5
       ..strokeCap = StrokeCap.round
       ..color = colors.road;
-    // Dots fixed on the road (every 7), so they don't crawl with the walker.
     for (var d = (walkedD / 7).floor() * 7 + 7.0; d < metric.length; d += 7) {
       canvas.drawPath(
         metric.extractPath(d, math.min(d + 2.5, metric.length)),
@@ -342,7 +298,6 @@ class _TrailFrame extends CustomPainter {
       );
     }
 
-    // The completion's light, running once along the walked road.
     final g = glint?.value ?? 0;
     if (g > 0 && g < 1 && walkedD > 0) {
       final d = g * walkedD;
@@ -363,7 +318,6 @@ class _TrailFrame extends CustomPainter {
         );
     }
 
-    // The walked road: luminous gilt.
     if (walkedD > 0) {
       OrnamentStyle(
         color: colors.walked,
@@ -372,7 +326,6 @@ class _TrailFrame extends CustomPainter {
       ).draw(canvas, metric.extractPath(0, walkedD), closed: false);
     }
 
-    // The trailhead.
     canvas.drawCircle(
       at(0),
       4,
@@ -382,12 +335,8 @@ class _TrailFrame extends CustomPainter {
         ..color = walked > 0 ? colors.walked : colors.road,
     );
 
-    // Waymarks between the juz: hollow lozenges ahead; passed, small
-    // ten-pointed stars that swell as the walk reaches them.
     for (var k = 1; k < KhatmaJourney.juzCount; k++) {
       final c = at(k.toDouble());
-      // Measured along the road, so a waymark at a turn swells as the
-      // walker passes it, not after the turn.
       final passed =
           (walkedD - layout.distance(k.toDouble())) / (layout.stretch / 2);
       if (passed <= 0) {
@@ -419,13 +368,9 @@ class _TrailFrame extends CustomPainter {
           );
         }
       }
-      // Juz numbers where the road turns.
       if (k % layout.perRow == 0) _label(canvas, '$k', c);
     }
 
-    // The khatm: a ten-pointed star at the end of the road, drawn as one
-    // interlaced line ({10/3}) in a ring; it lights once the walk arrives,
-    // the ring swelling once.
     final goal = at(30);
     final arrive = ((walked - 29.5) / 0.5).clamp(0.0, 1.0);
     final swell = math.sin(math.pi * arrive);
@@ -469,7 +414,6 @@ class _TrailFrame extends CustomPainter {
       );
     }
 
-    // The traveler: where the reader is now.
     if (walked < 30) {
       final c = metric.getTangentForOffset(walkedD)!.position;
       canvas
@@ -516,11 +460,6 @@ class _TrailFrame extends CustomPainter {
       old.label != label;
 }
 
-/// The khatm medallion: the road's ten-pointed star at full size. A
-/// double ring, ten waymark lozenges between the rings, the interlaced
-/// {10/3} star, and a small star at the heart. [progress] (0–1) draws it
-/// in: the rings sweep, the star traces itself, the heart and the
-/// lozenges come in, and a soft glow swells once at the end.
 class KhatmMedallionPainter extends CustomPainter {
   const KhatmMedallionPainter({
     required this.color,
@@ -545,7 +484,6 @@ class KhatmMedallionPainter extends CustomPainter {
       stroke: r > 40 ? 2 : 1.5,
     );
 
-    // The glow behind: steady once drawn, swelling once as it finishes.
     final settle = _span(p, 0.6, 1);
     final swell = math.sin(math.pi * _span(p, 0.7, 1));
     if (settle > 0) {
@@ -562,7 +500,6 @@ class KhatmMedallionPainter extends CustomPainter {
       );
     }
 
-    // The rings sweep from the top.
     final ring = _span(p, 0, 0.45);
     if (ring > 0) {
       for (final rr in [r, r * 0.84]) {
@@ -578,7 +515,6 @@ class KhatmMedallionPainter extends CustomPainter {
       }
     }
 
-    // The interlaced star traces itself.
     final trace = _span(p, 0.25, 0.8);
     if (trace > 0) {
       final star = Path();
@@ -595,7 +531,6 @@ class KhatmMedallionPainter extends CustomPainter {
       );
     }
 
-    // The heart and the waymarks between the rings.
     final heart = _span(p, 0.5, 0.9);
     if (heart > 0) {
       canvas.drawPath(
@@ -632,8 +567,6 @@ class KhatmMedallionPainter extends CustomPainter {
       old.progress != progress || old.color != color;
 }
 
-/// The chrome plate the road lies on: the deep band with a faint girih
-/// field, warm text. The page's one strong surface.
 class KhatmaPlate extends StatelessWidget {
   const KhatmaPlate({super.key, required this.child});
 

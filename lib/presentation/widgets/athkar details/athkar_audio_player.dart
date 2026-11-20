@@ -7,9 +7,6 @@ import 'package:huda/core/bootstrap/audio_service_ready.dart';
 import 'package:huda/core/services/audio_coordinator.dart';
 import 'package:huda/core/services/service_locator.dart';
 
-/// Plays a chapter's dhikr audio on the app's shared player, through the
-/// [AudioCoordinator] (owner `athkar`). When one dhikr's audio finishes,
-/// the next one's plays; a dhikr without audio ends the run.
 class AthkarAudio extends ChangeNotifier {
   AthkarAudio({required this.audioAt, required this.onError}) {
     _coordinator.register(AudioCoordinator.athkar, () {
@@ -47,10 +44,8 @@ class AthkarAudio extends ChangeNotifier {
     });
   }
 
-  /// The audio URL of the dhikr at an index, or null past the end.
   final String? Function(int index) audioAt;
 
-  /// Audio couldn't play (no URL, or the player failed).
   final VoidCallback onError;
 
   final AudioPlayer _player = getIt<AudioPlayer>();
@@ -82,8 +77,6 @@ class AthkarAudio extends ChangeNotifier {
     }
   }
 
-  /// Plays the dhikr at [index], or pauses and resumes it if it's the one
-  /// already loaded.
   Future<void> play(int index) async {
     var url = audioAt(index);
     if (url == null || url.isEmpty) {

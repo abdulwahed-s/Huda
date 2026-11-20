@@ -8,7 +8,6 @@ import 'package:huda/presentation/widgets/design/huda_states.dart';
 double? _fraction(int downloaded, int? total) =>
     total != null && total > 0 ? (downloaded / total).clamp(0.0, 1.0) : null;
 
-/// Opening the book: the lamp, "Opening the book…" and how much has come.
 class PdfLoadingWidget extends StatelessWidget {
   const PdfLoadingWidget({
     super.key,
@@ -71,8 +70,6 @@ class PdfLoadingWidget extends StatelessWidget {
   }
 }
 
-/// The first page is showing while the rest of the file arrives: a small
-/// status pill at the top of the page (the page can't be used yet).
 class PdfPreparingDocumentOverlay extends StatelessWidget {
   const PdfPreparingDocumentOverlay({
     super.key,
@@ -137,7 +134,6 @@ class PdfPreparingDocumentOverlay extends StatelessWidget {
   }
 }
 
-/// The book couldn't be opened: say so plainly and offer Retry.
 class PdfErrorWidget extends StatelessWidget {
   const PdfErrorWidget({
     super.key,

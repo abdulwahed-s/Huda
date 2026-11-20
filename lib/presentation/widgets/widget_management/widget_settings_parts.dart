@@ -14,11 +14,6 @@ import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 import 'package:huda/presentation/widgets/settings/settings_layout.dart';
 import 'package:huda/presentation/widgets/widget_management/samsung_lock_widget_setup.dart';
 
-/// A widget's page under the switch: the live preview and how to add it,
-/// then its settings. One readable column on narrow windows; from 720 wide
-/// (or a vertical fold) the preview pane stays beside the settings, so
-/// every change is seen as it's made; in tabletop posture the preview sits
-/// above the band and the settings scroll below it.
 class WidgetSettingsLayout extends StatelessWidget {
   const WidgetSettingsLayout({
     super.key,
@@ -88,8 +83,6 @@ class WidgetSettingsLayout extends StatelessWidget {
   }
 }
 
-/// The preview, set on a quiet stand-in for a home screen: the widget at
-/// a phone's widget width, labeled "Preview" for screen readers.
 class WidgetPreviewStage extends StatelessWidget {
   const WidgetPreviewStage({super.key, required this.child});
 
@@ -143,9 +136,6 @@ class WidgetPreviewStage extends StatelessWidget {
   }
 }
 
-/// How to put a widget on the home screen: Android launchers that can pin
-/// get one lit button; everywhere else, the platform's numbered steps.
-/// Samsung's One UI 9 lock-screen guidance follows where it applies.
 class WidgetAddSection extends StatefulWidget {
   const WidgetAddSection({
     super.key,
@@ -312,8 +302,6 @@ class _Steps extends StatelessWidget {
   }
 }
 
-/// One choosable widget theme: its own colors, a glyph in the content
-/// color, the name under it.
 class WidgetThemeSwatch {
   const WidgetThemeSwatch({
     required this.id,
@@ -332,20 +320,14 @@ class WidgetThemeSwatch {
   final bool selected;
   final VoidCallback onTap;
 
-  /// "Automatic" follows the app's colors: drawn as the palette's
-  /// gradient from [background] to [foreground] with a sparkle.
   final bool automatic;
 }
 
-/// The widget themes as a grid of swatches (as many columns as fit, 4–8,
-/// even across a fold), the chosen one ringed with a check.
 class WidgetThemeGrid extends StatelessWidget {
   const WidgetThemeGrid({super.key, required this.swatches, this.glyph});
 
   final List<WidgetThemeSwatch> swatches;
 
-  /// What each swatch shows in its content color ("Aa", or an Arabic
-  /// letter for the Quran widget).
   final Widget Function(Color color)? glyph;
 
   @override
@@ -509,8 +491,6 @@ class _SwatchTile extends StatelessWidget {
   }
 }
 
-/// A widget text size: its label and value (or "Automatic" while the
-/// widget fits the text itself), and a slider in steps of 5%.
 class WidgetSizeControl extends StatelessWidget {
   const WidgetSizeControl({
     super.key,
@@ -530,7 +510,6 @@ class WidgetSizeControl extends StatelessWidget {
   final ValueChanged<int> onChanged;
   final ValueChanged<int> onChangeEnd;
 
-  /// Shown instead of the value while the slider is off (auto fit).
   final String? automaticLabel;
 
   @override
@@ -600,8 +579,6 @@ class WidgetSizeControl extends StatelessWidget {
   }
 }
 
-/// A switch as a compact row inside a card (no icon mark): the label and
-/// the switch; the whole row toggles.
 class WidgetSwitchRow extends StatelessWidget {
   const WidgetSwitchRow({
     super.key,
@@ -646,8 +623,6 @@ class WidgetSwitchRow extends StatelessWidget {
   }
 }
 
-/// Update the widget now, and Reset to the defaults (confirmed). Updating
-/// shows the lamp spinner and its label until it finishes.
 class WidgetAdvancedSection extends StatelessWidget {
   const WidgetAdvancedSection({
     super.key,
@@ -693,7 +668,6 @@ class WidgetAdvancedSection extends StatelessWidget {
   }
 }
 
-/// Asks before putting a widget's settings back to the defaults.
 Future<bool> confirmWidgetReset(BuildContext context) async {
   final l10n = AppLocalizations.of(context)!;
   final confirmed = await showDialog<bool>(

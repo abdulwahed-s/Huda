@@ -6,8 +6,6 @@ import 'package:huda/presentation/widgets/design/huda_lamp.dart';
 import 'package:huda/presentation/widgets/design/huda_states.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_identity.dart';
 
-/// Loading, in the shape of the page: the sky with no sun yet and the
-/// day's six rows as skeletons.
 class PrayerTimesLoadingWidget extends StatelessWidget {
   const PrayerTimesLoadingWidget({super.key});
 

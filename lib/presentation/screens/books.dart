@@ -20,9 +20,6 @@ import 'package:huda/presentation/widgets/design/huda_app_bars.dart';
 import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:huda/presentation/widgets/design/huda_states.dart';
 
-/// The library: the catalogue's books as bindings, a page at a time, in
-/// one language or all. Landing tier; the header carries the tooled
-/// binding. See `design/features/books/brief.md`.
 class BooksScreen extends StatefulWidget {
   const BooksScreen({super.key});
 
@@ -36,8 +33,6 @@ class _BooksScreenState extends State<BooksScreen> {
   String? _language;
   final _top = GlobalKey();
 
-  /// After a tap on Retry, until the cubit answers: the failure stays on
-  /// screen with "Retrying…" instead of turning into a skeleton.
   bool _retrying = false;
   BooksState? _failure;
 
@@ -103,7 +98,6 @@ class _BooksScreenState extends State<BooksScreen> {
     return HudaRevealScope(
       child: BlocConsumer<BooksCubit, BooksState>(
         listener: (context, state) {
-          // A language with no books: show every language instead.
           if (state is BooksLoaded &&
               state.booksResponse.data.isEmpty &&
               _language != null) {
@@ -122,7 +116,6 @@ class _BooksScreenState extends State<BooksScreen> {
           final shown = _retrying && _isLoading(state) && failure != null
               ? failure
               : state;
-          // The books are shelved as the library opens.
           return HudaDrawIn(
             duration: const Duration(milliseconds: 1000),
             curve: Curves.linear,
@@ -271,7 +264,6 @@ class _BooksScreenState extends State<BooksScreen> {
     };
   }
 
-  /// The book's author, or whoever prepared it first.
   static String? _author(List<(String, String?)> people) {
     for (final (type, name) in people) {
       if (type == 'author' && (name ?? '').isNotEmpty) return name;
@@ -296,7 +288,6 @@ class _BooksScreenState extends State<BooksScreen> {
   }
 }
 
-/// The language chip and, when there is one, the book to continue.
 class _Top extends StatelessWidget {
   const _Top({
     required this.state,
@@ -320,8 +311,6 @@ class _Top extends StatelessWidget {
       listenable: progressService,
       builder: (context, _) {
         final lastRead = progressService.getLastRead();
-        // Only beside the books: a failure or the skeleton keeps the top
-        // for its own message.
         final showContinue =
             lastRead != null &&
             lastRead.title != null &&
@@ -389,9 +378,6 @@ class _Top extends StatelessWidget {
       return;
     }
 
-    // Older saved progress did not include an attachment URL. Keep those
-    // records usable once by falling back to the book's page; opening the
-    // reader again stores the URL for direct continuation thereafter.
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (_) => BookDetailScreen.page(
@@ -403,9 +389,6 @@ class _Top extends StatelessWidget {
     );
   }
 
-  /// Older progress records did not save their attachment URL. The current
-  /// catalogue response already contains it for visible books, so use it to
-  /// keep the Continue card a direct reader action during migration.
   String? _listedPdfUrl(int bookId) {
     final state = this.state;
     if (state is! BooksLoaded) return null;
@@ -421,14 +404,11 @@ class _Top extends StatelessWidget {
   }
 }
 
-/// The covers in a grid that reflows: two a row on phones, up to eight on
-/// wide windows, even with a fold.
 class _Covers extends StatelessWidget {
   const _Covers({required this.count, required this.cover, this.reveal = true});
 
   final int count;
 
-  /// Builds cover [i] given its width in the grid.
   final Widget Function(BuildContext context, int i, double width) cover;
   final bool reveal;
 
@@ -447,7 +427,6 @@ class _Covers extends StatelessWidget {
     final fold = FoldInfo.of(context);
     return SliverLayoutBuilder(
       builder: (context, constraints) {
-        // The same columns the grid will choose, for the covers' width.
         final foldGap = fold.splitsHorizontally ? fold.end - fold.start : 0.0;
         final available = constraints.crossAxisExtent - foldGap;
         final columns = AdaptiveGrid.columns(

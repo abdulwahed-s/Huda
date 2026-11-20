@@ -46,11 +46,8 @@ class QuranPageView extends StatefulWidget {
   final int surahNumber;
   final int? scrollToAyah;
 
-  /// Once scrolled to [scrollToAyah], light it up ([QuranAyahFlash]):
-  /// the reader came from a search hit.
   final bool flashAyah;
 
-  /// Called when the flash starts, so the screen doesn't run it again.
   final VoidCallback? onFlashShown;
   final double? ayahPosition;
   final bool shouldRestorePosition;
@@ -58,37 +55,25 @@ class QuranPageView extends StatefulWidget {
   final Color? customBgColor;
   final Color? customTextColor;
 
-  /// Opens another surah in the same reader (previous and next).
   final ValueChanged<int>? onOpenSurah;
 
-  /// The screen's context, outside the index pane: sheets open from it so
-  /// they size for the window (a side sheet from 840), not the pane.
   final BuildContext? overlayContext;
 
-  /// False when the headpiece stands elsewhere (above a tabletop fold).
   final bool showHeader;
 
-  /// The text's widest line.
   static const double measure = 720;
 
-  /// Whether [size] is a wide window: from 840 wide and 560 tall (a phone
-  /// on its side keeps the plain page and its short headpiece).
   static bool isWide(Size size) => size.width >= 840 && size.height >= 560;
 
-  /// The paper sheet's width on a wide window, or null when the text sits
-  /// on the page itself.
   static double? sheetWidth(Size size) =>
       isWide(size) ? math.min(size.width - 96, 1000) : null;
 
-  /// How much larger the Arabic is on a wide window.
   static double ayahScale(Size size) => !isWide(size)
       ? 1
       : size.width >= 1280
       ? 1.3
       : 1.18;
 
-  /// The device matrix has no audio: setting this marks an ayah (index)
-  /// as being recited, to review the rosette and the player bar.
   @visibleForTesting
   static final debugPlayingAyah = ValueNotifier<int?>(null);
 
@@ -123,8 +108,6 @@ class _QuranPageViewState extends State<QuranPageView>
         StateValidatorsMixin,
         ReadingPositionTracker,
         SingleTickerProviderStateMixin {
-  // Made up front: a lazy one would first be made in dispose() when the
-  // reader never flashed, which looks up a deactivated ancestor.
   late final AnimationController _flash;
 
   @override
@@ -355,7 +338,6 @@ class _QuranPageViewState extends State<QuranPageView>
 
       debugPrint('📍 Scrolling to saved ayah: $savedAyah');
 
-      // The opening is item 0, so ayah k is item k.
       final int targetIndex = savedAyah;
 
       Future.delayed(const Duration(milliseconds: 1000), () {
@@ -402,7 +384,6 @@ class _QuranPageViewState extends State<QuranPageView>
         .where((position) => position.itemLeadingEdge < 1.0)
         .reduce((a, b) => a.index < b.index ? a : b);
 
-    // The opening is item 0 (it counts as ayah 1), the end comes after.
     final ayat = widget.surah.ayahs?.length ?? 1;
     return visibleItem.index.clamp(1, ayat);
   }
@@ -468,9 +449,6 @@ class _QuranPageViewState extends State<QuranPageView>
             Expanded(
               child: LayoutBuilder(
                 builder: (context, constraints) {
-                  // The text keeps a reading measure, centered. On a wide
-                  // window the surah is a page: a paper sheet over a quiet
-                  // backdrop, wider, with larger Arabic (owner round 2).
                   final width = constraints.maxWidth;
                   final gutter = space.gutter(width);
                   final area = Size(width, MediaQuery.sizeOf(context).height);
@@ -490,7 +468,6 @@ class _QuranPageViewState extends State<QuranPageView>
                             return ScrollablePositionedList.builder(
                               itemScrollController: _itemScrollController,
                               itemPositionsListener: _itemPositionsListener,
-                              // The opening, the ayat, the end.
                               itemCount: ayat.length + 2,
                               padding: context.scrollPadding(
                                 EdgeInsets.fromLTRB(side, 0, side, space.xl),
@@ -599,9 +576,6 @@ class _QuranPageViewState extends State<QuranPageView>
                 },
               ),
             ),
-            // The player rises from the bottom edge while an ayah plays.
-            // Under reduce motion it just appears: a zero-length
-            // AnimatedSize throws (found by `tasbih`).
             LayoutBuilder(
               builder: (context, constraints) {
                 final bar = playing == null
@@ -617,8 +591,6 @@ class _QuranPageViewState extends State<QuranPageView>
                         onNext: playing < ayat.length - 1 ? _nextAyah : null,
                         onOpen: () => _showAyahBottomSheet(playing),
                       );
-                // On the wide page the bar sits under the paper, the
-                // backdrop either side.
                 final sheet = QuranPageView.sheetWidth(
                   Size(constraints.maxWidth, MediaQuery.sizeOf(context).height),
                 );
@@ -653,7 +625,6 @@ class _QuranPageViewState extends State<QuranPageView>
     );
   }
 
-  /// Opens another surah in this reader (the end's previous and next).
   void _openSurah(int number) {
     final open = widget.onOpenSurah;
     if (open != null) {
@@ -953,7 +924,6 @@ class _QuranPageViewState extends State<QuranPageView>
     }
   }
 
-  /// "Al-Baqarah · Ayah 2", the ayah sheet's title.
   String _ayahSheetTitle(int ayah) {
     final l10n = AppLocalizations.of(context)!;
     final language = Localizations.localeOf(context).languageCode;
@@ -1226,7 +1196,6 @@ class _QuranPageViewState extends State<QuranPageView>
 
     debugPrint('🔖 Scrolling to bookmarked ayah $targetAyah');
 
-    // The opening is item 0, so ayah k is item k.
     final int targetIndex = targetAyah;
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -1234,8 +1203,6 @@ class _QuranPageViewState extends State<QuranPageView>
         if (!mounted) return;
         final scrolled = _itemScrollController.scrollTo(
           index: targetIndex,
-          // A found ayah lands a little below the app bar, so its mark
-          // reads as a whole, not cut by the bar's edge.
           alignment: widget.flashAyah ? 0.03 : 0,
           duration: const Duration(milliseconds: 1000),
           curve: Curves.easeInOut,
@@ -1243,7 +1210,6 @@ class _QuranPageViewState extends State<QuranPageView>
         _currentVisibleAyah = targetAyah;
         debugPrint('✅ Scrolled to bookmarked ayah $targetAyah');
         if (!widget.flashAyah) return;
-        // Lit once it has arrived, not while it slides past.
         await scrolled;
         if (!mounted) return;
         widget.onFlashShown?.call();

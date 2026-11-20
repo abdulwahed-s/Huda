@@ -10,17 +10,9 @@ import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:huda/presentation/widgets/qiblah/qiblah_instrument.dart';
 import 'package:huda/presentation/widgets/qiblah/qiblah_states.dart';
 
-/// The Qiblah compass: an immersive night focus screen with the astrolabe
-/// (see `design/features/qiblah/brief.md`). While location is checked the
-/// dial waits unlit; then it turns with the phone and locks when the phone
-/// faces the Qibla. Permission, location-off and failure states each say
-/// what to do, and the screen checks again when Huda returns from the
-/// system settings.
 class QiblahScreen extends StatefulWidget {
   const QiblahScreen({super.key, this.readings});
 
-  /// The compass readings; the device's compass when null. A seam for the
-  /// redesign harness, which can't reach the sensors.
   final Stream<QiblahReading> Function()? readings;
 
   @override
@@ -28,16 +20,12 @@ class QiblahScreen extends StatefulWidget {
 }
 
 class QiblahScreenState extends State<QiblahScreen> {
-  /// The readings for the current location check, made when it succeeds.
   Stream<QiblahReading>? _readings;
 
-  /// The readings failed (no location fix, a sensor error).
   bool _failed = false;
 
-  /// A retry was tapped and its answer hasn't come yet.
   bool _retrying = false;
 
-  /// The person went to the system settings; check again on return.
   bool _awaitingSettings = false;
 
   late final AppLifecycleListener _lifecycle = AppLifecycleListener(
@@ -127,8 +115,6 @@ class QiblahScreenState extends State<QiblahScreen> {
                 QiblahPermissionDeniedForever,
                 QiblahLocationBlockedView(onOpenSettings: _openAppSettings),
               ),
-              // Checking location, then reading the compass: one instrument
-              // throughout, so nothing jumps as the readings arrive.
               QiblahReady() => (
                 'instrument',
                 QiblahInstrument(
@@ -150,8 +136,6 @@ class QiblahScreenState extends State<QiblahScreen> {
               ),
             };
             final isState = key != 'instrument';
-            // No title on screen (the instrument says what it is); screen
-            // readers still hear its name.
             return Semantics(
               container: true,
               explicitChildNodes: true,
@@ -172,7 +156,6 @@ class QiblahScreenState extends State<QiblahScreen> {
   }
 }
 
-/// A full-page state under the transparent immersive bar.
 class _BelowBar extends StatelessWidget {
   const _BelowBar({required this.child});
 
@@ -180,7 +163,6 @@ class _BelowBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    // The scaffold's top padding already clears the transparent bar.
     padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top),
     child: child,
   );

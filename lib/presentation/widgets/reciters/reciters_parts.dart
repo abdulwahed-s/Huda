@@ -16,7 +16,6 @@ import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 import 'package:huda/presentation/widgets/quran_player/player_bar_widget.dart';
 import 'package:huda/presentation/widgets/quran_player/quran_audio_identity.dart';
 
-/// Reciters that share a first letter, in catalog order.
 class ReciterGroup {
   const ReciterGroup(this.letter, this.reciters);
 
@@ -37,10 +36,6 @@ List<ReciterGroup> groupReciters(List<Reciter> reciters) {
   return groups;
 }
 
-/// A reciter and their recitations (riwayat): the name, then a row per
-/// recitation with its count of surahs, how many are on the device, and
-/// Play from the beginning. Tapping a row opens the recitation; on wide
-/// windows the open one is [selected].
 class ReciterCard extends StatelessWidget {
   const ReciterCard({
     super.key,
@@ -55,15 +50,12 @@ class ReciterCard extends StatelessWidget {
 
   final Reciter reciter;
 
-  /// The letter, on the first card that starts with it, where cards flow in
-  /// several columns without letter headings.
   final String? letter;
   final List suwar;
   final int Function(Moshaf moshaf) downloadedCount;
   final Moshaf? selected;
   final void Function(Moshaf moshaf) onOpen;
 
-  /// Rows push a page (phones), rather than fill a pane.
   final bool showChevron;
 
   @override
@@ -120,8 +112,6 @@ class ReciterCard extends StatelessWidget {
   }
 }
 
-/// One recitation of a reciter: its name, counts or download progress,
-/// and Play from the beginning (the voice glyph while it plays).
 class RiwayaRow extends StatelessWidget {
   const RiwayaRow({
     super.key,
@@ -311,7 +301,6 @@ class RiwayaRow extends StatelessWidget {
   }
 }
 
-/// A letter heading the reciters that start with it.
 class ReciterLetter extends StatelessWidget {
   const ReciterLetter(this.letter, {super.key});
 
@@ -339,7 +328,6 @@ class ReciterLetter extends StatelessWidget {
   }
 }
 
-/// Skeleton reciter cards while the catalog loads.
 class ReciterCardSkeleton extends StatelessWidget {
   const ReciterCardSkeleton({super.key, this.rows = 1});
 
@@ -382,8 +370,6 @@ class ReciterCardSkeleton extends StatelessWidget {
   }
 }
 
-/// Wide windows, before a recitation is chosen: the voiceprint large on a
-/// chrome plate, and what to do.
 class ChooseRecitationPane extends StatelessWidget {
   const ChooseRecitationPane({super.key});
 
@@ -395,7 +381,6 @@ class ChooseRecitationPane extends StatelessWidget {
     final theme = Theme.of(context);
     return LayoutBuilder(
       builder: (context, constraints) {
-        // A roomy pane (laptops, large tablets) gets a larger plate.
         final large =
             constraints.maxWidth >= 640 && constraints.maxHeight >= 600;
         return SingleChildScrollView(

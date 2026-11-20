@@ -5,9 +5,6 @@ import 'package:huda/presentation/widgets/home/home_content.dart';
 import 'package:huda/presentation/widgets/home/home_event.dart';
 import 'package:huda/presentation/widgets/home/home_gallery.dart';
 
-/// Classic: every tool in the gallery under the landing band, the day's
-/// event above it. On a tabletop the first two rows sit above the band
-/// with the event, the rest below.
 class ClassicHome extends StatelessWidget {
   const ClassicHome({
     super.key,

@@ -23,13 +23,6 @@ import 'package:huda/presentation/widgets/home_customization/home_customization_
 import 'package:huda/presentation/widgets/home_customization/home_theme_preview.dart';
 import 'package:huda/presentation/widgets/home_customization/unsaved_changes_confirmation.dart';
 
-/// The Home editor ("Edit Home"), standard tier: the three styles side by
-/// side (one tap picks one), then, for the chosen style, its sections
-/// (Quran Journey), the tools on Home and in View More (drag to reorder,
-/// one button moves a tool to the other group) and Restore default layout.
-/// (Path of Prayer places Prayer Times and the Quran Kit itself.)
-/// Close asks before throwing changes away; Save is pinned at the foot,
-/// where a failed save says so with Retry.
 class HomeCustomizationScreen extends StatefulWidget {
   const HomeCustomizationScreen({super.key});
 
@@ -46,7 +39,6 @@ class _HomeCustomizationScreenState extends State<HomeCustomizationScreen> {
   bool _allowPop = false;
   bool _closing = false;
 
-  /// The save in flight was a tap on Retry after a failure.
   bool _retrying = false;
 
   @override
@@ -246,9 +238,6 @@ class _HomeCustomizationScreenState extends State<HomeCustomizationScreen> {
   }
 }
 
-/// Save, pinned at the foot (its surface runs to the edge, its button
-/// above the inset): lit when there's something to save, "Saving…" while
-/// it saves; after a failure, the failure with Retry, then "Retrying…".
 class _SaveBar extends StatelessWidget {
   const _SaveBar({
     required this.state,
@@ -438,8 +427,6 @@ class _CustomizationCanvas extends StatelessWidget {
   }
 }
 
-/// The three styles, each its own preview, name and line; one tap picks
-/// one. Three across where they fit, else a list of choice rows.
 class _StyleChoices extends StatelessWidget {
   const _StyleChoices({required this.selected});
 
@@ -458,8 +445,6 @@ class _StyleChoices extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final scale = MediaQuery.textScalerOf(context).scale(1);
-        // Short windows (phone landscape) get the compact list: three tall
-        // previews would fill the screen.
         final across =
             !context.windowClass.isCompactHeight &&
             constraints.maxWidth >= 3 * 112 * scale + 2 * space.sm;
@@ -720,8 +705,6 @@ class _FeatureReorderGrid extends StatelessWidget {
   }
 }
 
-/// A group's tools, or (empty) a quiet dashed place that says what it's
-/// for; the change cross-fades and eases its size.
 class _GroupBody extends StatelessWidget {
   const _GroupBody({
     required this.empty,

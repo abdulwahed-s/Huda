@@ -10,10 +10,6 @@ import 'package:huda/presentation/widgets/audio/audiobook_swatch.dart';
 import 'package:huda/presentation/widgets/design/huda_states.dart';
 import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 
-/// The recording at the head of its page: its swatch with an eye per
-/// chapter (those heard filled, the one to resume ringed; it weaves in as
-/// the page opens), the title, who prepared it, how many chapters and the
-/// language.
 class AudioDetailHero extends StatelessWidget {
   const AudioDetailHero({
     super.key,
@@ -28,14 +24,12 @@ class AudioDetailHero extends StatelessWidget {
     this.swatchWidth = 360,
   });
 
-  /// The swatch's largest width (smaller on short windows).
   final double swatchWidth;
   final int seed;
   final String title;
   final String author;
   final int chapters;
 
-  /// The chapter playing or to resume; null before the first listen.
   final int? current;
   final double fraction;
   final String? language;
@@ -102,9 +96,6 @@ class AudioDetailHero extends StatelessWidget {
   }
 }
 
-/// Play (or Resume chapter n, or Pause) and the download control, side by
-/// side; stacked when the row is narrow for the text size. A failed
-/// download says so under them with Retry.
 class AudioDetailActions extends StatelessWidget {
   const AudioDetailActions({
     super.key,
@@ -121,8 +112,6 @@ class AudioDetailActions extends StatelessWidget {
   final IconData playIcon;
   final VoidCallback? onPlay;
 
-  /// Null when the recording can't be downloaded (its details aren't
-  /// loaded, or the platform can't).
   final VoidCallback? onDownload;
   final VoidCallback onRemove;
 
@@ -263,7 +252,6 @@ class _DownloadButton extends StatelessWidget {
   }
 }
 
-/// What the recording is about: a few lines, then Read more.
 class AudioDetailAbout extends StatefulWidget {
   const AudioDetailAbout({super.key, required this.text});
 
@@ -326,9 +314,6 @@ class _AudioDetailAboutState extends State<AudioDetailAbout> {
   }
 }
 
-/// The recording's chapters: number, title and size; the one playing
-/// lit with its state. Tap a chapter to play it; tap the one playing to
-/// pause or resume it.
 class AudioDetailChapters extends StatelessWidget {
   const AudioDetailChapters({
     super.key,
@@ -341,10 +326,8 @@ class AudioDetailChapters extends StatelessWidget {
 
   final List<AudioTrack> tracks;
 
-  /// The chapter listening stopped at, marked while nothing plays it.
   final int resume;
 
-  /// The chapter the player is on (this recording only), or -1.
   final int current;
   final bool playing;
   final ValueChanged<int> onTap;
@@ -396,8 +379,6 @@ class AudioDetailChapters extends StatelessWidget {
   }
 }
 
-/// One chapter: its number (or, when it's the one playing, a lit mark),
-/// its title and size, and what a tap does at the end.
 class AudiobookChapterRow extends StatelessWidget {
   const AudiobookChapterRow({
     super.key,
@@ -414,7 +395,6 @@ class AudiobookChapterRow extends StatelessWidget {
   final bool current;
   final bool playing;
 
-  /// Where listening stopped: a bookmark instead of the number.
   final bool resume;
   final VoidCallback onTap;
 
@@ -510,8 +490,6 @@ class AudiobookChapterRow extends StatelessWidget {
   }
 }
 
-/// The page's skeleton while the recording loads: the swatch, the title,
-/// the buttons and a few chapter rows.
 class AudioDetailSkeleton extends StatelessWidget {
   const AudioDetailSkeleton({super.key});
 

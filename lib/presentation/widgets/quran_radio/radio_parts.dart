@@ -10,12 +10,8 @@ import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 import 'package:huda/presentation/widgets/quran_player/player_bar_widget.dart';
 import 'package:huda/presentation/widgets/quran_player/quran_audio_identity.dart';
 
-/// What the station that's on is doing.
 enum RadioStatus { connecting, live, paused }
 
-/// A station: its mark (the voice glyph while it's live, the lamp while it
-/// connects), its name and, while it's on, its status. Tapping plays it,
-/// or pauses and resumes it while it's on.
 class RadioStationTile extends StatelessWidget {
   const RadioStationTile({
     super.key,
@@ -26,7 +22,6 @@ class RadioStationTile extends StatelessWidget {
 
   final RadioStation station;
 
-  /// Null when it isn't the station that's on.
   final RadioStatus? status;
   final VoidCallback onTap;
 
@@ -147,9 +142,6 @@ String radioStatusLabel(AppLocalizations l10n, RadioStatus status) =>
       RadioStatus.paused => l10n.radioPaused,
     };
 
-/// The station that's on, pinned under the stations: a lit line along its
-/// top edge while it's live, the vine's curl turning, its status and name,
-/// play or pause, and stop. Night chrome to the screen edge.
 class RadioBar extends StatelessWidget {
   const RadioBar({
     super.key,
@@ -182,8 +174,6 @@ class RadioBar extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // The bar's top edge, as the player's; a live stream has no
-          // progress, so it's lit while it plays.
           Container(
             height: 3,
             color: status == RadioStatus.live
@@ -253,7 +243,6 @@ class RadioBar extends StatelessWidget {
   }
 }
 
-/// Skeleton station tiles while the stations load.
 class RadioStationSkeleton extends StatelessWidget {
   const RadioStationSkeleton({super.key});
 

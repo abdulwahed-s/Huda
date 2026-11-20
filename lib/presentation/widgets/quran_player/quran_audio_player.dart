@@ -20,12 +20,10 @@ import 'package:huda/presentation/widgets/quran_home/quran_index_widgets.dart';
 import 'package:huda/presentation/widgets/quran_player/player_bar_widget.dart';
 import 'package:huda/presentation/widgets/quran_player/quran_audio_identity.dart';
 
-/// Opens the full player over the current screen: it rises from the bar.
 Future<void> showQuranAudioPlayer(BuildContext context) {
   final player = context.read<QuranPlayerCubit>();
   final bar = context.read<PlayerBarCubit>();
   final navigator = Navigator.of(context);
-  // The page reads Lantern tokens from the opener's route-level scope.
   final themes = InheritedTheme.capture(from: context, to: navigator.context);
   final motion = context.tokens.motion;
   final duration = motion.of(context, motion.long);
@@ -60,11 +58,6 @@ Future<void> showQuranAudioPlayer(BuildContext context) {
   );
 }
 
-/// The full player, a night focus screen: the surah's name in the
-/// Mushaf's calligraphy between two vines, which surah of the recitation,
-/// the reciter, the seek slider, and the transport. Side by side
-/// on wide and landscape windows, split at a half-open fold (book: art and
-/// controls on either side; tabletop: art above, controls below).
 class QuranAudioPlayerPage extends StatefulWidget {
   const QuranAudioPlayerPage({super.key});
 
@@ -74,7 +67,6 @@ class QuranAudioPlayerPage extends StatefulWidget {
 
 class _QuranAudioPlayerPageState extends State<QuranAudioPlayerPage>
     with SingleTickerProviderStateMixin {
-  /// The vines growing in as the player opens (the signature motion).
   late final AnimationController _reveal = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 900),
@@ -85,8 +77,6 @@ class _QuranAudioPlayerPageState extends State<QuranAudioPlayerPage>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Once, as the player opens; a new surah doesn't redraw them (owner
-    // round 1).
     if (_traced) return;
     _traced = true;
     _trace();
@@ -119,7 +109,6 @@ class _QuranAudioPlayerPageState extends State<QuranAudioPlayerPage>
     return HudaNight(
       child: BlocConsumer<QuranPlayerCubit, QuranPlayerState>(
         listener: (context, state) {
-          // Stopped from elsewhere (the notification, another audio).
           if (state is QuranPlayerInitial || state is QuranPlayerError) {
             _close();
           }
@@ -181,7 +170,6 @@ class _PlayerBody extends StatelessWidget {
     final space = context.tokens.space;
     final fold = FoldInfo.of(context);
     final sideChrome = HudaChromeFrame.hasSideChrome(context);
-    // The bar floats over the page; content starts below it.
     final top = media.padding.top + (sideChrome ? space.md : kToolbarHeight);
     final pad = EdgeInsets.fromLTRB(
       media.padding.left + space.lg,
@@ -195,7 +183,6 @@ class _PlayerBody extends StatelessWidget {
     final controls = _PlayerControls(state: state, index: index);
 
     if (TabletopSplit.applies(context)) {
-      // Things to look at above the fold, controls below it.
       return TabletopSplit(
         top: Padding(
           padding: EdgeInsets.fromLTRB(pad.left, top, pad.right, space.md),
@@ -213,8 +200,6 @@ class _PlayerBody extends StatelessWidget {
       );
     }
 
-    // A vertical fold splits art and controls at the crease, flat too, so
-    // nothing moves when the device bends.
     if (fold.hasFold && fold.splitsHorizontally && size.width >= 640) {
       final rtl = Directionality.of(context) == TextDirection.rtl;
       final leading = rtl ? size.width - fold.end : fold.start;
@@ -288,7 +273,6 @@ class _PlayerBody extends StatelessWidget {
   }
 }
 
-/// Centers [child] in the room it has, and scrolls when it doesn't fit.
 class _Scrolling extends StatelessWidget {
   const _Scrolling({required this.child, required this.padding});
 
@@ -314,8 +298,6 @@ class _Scrolling extends StatelessWidget {
   }
 }
 
-/// The surah's name in the Mushaf's calligraphy, then which surah of the
-/// recitation, its name and the reciter.
 class _PlayerArt extends StatelessWidget {
   const _PlayerArt({
     required this.state,
@@ -326,7 +308,6 @@ class _PlayerArt extends StatelessWidget {
   final QuranPlayerPlaying state;
   final int index;
 
-  /// Grows the vines in (the signature motion).
   final Animation<double> reveal;
 
   @override
@@ -338,7 +319,6 @@ class _PlayerArt extends StatelessWidget {
     final surah = surahNumberAt(state, index);
     final large = MediaQuery.sizeOf(context).shortestSide >= 600;
     final short = MediaQuery.sizeOf(context).height < 700;
-    // The vine above the name and below the reciter, growing in.
     Widget vine() => ConstrainedBox(
       constraints: BoxConstraints(maxWidth: large ? 420 : 300),
       child: Ornament(
@@ -350,7 +330,6 @@ class _PlayerArt extends StatelessWidget {
         ),
       ),
     );
-    // The vines stay; only the surah's name and titles fade to the next.
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -420,8 +399,6 @@ class _PlayerArt extends StatelessWidget {
   }
 }
 
-/// The seek slider with the times, the transport, and shuffle, repeat and
-/// speed.
 class _PlayerControls extends StatelessWidget {
   const _PlayerControls({required this.state, required this.index});
 
@@ -446,7 +423,6 @@ class _PlayerControls extends StatelessWidget {
           builder: (context, constraints) => StreamBuilder<PlayerState>(
             stream: player.playerStateStream,
             builder: (context, snap) {
-              // Narrow columns (the Duo closed in landscape) keep one row.
               final tight = constraints.maxWidth < 340;
               final ps = snap.data;
               final playing = ps?.playing ?? player.playing;
@@ -577,7 +553,6 @@ class _PlayerControls extends StatelessWidget {
   }
 }
 
-/// A two-state player option: lit while on.
 class _Toggle extends StatelessWidget {
   const _Toggle({
     required this.tooltip,
@@ -673,9 +648,6 @@ class _SpeedButton extends StatelessWidget {
   }
 }
 
-/// The seek control: a lit slider with the times under it. Material's
-/// slider brings TalkBack and VoiceOver steps and the arrow keys; it reads
-/// the position as a time.
 class QuranSeekBand extends StatefulWidget {
   const QuranSeekBand({super.key, required this.player});
 
@@ -722,8 +694,6 @@ class _QuranSeekBandState extends State<QuranSeekBand> {
           children: [
             Semantics(
               label: l10n.quranAudioPosition,
-              // Lit in the warm on-chrome tone: the theme's lit fill is
-              // the chrome itself and vanishes on the night page.
               child: SliderTheme(
                 data: SliderTheme.of(context).copyWith(
                   trackHeight: large ? 6 : 4,
@@ -735,8 +705,6 @@ class _QuranSeekBandState extends State<QuranSeekBand> {
                   overlayColor: tokens.onChrome.withValues(alpha: 0.12),
                 ),
                 child: Slider(
-                  // A quiet track on the night chrome (the theme's own one
-                  // reads warm there).
                   inactiveColor: tokens.onChromeMuted.withValues(alpha: 0.25),
                   value: value,
                   max: ms > 0 ? ms.toDouble() : 1,

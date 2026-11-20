@@ -30,17 +30,9 @@ import 'package:huda/presentation/widgets/home/home_content.dart';
 import 'package:huda/presentation/widgets/home/home_identity.dart';
 import 'package:huda/presentation/widgets/privacy/foss_crash_reporting_consent_prompt.dart';
 
-/// Home: the hall of lamps (see `home_identity.dart`) in the person's
-/// chosen style. Owns where Home's pieces go, refreshes Home's data when a
-/// page it opened closes and on resume, picks up a layout saved in
-/// Settings (Home's editor lives there) when it's back on top, runs the
-/// startup dialogs, and asks before Android's Back leaves the app.
 class Home extends StatefulWidget {
   const Home({super.key, this.startupDialogs = true});
 
-  /// Whether Home runs its startup dialogs (crash-report consent, update,
-  /// what's new, rating). Off only in tests: they read the platform and
-  /// the network.
   final bool startupDialogs;
 
   @override
@@ -72,8 +64,6 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
     if (localizations != null) {
       context.read<PrayerTimesCubit>().setLocalizations(localizations);
     }
-    // Back on top (Settings closed, perhaps with a new layout saved in
-    // Home's editor): read the layout again.
     final current = ModalRoute.isCurrentOf(context) ?? true;
     if (current && !_wasCurrent) {
       context.read<HomeCustomizationCubit>().load();
@@ -214,7 +204,6 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
     }
   }
 
-  /// Opens a surah: at [ayahNumber], or (null) where the reading stopped.
   Future<void> _openSurah(int surahNumber, int? ayahNumber) async {
     try {
       final quranCubit = QuranCubit();
@@ -253,8 +242,6 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
     if (mounted) _refreshHomeData();
   }
 
-  // On a half-open fold the dialog goes to the trailing half, where it
-  // will be when the device closes.
   Future<bool> _confirmExit() async {
     final size = MediaQuery.sizeOf(context);
     final rtl = Directionality.of(context) == TextDirection.rtl;

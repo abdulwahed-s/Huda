@@ -9,8 +9,6 @@ import 'package:huda/presentation/widgets/prayer_alerts/prayer_alert_sheet.dart'
 import 'package:huda/presentation/widgets/prayer_alerts/prayer_alert_widgets.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_palette.dart';
 
-/// "Send a test": a real alert for a prayer with its saved settings, about
-/// ten seconds later, and what happened in plain words.
 class PrayerAlertTestTile extends StatefulWidget {
   const PrayerAlertTestTile({
     super.key,
@@ -20,7 +18,6 @@ class PrayerAlertTestTile extends StatefulWidget {
 
   final String initialPrayer;
 
-  /// On a prayer's own page the prayer can't be changed.
   final bool fixedPrayer;
 
   @override
@@ -36,7 +33,6 @@ class _PrayerAlertTestTileState extends State<PrayerAlertTestTile> {
   PrayerTestOutcome? _outcome;
   PrayerAlertController<Object?>? _controller;
 
-  /// Desktop shows it after the wait, while Huda is open; phones schedule it.
   bool get _delayed => PlatformUtils.isDesktop;
 
   @override

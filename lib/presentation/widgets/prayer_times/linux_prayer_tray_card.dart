@@ -142,8 +142,6 @@ class _LinuxPrayerTrayCardState extends State<LinuxPrayerTrayCard> {
                         label: Text(l10n.linuxPrayerTrayInstall),
                       ),
                     ],
-                    // Reminders need the service at login even without the
-                    // panel, so this switch doesn't wait for the extension.
                     Row(
                       children: [
                         Expanded(child: Text(l10n.linuxPrayerTrayStartAtLogin)),

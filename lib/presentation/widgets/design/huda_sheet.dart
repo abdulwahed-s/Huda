@@ -8,17 +8,6 @@ import 'package:huda/core/theme/huda_system_ui.dart';
 import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/presentation/widgets/design/huda_app_bars.dart';
 
-/// The adaptive sheet presenter: a bottom sheet on compact width, a dialog
-/// on medium and wider, and optionally a side sheet on expanded windows.
-///
-/// A flat fold is one screen: the sheet centers on the whole window, as on
-/// a tablet of that size, even across the crease. A half-open fold (book or
-/// tabletop), or a fold with a width (a hinge), splits the screen: the sheet
-/// stays on the trailing side of a vertical fold (where the content will be
-/// when the device closes) or the bottom of a horizontal one, and inside it
-/// `MediaQuery.sizeOf` is that side, so content sizes itself to the space it
-/// really has. Flutter's routes keep it there from the [anchorPoint]. See
-/// `design/RESPONSIVE.md`, "A flat fold is one screen".
 Future<T?> showHudaSheet<T>({
   required BuildContext context,
   required String title,
@@ -32,8 +21,6 @@ Future<T?> showHudaSheet<T>({
   final size = MediaQuery.sizeOf(context);
   final rtl = Directionality.of(context) == TextDirection.rtl;
   final fold = FoldInfo.of(context);
-  // The folds Flutter's dialog and sheet routes avoid. A flat zero-width
-  // fold isn't one of them, and shouldn't be.
   final split = fold.avoided;
   final vertical = split && fold.splitsHorizontally;
   final horizontal = split && !fold.splitsHorizontally;
@@ -42,7 +29,6 @@ Future<T?> showHudaSheet<T>({
     horizontal ? size.height : size.height / 2,
   );
 
-  // The side the sheet lives on, and how far it is from each window edge.
   var side = EdgeInsets.zero;
   if (vertical) {
     side = rtl
@@ -57,15 +43,10 @@ Future<T?> showHudaSheet<T>({
     child: child,
   );
 
-  // Side sheets suit secondary panels (filters, details) on wide windows,
-  // flat folds included; on a split screen the dialog keeps to one side.
   if (sideSheet &&
       context.windowClass.width >= WindowWidthClass.expanded &&
       !split) {
     final barrier = MaterialLocalizations.of(context).modalBarrierDismissLabel;
-    // Unlike showDialog, showGeneralDialog doesn't carry the screen's
-    // themes (a route-level theme such as `HudaNight`) into the overlay
-    // (found by `quran`).
     final curve = tokens.motion.standard;
     final themes = InheritedTheme.capture(
       from: context,
@@ -92,8 +73,6 @@ Future<T?> showHudaSheet<T>({
                   ),
                 ),
                 clipBehavior: Clip.antiAlias,
-                // Top and trailing insets; the frame adds the bottom one
-                // inside its scroll view.
                 child: SafeArea(
                   left: !rtl,
                   right: rtl,
@@ -125,18 +104,12 @@ Future<T?> showHudaSheet<T>({
     );
   }
 
-  // A scrim tinted from the chrome, and no motion under reduce motion.
   final scrim = tokens.chrome.withValues(alpha: 0.55);
   const motion = HudaMotion();
   final instant = motion.of(context, motion.long) == Duration.zero;
   final style = instant ? AnimationStyle.noAnimation : null;
 
   if (context.windowClass.isCompact) {
-    // Edge to edge: the surface runs under the side insets (the iPhone
-    // Duo's side column) and the navigation bar, and the frame insets its
-    // content. Only the top stays below the status bar.
-    // Beside the iPhone Duo's side column the sheet also stays below the
-    // column's camera and status items, so no corner reaches under them.
     final column = SideChrome.sideOf(context);
     final top = column == null
         ? MediaQuery.viewPaddingOf(context).top
@@ -144,8 +117,6 @@ Future<T?> showHudaSheet<T>({
             MediaQuery.viewPaddingOf(context).top,
             SideChrome.freeTop(context, column),
           );
-    // Beside the iPhone Duo's side column the frame draws the handle, so it
-    // centers on the content like everything else in the sheet.
     final ownHandle = column != null;
     return showModalBottomSheet<T>(
       context: context,
@@ -180,7 +151,6 @@ Future<T?> showHudaSheet<T>({
     animationStyle: style,
     builder: (context) => onSide(
       context,
-      // Beside the iPhone Duo's side column, centered on the content.
       Padding(
         padding: SideChrome.clearance(context),
         child: Builder(
@@ -203,8 +173,6 @@ Future<T?> showHudaSheet<T>({
   );
 }
 
-/// The shared sheet and dialog layout: a title (with a close button in
-/// dialogs), then scrolling content.
 class HudaSheetFrame extends StatelessWidget {
   const HudaSheetFrame({
     super.key,
@@ -219,28 +187,14 @@ class HudaSheetFrame extends StatelessWidget {
 
   final String title;
 
-  /// A row pinned under the scrolling content (the sheet's actions), so
-  /// they stay in reach on short windows. Its background is the sheet's;
-  /// on bottom sheets it takes the bottom inset. Ignored with [expand].
   final Widget? footer;
 
-  /// For sheets with their own pages (a nested navigator): no title row
-  /// and no scroll view here; [child] fills the sheet (a bottom sheet up to
-  /// its full height, a dialog up to 760 tall, a side sheet) and lays out
-  /// its own header, scrolling and bottom inset (`MediaQuery.paddingOf`).
-  /// [title] still names the route for screen readers.
   final bool expand;
   final Widget child;
   final bool dialog;
 
-  /// Draws the bottom sheet's drag handle inside the side insets (the
-  /// route's own handle centers on the whole window).
   final bool dragHandle;
 
-  /// Whether the surface runs to the screen's bottom edge (bottom and side
-  /// sheets). Its background then continues under the navigation bar and
-  /// the content takes the inset as end padding inside the scroll view.
-  /// Defaults to `!dialog`.
   final bool? reachesBottom;
 
   @override
@@ -279,7 +233,6 @@ class HudaSheetFrame extends StatelessWidget {
                       ),
                     ),
                   ),
-                // Dialogs end above the screen's edge: no bottom inset.
                 Expanded(
                   child: edge
                       ? child
@@ -388,7 +341,6 @@ class HudaSheetFrame extends StatelessWidget {
       ],
     );
     if (!edge) return frame;
-    // The sheet is what's under the navigation bar now.
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: HudaSystemUi.over(top: surface, bottom: surface),
       child: frame,

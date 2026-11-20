@@ -10,8 +10,6 @@ import 'package:huda/presentation/widgets/design/huda_lamp.dart';
 import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 import 'package:huda/presentation/widgets/miqaat_lock/miqaat_lock_format.dart';
 
-/// What the lock still needs from the system, led by a lit lamp: one row
-/// per permission (a tick once allowed) and "Check again".
 class MiqaatAccessCard extends StatelessWidget {
   const MiqaatAccessCard({
     super.key,
@@ -140,7 +138,6 @@ class MiqaatAccessCard extends StatelessWidget {
   }
 }
 
-/// An app's icon from the system, or a plain mark.
 class MiqaatAppIcon extends StatelessWidget {
   const MiqaatAppIcon(this.app, {super.key});
 
@@ -167,8 +164,6 @@ class MiqaatAppIcon extends StatelessWidget {
   }
 }
 
-/// The apps the lock closes. Android lists them, each removable; iOS
-/// shows Screen Time's count. One "Add apps" row opens the chooser.
 class MiqaatAppsSection extends StatelessWidget {
   const MiqaatAppsSection({
     super.key,
@@ -182,7 +177,6 @@ class MiqaatAppsSection extends StatelessWidget {
   final VoidCallback onAdd;
   final ValueChanged<LockedApp> onRemove;
 
-  /// Screen Time's selection on iOS (null elsewhere).
   final ({int apps, int categories})? iosCount;
 
   @override
@@ -249,7 +243,6 @@ class MiqaatAppsSection extends StatelessWidget {
   }
 }
 
-/// The lock's time windows (up to five): tap one to edit it.
 class MiqaatWindowsSection extends StatelessWidget {
   const MiqaatWindowsSection({
     super.key,
@@ -315,8 +308,6 @@ class MiqaatWindowsSection extends StatelessWidget {
   }
 }
 
-/// How long to spend in Huda each window: the usual lengths one tap
-/// away, any other length through Custom.
 class MiqaatGoalSection extends StatelessWidget {
   const MiqaatGoalSection({
     super.key,

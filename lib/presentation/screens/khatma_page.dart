@@ -17,22 +17,15 @@ import 'package:huda/presentation/widgets/notifications/notification_requirement
 import 'package:huda/presentation/widgets/notifications/permission_handlers.dart';
 import 'package:huda/presentation/widgets/design/huda_time_picker.dart';
 
-/// Opens the Khatma in the shared sheet: a bottom sheet on phones, a
-/// dialog from medium width. Its height follows the step. The Quran
-/// reader's More menu opens it.
 Future<void> showKhatmaSheet(BuildContext context) => showHudaSheet<void>(
   context: context,
   title: AppLocalizations.of(context)!.khatmaLegendKhatma,
-  // Wide windows get two columns: the road and today beside the rest.
   maxDialogWidth: context.windowClass.width >= WindowWidthClass.expanded
       ? 880
       : 640,
   builder: (_) => const KhatmaPage(),
 );
 
-/// The Khatma: choose a pace and where to start, then follow the road one
-/// portion a day. Lives inside its sheet (see [showKhatmaSheet]); the
-/// sheet scrolls it.
 class KhatmaPage extends StatefulWidget {
   const KhatmaPage({super.key});
 
@@ -47,14 +40,11 @@ class _KhatmaPageState extends State<KhatmaPage> {
   _Step _step = _Step.setup;
   int _days = khatmaSuggestedPace;
 
-  /// Setup was reached from a finished khatma (it has a way back).
   bool _setupFromCompleted = false;
   _Step _scheduleBack = _Step.active;
   bool _reminderEnabled = false;
   TimeOfDay _reminderTime = const TimeOfDay(hour: 19, minute: 0);
 
-  /// Where the road was last shown, so a view that appears walks on from
-  /// there instead of drawing in again. 0 on open: the road draws in.
   double _trailShown = 0;
 
   @override
@@ -83,7 +73,6 @@ class _KhatmaPageState extends State<KhatmaPage> {
 
   void _go(_Step step) => setState(() => _step = step);
 
-  /// A new step starts at the top of the sheet.
   @override
   void setState(VoidCallback fn) {
     final before = _step;
@@ -103,8 +92,6 @@ class _KhatmaPageState extends State<KhatmaPage> {
     });
   }
 
-  /// Where the Khatma's own dialogs open: its trailing bottom corner of the
-  /// whole window, so on a half-open fold they share the sheet's half.
   Offset get _anchor {
     final view = View.of(context);
     final size = view.physicalSize / view.devicePixelRatio;
@@ -112,7 +99,6 @@ class _KhatmaPageState extends State<KhatmaPage> {
     return Offset(rtl ? 0 : size.width, size.height);
   }
 
-  // Plan ------------------------------------------------------------------
 
   Future<void> _start(int fromDay) async {
     HudaHaptics.light(context);
@@ -131,7 +117,6 @@ class _KhatmaPageState extends State<KhatmaPage> {
     await _service.markTodayDone();
     if (!mounted) return;
     final after = _service.totalPagesRead;
-    // A juz finished or the whole khatma: a milestone. Otherwise a check.
     if (_service.isCompleted ||
         KhatmaJourney.juzDone(after) > KhatmaJourney.juzDone(before)) {
       HudaHaptics.medium(context);
@@ -197,7 +182,6 @@ class _KhatmaPageState extends State<KhatmaPage> {
     );
   }
 
-  // Reminder --------------------------------------------------------------
 
   Future<void> _pickReminderTime() async {
     final picked = await showHudaTimePicker(
@@ -237,7 +221,6 @@ class _KhatmaPageState extends State<KhatmaPage> {
     if (mounted) setState(() => _reminderEnabled = value);
   }
 
-  /// The orchestrator reads the saved reminder setting.
   Future<void> _syncReminder() => NotificationOrchestrator.shared.requestSync(
     'khatma-reminder',
     categories: {ReminderCategory.reminder},
@@ -247,7 +230,6 @@ class _KhatmaPageState extends State<KhatmaPage> {
     if (_reminderEnabled) await _syncReminder();
   }
 
-  // Views -----------------------------------------------------------------
 
   String _relativeDay(AppLocalizations l10n) {
     final started = _service.startedAt;
@@ -273,7 +255,6 @@ class _KhatmaPageState extends State<KhatmaPage> {
     return l10n.khatmaManyDaysAgo(ago);
   }
 
-  /// The days the khatma took, from its start to today.
   int _journeyDays() {
     final started = _service.startedAt;
     if (started == null) return _service.planDays;

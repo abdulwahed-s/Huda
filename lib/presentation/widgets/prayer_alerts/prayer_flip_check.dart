@@ -6,8 +6,6 @@ import 'package:huda/core/services/service_locator.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_palette.dart';
 
-/// Android: checks that this phone recognizes a flip, without playing the
-/// adhan. Hold the phone, turn it face down, and see "Flip detected".
 class PrayerFlipCheck extends StatefulWidget {
   const PrayerFlipCheck({super.key});
 

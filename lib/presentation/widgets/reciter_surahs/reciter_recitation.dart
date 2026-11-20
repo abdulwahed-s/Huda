@@ -23,7 +23,6 @@ import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 import 'package:huda/presentation/widgets/quran_player/player_bar_widget.dart';
 import 'package:huda/presentation/widgets/quran_player/quran_audio_identity.dart';
 
-/// One surah of a recitation.
 @immutable
 class RecitationSurah {
   const RecitationSurah({
@@ -32,13 +31,11 @@ class RecitationSurah {
     required this.name,
   });
 
-  /// Its place in the recitation's playlist.
   final int index;
   final int number;
   final String name;
 }
 
-/// The surahs of [moshaf], named from the catalog's [jsonData].
 List<RecitationSurah> recitationSurahs(Moshaf moshaf, List jsonData) {
   final numbers = moshaf.surahList.toString().split(',');
   return [
@@ -58,10 +55,6 @@ List<RecitationSurah> recitationSurahs(Moshaf moshaf, List jsonData) {
   ];
 }
 
-/// A reciter's recitation: its plate (the vine, the counts and Download
-/// all), the search, and its surahs (tap to play, download each). The page on phones and the detail pane beside the
-/// reciters on wide windows; [showName] puts the reciter's name on the
-/// plate where no app bar says it.
 class ReciterRecitationView extends StatefulWidget {
   const ReciterRecitationView({
     super.key,
@@ -193,7 +186,6 @@ class _ReciterRecitationViewState extends State<ReciterRecitationView> {
     final scale = MediaQuery.textScalerOf(context).scale(1).clamp(1.0, 2.0);
 
     return BlocListener<DownloadProgressCubit, DownloadProgressState>(
-      // A surah finished: its mark and the plate's lobe fill in.
       listenWhen: (a, b) =>
           a.progress.length != b.progress.length ||
           a.batchProgress.length != b.batchProgress.length,
@@ -287,7 +279,6 @@ class _ReciterRecitationViewState extends State<ReciterRecitationView> {
             final fold = FoldInfo.of(context);
             final insets = MediaQuery.paddingOf(context);
             if (fold.isTabletop) {
-              // The plate and the search above the fold, the surahs below.
               return QuranAudioTabletop(
                 head: head,
                 slivers: [
@@ -297,8 +288,6 @@ class _ReciterRecitationViewState extends State<ReciterRecitationView> {
               );
             }
             if (fold.isBook) {
-              // The plate and the search on one side of the fold, the
-              // surahs on the other.
               final size = MediaQuery.sizeOf(context);
               final rtl = Directionality.of(context) == TextDirection.rtl;
               final leading = rtl ? size.width - fold.end : fold.start;
@@ -377,8 +366,6 @@ class _ReciterRecitationViewState extends State<ReciterRecitationView> {
   }
 }
 
-/// Which surah of this recitation plays, which is loading, and whether
-/// it's sounding, from the player's state and streams.
 class _Playback extends StatelessWidget {
   const _Playback({
     required this.state,
@@ -411,10 +398,6 @@ class _Playback extends StatelessWidget {
             state.moshaf.id == moshaf.id
         ? state.audioPlayer
         : null;
-    // The same two stream builders whatever the player is doing (null
-    // streams while it plays something else), so the page below keeps its
-    // state: the plate's vine grows in once, not again on every surah
-    // (owner round 2).
     return StreamBuilder<int?>(
       stream: player?.currentIndexStream,
       builder: (context, indexSnap) {
@@ -449,8 +432,6 @@ class _Playback extends StatelessWidget {
   }
 }
 
-/// Caps a sliver's cross axis, centered (content at a readable width on
-/// wide windows).
 class SliverCrossAxisConstrained extends StatelessWidget {
   const SliverCrossAxisConstrained({
     super.key,
@@ -476,9 +457,6 @@ class SliverCrossAxisConstrained extends StatelessWidget {
   }
 }
 
-/// The recitation's plate: night chrome with the reciter (in a pane), the
-/// riwaya, the vine (growing in once as it opens) and Download all with its
-/// progress.
 class RecitationPlate extends StatefulWidget {
   const RecitationPlate({
     super.key,
@@ -537,7 +515,6 @@ class _RecitationPlateState extends State<RecitationPlate>
     final theme = Theme.of(context);
     final downloadedCount = widget.downloaded.length;
     final total = widget.surahs.length;
-    // Short windows keep the plate low so the surahs show under it.
     final short = MediaQuery.sizeOf(context).height < 480;
 
     final meta = [
@@ -673,9 +650,6 @@ class _RecitationPlateState extends State<RecitationPlate>
   }
 }
 
-/// A surah of the recitation: its number (the voice glyph while it plays,
-/// the lamp while it loads), name and verses, and its download: a button,
-/// the progress, or a mark once it's on the device. Tapping plays it.
 class RecitationSurahRow extends StatelessWidget {
   const RecitationSurahRow({
     super.key,

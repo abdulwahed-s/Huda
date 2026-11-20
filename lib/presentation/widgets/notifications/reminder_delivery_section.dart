@@ -12,11 +12,8 @@ import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 import 'package:huda/presentation/widgets/design/huda_toast.dart';
 import 'package:intl/intl.dart';
 
-/// Shows a toast from the page (outside any pane, so it sees the fold).
 typedef ReminderToast = void Function(String message, {HudaToastKind kind});
 
-/// Whether reminders reach the user: the desktop companions' status and the
-/// test notification, as one "Check delivery" section.
 class ReminderDeliverySection extends StatelessWidget {
   const ReminderDeliverySection({super.key, required this.toast});
 
@@ -45,8 +42,6 @@ class ReminderDeliverySection extends StatelessWidget {
   }
 }
 
-/// A delivery line: a lamp (lit when it works, unlit when it needs a
-/// hand), what's happening, and an optional action.
 class _DeliveryCard extends StatelessWidget {
   const _DeliveryCard({
     required this.ready,
@@ -113,7 +108,6 @@ class _DeliveryCard extends StatelessWidget {
   }
 }
 
-/// Linux reminders come from Huda's background service.
 class _LinuxReminderStatus extends StatelessWidget {
   const _LinuxReminderStatus();
 
@@ -146,9 +140,6 @@ class _LinuxReminderStatus extends StatelessWidget {
   }
 }
 
-/// Windows toasts cannot repeat: the companion renews them while it runs, so
-/// reminders keep going only if it starts with Windows. Otherwise this shows
-/// when the queued reminders run out.
 class _WindowsReminderStatus extends StatelessWidget {
   const _WindowsReminderStatus({required this.toast});
 
@@ -214,8 +205,6 @@ class _WindowsReminderStatus extends StatelessWidget {
   }
 }
 
-/// Sends a notification through the same path as real reminders, and says
-/// why when it can't (README decision 6).
 class _TestNotificationCard extends StatefulWidget {
   const _TestNotificationCard({required this.toast});
 

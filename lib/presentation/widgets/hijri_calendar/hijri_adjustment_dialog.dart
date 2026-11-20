@@ -9,7 +9,6 @@ import 'package:huda/presentation/widgets/design/huda_states.dart';
 import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 import 'package:huda/presentation/widgets/hijri_calendar/calendar_identity.dart';
 
-/// How Huda shows Hijri dates: Umm al-Qura, or moved by up to two days.
 Future<void> showHijriAdjustmentSheet(
   BuildContext context, {
   required HijriAdjustmentChoice? initialChoice,
@@ -120,7 +119,6 @@ class _HijriAdjustmentSheetState extends State<HijriAdjustmentSheet> {
         ),
         SizedBox(height: space.sm),
         Directionality(
-          // Days run as numbers do: −2 at the start.
           textDirection: TextDirection.ltr,
           child: SegmentedButton<HijriAdjustmentChoice>(
             showSelectedIcon: false,
@@ -253,8 +251,6 @@ class _Choice extends StatelessWidget {
   }
 }
 
-/// The first visit's question, in the page instead of a dialog: the
-/// calendar shows Umm al-Qura dates until it's answered.
 class HijriAdjustmentPrompt extends StatefulWidget {
   const HijriAdjustmentPrompt({
     super.key,

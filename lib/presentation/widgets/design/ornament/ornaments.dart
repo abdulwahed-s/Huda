@@ -6,8 +6,6 @@ import 'package:huda/presentation/widgets/design/ornament/ornament_geometry.dart
 
 export 'ornament_geometry.dart';
 
-/// How an ornament is drawn: its color, stroke and render mode (line,
-/// filled or luminous). Build it from the theme with [OrnamentStyle.of].
 @immutable
 class OrnamentStyle {
   const OrnamentStyle({
@@ -16,15 +14,12 @@ class OrnamentStyle {
     this.stroke = 1,
   });
 
-  /// The theme's ornament for ordinary surfaces ([quiet] behind text) or
-  /// for identity chrome ([onChrome]).
   factory OrnamentStyle.of(
     BuildContext context, {
     bool quiet = false,
     bool onChrome = false,
   }) {
     final tokens = context.tokens;
-    // Gilt glows on the chrome; on surfaces it's engraved line work.
     return OrnamentStyle(
       color: onChrome
           ? tokens.gilt
@@ -61,9 +56,6 @@ class OrnamentStyle {
     ..style = PaintingStyle.fill
     ..color = color.withValues(alpha: color.a * alpha);
 
-  /// Draws [path] in this style: an engraved line, a filled shape with a
-  /// lighter inner line, or a bright line with a soft wide halo (two
-  /// strokes, no blur, so it stays cheap to raster).
   void draw(Canvas canvas, Path path, {bool closed = true}) {
     switch (render) {
       case OrnamentRender.line:
@@ -97,8 +89,6 @@ class OrnamentStyle {
   int get hashCode => Object.hash(color, render, stroke);
 }
 
-/// Paints an ornament in its own repaint boundary. Decorative unless it
-/// has a [semanticLabel].
 class Ornament extends StatelessWidget {
   const Ornament({
     super.key,
@@ -123,8 +113,6 @@ class Ornament extends StatelessWidget {
   }
 }
 
-/// An n-fold rosette: an outer ring, a star of [count] points, petals and
-/// a center. [progress] (0–1) draws it partially, for reveals.
 class RosettePainter extends CustomPainter {
   const RosettePainter({
     required this.style,
@@ -205,15 +193,12 @@ class RosettePainter extends CustomPainter {
       old.rotation != rotation;
 }
 
-/// A tiled field of khatam stars and the crosses between them (girih).
-/// [fade] fades the field out toward one side, so it can sit beside text.
 class StarFieldPainter extends CustomPainter {
   const StarFieldPainter({required this.style, this.module = 48, this.fade});
 
   final OrnamentStyle style;
   final double module;
 
-  /// The side the field fades toward, or null for an even field.
   final AlignmentGeometry? fade;
 
   @override
@@ -261,8 +246,6 @@ class StarFieldPainter extends CustomPainter {
 
 enum CornerMark { none, square, star }
 
-/// Manuscript ruling (jadwal): concentric rules around the edge, with a
-/// mark at the corners of the inner rule. [rules] are insets.
 class RuledFramePainter extends CustomPainter {
   const RuledFramePainter({
     required this.style,
@@ -316,8 +299,6 @@ class RuledFramePainter extends CustomPainter {
       old.style != style || old.corners != corners || old.rules != rules;
 }
 
-/// A horizontal double rule with a small medallion at [medallionAt]
-/// (0 start – 1 end, in reading direction).
 class RuleBandPainter extends CustomPainter {
   const RuleBandPainter({
     required this.style,
@@ -369,7 +350,6 @@ class RuleBandPainter extends CustomPainter {
       old.points != points;
 }
 
-/// A mihrab or horizon arch. [inset] adds parallel inner outlines.
 class ArchPainter extends CustomPainter {
   const ArchPainter({
     required this.style,
@@ -411,8 +391,6 @@ class ArchPainter extends CustomPainter {
       old.gap != gap;
 }
 
-/// A shamsa: the sunburst medallion of bookbinding and illumination. A
-/// ring of [rays] pointed rays around a scalloped disk and a small star.
 class ShamsaPainter extends CustomPainter {
   const ShamsaPainter({required this.style, this.rays = 24, this.star = 8});
 
@@ -442,14 +420,11 @@ class ShamsaPainter extends CustomPainter {
       old.style != style || old.rays != rays || old.star != star;
 }
 
-/// A cartouche: a panel with lobed (ogee) ends, the frame of surah names
-/// and titles. Draw text over it; it fills its box.
 class CartouchePainter extends CustomPainter {
   const CartouchePainter({required this.style, this.fill});
 
   final OrnamentStyle style;
 
-  /// Optional panel color under the outline.
   final Color? fill;
 
   static Path shape(Rect rect) {
@@ -510,9 +485,6 @@ class CartouchePainter extends CustomPainter {
       old.style != style || old.fill != fill;
 }
 
-/// An arabesque border band: a running interlace of two strands crossing
-/// at a regular [module], with small stars in the eyes. Fills its box
-/// horizontally; use it as a frame edge or a divider.
 class ArabesqueBorderPainter extends CustomPainter {
   const ArabesqueBorderPainter({required this.style, this.module = 24});
 
@@ -526,7 +498,6 @@ class ArabesqueBorderPainter extends CustomPainter {
     final mid = h / 2;
     final amp = h / 2 - style.stroke * 2;
     final count = (size.width / module).ceil();
-    // Fit a whole number of waves into the width, centered.
     final step = size.width / math.max(1, count);
     final up = Path()..moveTo(0, mid);
     final down = Path()..moveTo(0, mid);

@@ -14,8 +14,6 @@ import 'package:huda/presentation/widgets/prayer_times/prayer_timeline_card.dart
 import 'package:intl/intl.dart';
 import 'package:prayer_time_plus/prayer_time_plus.dart';
 
-/// Where today's next prayer is, from loaded times: the first of the five
-/// still ahead, else tomorrow's Fajr (shown with today's Fajr time).
 ({Prayer prayer, DateTime time})? onboardingNextPrayer(
   PrayerTimesLoaded state,
   DateTime now,
@@ -35,7 +33,6 @@ import 'package:prayer_time_plus/prayer_time_plus.dart';
   return fajr == null ? null : (prayer: Prayer.fajr, time: fajr);
 }
 
-/// The place the times are for, from the first placemark.
 String? onboardingPlaceName(PrayerTimesLoaded state) {
   if (state.placemarks.isEmpty) return null;
   final place = state.placemarks.first;
@@ -50,11 +47,6 @@ String? onboardingPlaceName(PrayerTimesLoaded state) {
   return null;
 }
 
-/// Step 4: today's prayer times, as proof the location works: the place
-/// and the five prayers, the next one lit. Before that (the permissions
-/// step skipped or refused): "Use my location" or "Search for a city", and
-/// honest status: "Locating…" while it runs and what to do when it fails.
-/// Coming back from Settings retries by itself (the screen watches resume).
 class LocationStep extends StatefulWidget {
   const LocationStep({super.key});
 
@@ -123,9 +115,6 @@ class _LocationStepState extends State<LocationStep> {
       onPressed: _useLocation,
     );
 
-    // The permissions step is where location is asked. Here, without a
-    // location, searching a city is the main way on; asking again (or the
-    // fix Settings needs) is a link beside it.
     OnboardingLink link(String label, IconData icon, VoidCallback onPressed) =>
         OnboardingLink(label: label, icon: icon, onPressed: onPressed);
     final searchAction = OnboardingAction(
@@ -210,7 +199,6 @@ class _LocationStepState extends State<LocationStep> {
         ),
       );
     } else {
-      // Nothing has happened yet: no status, just the explanation above.
       status = const SizedBox(key: ValueKey('idle'), width: double.infinity);
     }
 
@@ -236,9 +224,6 @@ class _LocationStepState extends State<LocationStep> {
   }
 }
 
-/// Today's five prayers where you are: the place, then one column per
-/// prayer under a small cusped arch (the next prayer's lit), or one row per
-/// prayer when the columns would be too narrow for the times.
 class _PrayerDay extends StatelessWidget {
   const _PrayerDay({super.key, required this.state, required this.place});
 
@@ -407,8 +392,6 @@ class _PrayerDay extends StatelessWidget {
   }
 }
 
-/// A prayer's cell: quiet, or tinted and outlined in the primary when
-/// it's the next one.
 class _PrayerCell extends StatelessWidget {
   const _PrayerCell({required this.lit, required this.child});
 
@@ -443,7 +426,6 @@ class _PrayerCell extends StatelessWidget {
   }
 }
 
-/// A small cusped arch: the onboarding arcade's arch, as a mark.
 class _ArchMarkPainter extends CustomPainter {
   const _ArchMarkPainter({required this.color, this.fill});
 

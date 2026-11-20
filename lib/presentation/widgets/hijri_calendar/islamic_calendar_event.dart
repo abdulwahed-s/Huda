@@ -55,7 +55,6 @@ abstract final class IslamicCalendarEvents {
       hijriDayStart: 21,
       hijriDayEnd: 30,
       colorValue: 0xFF5E35B1,
-      // Stars, not a second crescent: the 1st of Ramadan has the hilal.
       icon: Icons.star_rounded,
     ),
     IslamicCalendarEvent(

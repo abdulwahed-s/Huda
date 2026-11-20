@@ -1,9 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:huda/data/models/islamic_event_config.dart';
 
-/// What Home's pieces open. Built once by the Home screen, which owns the
-/// navigation (and refreshes Home's data when a page it opened closes).
-/// Home's editor lives in Settings.
 class HomeActions {
   const HomeActions({
     required this.openQuran,
@@ -25,17 +22,13 @@ class HomeActions {
   final VoidCallback openBookmarks;
   final void Function(int surah, int ayah) openSurah;
 
-  /// Where the person left off: the last ayah read (its summary from
-  /// `ReadingPositionService`), the last reciter, the last station.
   final void Function(Map<String, dynamic> summary) openLastRead;
   final void Function(Object progress) openLastReciter;
   final void Function(Object progress) openLastStation;
 
-  /// Reloads Home's data (after an error).
   final VoidCallback retry;
 }
 
-/// "Now" for Home's prayer pieces. Fixed in the device matrix.
 abstract final class HomeClock {
   @visibleForTesting
   static DateTime Function() debugNow = DateTime.now;
@@ -43,9 +36,6 @@ abstract final class HomeClock {
   static DateTime now() => debugNow();
 }
 
-/// Special-event fixtures for previews and tests: build with
-/// `--dart-define=HUDA_SPECIAL_EVENT_PREVIEW=true` (Ramadan) or
-/// `HUDA_SPECIAL_EVENT_PREVIEW_KEY=<event key>` to see an event on Home.
 abstract final class HomeSpecialEventPreview {
   static const bool enabled = bool.fromEnvironment(
     'HUDA_SPECIAL_EVENT_PREVIEW',

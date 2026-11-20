@@ -103,7 +103,7 @@ class BookDetailController {
       isBookDownloaded = await _offlineBooksService.isBookDownloaded(bookId);
       refreshUI();
     } catch (e) {
-      //
+      // Download state is unknown; keep the previous value.
     }
   }
 

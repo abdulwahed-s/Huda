@@ -17,7 +17,6 @@ import 'package:huda/presentation/widgets/prayer_times/prayer_timeline_card.dart
 import 'package:intl/intl.dart' hide TextDirection;
 import 'package:prayer_time_plus/prayer_time_plus.dart' show Prayer;
 
-/// Why Home has no prayer times to show, in words, never a raw error.
 (IconData, String) homePrayerUnavailable(
   AppLocalizations l10n,
   PrayerTimesState state,
@@ -39,7 +38,6 @@ import 'package:prayer_time_plus/prayer_time_plus.dart' show Prayer;
 
 enum HomeStation { passed, lit, ahead }
 
-/// One of the day's moments on the dial.
 typedef HomeDayMoment = ({
   Prayer prayer,
   String name,
@@ -48,8 +46,6 @@ typedef HomeDayMoment = ({
   HomeStation status,
 });
 
-/// The day as the dial draws it: the six moments (Sunrise among them), and
-/// now. The lit one is the next prayer, or the one whose time it is.
 class HomePrayerDay {
   HomePrayerDay._(this.moments, this.now);
 
@@ -62,8 +58,6 @@ class HomePrayerDay {
     Prayer.isha,
   ];
 
-  /// The day of [state] at Home's now, or null if a time is missing or
-  /// out of order (high latitudes).
   static HomePrayerDay? of(BuildContext context, PrayerTimesLoaded state) {
     final l10n = AppLocalizations.of(context)!;
     final locale = Localizations.localeOf(context).toString();
@@ -108,8 +102,6 @@ class HomePrayerDay {
             : HomeStation.ahead,
       ));
     }
-    // After Isha nothing is left today: tomorrow's Fajr is next, so Fajr's
-    // lamp is the lit one (as the Prayer page counts down to it).
     if (moment == null && !moments.last.instant.isAfter(now)) {
       final fajr = moments.first;
       moments[0] = (
@@ -129,9 +121,6 @@ class HomePrayerDay {
   HomeDayMoment get _sunrise => moments[1];
   HomeDayMoment get _maghrib => moments[4];
 
-  /// Where [instant] sits on the dial: sunrise on the left of the horizon
-  /// (π), noon at the top, sunset on the right (2π); Fajr and Isha below
-  /// the horizon at either end.
   double angleOf(DateTime instant) {
     final day = _maghrib.instant.difference(_sunrise.instant).inSeconds;
     if (day <= 0) return math.pi;
@@ -142,23 +131,12 @@ class HomePrayerDay {
   double get start => angleOf(moments.first.instant);
   double get end => angleOf(moments.last.instant);
 
-  /// Now on the dial, kept to the arc (before Fajr at its start, after Isha
-  /// at its end).
   double get nowAngle => angleOf(now).clamp(start, end);
 
-  /// Whether the sun is up (between sunrise and sunset).
   bool get daytime =>
       now.isAfter(_sunrise.instant) && now.isBefore(_maghrib.instant);
 }
 
-/// Path of Prayer's dial: the day as an arc over a horizon, like an
-/// astrolabe's ring. The five prayers sit on it as lamps at their real
-/// times (Sunrise a small mark on the horizon), the arc is walked in gilt
-/// to now, where the sun rides (or the moon, at night). The next prayer,
-/// its time and the time left are inside; the five times are in a row
-/// under it ([HomePrayerTimesRow], placed by the page). A tap opens Prayer
-/// Times. Without times it says why on the same ring; loading shows the
-/// lamp spinner in it.
 class HomePrayerDial extends StatelessWidget {
   const HomePrayerDial({
     super.key,
@@ -168,10 +146,8 @@ class HomePrayerDial extends StatelessWidget {
 
   final HomeActions actions;
 
-  /// The most height the dial may take (a pane's).
   final double maxHeight;
 
-  /// The dial's height for a [width].
   static double heightFor(double width) => width * 0.78;
 
   @override
@@ -179,7 +155,6 @@ class HomePrayerDial extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     return LayoutBuilder(
       builder: (context, constraints) {
-        // Larger where its pane has the room for it.
         final cap = constraints.maxWidth >= 640 && maxHeight >= 640
             ? 560.0
             : 460.0;
@@ -239,8 +214,6 @@ class HomePrayerDial extends StatelessWidget {
                 ? HomePrayerDay.of(context, state)
                 : null;
             if (state is PrayerTimesLoaded) {
-              // Today's next prayer, or after Isha the cubit's (tomorrow's
-              // Fajr), never a stand-in title.
               return HomeNextPrayerBuilder(
                 state: state,
                 builder: (context, next) => dial(
@@ -283,8 +256,6 @@ class HomePrayerDial extends StatelessWidget {
   }
 }
 
-/// Walks the dial's arc to now once, as Home opens (0.9 s). Settled under
-/// reduce motion.
 class HomeDialReveal extends StatefulWidget {
   const HomeDialReveal({super.key, required this.builder});
 
@@ -360,7 +331,6 @@ class _DialPalette {
   int get hashCode => Object.hash(gilt, light, ground);
 }
 
-/// The dial's geometry for a box: the ring's center and radius.
 ({Offset center, double radius}) _ring(Size size) {
   final r = size.width * 0.42;
   return (center: Offset(size.width / 2, r + size.width * 0.05), radius: r);
@@ -386,7 +356,6 @@ class _DialPainter extends CustomPainter {
     final (:center, :radius) = _ring(size);
     final t = reveal.value;
     canvas.save();
-    // The day runs in reading direction.
     if (rtl) {
       canvas.translate(size.width, 0);
       canvas.scale(-1, 1);
@@ -397,13 +366,9 @@ class _DialPainter extends CustomPainter {
     const track = 3.5;
 
     final day = this.day;
-    // The span the day's ring covers: Fajr to Isha (or, with no times, a
-    // resting arc over the horizon).
     final start = day?.start ?? math.pi * 0.85;
     final end = day?.end ?? math.pi * 2.15;
 
-    // The bezel: a fine outer line and the hours, only along the day, so
-    // nothing runs behind the times under the dial. Its ends fade.
     const fade = 0.12;
     for (var i = 0; i < 24; i++) {
       final a0 = start - fade + (end - start + fade * 2) * i / 24;
@@ -438,8 +403,6 @@ class _DialPainter extends CustomPainter {
       }
     }
 
-    // The horizon, at either side of the ring only: the words inside keep
-    // a clear field.
     final horizon = center.dy;
     for (final side in [-1.0, 1.0]) {
       final outer = center.dx + side * (radius + 26);
@@ -470,7 +433,6 @@ class _DialPainter extends CustomPainter {
       );
     }
 
-    // The day's track: one soft line from Fajr to Isha.
     canvas.drawArc(
       rect,
       start,
@@ -487,8 +449,6 @@ class _DialPainter extends CustomPainter {
       return;
     }
 
-    // The progress: walked in gilt to now (drawn in as Home opens),
-    // brightening toward the sun, with a soft glow under it.
     final now = start + (day.nowAngle - start) * t;
     if (now > start) {
       canvas.drawArc(
@@ -526,8 +486,6 @@ class _DialPainter extends CustomPainter {
       );
     }
 
-    // The moments: sunrise a small half sun on the horizon; the prayers as
-    // beads on the track. A bead lights as the progress reaches it.
     for (final moment in day.moments) {
       final a = day.angleOf(moment.instant);
       final c = at(a);
@@ -559,11 +517,9 @@ class _DialPainter extends CustomPainter {
           : moment.status;
       switch (status) {
         case HomeStation.passed:
-          // A gilt bead with a dark rim, so it reads on the gilt line.
           canvas.drawCircle(c, 6.5, Paint()..color = p.ground);
           canvas.drawCircle(c, 4.5, Paint()..color = p.gilt);
         case HomeStation.lit:
-          // The next prayer: a halo, a clean gilt ring, a lit heart.
           final halo = Curves.easeOut.transform(
             ((t - 0.6) / 0.4).clamp(0.0, 1.0),
           );
@@ -605,7 +561,6 @@ class _DialPainter extends CustomPainter {
       }
     }
 
-    // Now: a small crisp sun with fine rays by day; the crescent by night.
     final sun = at(now);
     if (day.daytime) {
       canvas.drawCircle(
@@ -668,13 +623,9 @@ class _DialPainter extends CustomPainter {
       old.reveal != reveal;
 }
 
-/// Inside the ring: the next prayer above the horizon, the time left
-/// below it.
 class _Inside extends StatelessWidget {
   const _Inside({required this.next, required this.width});
 
-  /// Null only for the moment before the cubit answers (after Isha):
-  /// nothing inside then, never a stand-in title.
   final HomeNextPrayer? next;
   final double width;
 
@@ -690,7 +641,6 @@ class _Inside extends StatelessWidget {
     if (next == null) {
       return const SizedBox(key: ValueKey('home-dial-inside'));
     }
-    // The words follow the ring's size.
     final nameStyle = width >= 420
         ? theme.textTheme.displayLarge
         : width >= 340
@@ -699,7 +649,6 @@ class _Inside extends StatelessWidget {
         ? theme.textTheme.displaySmall
         : theme.textTheme.headlineMedium;
     final eyebrow = width >= 290;
-    // Above the horizon, centered in the upper half of the ring.
     final upper = Positioned(
       left: center.dx - radius * 0.78,
       width: radius * 1.56,
@@ -721,8 +670,6 @@ class _Inside extends StatelessWidget {
             style: nameStyle?.copyWith(color: tokens.onChrome, height: 1.1),
           ),
           Text(
-            // After Isha: "Tomorrow at 3:10 AM", never read as a time
-            // already past today.
             next.tomorrow ? l10n.remindersNextTomorrow(next.time) : next.time,
             textAlign: TextAlign.center,
             style: theme.textTheme.titleLarge?.copyWith(
@@ -733,8 +680,6 @@ class _Inside extends StatelessWidget {
         ],
       ),
     );
-    // Below the horizon: the time left (or, just after it began, how long
-    // ago, as the Prayer page says it).
     final lower = next.started
         ? Positioned(
             left: center.dx - radius * 0.7,
@@ -755,8 +700,6 @@ class _Inside extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Up to "13:23:45" to tomorrow's Fajr: it scales down to
-                // its room rather than overflow (one scale, no retry).
                 FittedBox(
                   fit: BoxFit.scaleDown,
                   child: Directionality(
@@ -780,8 +723,6 @@ class _Inside extends StatelessWidget {
             ),
           );
     return MediaQuery.withClampedTextScaling(
-      // Inside a ring the words can't grow without bound; the row under
-      // the dial carries the times at any size.
       maxScaleFactor: 1.3,
       child: Stack(
         key: const ValueKey('home-dial-inside'),
@@ -887,9 +828,6 @@ class _Problem extends StatelessWidget {
   }
 }
 
-/// The five prayers' times in a row under the dial, in the day's order:
-/// the next one in gilt with a bar under it, those passed quieter. Two
-/// rows when five don't fit.
 class HomePrayerTimesRow extends StatelessWidget {
   const HomePrayerTimesRow({super.key});
 
@@ -915,8 +853,6 @@ class HomePrayerTimesRow extends StatelessWidget {
               : passed
               ? tokens.onChromeMuted.withValues(alpha: 0.7)
               : tokens.onChrome;
-          // The next prayer sits in a soft gilt capsule; those passed step
-          // back.
           return Semantics(
             key: ValueKey('home-day-time-${moment.prayer.name}'),
             label: lit
@@ -948,8 +884,6 @@ class HomePrayerTimesRow extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 2),
-                  // At large text a long time ("12:58 PM") scales down to
-                  // its cell rather than clip (one scale, no retry).
                   FittedBox(
                     fit: BoxFit.scaleDown,
                     child: Text(

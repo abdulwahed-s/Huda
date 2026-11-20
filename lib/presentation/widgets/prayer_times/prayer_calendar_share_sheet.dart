@@ -108,6 +108,7 @@ class _PrayerCalendarShareSheetState extends State<_PrayerCalendarShareSheet> {
       );
       if (mounted) Navigator.of(context).pop();
     } on PrayerCalendarCancelled {
+      // User cancelled the export; nothing to report.
     } catch (_) {
       if (mounted && !_cancelRequested) {
         setState(() => _error = l10n.prayerCalendarError);

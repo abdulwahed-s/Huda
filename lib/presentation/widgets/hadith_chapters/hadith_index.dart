@@ -8,9 +8,6 @@ import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 import 'package:huda/presentation/widgets/hadith/hadith_identity.dart';
 import 'package:huda/presentation/widgets/hadith/hadith_refs.dart';
 
-/// The collection above its books: its Arabic name (the app bar has the
-/// translated one), how many books and hadith it holds, and its
-/// introduction, three lines until "Read more".
 class HadithCollectionHeader extends StatefulWidget {
   const HadithCollectionHeader({
     super.key,
@@ -20,7 +17,6 @@ class HadithCollectionHeader extends StatefulWidget {
 
   final HadithCollectionRef collection;
 
-  /// Null while the books load.
   final int? bookCount;
 
   @override
@@ -97,8 +93,6 @@ class _HadithCollectionHeaderState extends State<HadithCollectionHeader> {
   }
 }
 
-/// Filters a collection's books by name or number. Esc or the clear button
-/// empties it.
 class HadithBookSearchField extends StatelessWidget {
   const HadithBookSearchField({
     super.key,
@@ -156,9 +150,6 @@ class HadithBookSearchField extends StatelessWidget {
   }
 }
 
-/// A book in the collection's index: its number in a ruled box (a folio
-/// number), its names, and the hadith it covers. Selected while it's open
-/// in the reader beside the index.
 class HadithBookRow extends StatelessWidget {
   const HadithBookRow({
     super.key,
@@ -217,7 +208,6 @@ class HadithBookRow extends StatelessWidget {
   }
 }
 
-/// A loading row shaped like [HadithBookRow].
 class HadithBookRowSkeleton extends StatelessWidget {
   const HadithBookRowSkeleton({super.key, this.announce = false});
 
@@ -247,9 +237,6 @@ class HadithBookRowSkeleton extends StatelessWidget {
   }
 }
 
-/// The collection's title page, in the reader pane on wide windows until a
-/// book is chosen: the folio, the collection's names, what it holds, its
-/// introduction, and where to go next.
 class HadithTitlePage extends StatelessWidget {
   const HadithTitlePage({
     super.key,
@@ -262,10 +249,8 @@ class HadithTitlePage extends StatelessWidget {
   final HadithCollectionRef collection;
   final int? bookCount;
 
-  /// The folio inking in above the names (never on short windows).
   final bool showArt;
 
-  /// Whether to point at the books ("Choose a book …").
   final bool canChoose;
 
   @override

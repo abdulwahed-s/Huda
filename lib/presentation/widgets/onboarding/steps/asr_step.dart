@@ -15,20 +15,13 @@ import 'package:huda/presentation/widgets/prayer_times/prayer_time_adjustment_bo
 import 'package:intl/intl.dart';
 import 'package:prayer_time_plus/prayer_time_plus.dart';
 
-/// Countries where most people follow the Hanafi school. Only a suggested
-/// pre-selection: the person always confirms (the owner's plan).
 const Set<String> onboardingHanafiCountries = {
-  'PK', 'IN', 'BD', 'AF', 'TR', 'UZ', 'TJ', 'KZ', 'KG', 'TM', 'BA', 'AL', //
+  'PK', 'IN', 'BD', 'AF', 'TR', 'UZ', 'TJ', 'KZ', 'KG', 'TM', 'BA', 'AL',
   'XK', 'MK',
 };
 
-/// Languages whose speakers are mostly Hanafi, for when no country is
-/// known (location skipped or failed).
 const Set<String> onboardingHanafiLanguages = {'ur', 'bn', 'tr'};
 
-/// The Asr school to pre-select: a saved Hanafi choice stays; otherwise
-/// the country, else the language. Returns the token and whether it is a
-/// regional suggestion (shown as "Suggested").
 ({String token, bool suggested}) onboardingAsrSuggestion({
   required String savedToken,
   required String? countryCode,
@@ -44,9 +37,6 @@ const Set<String> onboardingHanafiLanguages = {'ur', 'bn', 'tr'};
       : (token: PrayerTimesCalculator.defaultMadhabToken, suggested: false);
 }
 
-/// The calculation methods most mosques follow: listed first, before
-/// every other method (Prayer's settings keep the per-prayer
-/// adjustments and custom angles).
 const List<String> onboardingCommonMethods = [
   'muslimWorldLeague',
   'ummAlQura',
@@ -56,10 +46,6 @@ const List<String> onboardingCommonMethods = [
   'turkey',
 ];
 
-/// Step 5: how the times are calculated, kept simple: the method
-/// (Automatic, the country's method, or one of the common ones) and when
-/// Asr begins (Standard or Hanafi, each with its shadow and today's Asr).
-/// Both are already chosen, so Continue keeps them; nothing opens a sheet.
 class AsrStep extends StatefulWidget {
   const AsrStep({super.key});
 
@@ -72,8 +58,6 @@ class _AsrStepState extends State<AsrStep> {
   late String _token = _suggestion.token;
   late String _method = context.read<PrayerTimesCubit>().calculationMethodToken;
 
-  /// The method list is folded into one row until asked for (Automatic
-  /// suits most people); it starts open when another method was chosen.
   late bool _showMethods = _method != PrayerTimesCalculator.autoMethodToken;
   final _methodsKey = GlobalKey(debugLabel: 'onboarding-methods');
 
@@ -116,7 +100,6 @@ class _AsrStepState extends State<AsrStep> {
     );
   }
 
-  /// Today's Asr for [madhab], or null when there's no location yet.
   DateTime? _asr(Madhab madhab) {
     final cubit = context.read<PrayerTimesCubit>();
     final cache = OnboardingScope.read(context).environment.cache;
@@ -168,25 +151,20 @@ class _AsrStepState extends State<AsrStep> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final space = context.tokens.space;
-    // Recompute when the times change (a method changed in the sheet).
     context.watch<PrayerTimesCubit>();
     final locale = Localizations.localeOf(context).toString();
     String? today(Madhab madhab) {
       final time = _asr(madhab);
-      // "Today · 3:40 PM": the time never breaks from its label.
       return time == null
           ? null
           : '${l10n.today} · ${DateFormat.jm(locale).format(time)}';
     }
 
     final hanafi = _token == 'hanafi';
-    // Automatic names the method it resolves to for this country.
     final resolved = PrayerTimesCalculator.resolveMethod(
       PrayerTimesCalculator.autoMethodToken,
       _country,
     ).name;
-    // Every method Prayer offers (few apps do), the common ones first;
-    // not "Custom", which needs angles set in Prayer's settings.
     final others = [
       ...onboardingCommonMethods,
       for (final token in PrayerTimesCalculator.pickerMethodTokens)
@@ -244,7 +222,6 @@ class _AsrStepState extends State<AsrStep> {
         SizedBox(height: space.xl),
         HudaEyebrow(l10n.prayerCalculationMethod, header: true),
         SizedBox(height: space.sm),
-        // Automatic, once: the choice most people keep.
         OnboardingOption(
           key: const ValueKey('onboarding-method-auto'),
           title: l10n.prayerMethodAuto,
@@ -255,7 +232,6 @@ class _AsrStepState extends State<AsrStep> {
               setState(() => _method = PrayerTimesCalculator.autoMethodToken),
         ),
         SizedBox(height: space.xs),
-        // What Automatic means, under it.
         Text(
           l10n.setupCalcMessage,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -263,16 +239,12 @@ class _AsrStepState extends State<AsrStep> {
           ),
         ),
         SizedBox(height: space.sm),
-        // Every other method, folded into one row that opens a searchable
-        // list (and folds it away again). Chosen, the row names it.
         HudaCard(
           key: const ValueKey('onboarding-method-change'),
           padding: EdgeInsets.zero,
           onTap: () {
             setState(() => _showMethods = !_showMethods);
             if (!_showMethods) return;
-            // Once the list has opened, bring the search to the top of the
-            // step, so its results show above the bar (and the keyboard).
             _scrollToMethods();
           },
           child: Semantics(
@@ -314,8 +286,6 @@ class _AsrStepState extends State<AsrStep> {
   }
 }
 
-/// Every method but Automatic, with a field that narrows them by name
-/// (or by the country in it): "Karachi", "Egypt", "ISNA".
 class _MethodList extends StatefulWidget {
   const _MethodList({
     required this.onFocus,
@@ -324,7 +294,6 @@ class _MethodList extends StatefulWidget {
     required this.onSelected,
   });
 
-  /// Brings the search to the top of the step when it's focused.
   final VoidCallback onFocus;
   final List<String> tokens;
   final String selected;
@@ -426,10 +395,6 @@ class _MethodListState extends State<_MethodList> {
   }
 }
 
-/// How Asr is told: a gnomon on the ground, the sun, and the shadow it
-/// casts, [lengths] times the gnomon's height (1 for the majority, 2 for
-/// the Hanafi school). The other length is marked faintly for comparison.
-/// [lit] draws it in the primary (the chosen school).
 class AsrShadowDiagram extends StatelessWidget {
   const AsrShadowDiagram({super.key, required this.lengths, this.lit = false});
 
@@ -498,7 +463,6 @@ class _ShadowPainter extends CustomPainter {
     final stick = h * 0.5;
     final base = Offset(w * 0.3, ground);
     final top = Offset(base.dx, ground - stick);
-    // The shadow fits the box: two heights reach 0.6 of the width.
     final unit = math.min(stick, w * 0.3);
     final end = Offset(base.dx + unit * lengths, ground);
     final stroke = Paint()
@@ -507,7 +471,6 @@ class _ShadowPainter extends CustomPainter {
       ..strokeWidth = 1.5
       ..color = line;
 
-    // The ground.
     canvas.drawLine(
       Offset(w * 0.06, ground),
       Offset(w * 0.94, ground),
@@ -515,7 +478,6 @@ class _ShadowPainter extends CustomPainter {
         ..strokeWidth = 1
         ..color = ghost,
     );
-    // The other school's length, faint, for comparison.
     final other = Offset(base.dx + unit * (lengths == 1 ? 2 : 1), ground);
     canvas.drawLine(
       other.translate(0, -h * 0.06),
@@ -524,7 +486,6 @@ class _ShadowPainter extends CustomPainter {
         ..strokeWidth = 1
         ..color = ghost,
     );
-    // The shadow.
     canvas.drawLine(
       base,
       end,
@@ -538,7 +499,6 @@ class _ShadowPainter extends CustomPainter {
       end.translate(0, h * 0.08),
       stroke,
     );
-    // The sun, on the line through the gnomon's tip and the shadow's end.
     final direction = top - end;
     final sunAt = top + direction * (0.42 / lengths);
     final ray = Paint()
@@ -551,7 +511,6 @@ class _ShadowPainter extends CustomPainter {
       canvas.drawLine(a, b, ray);
     }
     canvas.drawCircle(sunAt, h * 0.08, Paint()..color = sun);
-    // The gnomon.
     canvas.drawLine(base, top, stroke..strokeWidth = 2.5);
   }
 

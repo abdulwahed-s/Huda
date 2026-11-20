@@ -18,19 +18,11 @@ import 'package:huda/presentation/widgets/onboarding/onboarding_identity.dart';
 import 'package:huda/presentation/widgets/onboarding/onboarding_stage.dart';
 import 'package:huda/presentation/widgets/onboarding/onboarding_steps.dart';
 
-/// How the stage sits beside the step: inside each step's frame, above
-/// its sheet (phones, portrait tablets), in a chrome pane beside it (wide
-/// windows, open folds, phone landscape), or above the band of a
-/// tabletop.
 enum _Layout { stacked, panes, tabletop }
 
-/// The wizard's frame: the night chrome with its girih field, the top row
-/// (Back, the progress arches, "Skip setup"), and the steps, laid out per
-/// size class and posture (`design/RESPONSIVE.md`).
 class OnboardingShell extends StatefulWidget {
   const OnboardingShell({super.key, required this.onSkip});
 
-  /// "Skip setup": ends the wizard now.
   final VoidCallback onSkip;
 
   @override
@@ -38,19 +30,13 @@ class OnboardingShell extends StatefulWidget {
 }
 
 class _OnboardingShellState extends State<OnboardingShell> {
-  // Keep the steps (their choices) when the layout changes: folding,
-  // rotating, resizing.
   final _stepsKey = GlobalKey(debugLabel: 'onboarding-steps');
 
   _Layout _layoutOf(BuildContext context) {
     if (TabletopSplit.applies(context)) return _Layout.tabletop;
-    // The closed iPhone Duo: its side column carries the chrome; the step
-    // keeps the whole width (no art pane beside it).
     if (SideChrome.sideOf(context) != null) return _Layout.stacked;
     final size = MediaQuery.sizeOf(context);
     final compactHeight = context.windowClass.isCompactHeight;
-    // Portrait tablets (no fold) all use the stage above the sheet, the
-    // 13" as much as the mini.
     if (size.height > size.width && !FoldInfo.of(context).hasFold) {
       return _Layout.stacked;
     }
@@ -63,8 +49,6 @@ class _OnboardingShellState extends State<OnboardingShell> {
         : _Layout.stacked;
   }
 
-  /// "Skip all" ends setup in one tap, so it asks first; the steps left
-  /// are asked later in the app, where they're needed.
   Future<void> _confirmSkip(BuildContext context) async {
     final l10n = AppLocalizations.of(context)!;
     final skip = await showHudaSheet<bool>(
@@ -86,14 +70,9 @@ class _OnboardingShellState extends State<OnboardingShell> {
     final page = Theme.of(context);
     final layout = _layoutOf(context);
     final compactHeight = context.windowClass.isCompactHeight;
-    // Back lives in each step's bar (beside its own buttons); here it only
-    // drives the swipe. While changing one step from the summary its
-    // "Done" is the way back.
     final back = !state.canGoBack || state.finishing || state.reviewing
         ? null
         : cubit.back;
-    // While changing one step from the summary, "Skip all" has nothing
-    // left to skip. Elsewhere it asks first: it ends setup in one tap.
     final skip = state.isLast || state.finishing || state.reviewing
         ? null
         : () => _confirmSkip(context);
@@ -115,7 +94,6 @@ class _OnboardingShellState extends State<OnboardingShell> {
       child: _TopRow(state: state, onSkip: skip),
     );
 
-    // The chrome pane: the top row over the stage.
     Widget chromePane() => _Chrome(
       child: Builder(
         builder: (context) {
@@ -129,7 +107,6 @@ class _OnboardingShellState extends State<OnboardingShell> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 topRow,
-                // The art stays through a language change; only words fade.
                 Expanded(child: _StageSwitcher(step: state.current)),
               ],
             ),
@@ -146,12 +123,6 @@ class _OnboardingShellState extends State<OnboardingShell> {
           child: steps(OnboardingFrameMode.pane),
         ),
       ),
-      // Compact height: the stage is a narrow column so the step gets the
-      // room. Large windows: the stage pane grows with the window.
-      // The art keeps the left in both directions, so turning to right to
-      // left never swaps the panes: the step is on the right, where both
-      // Arabic and English readers start or end comfortably, and only the
-      // words change under the veil. Each pane keeps the real direction.
       _Layout.panes => Directionality(
         textDirection: TextDirection.ltr,
         child: AdaptivePanes(
@@ -167,8 +138,6 @@ class _OnboardingShellState extends State<OnboardingShell> {
             ),
           ),
           twoPaneMinWidth: compactHeight ? 600 : 840,
-          // At large text the step takes the width; the art keeps a
-          // narrow column.
           primaryFraction: compactHeight || largeText
               ? 0.3
               : (width >= 1200 ? 0.5 : 0.4),
@@ -209,14 +178,11 @@ class _OnboardingShellState extends State<OnboardingShell> {
         bottom: page.brightness,
       ),
       child: HudaChromeFrame(
-        // Duo closed: "Skip all" sits in the system's side column, its
-        // name written under the mark (Back is in the step's bar).
         actions: [if (skip != null) _ColumnSkip(onPressed: skip)],
         columnForeground: tokens.onChrome,
         child: Scaffold(
           backgroundColor: tokens.chrome,
           body: GestureDetector(
-            // Swipe toward the reading end to go back; never forward.
             onHorizontalDragEnd: back == null
                 ? null
                 : (details) {
@@ -239,8 +205,6 @@ class _OnboardingShellState extends State<OnboardingShell> {
   }
 }
 
-/// Night lamplight: the chrome gradient with a faint girih field, fading
-/// toward the reading end.
 class _Chrome extends StatelessWidget {
   const _Chrome({required this.child});
 
@@ -278,9 +242,6 @@ class _Chrome extends StatelessWidget {
   );
 }
 
-/// Back, the progress arches and "Skip setup", on the chrome. On the
-/// closed iPhone Duo, Back and Skip live in the system's side column and
-/// only the arches stay here.
 class _TopRow extends StatelessWidget {
   const _TopRow({required this.state, this.onSkip});
 
@@ -298,15 +259,9 @@ class _TopRow extends StatelessWidget {
     final onSkip = this.onSkip;
     final choices = state.steps.where((step) => step.isChoice).toList();
     final number = choices.indexOf(state.current) + 1;
-    // One arch per choice step, matching "Step 3 of 9": none lit on the
-    // welcome, all of them on the summary (and while changing a step from
-    // it: nothing restarts).
     final lit = state.current == OnboardingStep.summary || state.reviewing
         ? choices.length
         : number;
-    // Labels that don't fit on one line (long translations at large
-    // text) fall back to their icon, named by its tooltip, rather than
-    // wrap and clip.
     final labelStyle = Theme.of(context).textTheme.labelLarge;
     bool fits(String text, double room) {
       final painter = TextPainter(
@@ -321,10 +276,6 @@ class _TopRow extends StatelessWidget {
     }
 
     final scale = media.textScaler.scale(16) / 16;
-    // "Skip all" keeps its word: beside the arches when it fits there,
-    // otherwise on its own line above them (narrow panes, large text).
-    // Only when even a full line can't hold it does it fall back to the
-    // mark alone, named by its tooltip.
     final rowWidth =
         media.size.width - media.padding.horizontal - 2 * (gutter - space.xs);
     int linesFor(double room) => fits(l10n.setupSkipAll, room)
@@ -375,7 +326,6 @@ class _TopRow extends StatelessWidget {
         height: kMinInteractiveDimension,
         child: Row(
           children: [
-            // Keeps the arches centered against "Skip all".
             const SizedBox(width: kMinInteractiveDimension),
             Expanded(
               child: Padding(
@@ -397,11 +347,6 @@ class _TopRow extends StatelessWidget {
   }
 }
 
-/// "Skip all" ends setup: a quiet word on the chrome led out by the
-/// threshold's gilt double arrow, with no frame of its own, so it never
-/// competes with the step and never reads like "Skip this step". [lines]
-/// is how many lines its word may take; 0 shows the mark alone (with a
-/// tooltip).
 class _SkipAllPill extends StatelessWidget {
   const _SkipAllPill({required this.onPressed, required this.lines});
 
@@ -425,7 +370,6 @@ class _SkipAllPill extends StatelessWidget {
             ),
       shape: const StadiumBorder(),
     );
-    // The double arrow doesn't mirror itself; it follows the reading way.
     final mark = Transform.flip(
       flipX: Directionality.of(context) == TextDirection.rtl,
       child: Icon(
@@ -451,7 +395,6 @@ class _SkipAllPill extends StatelessWidget {
       iconAlignment: IconAlignment.end,
       style: style.copyWith(iconSize: const WidgetStatePropertyAll(16)),
       icon: mark,
-      // Long translations take two lines rather than cut.
       label: Text(
         l10n.setupSkipAll,
         maxLines: lines,
@@ -462,9 +405,6 @@ class _SkipAllPill extends StatelessWidget {
   }
 }
 
-/// "Skip all" in the closed iPhone Duo's side column: the gilt double
-/// arrow with its quiet name under it (two lines at most), so it never reads as a
-/// media control.
 class _ColumnSkip extends StatelessWidget {
   const _ColumnSkip({required this.onPressed});
 
@@ -517,8 +457,6 @@ class _ColumnSkip extends StatelessWidget {
   }
 }
 
-/// A chrome tab behind "Skip all" in the Duo's side column, so it reads on the
-/// page below the header (as the landing scaffold does).
 class _ColumnTab extends StatelessWidget {
   const _ColumnTab({required this.side, required this.color});
 
@@ -557,8 +495,6 @@ class _ColumnTab extends StatelessWidget {
   }
 }
 
-/// The stage in its own pane: the next step's stage fades in after the
-/// last one clears; its doorway draws itself in.
 class _StageSwitcher extends StatelessWidget {
   const _StageSwitcher({required this.step});
 
@@ -567,8 +503,6 @@ class _StageSwitcher extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tokens = context.tokens;
-    // The art cross-fades in place (no dip to the bare chrome); the
-    // doorway stays, only its emblem draws in.
     return AnimatedSwitcher(
       duration: tokens.motion.of(context, tokens.motion.long),
       switchInCurve: tokens.motion.standard,
@@ -583,8 +517,6 @@ class _StageSwitcher extends StatelessWidget {
   }
 }
 
-/// A quiet confirmation: a small engraved threshold, one explanation and
-/// two answers. The shared sheet carries the title and dismissal.
 class _SkipAllSheet extends StatelessWidget {
   const _SkipAllSheet({super.key});
 
@@ -620,8 +552,6 @@ class _SkipAllSheet extends StatelessWidget {
       children: [
         Row(
           children: [
-            // At large text the explanation gets the full line, keeping
-            // both answers above the system bar on short phones.
             if (scale < 1.5) ...[
               Ornament(
                 size: Size(space.xxxl, space.huge),
@@ -666,9 +596,6 @@ class _SkipAllSheet extends StatelessWidget {
   }
 }
 
-/// A page's own ground: the night chrome with its girih (stacked, where
-/// the stage sits on the chrome above the sheet), or the page's surface (a
-/// pane).
 class _PageBackdrop extends StatelessWidget {
   const _PageBackdrop({required this.mode, required this.child});
 
@@ -693,7 +620,6 @@ class _PageBackdrop extends StatelessWidget {
   }
 }
 
-/// The steps, turning like pages in reading direction (mirrored in RTL).
 class _StepSwitcher extends StatelessWidget {
   const _StepSwitcher({required this.state, required this.mode});
 
@@ -705,8 +631,6 @@ class _StepSwitcher extends StatelessWidget {
     final tokens = context.tokens;
     final key = ValueKey(state.current);
     final rtl = Directionality.of(context) == TextDirection.rtl;
-    // Forward: the next step comes in from the reading end and the last
-    // one leaves toward the start (mirrored in RTL); back is the reverse.
     final shift = state.direction * (rtl ? -1.0 : 1.0);
     final curve = tokens.motion.emphasized;
     return ClipRect(
@@ -716,8 +640,6 @@ class _StepSwitcher extends StatelessWidget {
         switchOutCurve: Curves.linear,
         layoutBuilder: (current, previous) =>
             Stack(fit: StackFit.expand, children: [...previous, ?current]),
-        // Steps turn like pages: both stay whole and opaque while they
-        // slide, so nothing flashes or blanks between them.
         transitionBuilder: (child, animation) {
           final step = (child.key! as ValueKey<OnboardingStep>).value;
           final incoming = child.key == key;
@@ -729,9 +651,6 @@ class _StepSwitcher extends StatelessWidget {
             ignoring: !incoming,
             child: SlideTransition(
               position: position,
-              // Each page is opaque (the chrome behind its stage on phones,
-              // the page in a pane), so two pages never show through each
-              // other while they slide.
               child: _PageBackdrop(
                 mode: mode,
                 child: OnboardingStepSlot(

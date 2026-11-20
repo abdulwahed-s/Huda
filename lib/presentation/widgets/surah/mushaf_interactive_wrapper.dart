@@ -41,21 +41,15 @@ class MushafInteractiveWrapper extends StatefulWidget {
   final MushafFlipDirection flipDirection;
   final ValueChanged<int>? onPageChanged;
 
-  /// The page's surah, for the chrome's title, and the reader's actions
-  /// (Surahs, Display, More), shown with Back when the chrome is.
   final String title;
   final List<Widget> actions;
   final Color? customBgColor;
   final Color? customTextColor;
 
-  /// Verse of [surahNumber] whose ayah sheet opens once this is shown.
   final int? initialAyahSheet;
 
-  /// Long-press on an ayah of another surah; the screen switches to it.
   final void Function(int surahNumber, int verseNumber)? onOtherSurahAyah;
 
-  /// (surah, ayah) to light up once its page shows; see
-  /// [QuranMushafPageView.flashAyah].
   final (int, int)? flashAyah;
   final VoidCallback? onFlashShown;
 
@@ -216,7 +210,6 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
 
   bool _appBarVisible = false;
 
-  /// The mode's page pack, when it reads page images.
   MushafPackService? get _pack {
     final pack = widget.mode.pack;
     if (pack == null) return null;
@@ -306,7 +299,6 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
             ),
           ),
           _buildOverlayAppBar(context),
-          // The recitation's controls, with the chrome.
           if (playingAyahIndex != null)
             AnimatedPositioned(
               duration: _chromeDuration(context),
@@ -337,13 +329,8 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
   Duration _chromeDuration(BuildContext context) =>
       context.tokens.motion.of(context, context.tokens.motion.medium);
 
-  /// Back, the page's surah and the reader's actions, on the page's
-  /// surface; a tap on the page shows and hides it.
   Widget _buildOverlayAppBar(BuildContext context) {
-    // The side column already holds Back and the actions (closed Duo).
     if (HudaChromeFrame.hasSideChrome(context)) return const SizedBox();
-    // While the pages still need downloading, Back and Display stay in
-    // view: there's no page to tap.
     final pack = _pack;
     if (pack == null) return _overlayAppBar(context, _appBarVisible);
     return StreamBuilder<MushafPackState>(
@@ -364,7 +351,6 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
       left: 0,
       right: 0,
       height: height,
-      // Depth from tone, not a shadow: the page's surface with a hairline.
       child: Material(
         color: scheme.surfaceContainer,
         shape: Border(bottom: BorderSide(color: scheme.outlineVariant)),
@@ -418,7 +404,6 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
         ayahIndex < widget.surah.ayahs!.length) {
       _showAyahBottomSheet(ayahIndex);
     } else if (widget.onOtherSurahAyah != null) {
-      // Audio and highlight follow this widget's surah; switch first.
       stopAudioIfPlaying();
       widget.onOtherSurahAyah!(surahNumber, verseNumber);
     } else {
@@ -426,7 +411,6 @@ class _MushafInteractiveWrapperState extends State<MushafInteractiveWrapper>
     }
   }
 
-  /// "Al-Baqarah · Ayah 2", the ayah sheet's title.
   String _ayahSheetTitle(int surah, int ayah) {
     final l10n = AppLocalizations.of(context)!;
     final language = Localizations.localeOf(context).languageCode;

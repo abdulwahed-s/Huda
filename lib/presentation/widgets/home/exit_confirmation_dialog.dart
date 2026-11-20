@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
-/// Asks before Android's Back leaves Huda from Home. Cancel stays (quiet),
-/// Yes leaves (lit). Pops `true` to leave.
 class ExitConfirmationDialog extends StatelessWidget {
   const ExitConfirmationDialog({super.key});
 

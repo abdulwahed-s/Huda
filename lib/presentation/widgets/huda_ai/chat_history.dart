@@ -16,8 +16,6 @@ import 'package:huda/presentation/widgets/huda_ai/huda_ai_text.dart';
 import 'package:huda/presentation/widgets/huda_ai/mode_switcher.dart';
 import 'package:intl/intl.dart';
 
-/// Opens the history where it isn't shown inline: a full-height bottom
-/// sheet on phones, a dialog on medium windows.
 Future<void> showHudaAiHistory(
   BuildContext context, {
   required VoidCallback onOpened,
@@ -28,7 +26,6 @@ Future<void> showHudaAiHistory(
     context: context,
     title: l10n.aiHistory,
     expand: true,
-    // A side sheet on wide windows, like the Books language list.
     sideSheet: true,
     maxDialogWidth: 560,
     builder: (sheetContext) => BlocProvider.value(
@@ -45,18 +42,13 @@ Future<void> showHudaAiHistory(
 }
 
 enum ChatHistoryPresentation {
-  /// Beside the conversation, with New chat at its head.
   pane,
 
-  /// Below the composer on a tabletop fold, with New chat.
   tabletop,
 
-  /// In a sheet or dialog that closes once a conversation opens.
   sheet,
 }
 
-/// Saved conversations, newest first: search, open, delete, clear all.
-/// Where it's inline it also holds New chat (the app bar then has none).
 class ChatHistory extends StatefulWidget {
   const ChatHistory({
     super.key,
@@ -67,8 +59,6 @@ class ChatHistory extends StatefulWidget {
 
   final ChatHistoryPresentation presentation;
 
-  /// A conversation was opened or the open one was deleted: the screen
-  /// clears what was typed.
   final VoidCallback onOpened;
   final VoidCallback? onNewChat;
 
@@ -189,8 +179,6 @@ class _ChatHistoryState extends State<ChatHistory> {
                   onSelected: (_) => _clearAll(),
                   itemBuilder: (context) => [
                     PopupMenuItem(
-                      // A value: a null one reads as "dismissed" and never
-                      // calls onSelected.
                       value: _HistoryAction.clearAll,
                       child: _MenuRow(
                         icon: Icons.delete_sweep_outlined,
@@ -289,7 +277,6 @@ class _ChatHistoryState extends State<ChatHistory> {
 
 enum _HistoryAction { delete, clearAll }
 
-/// The saved history loading: rows in their shape (never "no history").
 class _HistorySkeleton extends StatelessWidget {
   const _HistorySkeleton({super.key});
 

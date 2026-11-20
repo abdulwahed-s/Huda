@@ -8,10 +8,6 @@ import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 import 'package:huda/presentation/widgets/hijri_calendar/calendar_format.dart';
 import 'package:huda/presentation/widgets/hijri_calendar/islamic_calendar_event.dart';
 
-/// A Hijri month: its name and the Gregorian months it spans between the
-/// arrows, the locale's weekdays, and six weeks of days. Months slide in
-/// reading direction ([direction] +1 for a later month); a horizontal
-/// swipe on the grid turns the month too.
 class CalendarMonthCard extends StatelessWidget {
   const CalendarMonthCard({
     super.key,
@@ -28,27 +24,21 @@ class CalendarMonthCard extends StatelessWidget {
     this.dense = false,
   });
 
-  /// The month shown (its first day).
   final HijriDate month;
   final HijriCalendarService service;
   final HijriDate selected;
   final HijriDate today;
 
-  /// The person's events by [HijriCalendarService.eventKey].
   final Map<String, List<HijriEvent>> events;
   final int direction;
   final ValueChanged<HijriDate> onSelect;
   final VoidCallback onPrevious;
   final VoidCallback onNext;
 
-  /// Lets the grid grow to fill a pane.
   final double minCellHeight;
 
-  /// Short rows for compact heights (phone and Duo landscape).
   final bool dense;
 
-  /// The card's height without the grid's six rows (header, weekdays,
-  /// padding), for a pane that sizes rows to fill itself.
   static double chromeHeight(BuildContext context) {
     final scaler = MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 1.3);
     final space = context.tokens.space;
@@ -62,7 +52,6 @@ class CalendarMonthCard extends StatelessWidget {
         space.xxs * 5;
   }
 
-  /// A day cell's natural height at the current text size.
   static double naturalCellHeight(BuildContext context, {bool dense = false}) {
     final scaler = MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 1.3);
     if (dense) return scaler.scale(17) * 1.4 + scaler.scale(12) + 18;
@@ -94,7 +83,6 @@ class CalendarMonthCard extends StatelessWidget {
     void swipe(DragEndDetails details) {
       final v = details.primaryVelocity ?? 0;
       if (v.abs() < 250) return;
-      // Toward the reading start brings the next month in from the end.
       final next = rtl ? v > 0 : v < 0;
       next ? onNext() : onPrevious();
     }
@@ -205,8 +193,6 @@ class CalendarMonthCard extends StatelessWidget {
   }
 }
 
-/// Eases the grid's height when a month needs a week more or less (no
-/// `AnimatedSize` under reduce motion: a zero-length one throws).
 class _EaseSize extends StatelessWidget {
   const _EaseSize({required this.child});
 
@@ -227,8 +213,6 @@ class _EaseSize extends StatelessWidget {
   }
 }
 
-/// Slides a new [child] in from the end of the reading direction (or the
-/// start, for an earlier month) while the old one fades out.
 class _Slide extends StatelessWidget {
   const _Slide({
     required this.keyValue,
@@ -258,8 +242,6 @@ class _Slide extends StatelessWidget {
       ),
       transitionBuilder: (child, animation) {
         final incoming = child.key == key;
-        // The old month fades out in the first half, so titles never
-        // sit on top of each other; the new one comes in after it.
         final fade = CurvedAnimation(
           parent: animation,
           curve: incoming ? const Interval(0.35, 1) : const Interval(0.5, 1),
@@ -287,7 +269,6 @@ class _Weekdays extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final format = CalendarFormat.of(context);
-    // 2026-11-01 is a Sunday (index 0).
     final sunday = DateTime(2026, 11, 1);
     return ExcludeSemantics(
       child: Row(
@@ -343,7 +324,6 @@ class _Grid extends StatelessWidget {
   final int firstDay;
   final ValueChanged<HijriDate> onSelect;
 
-  /// Whether [day]'s mark differs from the day before's.
   bool _startsRun(int day) {
     String? key(int d) {
       if (d < 1) return null;
@@ -369,16 +349,13 @@ class _Grid extends StatelessWidget {
     }
 
     final first = gregorian(1);
-    // DateTime.weekday: Monday 1 … Sunday 7; the grid's index 0 is firstDay.
     final lead = (first.weekday % 7 - firstDay) % 7;
     return LayoutBuilder(
       builder: (context, constraints) {
         final cellWidth = (constraints.maxWidth - space.xxs * 6) / 7;
-        // Room for a line of titles under the numerals.
         final detailed =
             cellWidth >= 88 &&
             cellHeight >= CalendarMonthCard.naturalCellHeight(context) + 10;
-        // Only the weeks the month needs; the card eases to its new height.
         final weeks = ((lead + days) / 7).ceil();
         return Column(
           children: [
@@ -435,10 +412,6 @@ class _Grid extends StatelessWidget {
   }
 }
 
-/// One day: the Hijri numeral over the Gregorian one, then a row of marks:
-/// the occasion's own mark in gilt and a dot per event (in wide cells the
-/// mark sits in the corner and the occasion and events are named). Selected
-/// is lit; today is ringed.
 class CalendarDayCell extends StatelessWidget {
   const CalendarDayCell({
     super.key,
@@ -454,8 +427,6 @@ class CalendarDayCell extends StatelessWidget {
     this.startsRun = true,
   });
 
-  /// Whether the day's occasion mark begins here (wide cells name it only
-  /// where its run of days begins).
   final bool startsRun;
   final HijriDate date;
   final DateTime gregorian;
@@ -465,8 +436,6 @@ class CalendarDayCell extends StatelessWidget {
   final List<IslamicCalendarEvent> occasions;
   final bool detailed;
 
-  /// Short windows: the Hijri numeral and the dots only (the plate names
-  /// the Gregorian date).
   final bool dense;
   final VoidCallback onTap;
 
@@ -490,7 +459,6 @@ class CalendarDayCell extends StatelessWidget {
       if (events.isNotEmpty) l10n.calendarEventsCount(events.length),
     ].join(', ');
 
-    // The mark follows the text size, inside the grid's 1.3× clamp.
     final markSize = MediaQuery.textScalerOf(context).scale(12);
     final markColor = selected ? tokens.onChrome : scheme.tertiary;
     final occasion = occasions.isEmpty ? null : primaryOccasion(occasions);
@@ -524,9 +492,6 @@ class CalendarDayCell extends StatelessWidget {
             onTap: onTap,
             child: Stack(
               children: [
-                // Each occasion has its own mark (the one on the day plate
-                // and in the month's key): the most specific on overlaps.
-                // Wide cells keep it in the corner, clear of the numerals.
                 if (occasion != null && detailed)
                   PositionedDirectional(
                     top: space.xxs,
@@ -613,7 +578,6 @@ class CalendarDayCell extends StatelessWidget {
     );
   }
 
-  /// Wide cells name their occasion and events, as many as fit.
   List<Widget> _titles(
     BuildContext context, {
     required Color ink,
@@ -633,8 +597,6 @@ class CalendarDayCell extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // The caption names the mark's occasion where its run of
-              // days begins; the key under the grid gives the full range.
               for (final occasion in [
                 if (occasions.isNotEmpty && startsRun)
                   primaryOccasion(occasions),
@@ -692,9 +654,6 @@ class _Dot extends StatelessWidget {
   );
 }
 
-/// The occasion a day's mark shows when several fall on it: the most
-/// specific (the shortest), so the 9th of Dhu al-Hijjah is Arafah and the
-/// 11th the Days of Tashreeq.
 IslamicCalendarEvent primaryOccasion(List<IslamicCalendarEvent> occasions) {
   final sorted = [...occasions]
     ..sort(
@@ -705,8 +664,6 @@ IslamicCalendarEvent primaryOccasion(List<IslamicCalendarEvent> occasions) {
   return sorted.first;
 }
 
-/// The month's key: each occasion's mark, its name and its days, under
-/// the grid. Tap one to go to its first day. Nothing in months without.
 class _OccasionKey extends StatelessWidget {
   const _OccasionKey({
     required this.month,
@@ -754,8 +711,6 @@ class _OccasionKey extends StatelessWidget {
             color: scheme.outlineVariant,
           ),
           SizedBox(height: space.xxs),
-          // Two even columns (one on the narrowest windows), so rows line
-          // up whatever the names' lengths.
           LayoutBuilder(
             builder: (context, constraints) {
               final columns = constraints.maxWidth >= 340 ? 2 : 1;
@@ -770,8 +725,6 @@ class _OccasionKey extends StatelessWidget {
                       child: Builder(
                         builder: (context) {
                           final end = occasion.hijriDayEnd.clamp(1, days);
-                          // An LTR isolate keeps "1–10" ascending in RTL text;
-                    // word joiners keep it on one line.
                           final range = end == occasion.hijriDayStart
                               ? format.number(end)
                               : '\u2066${format.number(occasion.hijriDayStart)}\u2060–\u2060'
@@ -781,8 +734,6 @@ class _OccasionKey extends StatelessWidget {
                               selected.year == month.year &&
                               occasion.occursOn(selected);
                           return Material(
-                            // The chosen day's occasions are tinted, not bolded,
-                            // so names keep their width.
                             color: on
                                 ? scheme.tertiary.withValues(alpha: 0.1)
                                 : Colors.transparent,
@@ -859,7 +810,6 @@ class _OccasionKey extends StatelessWidget {
   }
 }
 
-/// The localized name of an occasion.
 String occasionTitle(AppLocalizations l10n, String key) => switch (key) {
   'ramadan' => l10n.calendarEventFirstDayRamadan,
   'last_ten_ramadan' => l10n.eventLastTenRamadan,
@@ -872,7 +822,6 @@ String occasionTitle(AppLocalizations l10n, String key) => switch (key) {
   _ => l10n.eventSpecialOccasion,
 };
 
-/// A line about an occasion.
 String occasionSubtitle(AppLocalizations l10n, String key) => switch (key) {
   'ramadan' => l10n.eventRamadanSubtitle,
   'last_ten_ramadan' => l10n.eventLastTenRamadanSubtitle,

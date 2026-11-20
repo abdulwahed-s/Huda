@@ -19,24 +19,14 @@ import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 import 'package:huda/presentation/widgets/qiblah/qiblah_calibration.dart';
 import 'package:huda/presentation/widgets/qiblah/qiblah_identity.dart';
 
-/// What the instrument can show.
 enum QiblahPhase {
-  /// Location or the first heading is on its way: the dial unlit.
   locating,
 
-  /// A live heading: the dial turns and the alidade points to the Kaaba.
   compass,
 
-  /// The bearing is known but the device has no compass: the dial shows
-  /// north at the top and the Qibla's bearing, like a map.
   noCompass,
 }
 
-/// The Qiblah compass: listens to [readings] (null while the location is
-/// being checked), settles the dial on each heading with a damped spring,
-/// and locks it when the phone faces the Qibla (one medium haptic, again
-/// only after turning away). Lays itself out for the window and fold with
-/// [QiblahArrangement].
 class QiblahInstrument extends StatefulWidget {
   const QiblahInstrument({
     super.key,
@@ -47,11 +37,8 @@ class QiblahInstrument extends StatefulWidget {
 
   final Stream<QiblahReading>? readings;
 
-  /// The readings failed (no location fix, a sensor error).
   final ValueChanged<Object> onFailed;
 
-  /// Takes a fresh location fix (the location line's button): new
-  /// [readings] follow.
   final VoidCallback? onRefreshLocation;
 
   @override
@@ -63,13 +50,10 @@ class _QiblahInstrumentState extends State<QiblahInstrument>
   StreamSubscription<QiblahReading>? _subscription;
   QiblahReading? _reading;
 
-  /// The heading the dial shows, in degrees, unwrapped so the spring always
-  /// takes the short way round.
   late final AnimationController _heading = AnimationController.unbounded(
     vsync: this,
   );
 
-  /// 0–1: the lock as the phone comes to face the Qibla.
   late final AnimationController _lock = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 1000),
@@ -78,8 +62,6 @@ class _QiblahInstrumentState extends State<QiblahInstrument>
 
   bool _aligned = false;
 
-  /// A fresh fix was asked for and hasn't come yet; [_retrying] when the
-  /// last one had failed.
   bool _refreshing = false;
   bool _retrying = false;
 
@@ -91,12 +73,8 @@ class _QiblahInstrumentState extends State<QiblahInstrument>
     widget.onRefreshLocation?.call();
   }
 
-  /// Leaving the Qibla takes a few degrees more than arriving, so a hand's
-  /// tremor at the edge doesn't flicker the lock or buzz again.
   static const double _leaveTolerance = kQiblahAlignmentToleranceDeg + 2.5;
 
-  /// A little under critical damping: the dial overshoots a touch and
-  /// settles, like a needle in its housing.
   static final SpringDescription _spring = SpringDescription.withDampingRatio(
     mass: 1,
     stiffness: 90,
@@ -139,7 +117,6 @@ class _QiblahInstrumentState extends State<QiblahInstrument>
     if (_reduceMotion) {
       _heading.value = target;
     } else if (first) {
-      // Opening: the dial swings in from a little off and settles.
       _heading.value = target - 40;
       _heading.animateWith(SpringSimulation(_spring, target - 40, target, 0));
     } else {
@@ -215,7 +192,6 @@ class _QiblahInstrumentState extends State<QiblahInstrument>
   }
 }
 
-/// The degrees from [from] to the same direction nearest to it, −180–180.
 double _wrap(double degrees) {
   var d = degrees % 360;
   if (d > 180) d -= 360;
@@ -223,9 +199,6 @@ double _wrap(double degrees) {
   return d;
 }
 
-/// The astrolabe: the face turned by the heading, the alidade and Kaaba
-/// turned to the Qibla, and the fixed index. Only transforms change while
-/// the phone turns; the line work is painted once per layer.
 class QiblahDial extends StatelessWidget {
   const QiblahDial({
     super.key,
@@ -306,7 +279,6 @@ class QiblahDial extends StatelessWidget {
       ),
     );
 
-    // The compass turns the face; without one, north stays at the top.
     double turn(double degrees) => degrees * math.pi / 180;
     return Semantics(
       label: l10n.qiblahDirection,
@@ -350,8 +322,6 @@ class QiblahDial extends StatelessWidget {
   }
 }
 
-/// Above the dial (or leading the readout pane): the Qibla's bearing and
-/// which way to turn, or that the phone faces it.
 class QiblahHeader extends StatelessWidget {
   const QiblahHeader({
     super.key,
@@ -367,7 +337,6 @@ class QiblahHeader extends StatelessWidget {
   final Animation<double> heading;
   final bool aligned;
 
-  /// Aligned to the start (a pane beside the dial) or centered (above it).
   final bool start;
 
   @override
@@ -425,8 +394,6 @@ class QiblahHeader extends StatelessWidget {
                     ?.copyWith(color: tokens.onChrome),
           ),
         );
-        // From expanded width the numeral takes the counter role (72), so
-        // it holds its own beside the large dial.
         final numeral =
             (expanded
                     ? context.type.counter
@@ -457,7 +424,6 @@ class QiblahHeader extends StatelessWidget {
                   ),
                   Row(
                     mainAxisSize: MainAxisSize.min,
-                    // Right and left are the phone's, in every language.
                     textDirection: TextDirection.ltr,
                     children: [
                       if (!right)
@@ -493,8 +459,6 @@ class QiblahHeader extends StatelessWidget {
             );
           },
         );
-        // One slot for both, as tall as the taller, so nothing below
-        // moves when the phone comes to face the Qibla.
         body = QiblahTextSwap(
           showSecond: aligned,
           alignment: start
@@ -524,8 +488,6 @@ class QiblahHeader extends StatelessWidget {
                   Directionality.of(context),
                 )
               : Alignment.topCenter,
-          // Full width, so only the height eases and a longer line never
-          // shows clipped while it arrives.
           child: SizedBox(
             width: double.infinity,
             child: Align(
@@ -541,9 +503,6 @@ class QiblahHeader extends StatelessWidget {
   }
 }
 
-/// Under the dial (or closing the readout pane): what to do, then only the
-/// notes that apply right now (calibration, interference, tilt, the
-/// compass's error), and where the bearing is measured from.
 class QiblahFooter extends StatelessWidget {
   const QiblahFooter({
     super.key,
@@ -612,8 +571,6 @@ class QiblahFooter extends StatelessWidget {
             ),
           );
         }
-        // The compass's own word for its accuracy; nothing when it has
-        // none to give.
         final quality = switch (r.accuracy) {
           CompassAccuracy.high => l10n.qiblahAccuracyGood,
           CompassAccuracy.medium => l10n.qiblahAccuracyFair,
@@ -621,7 +578,6 @@ class QiblahFooter extends StatelessWidget {
           CompassAccuracy.unreliable => l10n.qiblahAccuracyPoor,
           CompassAccuracy.unknown => null,
         };
-        // A warning above already says the reading is off.
         if (quality != null && notes.isEmpty) {
           final good = r.accuracy == CompassAccuracy.high;
           notes.add(
@@ -664,7 +620,6 @@ class QiblahFooter extends StatelessWidget {
           stateKey: key,
           sequential: true,
           child: phase == QiblahPhase.compass
-              // Both lines in one slot: only the words change on alignment.
               ? QiblahTextSwap(
                   showSecond: aligned,
                   alignment: start
@@ -683,8 +638,6 @@ class QiblahFooter extends StatelessWidget {
                 )
               : Text(instruction, textAlign: align, style: muted),
         ),
-        // Notes come and go with the readings; their height eases (a
-        // zero-length AnimatedSize under reduce motion would throw).
         if (motion == Duration.zero)
           noteColumn
         else
@@ -708,7 +661,6 @@ class QiblahFooter extends StatelessWidget {
   }
 }
 
-/// One short note under the instruction: a mark and a line of text.
 class _QiblahNote extends StatelessWidget {
   const _QiblahNote({
     required this.icon,
@@ -743,7 +695,6 @@ class _QiblahNote extends StatelessWidget {
           Flexible(
             child: Text(
               text,
-              // Only a warning is emphasized.
               style:
                   (warning
                           ? (large
@@ -761,9 +712,6 @@ class _QiblahNote extends StatelessWidget {
   }
 }
 
-/// Where the bearing is measured from: the place and the distance to the
-/// Kaaba, with a button for a fresh fix; "Updating your location…" while
-/// one is on its way; a failure with Retry ("Retrying…" after the tap).
 class QiblahLocationLine extends StatelessWidget {
   const QiblahLocationLine({
     super.key,
@@ -776,7 +724,6 @@ class QiblahLocationLine extends StatelessWidget {
   final QiblahReading reading;
   final VoidCallback? onRefresh;
 
-  /// A fresh fix was asked for: show it on its way until it answers.
   final bool refreshing;
   final bool retrying;
 
@@ -839,8 +786,6 @@ class QiblahLocationLine extends StatelessWidget {
             ? null
             : place == null
             ? l10n.qiblahDistance(distance)
-            // A right-to-left mark after a Latin place name keeps the
-            // dot and the distance in the sentence's own order.
             : l10n.qiblahPlaceDistance(
                 Directionality.of(context) == TextDirection.rtl
                     ? '$place\u200F'
@@ -883,7 +828,6 @@ class QiblahLocationLine extends StatelessWidget {
     TextStyle? style,
   }) => Row(
     mainAxisSize: MainAxisSize.min,
-    // The mark sits by the first line when the text wraps.
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Padding(padding: const EdgeInsets.only(top: 1), child: lead),
@@ -893,16 +837,9 @@ class QiblahLocationLine extends StatelessWidget {
   );
 }
 
-/// A number of degrees ("119°", "±4°") held together between left-to-right
-/// marks, so the sign and the degree mark stay beside the number inside
-/// right-to-left text. (Flutter's text layout reversed the paragraph with
-/// directional isolates.)
 String qiblahDegrees(num value, {bool plusMinus = false}) =>
     '\u200E${plusMinus ? '±' : ''}${value.round()}°\u200E';
 
-/// Two texts in one slot, as tall as the taller: [second] fades in as
-/// [first] fades out (one after the other, so words never overlap), and
-/// nothing around them moves. Only the shown one is read out.
 class QiblahTextSwap extends StatelessWidget {
   const QiblahTextSwap({
     super.key,
@@ -928,7 +865,6 @@ class QiblahTextSwap extends StatelessWidget {
         child: AnimatedOpacity(
           opacity: shown ? 1 : 0,
           duration: duration,
-          // Out in the first half, in during the second.
           curve: shown
               ? const Interval(0.5, 1, curve: Curves.easeOut)
               : const Interval(0, 0.5, curve: Curves.easeIn),
@@ -948,12 +884,6 @@ class QiblahTextSwap extends StatelessWidget {
 
 typedef QiblahPartBuilder = Widget Function(bool start);
 
-/// Places the dial and its readout for the space and the fold:
-/// * phones and portrait tablets: the header above the dial, the footer
-///   under it; scrolls at large text;
-/// * landscape and wide windows, and any vertical fold: the readout beside
-///   the dial (split at the fold, 50/50);
-/// * a horizontal fold: the dial above it, the readout below.
 class QiblahArrangement extends StatelessWidget {
   const QiblahArrangement({
     super.key,
@@ -967,11 +897,8 @@ class QiblahArrangement extends StatelessWidget {
   final QiblahPartBuilder header;
   final QiblahPartBuilder footer;
 
-  /// The calibration card is under the dial: leave it more room.
   final bool calibrating;
 
-  /// The dial never grows past this: a bigger instrument says nothing more.
-  /// Tall tablets and big desktop windows allow a little more.
   static double maxDialFor(Size size) => size.shortestSide >= 900 ? 680 : 560;
 
   @override
@@ -986,7 +913,6 @@ class QiblahArrangement extends StatelessWidget {
         (context.windowClass.isCompactHeight && size.width > size.height);
     if (!beside) return _stacked(context);
     if (fold.separatorAxis == Axis.vertical) {
-      // Split at the fold, flat or half open, so nothing crosses it.
       return AdaptivePanes(
         twoPaneMinWidth: 0,
         divider: const SizedBox(width: 1),
@@ -997,8 +923,6 @@ class QiblahArrangement extends StatelessWidget {
     return _beside(context);
   }
 
-  /// Landscape and wide windows: the readout and the dial side by side as
-  /// one centered composition, the dial as tall as the window allows.
   Widget _beside(BuildContext context) {
     final space = context.tokens.space;
     final insets = MediaQuery.paddingOf(context);
@@ -1030,7 +954,6 @@ class QiblahArrangement extends StatelessWidget {
               SizedBox(
                 width: readoutWidth,
                 child: MediaQuery(
-                  // The pane pads only the bars' top and bottom.
                   data: MediaQuery.of(
                     context,
                   ).copyWith(padding: insets.copyWith(left: 0, right: 0)),
@@ -1065,13 +988,10 @@ class QiblahArrangement extends StatelessWidget {
         final padding = context.scrollPadding(
           EdgeInsets.fromLTRB(gutter, insets.top + space.md, gutter, space.xl),
         );
-        // Room the words need, at this text size.
         final scale = MediaQuery.textScalerOf(context).scale(16) / 16;
         final words = (calibrating ? 320.0 : 240.0) * scale;
         final width = box.maxWidth - padding.horizontal;
         final maxDial = maxDialFor(MediaQuery.sizeOf(context));
-        // The instrument stays the hero: at large text the page scrolls
-        // rather than the dial shrinking to a badge.
         final dialSize = math
             .min(width, box.maxHeight - padding.vertical - words)
             .clamp(math.min(width, math.max(200.0, width * 0.65)), maxDial)
@@ -1158,7 +1078,6 @@ class QiblahArrangement extends StatelessWidget {
   }
 }
 
-/// The dial, as large as its pane allows, clear of the bars.
 class _DialPane extends StatelessWidget {
   const _DialPane({required this.dial});
 
@@ -1190,8 +1109,6 @@ class _DialPane extends StatelessWidget {
   }
 }
 
-/// The readout beside the dial: start-aligned, centered in its height,
-/// scrolling when the text is large.
 class _ReadoutPane extends StatelessWidget {
   const _ReadoutPane({
     required this.header,
@@ -1202,8 +1119,6 @@ class _ReadoutPane extends StatelessWidget {
   final QiblahPartBuilder header;
   final QiblahPartBuilder footer;
 
-  /// Its own start and end padding (in a pane); off inside a composition
-  /// that already has gutters.
   final bool sidePadding;
 
   @override

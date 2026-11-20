@@ -4,9 +4,6 @@ import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/design/huda_lamp.dart';
 import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 
-/// A new version is out (shown by `UpdateService`): led by the lit lamp
-/// (an invitation), the version, its notes (or a line about it), Later
-/// (quiet) and Update (lit), which closes the dialog and opens the store.
 class UpdateDialog extends StatelessWidget {
   const UpdateDialog({
     super.key,

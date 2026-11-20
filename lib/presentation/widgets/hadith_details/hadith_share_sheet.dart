@@ -14,10 +14,6 @@ import 'package:huda/presentation/widgets/share/share_image_capture.dart';
 import 'package:huda/presentation/widgets/share/share_image_saver.dart';
 import 'package:share_plus/share_plus.dart';
 
-/// Opens Hadith's share sheet for one hadith: a live preview of its folio
-/// card, the translation ticked in or out, then share as an image or as
-/// text, copy the text (it moved here from the card), or save the image.
-/// The image renders ahead, as Athkar's does, so sharing rarely waits.
 Future<void> shareHadith(
   BuildContext context, {
   required HadithEntry entry,
@@ -38,7 +34,6 @@ Future<void> shareHadith(
   );
 }
 
-/// The sheet's body: the option, the preview and the ways to share.
 class HadithShareSheet extends StatefulWidget {
   const HadithShareSheet({
     super.key,
@@ -48,7 +43,6 @@ class HadithShareSheet extends StatefulWidget {
     required this.book,
   });
 
-  /// The reader screen's context: captures and toasts run there.
   final BuildContext screenContext;
   final HadithEntry entry;
   final HadithCollectionRef collection;
@@ -81,8 +75,6 @@ class _HadithShareSheetState extends State<HadithShareSheet> {
 
   bool get _arabicUi => Localizations.localeOf(context).languageCode == 'ar';
 
-  /// The option shows only when there's both an Arabic text and a
-  /// translation. On by default, except in Arabic.
   bool get _canChoose =>
       _entry.arabic.isNotEmpty && _entry.translation.isNotEmpty;
 
@@ -95,7 +87,6 @@ class _HadithShareSheetState extends State<HadithShareSheet> {
       (widget.book.title.isEmpty ? null : widget.book.title);
 
   HadithShareCard get _card => HadithShareCard(
-    // The sheet cross-fades the preview, and forgets "Saved", per option.
     key: ValueKey(_showTranslation),
     collection: widget.collection.title,
     collectionArabic: widget.collection.arabicTitle,

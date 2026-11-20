@@ -16,16 +16,6 @@ import 'package:huda/presentation/widgets/onboarding/onboarding_frame.dart';
 import 'package:huda/core/services/prayer_alerts/prayer_alerts.dart';
 import 'package:huda/presentation/widgets/prayer_alerts/prayer_alert_labels.dart';
 
-/// Step 6: the call to prayer. A preview shows the alert as it will
-/// arrive (the next prayer, its time, the adhan's words). Notifications are
-/// asked for on the permissions step, not here:
-/// - allowed: the adhan voice can be chosen; Continue answers the step;
-/// - refused: what that means, the fix as a link ("Try again", or "Open
-///   settings" when only Settings can turn them on), and "Continue without
-///   alerts";
-/// - put off ("Not now" there): Continue, and the Prayer screen asks later.
-/// Granting or continuing without writes the key the Prayer screen reads,
-/// so it doesn't ask again.
 class PrayerAlertsStep extends StatefulWidget {
   const PrayerAlertsStep({super.key});
 
@@ -94,7 +84,6 @@ class _PrayerAlertsStepState extends State<PrayerAlertsStep> {
             advances: true,
             key: const ValueKey('onboarding-alerts-continue'),
             onPressed: () async {
-              // Saves a style picked a moment ago before moving on.
               await scope.environment.alerts?.call().flush();
               await _answer(StepOutcome.done);
             },
@@ -103,8 +92,6 @@ class _PrayerAlertsStepState extends State<PrayerAlertsStep> {
           status = Column(
             key: const ValueKey('granted'),
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            // The choice first (it's the step's one choice, in view on
-            // every screen), then the alert as it will arrive.
             children: [
               if (scope.environment.alerts != null) ...[
                 _AlertStyleChoice(controller: scope.environment.alerts!()),
@@ -121,7 +108,6 @@ class _PrayerAlertsStepState extends State<PrayerAlertsStep> {
             ],
           );
         } else if (declined) {
-          // The one way on is lit; the fix is a link in the notice.
           primary = OnboardingAction(
             l10n.prayerSetupContinueWithoutAlerts,
             key: const ValueKey('onboarding-alerts-without'),
@@ -151,7 +137,6 @@ class _PrayerAlertsStepState extends State<PrayerAlertsStep> {
                   ),
           );
         } else {
-          // Put off on the permissions step: nothing is asked here.
           primary = OnboardingAction(
             l10n.continueButton,
             advances: true,
@@ -165,8 +150,6 @@ class _PrayerAlertsStepState extends State<PrayerAlertsStep> {
             children: [
               const _AdhanPreview(on: false),
               SizedBox(height: space.sm),
-              // Off: the one place to turn them on is the permissions
-              // step, a tap back.
               OnboardingNotice(
                 icon: Icons.notifications_off_outlined,
                 title: l10n.setupAlertsOff,
@@ -203,9 +186,6 @@ class _PrayerAlertsStepState extends State<PrayerAlertsStep> {
   }
 }
 
-/// The alert as it will arrive: Huda's mark, the next prayer and its
-/// time, and the words the adhan alert carries. Its mark is unlit, with a
-/// muted bell, while alerts aren't on.
 class _AdhanPreview extends StatelessWidget {
   const _AdhanPreview({required this.on});
 
@@ -238,8 +218,6 @@ class _AdhanPreview extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Lit while alerts are on; an unlit mark with a muted bell when
-          // they aren't. The words keep their contrast either way.
           on
               ? HudaLamp(
                   size: 40,
@@ -292,7 +270,6 @@ class _AdhanPreview extends StatelessWidget {
                 SizedBox(height: space.xxs),
                 Text(
                   l10n.notificationPrayerTimeBody(name),
-                  // One line on phones, so the choices below stay in view.
                   maxLines: MediaQuery.sizeOf(context).width < 600 ? 1 : 3,
                   overflow: TextOverflow.ellipsis,
                   style: theme.textTheme.bodySmall?.copyWith(
@@ -313,11 +290,6 @@ class _AdhanPreview extends StatelessWidget {
   }
 }
 
-/// How each prayer alerts, offered simply: the styles this device can use
-/// (a notification, a short adhan, the full adhan; an alarm on iOS, a quiet
-/// moment on desktops), one tap each. It edits Prayer's own alert settings
-/// (the controller its sheet uses), so nothing is set twice; the voice,
-/// volume and per-prayer choices stay in Prayer's settings.
 class _AlertStyleChoice extends StatefulWidget {
   const _AlertStyleChoice({required this.controller});
 
@@ -345,7 +317,6 @@ class _AlertStyleChoiceState extends State<_AlertStyleChoice> {
         final settings = controller.settings;
         final capabilities = controller.capabilities;
         if (settings == null || capabilities == null) {
-          // Still reading the saved settings.
           return const SizedBox(
             height: 56,
             child: Center(child: HudaLampSpinner(size: 20)),
@@ -362,9 +333,6 @@ class _AlertStyleChoiceState extends State<_AlertStyleChoice> {
           children: [
             HudaEyebrow(l10n.setupAlertStyleLabel, header: true),
             SizedBox(height: space.sm),
-            // Side by side as tiles (a mark and a name), so the chosen
-            // one is in view even on small phones; what it does is said
-            // once under them. One per row at large text.
             OnboardingOptionGrid(
               minTileWidth: 96,
               maxColumns: styles.length,
@@ -411,7 +379,6 @@ class _AlertStyleChoiceState extends State<_AlertStyleChoice> {
   }
 }
 
-/// A style's mark on a soft plate, lit with the primary when chosen.
 class _StyleMark extends StatelessWidget {
   const _StyleMark({required this.icon, required this.selected});
 
@@ -433,7 +400,6 @@ class _StyleMark extends StatelessWidget {
                 : scheme.surfaceContainerLow,
             borderRadius: BorderRadius.circular(tokens.radius.sm),
           ),
-          // The mark at the start, clear of the tile's radio at the end.
           padding: EdgeInsetsDirectional.only(start: tokens.space.sm),
           alignment: AlignmentDirectional.centerStart,
           child: Icon(

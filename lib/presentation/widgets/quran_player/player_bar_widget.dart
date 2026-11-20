@@ -16,19 +16,12 @@ import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 import 'package:huda/presentation/widgets/quran_player/quran_audio_identity.dart';
 import 'package:huda/presentation/widgets/quran_player/quran_audio_player.dart';
 
-/// The Quran player's bar, pinned under the reciters and a recitation's
-/// surahs while something plays: the surah's voiceprint filling along its
-/// top edge, the surah and reciter (tap to open the player), previous,
-/// play or pause, next and stop. Night chrome to the screen edge.
 class PlayerBarWidget extends StatelessWidget {
   const PlayerBarWidget({super.key});
 
-  /// Whether the bar shows for [bar] and [player].
   static bool showsFor(PlayerBarVisibility bar, QuranPlayerState player) =>
       bar != PlayerBarVisibility.hidden && player is QuranPlayerPlaying;
 
-  /// [child] with the bar docked under it while something plays.
-  /// A surah that fails to start says so (the player only logs it).
   static Widget dock({required Widget child}) =>
       BlocListener<QuranPlayerCubit, QuranPlayerState>(
         listenWhen: (_, state) => state is QuranPlayerError,
@@ -68,7 +61,6 @@ class PlayerBarWidget extends StatelessWidget {
   }
 }
 
-/// Stops playback and hides the bar (the bar's and the player's Stop).
 void stopQuranPlayer(BuildContext context, QuranPlayerPlaying state) {
   state.audioPlayer.stop();
   context.read<PlayerBarCubit>().hide();
@@ -89,8 +81,6 @@ class _MiniPlayer extends StatelessWidget {
     final rtl = Directionality.of(context) == TextDirection.rtl;
     final insets = MediaQuery.paddingOf(context);
     final player = state.audioPlayer;
-    // Narrow or large text: previous and next stay in the full player, so
-    // the surah's name keeps room.
     final roomy =
         MediaQuery.sizeOf(context).width - insets.horizontal >=
         380 * MediaQuery.textScalerOf(context).scale(1).clamp(1.0, 1.4);
@@ -105,7 +95,6 @@ class _MiniPlayer extends StatelessWidget {
           return Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // How far the surah has played.
               StreamBuilder<Duration>(
                 stream: player.positionStream,
                 builder: (context, posSnap) {
@@ -250,8 +239,6 @@ class _MiniPlayer extends StatelessWidget {
   }
 }
 
-/// The lit play or pause button (the player's primary action); the lamp
-/// spinner while the audio is [busy] loading.
 class QuranPlayButton extends StatelessWidget {
   const QuranPlayButton({
     super.key,
@@ -287,7 +274,6 @@ class QuranPlayButton extends StatelessWidget {
         message: playing ? l10n.pause : l10n.play,
         child: FilledButton(
           key: const ValueKey('quran-audio-play'),
-          // A pale ring keeps the lit disc distinct on the night chrome.
           style: FilledButton.styleFrom(
             padding: EdgeInsets.zero,
             shape: CircleBorder(
@@ -315,13 +301,11 @@ class QuranPlayButton extends StatelessWidget {
   }
 }
 
-/// The surah number at [index] of the recitation's playlist.
 int surahNumberAt(QuranPlayerPlaying state, int index) {
   if (index < 0 || index >= state.surahNumbers.length) return state.suraNumber;
   return int.tryParse(state.surahNumbers[index]) ?? state.suraNumber;
 }
 
-/// The surah's name at [index], as the catalog names it.
 String surahTitleAt(QuranPlayerPlaying state, int index) {
   final number = surahNumberAt(state, index);
   final match = state.jsonData
@@ -330,9 +314,6 @@ String surahTitleAt(QuranPlayerPlaying state, int index) {
   return match.isNotEmpty ? match.first['name'].toString() : 'Surah $number';
 }
 
-/// A list page on a half-open horizontal fold (tabletop): [head] (what to
-/// look at: the art, the search) above the fold, [slivers] scrolling below
-/// it, so no row sits on the crease.
 class QuranAudioTabletop extends StatelessWidget {
   const QuranAudioTabletop({
     super.key,
@@ -382,8 +363,6 @@ class QuranAudioTabletop extends StatelessWidget {
   }
 }
 
-/// The feature's chrome plate with its voiceprint, heading a page where
-/// no landing header does (tabletop halves, the chooser pane).
 class QuranAudioArtPlate extends StatelessWidget {
   const QuranAudioArtPlate({
     super.key,

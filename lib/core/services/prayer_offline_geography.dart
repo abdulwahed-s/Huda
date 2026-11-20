@@ -5,6 +5,9 @@ import 'dart:typed_data';
 import 'package:flutter/services.dart';
 import 'package:huda/core/services/prayer_zone_countries.dart';
 import 'package:timezone_finder/timezone_finder.dart' as finder;
+// The public API doesn't expose boundary rings; timezone_finder is pinned to
+// 0.2.0 in pubspec.yaml so this internal import can't drift silently.
+// ignore: implementation_imports
 import 'package:timezone_finder/src/index/boundary_store.dart' show sharedIndex;
 
 class PrayerGeographicResult {

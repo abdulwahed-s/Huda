@@ -7,13 +7,6 @@ import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/tasbih/tasbih_dhikr_list.dart';
 import 'package:huda/presentation/widgets/tasbih/tasbih_dhikr_row.dart';
 
-/// The dhikr to count, as one scrolling row of chips (the selected one is
-/// lit). Phones only: switching happens here, and the bar's list button
-/// opens the sheet for adding and removing. Wider windows show the list.
-///
-/// After a dhikr is removed in the sheet, the row starts with an "Undo"
-/// chip for the rest of its time, so Undo stays where the dhikr live
-/// instead of floating over them.
 class TasbihDhikrChips extends StatefulWidget {
   const TasbihDhikrChips({
     super.key,
@@ -31,8 +24,6 @@ class TasbihDhikrChips extends StatefulWidget {
   final TasbihUndo undo;
   final VoidCallback onUndo;
 
-  /// Scroll padding: the gutter plus any side inset, so the row scrolls
-  /// under an inset and comes to rest clear of it.
   final EdgeInsets padding;
 
   @override
@@ -51,8 +42,6 @@ class _TasbihDhikrChipsState extends State<TasbihDhikrChips> {
     super.dispose();
   }
 
-  /// Undo shows once the sheet it was removed in has closed (this page is
-  /// the current route again), so it arrives where people can see it.
   bool get _wantUndo =>
       widget.undo.pending && (ModalRoute.of(context)?.isCurrent ?? true);
 
@@ -64,7 +53,6 @@ class _TasbihDhikrChipsState extends State<TasbihDhikrChips> {
 
   void _undoChanged() => _sync(rebuild: true);
 
-  /// Brings a new Undo chip into view at the row's start.
   void _sync({required bool rebuild}) {
     if (!mounted) return;
     final shown = _wantUndo;
@@ -88,8 +76,6 @@ class _TasbihDhikrChipsState extends State<TasbihDhikrChips> {
     });
   }
 
-  /// Whether chips run past the row's left and right ends (physical, as
-  /// the fade is), so only an edge with more to scroll to fades.
   bool _moreLeft = false;
   bool _moreRight = false;
 
@@ -97,7 +83,6 @@ class _TasbihDhikrChipsState extends State<TasbihDhikrChips> {
     final rtl = Directionality.of(context) == TextDirection.rtl;
     final before = metrics.pixels > metrics.minScrollExtent + 0.5;
     final after = metrics.pixels < metrics.maxScrollExtent - 0.5;
-    // In RTL the row starts at the right.
     final left = rtl ? after : before;
     final right = rtl ? before : after;
     if (left != _moreLeft || right != _moreRight) {
@@ -126,7 +111,6 @@ class _TasbihDhikrChipsState extends State<TasbihDhikrChips> {
     if (old.selected != widget.selected) _reveal(animate: true);
   }
 
-  /// Keeps the selected chip in view.
   void _reveal({required bool animate}) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final chip = _selectedKey.currentContext;
@@ -151,12 +135,10 @@ class _TasbihDhikrChipsState extends State<TasbihDhikrChips> {
     const clear = Color(0x00000000);
     const shown = Color(0xFF000000);
     final removed = widget.undo.note?.text ?? '';
-    // An action, not another dhikr: a tonal pill with no outline.
     final undoSlot = _UndoChipIn(
       visible: _undoShown,
       child: Padding(
         padding: EdgeInsetsDirectional.only(end: space.xs),
-        // Names what it brings back: the sheet that said so is closed.
         child: Tooltip(
           message: '${l10n.undo}: $removed',
           excludeFromSemantics: true,
@@ -168,8 +150,6 @@ class _TasbihDhikrChipsState extends State<TasbihDhikrChips> {
               onPressed: widget.onUndo,
               shape: const StadiumBorder(),
               side: BorderSide.none,
-              // `color`, not `backgroundColor`: the theme's chip color
-              // (transparent when unselected) would win over the latter.
               color: WidgetStatePropertyAll(
                 tokens.onChrome.withValues(alpha: 0.14),
               ),
@@ -185,8 +165,6 @@ class _TasbihDhikrChipsState extends State<TasbihDhikrChips> {
         ),
       ),
     );
-    // Where more chips lie beyond an end, the row fades out there instead
-    // of cutting a chip at a line.
     final row = ShaderMask(
       blendMode: BlendMode.dstIn,
       shaderCallback: (bounds) => LinearGradient(
@@ -245,8 +223,6 @@ class _TasbihDhikrChipsState extends State<TasbihDhikrChips> {
   }
 }
 
-/// The Undo chip arriving and leaving: it opens to its width and fades in,
-/// and folds away the same way. Instant under reduce motion.
 class _UndoChipIn extends StatefulWidget {
   const _UndoChipIn({required this.visible, required this.child});
 

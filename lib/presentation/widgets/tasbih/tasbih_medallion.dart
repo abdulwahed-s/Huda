@@ -7,15 +7,8 @@ import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 import 'package:huda/presentation/widgets/tasbih/tasbih_identity.dart';
 
-/// The counter's tap target, for tests and films.
 const tasbihCounterKey = ValueKey('tasbih-counter');
 
-/// The signature moment: the count inside the strand of beads.
-///
-/// Each count lights the next bead along the strand while the numeral
-/// rolls; finishing a round sends a ring outward (two at 99). Changing the
-/// dhikr ([dhikrIndex]) moves the strand to its count and fades the
-/// numeral over; a reset jumps.
 class TasbihMedallion extends StatefulWidget {
   const TasbihMedallion({
     super.key,
@@ -42,8 +35,6 @@ class _TasbihMedallionState extends State<TasbihMedallion>
   );
   late final AnimationController _pulse = AnimationController(vsync: this);
 
-  /// The moved bead's own motion: a swell and spark when counted, a dip
-  /// when taken back.
   late final AnimationController _step = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 380),
@@ -65,7 +56,6 @@ class _TasbihMedallionState extends State<TasbihMedallion>
     final next = tasbihBeadsFilled(widget.count).toDouble();
     final step = widget.count - old.count;
     final switched = old.dhikrIndex != widget.dhikrIndex;
-    // Counting and switching dhikr move the strand; a reset jumps.
     final animate =
         (switched || step.abs() == 1) &&
         motion.of(context, motion.medium) > Duration.zero;
@@ -74,8 +64,6 @@ class _TasbihMedallionState extends State<TasbihMedallion>
       _advance.value = 1;
       return;
     }
-    // A new round starts from an empty strand, not by unwinding the old;
-    // stepping back over a round's start shows the full strand at once.
     final wrapped = !switched && (step > 0 ? next < _to : next > _to);
     if (wrapped && step < 0) {
       _from = _to = next;
@@ -88,7 +76,6 @@ class _TasbihMedallionState extends State<TasbihMedallion>
         ..forward(from: 0);
     }
     if (!switched && !(wrapped && step < 0)) {
-      // Counted: the bead that just lit. Taken back: the one that went out.
       _stepBack = step < 0;
       _stepBead = (_stepBack ? tasbihBeadsFilled(old.count) : next.toInt()) - 1;
       _step.forward(from: 0);
@@ -181,7 +168,6 @@ class _TasbihMedallionState extends State<TasbihMedallion>
                   padding: EdgeInsets.all(diameter * 0.2),
                   child: MediaQuery.withClampedTextScaling(
                     maxScaleFactor: 1.3,
-                    // Another dhikr cross-fades; counting rolls.
                     child: HudaStateSwitcher(
                       stateKey: widget.dhikrIndex,
                       alignment: Alignment.center,

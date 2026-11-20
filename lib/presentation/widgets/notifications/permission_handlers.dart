@@ -7,7 +7,6 @@ import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 import 'package:huda/presentation/widgets/notifications/permission_explainer_sheet.dart';
 
 class PermissionHandlers {
-  /// Lets requirement cards refresh after a system permission flow completes.
   static final ValueNotifier<int> accessSettingsChanges = ValueNotifier(0);
 
   static void _notifyAccessSettingsChanged() {
@@ -35,10 +34,6 @@ class PermissionHandlers {
     );
   }
 
-  /// Asks for notification access. A prompt is explained first (unless the
-  /// caller already explains it, [explain] false). Huda never opens the system
-  /// settings by itself: when only the user can allow it there, a snack bar
-  /// offers "Open settings".
   static Future<bool> requestNotificationPermission(
     BuildContext context, {
     bool explain = true,

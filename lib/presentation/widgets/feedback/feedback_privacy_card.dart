@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
-/// What happens to a message: a quiet note with a lock, under the fields.
 class FeedbackPrivacyNote extends StatelessWidget {
   const FeedbackPrivacyNote({super.key});
 

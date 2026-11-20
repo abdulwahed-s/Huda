@@ -71,7 +71,6 @@ class _LinuxPrayerTraySetupSheetState extends State<LinuxPrayerTraySetupSheet> {
         return;
       }
     } catch (_) {
-      // Keep the link usable when the browser/desktop portal is unavailable.
     }
     if (mounted) setState(() => _showDownloadLink = true);
   }

@@ -9,8 +9,6 @@ import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 import 'package:huda/presentation/widgets/onboarding/onboarding_frame.dart';
 
-/// "Welcome" in each language, written in that language: each tile greets
-/// the person who reads it.
 const Map<String, String> onboardingGreetings = {
   'en': 'Welcome',
   'ar': 'أهلًا وسهلًا',
@@ -26,10 +24,6 @@ const Map<String, String> onboardingGreetings = {
 
 const Set<String> _rtlLanguages = {'ar', 'ur'};
 
-/// Step 0: the welcome and the language. Each language is a tile that
-/// greets in its own words; the chosen one is lit. Choosing switches the
-/// whole wizard behind a short veil (the words fade out and back in), so
-/// turning right to left never jumps.
 class WelcomeLanguageStep extends StatefulWidget {
   const WelcomeLanguageStep({super.key});
 
@@ -38,7 +32,6 @@ class WelcomeLanguageStep extends StatefulWidget {
 }
 
 class _WelcomeLanguageStepState extends State<WelcomeLanguageStep> {
-  /// The language just tapped: lit at once, before the veil falls.
   String? _pending;
 
   Future<void> _choose(Locale locale) async {
@@ -56,8 +49,6 @@ class _WelcomeLanguageStepState extends State<WelcomeLanguageStep> {
     final chosen = _pending ?? current.languageCode;
     final veil = OnboardingScope.of(context).veil;
     return OnboardingStepFrame(
-      // The tiles stay through a language change (each speaks its own
-      // language); only the label above them fades.
       veilContent: false,
       primary: OnboardingAction(
         l10n.getStarted,
@@ -87,8 +78,6 @@ class _WelcomeLanguageStepState extends State<WelcomeLanguageStep> {
   }
 }
 
-/// Tiles in even columns: two on phones, more where there's room (scaled
-/// with the text size).
 class _LanguageGrid extends StatelessWidget {
   const _LanguageGrid({required this.children});
 
@@ -104,8 +93,6 @@ class _LanguageGrid extends StatelessWidget {
         var columns = ((constraints.maxWidth + space.xs) / (minTile + space.xs))
             .floor()
             .clamp(1, 5);
-        // Ten languages: two rows of five, or rows of two; never a lone
-        // tile in the last row.
         if (columns > 2 && columns < 5) columns = 2;
         final rows = <Widget>[];
         for (var i = 0; i < children.length; i += columns) {
@@ -128,8 +115,6 @@ class _LanguageGrid extends StatelessWidget {
             ),
           );
         }
-        // The same order in both directions, so turning to right to left
-        // never moves a tile; each tile reads in its own direction.
         return Directionality(
           textDirection: TextDirection.ltr,
           child: Column(
@@ -142,9 +127,6 @@ class _LanguageGrid extends StatelessWidget {
   }
 }
 
-/// A language: its name in its own script and a greeting in its own words,
-/// each read in the language's direction. Chosen, it's lit (the chrome and
-/// its engraving); otherwise quiet on the page.
 class _LanguageTile extends StatelessWidget {
   const _LanguageTile({
     super.key,

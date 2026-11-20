@@ -6,7 +6,6 @@ import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/prayer_alerts/prayer_alert_labels.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_palette.dart';
 
-/// A titled group of settings on one card.
 class PrayerAlertSection extends StatelessWidget {
   const PrayerAlertSection({
     super.key,
@@ -80,7 +79,6 @@ class PrayerAlertSection extends StatelessWidget {
   }
 }
 
-/// A row that opens something or shows a value.
 class PrayerSettingRow extends StatelessWidget {
   const PrayerSettingRow({
     super.key,
@@ -177,7 +175,6 @@ class PrayerAlertIconBadge extends StatelessWidget {
   }
 }
 
-/// A switch with a title and an optional hint.
 class PrayerSwitchRow extends StatelessWidget {
   const PrayerSwitchRow({
     super.key,
@@ -216,8 +213,6 @@ class PrayerSwitchRow extends StatelessWidget {
   }
 }
 
-/// One choice among a few, shown as a tile with an icon and a line on what
-/// it does. Unavailable choices say why.
 class PrayerChoiceTile extends StatelessWidget {
   const PrayerChoiceTile({
     super.key,
@@ -235,7 +230,6 @@ class PrayerChoiceTile extends StatelessWidget {
   final bool selected;
   final VoidCallback? onTap;
 
-  /// Why it can't be chosen yet.
   final String? unavailable;
 
   @override
@@ -315,7 +309,6 @@ class PrayerChoiceTile extends StatelessWidget {
   }
 }
 
-/// Style tiles, two per row when there is room.
 class PrayerStyleChoices extends StatelessWidget {
   const PrayerStyleChoices({
     super.key,
@@ -329,13 +322,11 @@ class PrayerStyleChoices extends StatelessWidget {
 
   final List<PrayerAlertStyle> styles;
 
-  /// Gives some styles their platform names.
   final PrayerAlertCapabilities? capabilities;
   final PrayerAlertStyle? selected;
   final ValueChanged<PrayerAlertStyle> onSelected;
   final Map<PrayerAlertStyle, String> unavailable;
 
-  /// Extra tiles before the styles ("Same as all prayers").
   final List<Widget> leading;
 
   @override
@@ -372,7 +363,6 @@ class PrayerStyleChoices extends StatelessWidget {
   }
 }
 
-/// A row of chips where one is chosen.
 class PrayerSegmented<T> extends StatelessWidget {
   const PrayerSegmented({
     super.key,
@@ -390,7 +380,6 @@ class PrayerSegmented<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final space = context.tokens.space;
-    // Lantern's chips: the selected one is lit.
     return Wrap(
       spacing: space.xs,
       runSpacing: space.xs,
@@ -411,7 +400,6 @@ class PrayerSegmented<T> extends StatelessWidget {
   }
 }
 
-/// A labelled control under a section row (slider, chips).
 class PrayerControlRow extends StatelessWidget {
   const PrayerControlRow({
     super.key,
@@ -462,7 +450,6 @@ class PrayerControlRow extends StatelessWidget {
   }
 }
 
-/// "Saving…", "Saved", or "Not saved" with Retry and Undo.
 class PrayerSaveStatus extends StatelessWidget {
   const PrayerSaveStatus({super.key, required this.controller});
 
@@ -529,7 +516,6 @@ class PrayerSaveStatus extends StatelessWidget {
   }
 }
 
-/// Shown at the top of the sheet when a save failed.
 class PrayerSaveFailureBanner extends StatelessWidget {
   const PrayerSaveFailureBanner({super.key, required this.controller});
 

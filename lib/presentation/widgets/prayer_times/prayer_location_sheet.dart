@@ -22,9 +22,6 @@ import 'package:huda/presentation/widgets/prayer_times/prayer_palette.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_setup_checklist.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-/// The one place that changes where prayer times are for: the place, how
-/// it's chosen (this device's location or a city), updating it now, and
-/// following the user while they travel (Android and iOS only).
 Future<void> showPrayerLocationSheet(
   BuildContext context, {
   @visibleForTesting PrayerLocationMonitor? monitor,
@@ -53,24 +50,17 @@ Future<void> showPrayerLocationSheet(
   );
 }
 
-/// The user's own location work: what it's doing, and how the last try
-/// ended. Automatic work in the background never shows here.
 enum _Work {
   idle,
 
-  /// "Update now" or switching to Automatic, the first try.
   locating,
 
-  /// The city search is open or its city is being applied.
   choosing,
 
-  /// The last try failed; [_PrayerLocationSheetState._problem] says why.
   failed,
 
-  /// The user tapped the fix after a failure.
   retrying,
 
-  /// Back from Settings with access restored: trying again by itself.
   updating,
 }
 
@@ -85,10 +75,8 @@ class PrayerLocationSheet extends StatefulWidget {
 
   final PrayerLocationMonitor? monitor;
 
-  /// The device can share its location (not Linux).
   final bool deviceLocation;
 
-  /// The place can follow the device in the background (Android, iOS).
   final bool travelUpdates;
 
   final LocationService? cityService;
@@ -128,7 +116,6 @@ class _PrayerLocationSheetState extends State<PrayerLocationSheet>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state != AppLifecycleState.resumed || !mounted) return;
     _reloadTravel();
-    // Back from Settings: if the fix took, try again without a tap.
     if (_work == _Work.failed && (_problem?.needsSettings ?? false)) {
       canLocateWithoutAsking().then((ok) {
         if (ok && mounted && _work == _Work.failed) {
@@ -202,7 +189,6 @@ class _PrayerLocationSheetState extends State<PrayerLocationSheet>
     }
   }
 
-  // Travel updates -----------------------------------------------------------
 
   Future<void> _setTravel(bool enabled) async {
     final monitor = widget.monitor;
@@ -224,7 +210,6 @@ class _PrayerLocationSheetState extends State<PrayerLocationSheet>
     }
   }
 
-  /// Says why "all the time" location is needed before the system asks.
   Future<bool> _explainBackgroundLocation() async {
     if (await Permission.locationAlways.isGranted) return true;
     if (!mounted) return false;
@@ -291,7 +276,6 @@ class _PrayerLocationSheetState extends State<PrayerLocationSheet>
     if (open == true) await monitor.openAppSettings();
   }
 
-  // Build ---------------------------------------------------------------------
 
   @override
   Widget build(BuildContext context) {
@@ -356,8 +340,6 @@ class _PrayerLocationSheetState extends State<PrayerLocationSheet>
           child: _status(l10n),
         ),
         SizedBox(height: space.md),
-        // After a failure its fix is the one main button ("Update now"
-        // would only fail the same way); a city stays a step away.
         if (fix != null) ...[
           _ActionButton(
             key: const ValueKey('prayer-location-fix'),
@@ -408,9 +390,6 @@ class _PrayerLocationSheetState extends State<PrayerLocationSheet>
     );
   }
 
-  /// The user's own work, in the shared status language: updating while it
-  /// runs by itself, the reason and its fix after a failure, retrying after
-  /// a tap.
   Widget _status(AppLocalizations l10n) {
     final space = context.tokens.space;
     final problem = _problem;
@@ -433,7 +412,6 @@ class _PrayerLocationSheetState extends State<PrayerLocationSheet>
   }
 }
 
-/// The place the times are for, and how it's chosen.
 class _PlaceCard extends StatelessWidget {
   const _PlaceCard({required this.place, required this.automatic});
 
@@ -507,7 +485,6 @@ class _ActionButton extends StatelessWidget {
   );
 }
 
-/// "Follow me when I travel": the switch, and what's missing for it to work.
 class _TravelCard extends StatelessWidget {
   const _TravelCard({
     required this.status,

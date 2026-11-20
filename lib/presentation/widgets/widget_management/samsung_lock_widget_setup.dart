@@ -5,8 +5,6 @@ import 'package:huda/core/utils/platform_utils.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 
-/// Lock-screen widget guidance on Samsung phones with One UI 9 (Android
-/// 16, SDK 36) and later. Nothing elsewhere.
 class SamsungLockWidgetSetup extends StatefulWidget {
   const SamsungLockWidgetSetup({super.key});
 
@@ -21,7 +19,6 @@ class _SamsungLockWidgetSetupState extends State<SamsungLockWidgetSetup> {
     if (!PlatformUtils.isAndroid) return false;
     try {
       final info = await DeviceInfoPlugin().androidInfo;
-      // This scopes setup guidance; it does not claim to detect picker eligibility.
       return info.manufacturer.toLowerCase() == 'samsung' &&
           info.version.sdkInt >= 36;
     } catch (_) {

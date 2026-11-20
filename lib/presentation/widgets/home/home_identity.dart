@@ -21,12 +21,6 @@ import 'package:huda/presentation/widgets/quran_player/quran_audio_identity.dart
 import 'package:huda/presentation/widgets/tasbih/tasbih_identity.dart';
 import 'package:huda/presentation/widgets/zakat_calculator/zakat_identity.dart';
 
-/// Home's voice (see `design/IDENTITIES.md`): the hall of lamps. Every
-/// tool hangs as a small chrome plate carrying its own feature's art, the
-/// same art its landing header shows large, so a plate is a window onto
-/// the page it opens. Home's own pieces are the plate and the
-/// lamplighter: as Home opens the plates light one after another. Home's
-/// header carries Huda's own logo ([HomeLogo]), not a drawing.
 final FeatureIdentity homeIdentity = FeatureIdentity(
   id: 'home',
   motif: 'The hall of lamps: each tool a chrome plate lit with its own art',
@@ -36,15 +30,10 @@ final FeatureIdentity homeIdentity = FeatureIdentity(
   headerArt: (style) => HomePrayerArtPainter(style: style),
 );
 
-/// The pieces Quran Kit unfolds, each with its plate.
 enum HomeQuranTool { quran, audio, radio, bookmarks }
 
-/// A tool's art: its feature's identity art, or Home's drawing for the
-/// tools whose pages carry none (Prayer, whose header is the sky itself;
-/// Ramadan; Settings and Widgets, quiet by design).
 HeaderArtBuilder homeToolArt(HomeFeatureId id) => switch (id) {
   HomeFeatureId.quran => homeQuranMedallion,
-  // The Kit holds the Quran's tools as a rahla holds the Mushaf.
   HomeFeatureId.quranKit => (style) => HomeRahlaPainter(style: style),
   HomeFeatureId.hadith => hadithIdentity.headerArt,
   HomeFeatureId.athkar => athkarIdentity.headerArt,
@@ -57,12 +46,8 @@ HeaderArtBuilder homeToolArt(HomeFeatureId id) => switch (id) {
   HomeFeatureId.qiblah => qiblahIdentity.headerArt,
   HomeFeatureId.zakat => zakatIdentity.headerArt,
   HomeFeatureId.tasbih => tasbihIdentity.headerArt,
-  // Prayer's living sky, engraved: the sun on its day path over the hills.
   HomeFeatureId.prayerTimes => (style) => HomePrayerArtPainter(style: style),
-  // Ramadan lives in the calendar: the month's moons, waxing to full and
-  // waning, along an arc (the calendar's own tile is one moon).
   HomeFeatureId.ramadan => (style) => HomeMonthMoonsPainter(style: style),
-  // Reminders: the day dial, small.
   HomeFeatureId.notifications => (style) => HomeDayDialPainter(style: style),
   HomeFeatureId.settings => (style) => HomeSettingsArtPainter(style: style),
   HomeFeatureId.widgetManagement => (style) => HomeWidgetsArtPainter(
@@ -70,12 +55,10 @@ HeaderArtBuilder homeToolArt(HomeFeatureId id) => switch (id) {
   ),
 };
 
-/// The art of a Quran Kit piece.
 HeaderArtBuilder homeQuranToolArt(HomeQuranTool tool) => switch (tool) {
   HomeQuranTool.quran => homeQuranMedallion,
   HomeQuranTool.audio => quranAudioIdentity.headerArt,
   HomeQuranTool.radio => quranRadioIdentity.headerArt,
-  // A saved place: the ayah-end rosette.
   HomeQuranTool.bookmarks => (style) => QuranRosettePainter(
     color: style.color,
     fill: style.color.withValues(alpha: 0),
@@ -83,9 +66,6 @@ HeaderArtBuilder homeQuranToolArt(HomeQuranTool tool) => switch (tool) {
   ),
 };
 
-/// Quran's medallion for a plate. The landing header lets its art run 8
-/// below its edge, so the medallion keeps 10 free at its foot; a plate has
-/// no such edge, so it gets that room back and sits centered at full size.
 CustomPainter homeQuranMedallion(OrnamentStyle style) =>
     _RoomPainter(quranIdentity.headerArt(style), foot: 10);
 
@@ -103,13 +83,7 @@ class _RoomPainter extends CustomPainter {
   bool shouldRepaint(_RoomPainter old) => inner.shouldRepaint(old.inner);
 }
 
-// The lamplighter -------------------------------------------------------------
 
-/// Home's signature motion: as Home opens, its plates light one after
-/// another in reading order, each from an engraved outline to its luminous
-/// gilt with a soft glow that swells once (about 1.1 s, once per Home).
-/// Plates read their own moment from their index; plates built later
-/// (scrolled in) are already lit. Reduce motion: lit from the first frame.
 class HomeLamplighter extends StatefulWidget {
   const HomeLamplighter({super.key, required this.child});
 
@@ -117,8 +91,6 @@ class HomeLamplighter extends StatefulWidget {
 
   static const duration = Duration(milliseconds: 1100);
 
-  /// Each plate's own light, from the lamplighter above it (lit when there
-  /// is none).
   static Animation<double> lightOf(BuildContext context, int index) {
     final scope = context
         .dependOnInheritedWidgetOfExactType<_LamplighterScope>();
@@ -151,7 +123,6 @@ class _HomeLamplighterState extends State<HomeLamplighter>
       _controller.value = 1;
       return;
     }
-    // After the first frame, so the page is there when the lamps light.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) _controller.forward();
     });
@@ -177,12 +148,7 @@ class _LamplighterScope extends InheritedWidget {
   bool updateShouldNotify(_LamplighterScope old) => old.animation != animation;
 }
 
-// The plate -------------------------------------------------------------------
 
-/// A tool's plate: a small deep tablet with a faint gilt rim carrying the
-/// tool's [art]. It lights when the lamplighter reaches [index]: the
-/// engraved outline gives way to the luminous art while a glow swells once
-/// and settles.
 class HomePlate extends StatelessWidget {
   const HomePlate({
     super.key,
@@ -196,14 +162,10 @@ class HomePlate extends StatelessWidget {
   final HeaderArtBuilder art;
   final int index;
 
-  /// A round medallion (the focused styles' tools): a domed face under a
-  /// double gilt ring.
   final bool round;
 
-  /// Square side; fills the width it's given when null.
   final double? size;
 
-  /// A brighter rim (an unfolded Quran Kit or View More).
   final bool highlighted;
 
   @override
@@ -217,7 +179,6 @@ class HomePlate extends StatelessWidget {
       render: OrnamentRender.line,
       stroke: tokens.stroke.hairline,
     );
-    // The glow swells as the plate lights, then settles to a faint warmth.
     final glow = TweenSequence<double>([
       TweenSequenceItem(tween: Tween(begin: 0, end: 1), weight: 55),
       TweenSequenceItem(tween: Tween(begin: 1, end: 0.35), weight: 45),
@@ -239,7 +200,6 @@ class HomePlate extends StatelessWidget {
     final inner = Stack(
       fit: StackFit.expand,
       children: [
-        // A medallion's inner ring, a little in from its rim.
         if (round)
           Padding(
             padding: const EdgeInsets.all(4),
@@ -316,20 +276,13 @@ class HomePlate extends StatelessWidget {
   }
 }
 
-/// Huda's logo (the app's own mark, `assets/images/huda.png`) in gilt,
-/// lit from above like the lamps, with a faint glow of its own shape so it
-/// sits in the night rather than on it. [height] is the glyph's; the
-/// asset's padding is cropped away. In [ink] (on the page) it's the
-/// engraved color, without the glow.
 class HomeLogo extends StatelessWidget {
   const HomeLogo({super.key, required this.height, this.ink = false});
 
   static const asset = 'assets/images/huda.png';
 
-  /// The glyph's width over its height.
   static const aspect = _glyphWidth / _glyphHeight;
 
-  // The glyph's box inside the 1024 square asset.
   static const _glyphWidth = 830 / 1024;
   static const _glyphHeight = 448 / 1024;
 
@@ -369,7 +322,6 @@ class HomeLogo extends StatelessWidget {
             child: Stack(
               children: [
                 if (!ink)
-                  // The glow: the glyph itself, blurred and faint.
                   Opacity(
                     opacity: 0.5,
                     child: ImageFiltered(
@@ -390,11 +342,7 @@ class HomeLogo extends StatelessWidget {
   }
 }
 
-// Painters --------------------------------------------------------------------
 
-/// Reminders' day dial, small enough for a plate: a half disc on a double
-/// base rule, twelve hour lines fanning from the center (every third
-/// stronger), the rim, and a gilt hand to now. Runs in reading direction.
 class HomeDayDialPainter extends CustomPainter {
   HomeDayDialPainter({
     required this.style,
@@ -423,13 +371,10 @@ class HomeDayDialPainter extends CustomPainter {
       ..strokeWidth = style.stroke * 0.8
       ..strokeCap = StrokeCap.round
       ..color = style.color.withValues(alpha: style.color.a * 0.55);
-    // The base, doubled.
     canvas.drawLine(c + Offset(-r, 0), c + Offset(r, 0), line);
     canvas.drawLine(c + Offset(-r, r * 0.09), c + Offset(r, r * 0.09), quiet);
-    // The rim.
     final rim = Rect.fromCircle(center: c, radius: r);
     style.draw(canvas, Path()..addArc(rim, math.pi, math.pi), closed: false);
-    // Hour lines, every two hours (every third of them stronger).
     for (var i = 1; i < 12; i++) {
       final a = math.pi + math.pi * i / 12;
       final dir = Offset(math.cos(a), math.sin(a));
@@ -440,7 +385,6 @@ class HomeDayDialPainter extends CustomPainter {
         strong ? line : quiet,
       );
     }
-    // The hand to now, from the reading start.
     final t = rtl ? 1 - dayFraction : dayFraction;
     final a = math.pi + math.pi * t;
     final tip = c + Offset(math.cos(a), math.sin(a)) * r * 0.96;
@@ -459,12 +403,6 @@ class HomeDayDialPainter extends CustomPainter {
       old.style != style || old.dayFraction != dayFraction || old.rtl != rtl;
 }
 
-/// Quran Kit's plate: a rahla, the folding wooden stand a Mushaf is read
-/// on, holding an open Mushaf. Two carved boards cross in an X at their
-/// hinge, their upper arms a cradle for the open pages, their legs pierced
-/// with a pointed-arch cutout. The Kit holds the Quran's tools as the
-/// stand holds the Quran, so its plate is the stand, not the Quran's own
-/// medallion (owner, 2026-11-13: the two plates looked the same).
 class HomeRahlaPainter extends CustomPainter {
   const HomeRahlaPainter({required this.style});
 
@@ -479,8 +417,6 @@ class HomeRahlaPainter extends CustomPainter {
     Offset p(double x, double y) => Offset(x * m, y * m);
     final thin = style.copyWith(stroke: math.max(0.8, style.stroke * 0.85));
 
-    // The boards: each from just under a page, through the hinge, to a
-    // foot. They cross where they meet the middle.
     const topX = 0.29, topY = 0.47, footX = 0.33, footY = 0.95;
     final hinge = p(0.5, topY + (footY - topY) * topX / (topX + footX));
     for (final side in [-1.0, 1.0]) {
@@ -499,8 +435,6 @@ class HomeRahlaPainter extends CustomPainter {
       );
       canvas.drawRRect(board, style.fill(0.1));
       style.draw(canvas, Path()..addRRect(board));
-      // The leg's cutout: a slim pointed arch along the board, below the
-      // hinge.
       final from = length * 0.68;
       final to = length * 0.9;
       final w = half * 0.42;
@@ -516,11 +450,8 @@ class HomeRahlaPainter extends CustomPainter {
       );
       canvas.restore();
     }
-    // The hinge pin.
     canvas.drawCircle(hinge, m * 0.032, style.fill());
 
-    // The open Mushaf in the cradle: two pages rising from the gutter,
-    // their outer edges lifted, with lines of text.
     final gutterLow = p(0.5, 0.5);
     final gutterHigh = p(0.5, 0.26);
     for (final side in [-1.0, 1.0]) {
@@ -544,7 +475,6 @@ class HomeRahlaPainter extends CustomPainter {
         ..close();
       canvas.drawPath(page, style.fill(0.12));
       style.draw(canvas, page);
-      // Three lines of text, following the page's curve.
       for (var i = 0; i < 3; i++) {
         final t = 0.3 + i * 0.2;
         final y0 = 0.26 + (0.5 - 0.26) * t;
@@ -572,8 +502,6 @@ class HomeRahlaPainter extends CustomPainter {
   bool shouldRepaint(HomeRahlaPainter old) => old.style != style;
 }
 
-/// Ramadan's plate: the month's moons along an arc, from the young
-/// crescent through the full moon to the last crescent.
 class HomeMonthMoonsPainter extends CustomPainter {
   const HomeMonthMoonsPainter({required this.style});
 
@@ -592,7 +520,6 @@ class HomeMonthMoonsPainter extends CustomPainter {
       stroke: math.max(0.8, style.stroke * 0.8),
     );
     for (var i = 0; i < _phases.length; i++) {
-      // A gentle arc: the full moon highest, in the middle.
       final x = w * (0.17 + i * 0.33);
       final lift = i == 1 ? 1.0 : 0.0;
       final y = size.height * 0.6 - lift * size.height * 0.16;
@@ -610,10 +537,6 @@ class HomeMonthMoonsPainter extends CustomPainter {
   bool shouldRepaint(HomeMonthMoonsPainter old) => old.style != style;
 }
 
-/// Prayer's plate: Prayer's living sky, engraved. The sun's day path as a
-/// dotted arc from horizon to horizon with a small lamp for each of the
-/// five prayers, the sun on it in the afternoon, over the sky's three
-/// ridges of hills (the front one strongest).
 class HomePrayerArtPainter extends CustomPainter {
   const HomePrayerArtPainter({required this.style});
 
@@ -634,12 +557,10 @@ class HomePrayerArtPainter extends CustomPainter {
       return center + Offset(math.cos(a) * rx, math.sin(a) * ry);
     }
 
-    // The day path: dots, quieter than the rest.
     final dot = style.fill(0.55);
     for (var i = 0; i <= 18; i++) {
       canvas.drawCircle(on(i / 18), math.max(0.6, style.stroke * 0.55), dot);
     }
-    // A lamp per prayer; the sun stands at the fourth (Asr).
     const lamps = [0.08, 0.3, 0.52, 0.74, 0.94];
     const sunAt = 3;
     final lamp = Paint()
@@ -660,7 +581,6 @@ class HomePrayerArtPainter extends CustomPainter {
       Path()..addOval(Rect.fromCircle(center: sun, radius: r * 1.75)),
     );
     canvas.drawCircle(sun, r, style.fill());
-    // Three ridges, back to front.
     for (var i = 0; i < 3; i++) {
       final y = horizon + h * (0.06 + i * 0.1);
       final a = h * (0.045 - i * 0.008);
@@ -689,8 +609,6 @@ class HomePrayerArtPainter extends CustomPainter {
   bool shouldRepaint(HomePrayerArtPainter old) => old.style != style;
 }
 
-/// Settings' plate: a gear of eight teeth around a ring (Settings has no
-/// motif by design; this is its plain mark, engraved like the rest).
 class HomeSettingsArtPainter extends CustomPainter {
   const HomeSettingsArtPainter({required this.style});
 
@@ -740,9 +658,6 @@ class HomeSettingsArtPainter extends CustomPainter {
   bool shouldRepaint(HomeSettingsArtPainter old) => old.style != style;
 }
 
-/// Widgets' plate: a home screen's widgets. A wide one with the sun's day
-/// path (the prayer widget), and two small ones: lines of a verse and a
-/// clock.
 class HomeWidgetsArtPainter extends CustomPainter {
   const HomeWidgetsArtPainter({required this.style});
 
@@ -775,7 +690,6 @@ class HomeWidgetsArtPainter extends CustomPainter {
       style.draw(canvas, Path()..addRRect(box));
     }
     final thin = style.copyWith(stroke: math.max(0.8, style.stroke * 0.85));
-    // The prayer widget: the day path and the sun on it.
     final arc = Rect.fromLTRB(
       wide.left + wide.width * 0.2,
       wide.top + wide.height * 0.28,
@@ -792,7 +706,6 @@ class HomeWidgetsArtPainter extends CustomPainter {
         arc.center +
         Offset(math.cos(a) * arc.width / 2, math.sin(a) * arc.height / 2);
     canvas.drawCircle(sun, m * 0.055, style.fill());
-    // The verse: three lines, the last short.
     for (var i = 0; i < 3; i++) {
       final y = left.top + left.height * (0.32 + i * 0.18);
       final end = left.right - left.width * (i == 2 ? 0.45 : 0.22);
@@ -804,7 +717,6 @@ class HomeWidgetsArtPainter extends CustomPainter {
         closed: false,
       );
     }
-    // The clock.
     final c = right.center;
     final r = right.width * 0.3;
     thin.draw(canvas, Path()..addOval(Rect.fromCircle(center: c, radius: r)));

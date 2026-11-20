@@ -4,17 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:intl/intl.dart' as intl;
 
-/// Reminders' identity: the day dial, the whole day as a half disc carved in
-/// stone on the page. A half disc on a double base rule, 24 long hour lines
-/// fanning from the center to a rim band (numerals every third hour, midnight
-/// at both ends), a gilt hand from the center to now meeting two notches on
-/// the rim, the part of the day already gone washed in. Each reminder
-/// that fires today is an enamel medallion carrying its own icon, hung from
-/// its hour on the rim; the next one is lit and gilt-ringed, and the ones the
-/// hand has passed go quiet. Random Athkar's rhythm is a row of dots on an
-/// inner arc. Time runs in reading direction. See `design/IDENTITIES.md`.
 
-/// One reminder on the dial: where it fires today, in hours (0–24).
 @immutable
 class ReminderMark {
   const ReminderMark(this.id, this.hour, this.icon, {this.next = false});
@@ -22,16 +12,11 @@ class ReminderMark {
   final String id;
   final double hour;
 
-  /// The reminder's own icon, the same as its row's.
   final IconData icon;
 
-  /// The next one to fire: a larger, ringed stud.
   final bool next;
 }
 
-/// The day dial. As it first appears the hand sweeps from midnight to
-/// [now]; when a mark's hour changes its stud slides along the rim, and a
-/// new mark rises (the signature motion). Reduce motion: end states.
 class RemindersDial extends StatefulWidget {
   const RemindersDial({
     super.key,
@@ -43,10 +28,8 @@ class RemindersDial extends StatefulWidget {
 
   final List<ReminderMark> marks;
 
-  /// The current time of day, in hours.
   final double now;
 
-  /// Random Athkar's interval, when it's on.
   final int? rhythmMinutes;
   final String semanticLabel;
 
@@ -65,8 +48,6 @@ class _Stud {
 
 class _RemindersDialState extends State<RemindersDial>
     with TickerProviderStateMixin {
-  /// The opening sweep: a short rest while the page fades in, then the
-  /// hand runs from midnight to now (950 ms in all).
   late final AnimationController _sweep = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 950),
@@ -78,7 +59,6 @@ class _RemindersDialState extends State<RemindersDial>
     value: 1,
   );
 
-  /// Where each stud starts and ends in the current move.
   Map<String, _Stud> _from = {};
   Map<String, _Stud> _to = {};
   bool _started = false;
@@ -122,7 +102,6 @@ class _RemindersDialState extends State<RemindersDial>
               was.next != e.value.next;
         });
     if (!changed) return;
-    // Start from wherever the studs are now; gone ones sink in place.
     final now = _current();
     _from = {
       for (final id in {...now.keys, ...next.keys})
@@ -228,8 +207,6 @@ class _RemindersDialState extends State<RemindersDial>
   }
 }
 
-/// Paints the day dial. Hours map to a half turn: midnight at the
-/// reading start, noon at the top, midnight again at the reading end.
 class RemindersDialPainter extends CustomPainter {
   RemindersDialPainter({
     required this.nowHour,
@@ -255,7 +232,6 @@ class RemindersDialPainter extends CustomPainter {
 
   final double nowHour;
 
-  /// (hour, presence 0–1, next, icon).
   final List<(double, double, bool, IconData)> studs;
   final int? rhythmMinutes;
   final bool rtl;
@@ -265,16 +241,12 @@ class RemindersDialPainter extends CustomPainter {
   final Color gilt;
   final Color stud;
 
-  /// The icon on the lit (next) medallion.
   final Color onStud;
 
-  /// Passed medallions' ring and icon: quiet, still readable (about 3:1).
   final Color quiet;
 
-  /// The medallions' enamel.
   final Color face;
 
-  /// The part of the day already gone.
   final Color wash;
   final Map<int, String> numerals;
   final TextStyle numeralStyle;
@@ -302,7 +274,6 @@ class RemindersDialPainter extends CustomPainter {
     final rimInner = r * 0.84;
     final foot = r * 0.15;
 
-    // The plate.
     final disc = Rect.fromCircle(center: c, radius: r);
     canvas.drawPath(
       Path()
@@ -312,7 +283,6 @@ class RemindersDialPainter extends CustomPainter {
       Paint()..color = plate,
     );
 
-    // The part of the day already gone, washed in up to the hand.
     if (nowHour > 0) {
       final start = -_angle(0);
       final sweep = _angle(0) - _angle(nowHour);
@@ -335,7 +305,6 @@ class RemindersDialPainter extends CustomPainter {
       );
     }
 
-    // The rim: a fine outer arc, a hairline inner arc holding the numerals.
     final stroke = Paint()
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
@@ -358,7 +327,6 @@ class RemindersDialPainter extends CustomPainter {
         ..strokeWidth = hairline,
     );
 
-    // The double base rule (the east–west line).
     canvas.drawLine(
       Offset(c.dx - r, c.dy),
       Offset(c.dx + r, c.dy),
@@ -374,7 +342,6 @@ class RemindersDialPainter extends CustomPainter {
         ..strokeWidth = hairline,
     );
 
-    // Hour lines: long lines from the center, every third stronger.
     for (var h = 0; h <= 24; h++) {
       final major = h % 3 == 0;
       canvas.drawLine(
@@ -386,7 +353,6 @@ class RemindersDialPainter extends CustomPainter {
       );
     }
 
-    // Numerals in the rim band.
     final band = (r + rimInner) / 2;
     for (final entry in numerals.entries) {
       final painter = TextPainter(
@@ -395,12 +361,10 @@ class RemindersDialPainter extends CustomPainter {
         textScaler: textScaler,
       )..layout();
       final p = at(entry.key.toDouble(), band);
-      // Too large for the band (big text on a small dial): leave it out.
       if (painter.height > (r - rimInner) * 1.25) continue;
       painter.paint(canvas, p - Offset(painter.width / 2, painter.height / 2));
     }
 
-    // Random Athkar's rhythm: dots on an inner arc.
     final rhythm = rhythmMinutes;
     if (rhythm != null && rhythm > 0) {
       final step = math.max(rhythm, 20) / 60;
@@ -410,8 +374,6 @@ class RemindersDialPainter extends CustomPainter {
       }
     }
 
-    // Now, read on the rim: two short gilt notches at the band's edges,
-    // leaving the numerals between them clear.
     final notch = (r - rimInner) * 0.28;
     for (final (from, to) in [(rimInner, rimInner + notch), (r - notch, r)]) {
       canvas.drawLine(
@@ -423,9 +385,6 @@ class RemindersDialPainter extends CustomPainter {
       );
     }
 
-    // Reminders: enamel medallions with their icons, each hung from its hour
-    // on the rim. Close neighbours alternate between two rings so they never
-    // touch; the ones the hand has passed go quiet.
     final m = r * 0.078 + 2.5;
     final ordered = [...studs]..sort((x, y) => x.$1.compareTo(y.$1));
     var lastHour = -24.0;
@@ -435,7 +394,6 @@ class RemindersDialPainter extends CustomPainter {
       lastHour = hour;
       lastInner = inner;
       final ring = inner ? r * 0.49 : r * 0.70;
-      // 0 ahead of the hand, 1 once it has passed (eased across ~15 min).
       final done = next ? 0.0 : ((nowHour - hour) * 4).clamp(0.0, 1.0);
       final tone = Color.lerp(stud, quiet, done)!;
       canvas.drawLine(
@@ -491,8 +449,6 @@ class RemindersDialPainter extends CustomPainter {
       glyph.paint(canvas, p - Offset(glyph.width / 2, glyph.height / 2));
     }
 
-    // The hand: a gilt needle from the boss to now, on top of everything,
-    // meeting the notches on the rim.
     final a = _angle(nowHour);
     final dir = Offset(math.cos(a), -math.sin(a));
     final normal = Offset(-dir.dy, dir.dx);

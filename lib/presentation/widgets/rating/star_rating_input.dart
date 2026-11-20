@@ -8,7 +8,6 @@ class StarRatingInput extends StatefulWidget {
   final Color color;
   final Color unratedColor;
 
-  /// The empty star (an outline keeps 3:1 without a heavy shape).
   final IconData unratedIcon;
   final bool allowHalfRating;
   final double minRating;

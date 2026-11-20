@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:huda/core/theme/huda_tokens.dart';
 
-/// What can't be fetched while offline, said quietly over what still works
-/// (saved readers, tafsir, translations).
 class OfflineContentBanner extends StatelessWidget {
   final String message;
 

@@ -20,13 +20,9 @@ import 'package:huda/presentation/widgets/settings/settings_layout.dart';
 import 'package:huda/presentation/widgets/settings/text_size_slider.dart';
 import 'package:huda/presentation/widgets/settings/theme_mode_control.dart';
 
-/// Settings' page: Appearance first, then General, Privacy (FOSS) and
-/// Support. One column on phones; Appearance beside the rest once both
-/// columns fit (split at a fold).
 class SettingsBody extends StatelessWidget {
   const SettingsBody({super.key, required this.showPrivacy});
 
-  /// The FOSS build's crash-reporting switch.
   final bool showPrivacy;
 
   @override
@@ -49,8 +45,6 @@ class SettingsBody extends StatelessWidget {
   }
 }
 
-/// Theme, color, text size and font: the choices that change how
-/// everything looks, each previewing itself.
 class SettingsAppearanceSection extends StatelessWidget {
   const SettingsAppearanceSection({super.key});
 
@@ -97,7 +91,6 @@ class SettingsAppearanceSection extends StatelessWidget {
             children: [
               label(l10n.theme),
               const ThemeModeControl(),
-              // Pure black only means something when the app can be dark.
               if (state.themeMode != ThemeMode.light)
                 Padding(
                   padding: EdgeInsets.only(top: space.sm),
@@ -157,7 +150,6 @@ class _GeneralSection extends StatelessWidget {
       title: l10n.settingsGeneral,
       children: [
         const LanguageRow(),
-        // Only where Huda can vibrate (phones and tablets).
         if (HudaHaptics.supported(context))
           HudaSettingsRow(
             key: const ValueKey('settings-haptics'),
@@ -170,9 +162,7 @@ class _GeneralSection extends StatelessWidget {
             ),
             onTap: () => _setHaptics(context, themes, !haptics),
           ),
-        // Home's style and tools (Home's editor lives here).
         const _HomeLayoutRow(),
-        // Home screen widgets exist on phones, tablets and macOS.
         if (PlatformUtils.isMobile || PlatformUtils.isMacOS)
           HudaSettingsRow(
             key: const ValueKey('settings-widgets'),
@@ -189,13 +179,10 @@ class _GeneralSection extends StatelessWidget {
 
   void _setHaptics(BuildContext context, ThemeCubit themes, bool value) {
     themes.setHapticsEnabled(value);
-    // Felt only when turning it on: the switch confirms itself.
     if (value) HudaHaptics.selection(context);
   }
 }
 
-/// Home's editor: the style Home is in now, and a tap to change it and
-/// arrange the tools. The style is read again when the editor closes.
 class _HomeLayoutRow extends StatefulWidget {
   const _HomeLayoutRow();
 
@@ -285,12 +272,10 @@ class _SupportSection extends StatelessWidget {
   }
 }
 
-/// Opens something: points the reading direction.
 class _Chevron extends StatelessWidget {
   const _Chevron();
 
   @override
-  // The icon mirrors itself in right-to-left text (matchTextDirection).
   Widget build(BuildContext context) => Icon(
     Icons.chevron_right_rounded,
     color: Theme.of(context).colorScheme.onSurfaceVariant,

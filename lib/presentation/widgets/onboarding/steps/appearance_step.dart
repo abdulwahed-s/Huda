@@ -10,10 +10,6 @@ import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 import 'package:huda/presentation/widgets/onboarding/onboarding_frame.dart';
 import 'package:huda/presentation/widgets/settings/color_theme_picker.dart';
 
-/// Step 1: light, dark or the device's setting, and a color theme. Both
-/// apply at once, so the wizard itself shows the choice; both always hold
-/// a value, so the step offers only Continue (no skip that would do the
-/// same).
 class AppearanceStep extends StatefulWidget {
   const AppearanceStep({super.key});
 
@@ -66,10 +62,6 @@ class _AppearanceStepState extends State<AppearanceStep> {
   }
 }
 
-/// Light, dark or the device's setting, each shown as a small page in
-/// that mode and the chosen colors (the chrome band, the page, a lit
-/// line), so the choice is seen, not read. Three across; one per row with
-/// the page beside its name at large text.
 class _ThemeModeChoice extends StatelessWidget {
   const _ThemeModeChoice({
     required this.selected,
@@ -131,9 +123,6 @@ class _ThemeModeChoice extends StatelessWidget {
 
 enum _Half { start, end }
 
-/// A page in miniature: the chrome band with a gilt line, the page with
-/// two text lines and a lit bar. [half] rounds only one side (the two
-/// halves of "Match device").
 class _MiniPage extends StatelessWidget {
   const _MiniPage({required this.theme, this.half});
 

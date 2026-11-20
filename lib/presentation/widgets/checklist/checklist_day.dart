@@ -16,10 +16,6 @@ bool checklistIsToday(DateTime date) {
       date.day == now.day;
 }
 
-/// The inlaid star, animated: it fills from empty to [progress] as it
-/// appears (900 ms), fills on to each new value (500 ms), and when
-/// [complete] turns true the heart sets and one glint runs across it
-/// (about 1.2 s with the last fill). Reduce motion: the end state.
 class ChecklistStar extends StatefulWidget {
   const ChecklistStar({
     super.key,
@@ -50,8 +46,6 @@ class _ChecklistStarState extends State<ChecklistStar>
     duration: const Duration(milliseconds: 620),
   );
 
-  /// The celebration: the star swells and settles, light pools behind it
-  /// and inlaid lozenges fly from its tips.
   late final AnimationController _burst = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 1500),
@@ -78,7 +72,6 @@ class _ChecklistStarState extends State<ChecklistStar>
     }
     _fill.duration = const Duration(milliseconds: 900);
     _fill.forward(from: 0).whenCompleteOrCancel(() {
-      // A day that's already done shows its heart set, without the glint.
       if (mounted && widget.complete) _heart.forward();
     });
   }
@@ -135,7 +128,6 @@ class _ChecklistStarState extends State<ChecklistStar>
             animation: Listenable.merge([_fill, _heart, _glint, _burst]),
             builder: (context, _) {
               final t = _burst.value;
-              // A breath as the heart sets: up 7% and back by 45%.
               final swell = t > 0 && t < 0.45
                   ? 1 + 0.07 * math.sin(math.pi * t / 0.45)
                   : 1.0;
@@ -181,8 +173,6 @@ class _ChecklistStarState extends State<ChecklistStar>
   }
 }
 
-/// The day being shown: ‹ weekday, Hijri and Gregorian date › (the arrows
-/// follow reading direction). "Today" above the weekday when it is.
 class ChecklistDateRow extends StatelessWidget {
   const ChecklistDateRow({
     super.key,
@@ -223,7 +213,6 @@ class ChecklistDateRow extends StatelessWidget {
                 if (today)
                   HudaEyebrow(l10n.today)
                 else
-                  // Keeps the row's height, so the arrows don't move.
                   ExcludeSemantics(
                     child: Opacity(opacity: 0, child: HudaEyebrow(l10n.today)),
                   ),
@@ -255,10 +244,6 @@ class ChecklistDateRow extends StatelessWidget {
   }
 }
 
-/// The day card: the inlaid star beside how many items are done, and on
-/// today the streak as a path of small stars ending at today's; a
-/// blessing once the day is complete; on other days, why they can't be
-/// checked. An inlaid band runs along its top edge.
 class ChecklistDayCard extends StatelessWidget {
   const ChecklistDayCard({
     super.key,
@@ -273,10 +258,8 @@ class ChecklistDayCard extends StatelessWidget {
   final int done;
   final int total;
 
-  /// The run of complete days, today included once it's complete.
   final int streak;
 
-  /// A bigger star, for the overview pane.
   final bool large;
 
   @override
@@ -309,9 +292,6 @@ class ChecklistDayCard extends StatelessWidget {
         ? l10n.checklistAllDone
         : l10n.checklistDoneOf(done, total);
 
-    // The card never changes size as items are checked, the day
-    // completes or another day is shown: every slot lays out all the
-    // texts it can hold and shows one (see [_Slot]).
     Widget text(TextAlign align, CrossAxisAlignment cross) {
       final at = cross == CrossAxisAlignment.center
           ? AlignmentDirectional.topCenter
@@ -325,7 +305,6 @@ class ChecklistDayCard extends StatelessWidget {
       );
       final past = date.isBefore(DateTime.now());
 
-      // Today: the blessing once complete, then the streak's path.
       final todayDetails = Column(
         crossAxisAlignment: cross,
         mainAxisSize: MainAxisSize.min,
@@ -357,7 +336,6 @@ class ChecklistDayCard extends StatelessWidget {
           ),
         ],
       );
-      // Other days: why they can't be checked.
       final otherDetails = Padding(
         padding: EdgeInsets.only(top: space.xs),
         child: Row(
@@ -399,7 +377,6 @@ class ChecklistDayCard extends StatelessWidget {
                 textAlign: align,
                 style: headlineStyle,
               ),
-              // The longest count, so 9 → 10 doesn't rewrap.
               Text(
                 l10n.checklistDoneOf(total, total),
                 textAlign: align,
@@ -426,7 +403,6 @@ class ChecklistDayCard extends StatelessWidget {
         borderRadius: tokens.radius.card,
         child: Stack(
           children: [
-            // The inlaid frame runs round all four sides, inside the card.
             Positioned.fill(
               child: Ornament(
                 painter: ChecklistInlayFramePainter(inlay: inlay),
@@ -442,16 +418,12 @@ class ChecklistDayCard extends StatelessWidget {
               child: LayoutBuilder(
                 builder: (context, constraints) {
                   final width = constraints.maxWidth;
-                  // The overview pane stacks a large star over the text;
-                  // elsewhere the star sits beside it while the text keeps
-                  // about 160 of width.
                   final beside =
                       !large && width >= 270 * math.max(1, scale * 0.85);
                   final star = large
                       ? (width * 0.62).clamp(112.0, 232.0)
                       : (width * 0.3).clamp(88.0, 168.0);
                   final starWidget = ChecklistStar(
-                    // A new day starts from an empty star.
                     key: ValueKey(
                       'star-${date.year}-${date.month}-${date.day}',
                     ),
@@ -488,7 +460,6 @@ class ChecklistDayCard extends StatelessWidget {
   }
 }
 
-/// The streak's path of small stars with its label.
 class _Path extends StatelessWidget {
   const _Path({
     required this.streak,
@@ -509,7 +480,6 @@ class _Path extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final space = context.tokens.space;
-    // Days already in the run before today.
     final past = complete ? math.max(0, streak - 1) : streak;
     final label = streak > 0
         ? l10n.checklistStreak(streak)
@@ -552,7 +522,6 @@ class _Path extends StatelessWidget {
             },
           ),
           SizedBox(height: space.xxs),
-          // Room for the label after today completes (one more day).
           _Slot(
             alignment: alignment,
             shown: 0,
@@ -577,8 +546,6 @@ class _Path extends StatelessWidget {
   }
 }
 
-/// The blessing rises a little and brightens in as the heart sets (a beat
-/// after the day completes). Reduce motion: there at once.
 class _RiseIn extends StatefulWidget {
   const _RiseIn({super.key, required this.child});
 
@@ -595,7 +562,6 @@ class _RiseInState extends State<_RiseIn> with SingleTickerProviderStateMixin {
   );
   late final Animation<double> _curve = CurvedAnimation(
     parent: _controller,
-    // Waits for the last point to fill, then rises.
     curve: const Interval(0.35, 1, curve: Curves.easeOutCubic),
   );
 
@@ -629,11 +595,6 @@ class _RiseInState extends State<_RiseIn> with SingleTickerProviderStateMixin {
   );
 }
 
-/// Lays out every one of [variants] in the same place and shows the one at
-/// [shown] (none when it's out of range), cross-fading on a change. The
-/// slot is as big as its biggest variant, so swapping texts never resizes
-/// what's around it. Hidden variants are invisible to touch and to screen
-/// readers.
 class _Slot extends StatelessWidget {
   const _Slot({
     required this.variants,

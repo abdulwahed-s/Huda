@@ -4,8 +4,6 @@ import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:huda/presentation/widgets/quran_home/quran_identity.dart';
 
-/// A surah recited from memory to its end: the rosette fills with gold
-/// once, with a medium haptic (a completion, `LANGUAGE.md` "Haptics").
 class MemorizationCompletedDialog extends StatefulWidget {
   const MemorizationCompletedDialog({super.key});
 

@@ -10,12 +10,9 @@ import 'package:huda/presentation/widgets/prayer_alerts/prayer_alert_sheet.dart'
 import 'package:huda/presentation/widgets/prayer_alerts/prayer_alert_widgets.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_palette.dart';
 
-/// Every recording, ready offline or not. A tap plays a sample; choosing one
-/// that isn't downloaded yet downloads it first and switches when it's ready.
 class PrayerAlertSoundPage extends StatefulWidget {
   const PrayerAlertSoundPage({super.key, this.prayer});
 
-  /// Null chooses the recording for every prayer.
   final String? prayer;
 
   @override
@@ -23,7 +20,6 @@ class PrayerAlertSoundPage extends StatefulWidget {
 }
 
 class _PrayerAlertSoundPageState extends State<PrayerAlertSoundPage> {
-  /// Chosen while downloading; used once the download is ready.
   String? _pending;
   PrayerAudioLibrary? _library;
 
@@ -116,7 +112,6 @@ class _PrayerAlertSoundPageState extends State<PrayerAlertSoundPage> {
             ? own.reciterId
             : null;
 
-        /// Prayers (or "all prayers") that would lose their sound.
         Set<String> users(String id) => {
           if (settings.reciterId == id) l10n.prayerAlertSameAsAll,
           for (final entry in settings.prayers.entries)
@@ -228,7 +223,6 @@ class _PrayerAlertSoundPageState extends State<PrayerAlertSoundPage> {
   }
 }
 
-/// A radio row without a sound ("Same as all prayers").
 class PrayerChoiceRow extends StatelessWidget {
   const PrayerChoiceRow({
     super.key,

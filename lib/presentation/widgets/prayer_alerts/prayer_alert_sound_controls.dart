@@ -8,7 +8,6 @@ import 'package:huda/presentation/widgets/prayer_alerts/prayer_alert_sound_page.
 import 'package:huda/presentation/widgets/prayer_alerts/prayer_alert_widgets.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_palette.dart';
 
-/// Recording, volume and length, for every prayer or one ([prayer]).
 class PrayerSoundSection extends StatelessWidget {
   const PrayerSoundSection({
     super.key,
@@ -41,8 +40,6 @@ class PrayerSoundSection extends StatelessWidget {
         ? (tuning['stopAfterSeconds'] as num?)?.toInt()
         : settings.stopAfterSeconds;
     final tuningHere = prayer == null || capabilities.perPrayerTuning;
-    // A notification's sound has its own length; only adhans Huda (or an
-    // alarm) plays can be cut.
     final lengthHere =
         capabilities.length &&
         (prayer == null || capabilities.perPrayerLength) &&
@@ -136,7 +133,6 @@ class _Inherit {
   int get hashCode => 0;
 }
 
-/// Android: only the opening of the adhan (the short recording).
 class _Opening {
   const _Opening();
 
@@ -147,7 +143,6 @@ class _Opening {
   int get hashCode => 1;
 }
 
-/// A volume slider that saves when let go and is heard in a sample.
 class PrayerVolumeRow extends StatefulWidget {
   const PrayerVolumeRow({
     super.key,

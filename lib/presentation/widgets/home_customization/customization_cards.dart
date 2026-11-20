@@ -4,9 +4,6 @@ import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/home/catalog/home_feature_catalog.dart';
 import 'package:huda/presentation/widgets/home/home_identity.dart';
 
-/// A tool in the Home editor: its plate (the same as on Home) and name, a
-/// grip that says it can be dragged, and one button that moves it to the
-/// other group (it names where it goes). Lifted while dragged.
 class EditableHomeFeatureCard extends StatelessWidget {
   const EditableHomeFeatureCard({
     super.key,
@@ -18,13 +15,10 @@ class EditableHomeFeatureCard extends StatelessWidget {
 
   final HomeFeatureDefinition feature;
 
-  /// On Home (true) or in View More.
   final bool primary;
   final bool lifted;
   final VoidCallback onMove;
 
-  /// The card's height for a text scale: the plate, two lines of name and
-  /// the move button, with the card's padding.
   static double extentFor(BuildContext context) {
     final scale = MediaQuery.textScalerOf(context).scale(1);
     return 48 + 8 + 42 * scale + 8 + 48 + 24;
@@ -103,7 +97,6 @@ class EditableHomeFeatureCard extends StatelessWidget {
   }
 }
 
-/// A section of Quran Journey in the editor: a grip, its mark and name.
 class EditableHomeSectionCard extends StatelessWidget {
   const EditableHomeSectionCard({
     super.key,
@@ -116,7 +109,6 @@ class EditableHomeSectionCard extends StatelessWidget {
   final IconData icon;
   final bool lifted;
 
-  /// The row's height for a text scale.
   static double extentFor(BuildContext context) {
     final scale = MediaQuery.textScalerOf(context).scale(1);
     return 56 + (scale - 1).clamp(0.0, 1.0) * 28;
@@ -157,8 +149,6 @@ class EditableHomeSectionCard extends StatelessWidget {
   }
 }
 
-/// The editor's card surface: a hairline card that lifts (a primary
-/// border and a soft shadow) while it's dragged.
 class _EditorCard extends StatelessWidget {
   const _EditorCard({required this.lifted, required this.child});
 

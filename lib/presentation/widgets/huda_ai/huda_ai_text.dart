@@ -3,13 +3,8 @@ import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/presentation/widgets/share/share_image_frame.dart';
 
-/// The direction a piece of text reads in, from its own words: an English
-/// answer in an Arabic interface reads left to right, and the other way.
 TextDirection hudaAiTextDirection(String text) => shareTextDirection(text);
 
-/// Markdown in the theme's type roles: body for paragraphs, titles for
-/// headings, gilt bullets, a gilt rule beside quotations. Arabic inside a
-/// paragraph falls back to the Arabic face of the App font.
 MarkdownStyleSheet hudaAiMarkdownStyle(
   BuildContext context, {
   TextStyle? body,
@@ -47,8 +42,6 @@ MarkdownStyleSheet hudaAiMarkdownStyle(
       borderRadius: tokens.radius.control,
     ),
     blockquote: p.copyWith(color: scheme.onSurfaceVariant),
-    // Both sides: the rule follows the reading direction, the padding
-    // can't (the sheet takes plain insets).
     blockquotePadding: EdgeInsets.symmetric(
       horizontal: tokens.space.md,
       vertical: tokens.space.xxs,
@@ -64,7 +57,6 @@ MarkdownStyleSheet hudaAiMarkdownStyle(
   );
 }
 
-/// An answer's text: Markdown, in its own reading direction.
 class HudaAiMarkdown extends StatelessWidget {
   const HudaAiMarkdown(
     this.data, {

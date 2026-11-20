@@ -5,13 +5,6 @@ import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/presentation/widgets/design/feature_identity.dart';
 import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 
-/// Huda AI's voice: noor, a gathering of light. Motes of light placed on
-/// the golden angle (a sunflower's phyllotaxis), each a small core in a
-/// soft halo, larger and brighter toward the heart. Never joined by lines,
-/// never counted: light, not beads or stars. See `design/IDENTITIES.md`.
-///
-/// 13 motes in the full gathering, 5 in the mark that signs an answer, 3
-/// of falling size as a divider.
 final FeatureIdentity hudaAiIdentity = FeatureIdentity(
   id: 'huda-ai',
   motif: 'Noor: motes of light gathered on the golden angle',
@@ -21,22 +14,8 @@ final FeatureIdentity hudaAiIdentity = FeatureIdentity(
   headerArt: (style) => HudaAiNoorPainter(style: style),
 );
 
-/// The golden angle, in radians.
 const double _golden = 2.399963229728653;
 
-/// Paints [count] motes of light in a golden-angle spiral filling the box.
-///
-/// [gather] (0–1) is how far the light is drawing in, and [phase] (0–1,
-/// looping) where the breath is: a wave runs inward through the motes,
-/// pulling each toward the heart in turn, the spiral winds slowly and the
-/// heart brightens. [settle] (0–1) brings the motes in from wider places
-/// as the art first appears.
-///
-/// [breathe] (0–1) is the idle breath of the welcome (owner round 1): each
-/// mote's halo swells and fades, out of step with the others, like
-/// candlelight. Nothing moves, so every frame is the still mark used on
-/// share images and Home; drawing inward ([gather]) stays the sign that an
-/// answer is coming.
 class HudaAiNoorPainter extends CustomPainter {
   const HudaAiNoorPainter({
     required this.style,
@@ -54,10 +33,8 @@ class HudaAiNoorPainter extends CustomPainter {
   final double settle;
   final double breathe;
 
-  /// Idle breaths per loop of [phase] (4.8 s each).
   static const int idleBreaths = 2;
 
-  /// Breaths per loop of [phase]; the spiral turns once per loop.
   static const int breaths = 4;
 
   @override
@@ -65,7 +42,6 @@ class HudaAiNoorPainter extends CustomPainter {
     if (size.isEmpty || count <= 0) return;
     final center = size.center(Offset.zero);
     final extent = size.shortestSide / 2;
-    // The outer motes' halos stay inside the box.
     final reach = extent * 0.78;
     final core = math.max(1.2, extent * (count > 5 ? 0.075 : 0.16));
     final breath = math.sin(2 * math.pi * breaths * phase);
@@ -73,12 +49,10 @@ class HudaAiNoorPainter extends CustomPainter {
     final turn = gather * phase * 2 * math.pi;
     for (var i = count - 1; i >= 0; i--) {
       final depth = count == 1 ? 0.0 : i / (count - 1);
-      // Each mote arrives in turn, the heart first.
       final arrive = Curves.easeOutCubic.transform(
         ((settle - depth * 0.35) / 0.65).clamp(0.0, 1.0),
       );
       if (arrive <= 0) continue;
-      // The wave of the breath runs from the rim toward the heart.
       final wave =
           0.5 + 0.5 * math.sin(2 * math.pi * (breaths * phase - depth));
       final pull = 1 - gather * 0.32 * wave;
@@ -92,8 +66,6 @@ class HudaAiNoorPainter extends CustomPainter {
       final glow = (1 - depth * 0.6) * arrive;
       final lift = i == 0 ? heart * 0.45 : gather * wave * 0.25;
       final r = core * (1.25 - depth * 0.6) * (1 + lift);
-      // Candlelight: each mote on its own beat (the golden ratio keeps
-      // neighbours apart).
       final candle =
           breathe *
           math.sin(2 * math.pi * (idleBreaths * phase + i * 0.618034));
@@ -140,8 +112,6 @@ class HudaAiNoorPainter extends CustomPainter {
       old.breathe != breathe;
 }
 
-/// Three motes of falling size, side by side: the divider between a share
-/// card's or a counsel's sections.
 class HudaAiMoteDividerPainter extends CustomPainter {
   const HudaAiMoteDividerPainter({required this.style});
 
@@ -163,7 +133,6 @@ class HudaAiMoteDividerPainter extends CustomPainter {
       old.style.color != style.color;
 }
 
-/// The divider as a widget, centered.
 class HudaAiMoteDivider extends StatelessWidget {
   const HudaAiMoteDivider({super.key, this.color, this.height = 14});
 
@@ -183,12 +152,6 @@ class HudaAiMoteDivider extends StatelessWidget {
   );
 }
 
-/// The gathering of light as a widget.
-///
-/// [gathering] makes it breathe and draw in while an answer is coming (a
-/// live wait, so it loops; it stops when [gathering] turns off, when the
-/// route is covered, and under reduce motion). [entrance] lets the motes
-/// drift in and settle once as it first appears (900 ms).
 class HudaAiNoor extends StatefulWidget {
   const HudaAiNoor({
     super.key,
@@ -205,12 +168,9 @@ class HudaAiNoor extends StatefulWidget {
   final bool gathering;
   final bool entrance;
 
-  /// Breathes in place while it shows (the welcome only, owner round 1).
   final bool breathing;
   final Color? color;
 
-  /// One loop of the breath: [HudaAiNoorPainter.breaths] breaths and a
-  /// full slow turn.
   static const Duration loop = Duration(milliseconds: 9600);
 
   static const Duration entranceDuration = Duration(milliseconds: 900);
@@ -297,8 +257,6 @@ class _HudaAiNoorState extends State<HudaAiNoor> with TickerProviderStateMixin {
               gather: Curves.easeInOut.transform(_amount.value),
               phase: _loop.value,
               settle: _settle.value,
-              // The breath comes in with the motes and gives way to the
-              // gathering.
               breathe: widget.breathing && !_still
                   ? _settle.value * (1 - _amount.value)
                   : 0,
@@ -310,8 +268,6 @@ class _HudaAiNoorState extends State<HudaAiNoor> with TickerProviderStateMixin {
   }
 }
 
-/// Huda AI's small mark: five motes, signing each answer. It gathers while
-/// its answer is still being written.
 class HudaAiMark extends StatelessWidget {
   const HudaAiMark({super.key, this.size = 28, this.gathering = false});
 

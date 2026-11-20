@@ -11,21 +11,11 @@ import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 import 'package:huda/presentation/widgets/home/home_content.dart';
 
-/// Path of Prayer's frame: a hero on the deep chrome and the page with it.
-///
-/// Phones: the hero runs from the top of the screen and the page scrolls
-/// under it; once it does, the hero's chrome stays under the status bar.
-/// From 600 wide and across a vertical fold the hero is a pane of its own
-/// at the start, full height and still, while the page scrolls beside it
-/// (split at the fold). On a tabletop and the Duo upright the hero sits
-/// above the fold and the page below.
 class HomeHeroPage extends StatefulWidget {
   const HomeHeroPage({super.key, required this.hero, required this.page});
 
-  /// The hero; [fill] when it fills a pane (and sizes itself to it).
   final Widget Function(BuildContext context, bool fill) hero;
 
-  /// The page's content; [spansFold] when it crosses the window's fold.
   final Widget Function(BuildContext context, bool spansFold) page;
 
   @override
@@ -56,9 +46,6 @@ class _HomeHeroPageState extends State<HomeHeroPage> {
         ),
       );
     } else if (!context.windowClass.isCompact || fold.splitsHorizontally) {
-      // The hero's pane on the start side (the start half across a fold),
-      // the page at the end, under a band of the same chrome where the
-      // status bar runs.
       final width = media.size.width;
       final heroWidth = fold.splitsHorizontally
           ? (rtl ? width - fold.end : fold.start)
@@ -95,8 +82,6 @@ class _HomeHeroPageState extends State<HomeHeroPage> {
                     removeTop: true,
                     removeLeft: !rtl,
                     removeRight: rtl,
-                    // The page in the middle of its pane, at a width where
-                    // the medallions sit three or so across.
                     child: LayoutBuilder(
                       builder: (context, box) => SingleChildScrollView(
                         child: ConstrainedBox(
@@ -141,19 +126,12 @@ class _HomeHeroPageState extends State<HomeHeroPage> {
       );
     }
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      // The chrome is always under the status bar: light status icons.
       value: HudaSystemUi.over(top: Brightness.dark, bottom: page),
       child: Scaffold(body: body),
     );
   }
 }
 
-/// A hero on the deep chrome: a faint girih field fading toward its foot,
-/// a glow behind its centerpiece ([glow]: warm gilt, or a pale light at
-/// night), and [builder]'s content between the window's insets. [fill]
-/// fills the pane it's given; [builder] then gets the height left for its
-/// centerpiece once [reserve] (the rest of its parts at 100% text) has
-/// its room.
 class HomeHero extends StatelessWidget {
   const HomeHero({
     super.key,
@@ -205,7 +183,6 @@ class HomeHero extends StatelessWidget {
       );
     }
     return DecoratedBox(
-      // Pure black: the palette glows at the top and fades into black.
       decoration: BoxDecoration(gradient: tokens.bandGradient),
       child: Stack(
         fit: fill ? StackFit.expand : StackFit.loose,
@@ -218,8 +195,6 @@ class HomeHero extends StatelessWidget {
   }
 }
 
-/// A faint girih field fading toward the foot, and a light behind the
-/// centerpiece: warm gilt, or a pale glow ([warm] false, at night).
 class HomeHeroBackdrop extends StatelessWidget {
   const HomeHeroBackdrop({super.key, this.warm = true});
 
@@ -264,8 +239,6 @@ class HomeHeroBackdrop extends StatelessWidget {
   }
 }
 
-/// Under the status bar once the page scrolls: the hero's chrome, so the
-/// status icons always stand on it.
 class _StatusVeil extends StatelessWidget {
   const _StatusVeil({required this.scroll});
 

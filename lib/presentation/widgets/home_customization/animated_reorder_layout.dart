@@ -270,7 +270,6 @@ class _AnimatedReorderLayoutState<T extends Object>
 
   void _finishDrag() {
     if (!mounted) return;
-    // The tool drops into its place.
     HudaHaptics.selection(context);
     setState(() {
       _dragging = null;

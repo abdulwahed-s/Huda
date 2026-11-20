@@ -5,8 +5,6 @@ import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 
-/// The app font: Amiri or the device's font, each option set in its own
-/// font so the choice is seen, not read.
 class FontPicker extends StatelessWidget {
   final String selectedFont;
   final ValueChanged<String> onFontSelected;
@@ -23,8 +21,6 @@ class FontPicker extends StatelessWidget {
     final space = context.tokens.space;
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
-    // The platform's own typography carries the system family (the page's
-    // roles carry the app font, which may be Amiri).
     final system =
         (theme.brightness == Brightness.dark
                 ? theme.typography.white

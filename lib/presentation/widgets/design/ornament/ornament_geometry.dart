@@ -2,12 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/painting.dart';
 
-/// Parametric geometry for the ornament library. Every shape takes its
-/// count, radii and rotation, so features share a family resemblance
-/// without sharing a look. See `design/LANGUAGE.md`, "Ornament".
 abstract final class OrnamentGeometry {
-  /// An n-pointed star. [innerRatio] is the inner radius over the outer
-  /// one: about 0.38 for a sharp star, 0.76 for the khatam's two squares.
   static Path star(
     Offset center,
     double radius, {
@@ -26,7 +21,6 @@ abstract final class OrnamentGeometry {
     return path..close();
   }
 
-  /// The khatam: an 8-pointed star of two overlapping squares.
   static Path khatam(Offset center, double radius, {double rotation = 0}) =>
       star(
         center,
@@ -51,7 +45,6 @@ abstract final class OrnamentGeometry {
     return path..close();
   }
 
-  /// An n-fold rosette: [count] almond petals radiating from the center.
   static Path petals(
     Offset center,
     double radius, {
@@ -88,9 +81,6 @@ abstract final class OrnamentGeometry {
     return path;
   }
 
-  /// A pointed (mihrab) arch filling [bounds]: straight jambs up to the
-  /// springline at [springRatio] of the height from the bottom, then two
-  /// arcs meeting at the apex.
   static Path pointedArch(Rect bounds, {double springRatio = 0.62}) {
     final w = bounds.width;
     final spring = bounds.bottom - bounds.height * springRatio;
@@ -119,7 +109,6 @@ abstract final class OrnamentGeometry {
       ..close();
   }
 
-  /// A round-headed arch whose semicircle spans [bounds]' width.
   static Path roundArch(Rect bounds) {
     final r = bounds.width / 2;
     return Path()
@@ -133,8 +122,6 @@ abstract final class OrnamentGeometry {
       ..close();
   }
 
-  /// Points evenly spaced on a circle, starting at the top and running
-  /// clockwise (or counter-clockwise when [clockwise] is false, for RTL).
   static List<Offset> ring(
     Offset center,
     double radius,

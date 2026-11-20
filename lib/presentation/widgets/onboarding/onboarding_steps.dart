@@ -14,10 +14,7 @@ import 'package:huda/presentation/widgets/onboarding/steps/reminders_step.dart';
 import 'package:huda/presentation/widgets/onboarding/steps/summary_step.dart';
 import 'package:huda/presentation/widgets/onboarding/steps/welcome_language_step.dart';
 
-/// Each step's words and mark, shared by the threshold, the progress list
-/// and the summary.
 extension OnboardingStepText on OnboardingStep {
-  /// The question the step asks, in the threshold.
   String title(AppLocalizations l10n) => switch (this) {
     OnboardingStep.welcome => l10n.setupWelcomeTitle,
     OnboardingStep.appearance => l10n.setupLookTitle,
@@ -33,7 +30,6 @@ extension OnboardingStepText on OnboardingStep {
     OnboardingStep.summary => l10n.setupSummaryTitle,
   };
 
-  /// A short name for lists (the progress list and the summary).
   String label(AppLocalizations l10n) => switch (this) {
     OnboardingStep.welcome => l10n.language,
     OnboardingStep.appearance => l10n.theme,
@@ -64,7 +60,6 @@ extension OnboardingStepText on OnboardingStep {
     OnboardingStep.summary => Icons.check_rounded,
   };
 
-  /// The step's page.
   Widget build() => switch (this) {
     OnboardingStep.welcome => const WelcomeLanguageStep(),
     OnboardingStep.appearance => const AppearanceStep(),

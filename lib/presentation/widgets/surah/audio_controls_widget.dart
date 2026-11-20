@@ -3,8 +3,6 @@ import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:just_audio/just_audio.dart';
 
-/// The ayah's recitation in its sheet: where it is (a seek bar with the
-/// times), then previous, play or pause (lit), next.
 class AudioControlsWidget extends StatelessWidget {
   final AudioPlayer audioPlayer;
   final int currentIndex;

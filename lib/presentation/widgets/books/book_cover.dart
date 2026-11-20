@@ -7,8 +7,6 @@ import 'package:huda/presentation/widgets/design/huda_states.dart';
 import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 import 'package:locale_names/locale_names.dart';
 
-/// A language's name in the app's language ("Arabic", "arabe"), or its
-/// code when the name isn't known.
 String bookLanguageName(BuildContext context, String code) {
   if (code.isEmpty) return '';
   final name = Locale(code).displayLanguageIn(Localizations.localeOf(context));
@@ -16,18 +14,10 @@ String bookLanguageName(BuildContext context, String code) {
   return name[0].toUpperCase() + name.substring(1);
 }
 
-/// Books keep the proportions of a book: width over height.
 const double bookAspect = 0.68;
 
-/// The ornament a book's cover carries, from its id.
 int bookVariant(int seed) => (seed ~/ 4).abs() % 3;
 
-/// A book in the library: the book seen from the front (the leather face
-/// in the book's shade, the spine with raised bands on the reading start,
-/// the page block at the fore-edge, one of three tooled ornaments) with
-/// its title stamped in gold, and the author under it. A ribbon hangs
-/// from the head of a downloaded book. Grows taller at large text so the
-/// title always fits.
 class BookCover extends StatelessWidget {
   const BookCover({
     super.key,
@@ -41,16 +31,12 @@ class BookCover extends StatelessWidget {
 
   final String title;
 
-  /// The book's id: picks its leather and ornament.
   final int seed;
   final String? author;
   final bool downloaded;
 
-  /// The cover's width in the grid, when known: wider covers stamp the
-  /// title larger (title small, medium or large).
   final double? width;
 
-  /// Gets the cover's own context, for [pushFromCard].
   final ValueChanged<BuildContext>? onTap;
 
   @override
@@ -62,7 +48,6 @@ class BookCover extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final variant = bookVariant(seed);
     final author = this.author;
-    // The title sits under the head ornament, or between the bands.
     final (above, below) = switch (variant) {
       0 => (11, 5),
       1 => (1, 1),
@@ -83,7 +68,6 @@ class BookCover extends StatelessWidget {
       style: role?.copyWith(
         color: tokens.gilt,
         height: 1.3,
-        // Tooled into the leather: a shade under the gold.
         shadows: const [Shadow(color: Color(0x66000000), offset: Offset(0, 1))],
       ),
     );
@@ -100,14 +84,9 @@ class BookCover extends StatelessWidget {
           rtl: rtl,
         ),
         child: Stack(
-          // The title's column fills the face, so the title centers on it
-          // (a loose Stack left short titles at the reading start).
           fit: StackFit.expand,
           children: [
             Padding(
-              // Clear of the spine on the reading start and the page
-              // block at the fore-edge.
-              // (inside the gilt fillet, a clear margin from it).
               padding: EdgeInsetsDirectional.fromSTEB(
                 space.xxxl,
                 space.lg,
@@ -179,7 +158,6 @@ class BookCover extends StatelessWidget {
   }
 }
 
-/// A bookmark ribbon hanging from the head, its end cut in a V.
 class _RibbonPainter extends CustomPainter {
   const _RibbonPainter({required this.color});
 
@@ -208,7 +186,6 @@ class _RibbonPainter extends CustomPainter {
   bool shouldRepaint(_RibbonPainter old) => old.color != color;
 }
 
-/// A cover's place while the library loads: the binding's shape.
 class BookCoverSkeleton extends StatelessWidget {
   const BookCoverSkeleton({super.key, this.announce = false});
 
@@ -223,7 +200,6 @@ class BookCoverSkeleton extends StatelessWidget {
         children: [
           BookAspect(
             aspect: bookAspect,
-            // Height 0: BookAspect's minimum gives the block its height.
             child: HudaSkeletonBlock(height: 0),
           ),
           SizedBox(height: 8),
@@ -234,7 +210,6 @@ class BookCoverSkeleton extends StatelessWidget {
   }
 }
 
-/// The book's binding as a small mark (Continue reading, rows).
 class BookMark extends StatelessWidget {
   const BookMark({super.key, required this.seed, this.width = 44});
 

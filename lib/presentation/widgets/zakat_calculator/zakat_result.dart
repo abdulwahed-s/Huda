@@ -6,19 +6,14 @@ import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 import 'package:huda/presentation/widgets/zakat_calculator/zakat_identity.dart';
 import 'package:huda/presentation/widgets/zakat_calculator/zakat_parts.dart';
 
-/// Whether anything has been entered yet.
 bool zakatHasAmounts(ZakatCalculation calculation) =>
     calculation.assets.values.any((value) => value > 0);
 
-/// The result card: the mizan weighing net wealth against the nisab, the
-/// zakat due (rolling as it changes) and how far from the nisab it is.
-/// Beside the balance where there's room, below it otherwise.
 class ZakatResultCard extends StatelessWidget {
   const ZakatResultCard({super.key, required this.state, this.compactHeight});
 
   final ZakatCalculatorLoaded state;
 
-  /// A shorter balance (phone landscape, the folded Duo on its side).
   final bool? compactHeight;
 
   @override
@@ -39,8 +34,6 @@ class ZakatResultCard extends StatelessWidget {
       child: LayoutBuilder(
         builder: (context, constraints) {
           final scale = MediaQuery.textScalerOf(context).scale(1);
-          // Short windows put the summary beside the balance sooner, so
-          // the card fits the height.
           final side =
               constraints.maxWidth >= (short ? 280 : 360) + 160 * scale;
           final balance = _Scale(
@@ -73,7 +66,6 @@ class ZakatResultCard extends StatelessWidget {
   }
 }
 
-/// The balance with its two pans named underneath.
 class _Scale extends StatelessWidget {
   const _Scale({
     required this.state,
@@ -108,8 +100,6 @@ class _Scale extends StatelessWidget {
         ExcludeSemantics(
           child: LayoutBuilder(
             builder: (context, constraints) {
-              // Both readings take the same shape, so the figures share a
-              // line: the code above the figure once either could wrap.
               final scale = MediaQuery.textScalerOf(context).scale(1);
               final pan = (constraints.maxWidth - space.xs) / 2;
               final stacked = scale > 1.3 || pan < 150;
@@ -157,10 +147,8 @@ class _PanLabel extends StatelessWidget {
   final String title;
   final String currency;
 
-  /// The code on its own line above the figure.
   final bool stacked;
 
-  /// Null before anything is entered (shows a dash).
   final double? amount;
   final bool emphasized;
 
@@ -182,8 +170,6 @@ class _PanLabel extends StatelessWidget {
             color: scheme.onSurfaceVariant,
           ),
         ),
-        // The figure never breaks (it scales down only if it alone is
-        // wider than the pan).
         if (amount == null)
           Text('—', style: amountStyle)
         else if (stacked) ...[
@@ -211,7 +197,6 @@ class _PanLabel extends StatelessWidget {
   }
 }
 
-/// "Zakat is due", the amount rolling, and the line that explains it.
 class _Summary extends StatelessWidget {
   const _Summary({required this.state, required this.empty});
 
@@ -252,7 +237,6 @@ class _Summary extends StatelessWidget {
       children: [
         HudaEyebrow(l10n.zakatDueLabel),
         SizedBox(height: space.xxs),
-        // Confirm: the amount counts to its new value.
         FittedBox(
           fit: BoxFit.scaleDown,
           alignment: AlignmentDirectional.centerStart,
@@ -263,10 +247,6 @@ class _Summary extends StatelessWidget {
           ),
         ),
         SizedBox(height: space.xs),
-        // Fades through (never two headlines at once) while the amount
-        // counts toward its new value.
-        // The new words replace the old at once and fade in, so they never
-        // lag the amount and two headlines never overlap.
         _Headline(
           stateKey: (empty, due),
           child: Column(
@@ -291,7 +271,6 @@ class _Summary extends StatelessWidget {
           ),
         ),
         SizedBox(height: space.sm),
-        // The price the nisab is weighed with, and where it's from.
         ZakatPriceSource(
           state: state,
           prefix:
@@ -302,8 +281,6 @@ class _Summary extends StatelessWidget {
   }
 }
 
-/// Swaps its child when [stateKey] changes: the old one leaves at once and
-/// the new one fades in (`short`), with the height easing between them.
 class _Headline extends StatelessWidget {
   const _Headline({required this.stateKey, required this.child});
 
@@ -332,8 +309,6 @@ class _Headline extends StatelessWidget {
   }
 }
 
-/// The ledger: assets, less debts, a double rule, net assets, and the
-/// nisab it's weighed against. Then what the assets are made of.
 class ZakatLedgerCard extends StatelessWidget {
   const ZakatLedgerCard({super.key, required this.state});
 
@@ -381,7 +356,6 @@ class ZakatLedgerCard extends StatelessWidget {
             amount: money(calc.nisabValue),
             muted: true,
           ),
-          // Under reduce motion a zero-length AnimatedSize throws; swap.
           if (grow == Duration.zero)
             breakdown
           else
@@ -431,7 +405,6 @@ class _LedgerLine extends StatelessWidget {
           spacing: space.md,
           children: [
             Text(label, style: labelStyle),
-            // Amounts read left to right in every language ("− USD …").
             Text(amount, style: amountStyle, textDirection: TextDirection.ltr),
           ],
         ),
@@ -440,7 +413,6 @@ class _LedgerLine extends StatelessWidget {
   }
 }
 
-/// The accountant's double rule above a total.
 class _DoubleRule extends StatelessWidget {
   const _DoubleRule();
 
@@ -461,8 +433,6 @@ class _DoubleRule extends StatelessWidget {
   }
 }
 
-/// What the assets are made of: one measured bar cut at each share, and a
-/// line per asset with its share and amount.
 class _Breakdown extends StatelessWidget {
   const _Breakdown({required this.state, required this.parts});
 

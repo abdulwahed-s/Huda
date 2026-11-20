@@ -3,13 +3,6 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:huda/presentation/widgets/design/feature_identity.dart';
 
-/// Miqaat Lock's voice: the bab, a carved wooden double door under a flat
-/// lintel. Each leaf is carved in three panels with a lozenge boss; the
-/// lintel carries one lozenge per time window (lit once that window's goal
-/// is met today). The doors swing shut while a window locks the apps and
-/// open when the goal is met. Rectilinear on purpose: no arch, so it never
-/// echoes Athkar's pointed arch or onboarding's cusped arcade. See
-/// `design/IDENTITIES.md`.
 final FeatureIdentity miqaatLockIdentity = FeatureIdentity(
   id: 'miqaat-lock',
   motif: 'A carved double door that shuts for focus and opens when done',
@@ -20,10 +13,6 @@ final FeatureIdentity miqaatLockIdentity = FeatureIdentity(
       MiqaatDoorPainter(line: style.color, stroke: style.stroke, closed: 1),
 );
 
-/// The door. [closed] runs from 0 (leaves swung wide, light through the
-/// doorway) to 1 (shut, the bar across). [progress] fills the threshold
-/// while a window is locked. [windows] lozenges sit on the lintel,
-/// [windowsDone] of them lit.
 class MiqaatDoorPainter extends CustomPainter {
   const MiqaatDoorPainter({
     required this.line,
@@ -37,13 +26,10 @@ class MiqaatDoorPainter extends CustomPainter {
     this.windowsDone = 0,
   });
 
-  /// Carving and frame.
   final Color line;
 
-  /// The light beyond the doorway.
   final Color? glow;
 
-  /// The leaves' fill.
   final Color? wood;
   final double stroke;
   final double closed;
@@ -52,7 +38,6 @@ class MiqaatDoorPainter extends CustomPainter {
   final int windows;
   final int windowsDone;
 
-  /// The door's proportions (width over height).
   static const aspect = 0.78;
 
   @override
@@ -79,13 +64,11 @@ class MiqaatDoorPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = stroke * 0.7;
 
-    // Frame: two jambs and a lintel band.
     final lintel = h * 0.17;
     final jamb = w * 0.07;
     final outer = Rect.fromLTWH(0, 0, w, h);
     final opening = Rect.fromLTRB(jamb, lintel, w - jamb, h - stroke);
 
-    // The light through the doorway, where the leaves don't cover it.
     final glow = this.glow;
     if (glow != null) {
       canvas.drawRect(
@@ -107,7 +90,6 @@ class MiqaatDoorPainter extends CustomPainter {
     canvas.drawLine(Offset(jamb, lintel), Offset(jamb, h), faint);
     canvas.drawLine(Offset(w - jamb, lintel), Offset(w - jamb, h), faint);
 
-    // The lintel's lozenges, one per window.
     if (windows > 0) {
       final n = windows;
       final cell = (w - jamb * 2) / n;
@@ -122,7 +104,6 @@ class MiqaatDoorPainter extends CustomPainter {
         canvas.drawPath(path, pen);
       }
     } else {
-      // A plain carved rule.
       canvas.drawLine(
         Offset(jamb, lintel / 2),
         Offset(w - jamb, lintel / 2),
@@ -130,14 +111,12 @@ class MiqaatDoorPainter extends CustomPainter {
       );
     }
 
-    // The leaves, hinged at the jambs: an open leaf is foreshortened.
     final half = opening.width / 2;
     final leaf = half * (0.16 + 0.84 * closed);
     final skew = (1 - closed) * opening.height * 0.06;
     _leaf(canvas, opening, leaf, skew, pen, faint, start: true);
     _leaf(canvas, opening, leaf, skew, pen, faint, start: false);
 
-    // The bar across the shut doors, with its ring.
     if (barred && closed > 0.95) {
       final y = opening.top + opening.height * 0.52;
       final bar = Rect.fromCenter(
@@ -156,7 +135,6 @@ class MiqaatDoorPainter extends CustomPainter {
       );
     }
 
-    // The threshold: walked while the window is locked.
     final sill = h - stroke;
     if (progress > 0) {
       final p = Paint()
@@ -183,7 +161,6 @@ class MiqaatDoorPainter extends CustomPainter {
   }) {
     final hinge = start ? opening.left : opening.right;
     final edge = start ? hinge + width : hinge - width;
-    // The free edge looks shorter as the leaf swings in.
     final top = opening.top + skew;
     final bottom = opening.bottom - skew;
     final path = Path()
@@ -197,7 +174,6 @@ class MiqaatDoorPainter extends CustomPainter {
     canvas.drawPath(path, pen);
     if (width < 6) return;
 
-    // Three carved panels, tall in the middle, each with a lozenge boss.
     final inset = width * 0.16;
     final rows = [0.0, 0.26, 0.74, 1.0];
     for (var r = 0; r < 3; r++) {

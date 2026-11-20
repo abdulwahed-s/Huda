@@ -8,8 +8,6 @@ import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 import 'package:huda/presentation/widgets/onboarding/onboarding_frame.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_alerts_ready_card.dart';
 
-/// What still keeps prayer alerts from arriving on this platform, minus
-/// notifications (the alerts step asked) and anything snoozed.
 List<PrayerReadinessItem> onboardingReliabilityItems(BuildContext context) {
   final scope = OnboardingScope.of(context);
   return buildPrayerReadinessItems(
@@ -25,11 +23,6 @@ List<PrayerReadinessItem> onboardingReliabilityItems(BuildContext context) {
       .toList();
 }
 
-/// Step 6: one explained item at a time, like Prayer's ready card (exact
-/// alarms and battery on Android, AlarmKit on iOS, banners and login on
-/// macOS, startup on Windows and Linux). Items vanish when granted; "Not
-/// now" snoozes one the way the card does. When nothing is left, alerts
-/// are ready.
 class ReliabilityStep extends StatefulWidget {
   const ReliabilityStep({super.key});
 
@@ -65,7 +58,6 @@ class _ReliabilityStepState extends State<ReliabilityStep> {
   Future<void> _finish(StepOutcome outcome) async {
     final scope = OnboardingScope.read(context);
     final onboarding = context.read<OnboardingCubit>();
-    // The Prayer screen's checklist reads this on Android.
     if (scope.environment.isAndroid) {
       await scope.environment.cache.saveData(
         key: ReliabilityStep.answeredKey,

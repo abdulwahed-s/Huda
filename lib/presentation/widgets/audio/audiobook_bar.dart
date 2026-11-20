@@ -13,12 +13,10 @@ import 'package:huda/presentation/widgets/design/huda_audio_dock.dart';
 import 'package:huda/presentation/widgets/design/huda_lamp.dart';
 import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 
-/// Opens the player over the page, sliding up from the bar.
 Future<void> showAudiobookPlayer(BuildContext context) {
   final player = context.read<AudiobookPlayerCubit>();
   final bar = context.read<AudiobookBarCubit>();
   final navigator = Navigator.of(context);
-  // The page reads Lantern tokens from the opener's route-level scope.
   final themes = InheritedTheme.capture(from: context, to: navigator.context);
   final motion = context.tokens.motion;
   final duration = motion.of(context, motion.long);
@@ -53,17 +51,11 @@ Future<void> showAudiobookPlayer(BuildContext context) {
   );
 }
 
-/// Stops the recording and hides the bar (the bar's and the player's
-/// Stop).
 void stopAudiobook(BuildContext context) {
   context.read<AudiobookPlayerCubit>().closePlayer();
   context.read<AudiobookBarCubit>().hide();
 }
 
-/// The bar pinned under the library and a recording's page while a
-/// recording plays: how far the chapter has played along its top edge, a
-/// small plait, the chapter and the recording (tap to open the player),
-/// play or pause, forward 30 seconds and Stop. Night chrome to the edge.
 class AudiobookBar extends StatelessWidget {
   const AudiobookBar({super.key});
 
@@ -73,7 +65,6 @@ class AudiobookBar extends StatelessWidget {
   ) =>
       bar == AudiobookBarVisibility.visible && player is AudiobookPlayerPlaying;
 
-  /// [child] with the bar docked under it while a recording plays.
   static Widget dock({required Widget child}) =>
       BlocBuilder<AudiobookBarCubit, AudiobookBarVisibility>(
         builder: (context, bar) =>
@@ -125,8 +116,6 @@ class _Bar extends StatelessWidget {
           final played = dur.inMilliseconds > 0
               ? (pos.inMilliseconds / dur.inMilliseconds).clamp(0.0, 1.0)
               : 0.0;
-          // The whole bar opens the player (its buttons keep their own
-          // taps), not only the titles (owner round 1).
           return InkWell(
             key: const ValueKey('audiobook-bar-open'),
             excludeFromSemantics: true,
@@ -258,7 +247,6 @@ class _Bar extends StatelessWidget {
   }
 }
 
-/// The chapter's own title, or "Chapter n" when it has none.
 String chapterTitle(
   BuildContext context,
   AudiobookPlayerPlaying state,
@@ -272,8 +260,6 @@ String chapterTitle(
   return state.title;
 }
 
-/// A small plait of three eyes, the middle one filling with [fraction]:
-/// the bar's mark for "this recording is playing".
 class AudiobookPlaitGlyph extends StatelessWidget {
   const AudiobookPlaitGlyph({super.key, required this.fraction});
 
@@ -283,7 +269,6 @@ class AudiobookPlaitGlyph extends StatelessWidget {
   Widget build(BuildContext context) {
     final tokens = context.tokens;
     return ExcludeSemantics(
-      // Clipped to its box: the weave would run on past both ends.
       child: ClipRect(
         child: SizedBox(
           width: 40,
@@ -309,8 +294,6 @@ class AudiobookPlaitGlyph extends StatelessWidget {
   }
 }
 
-/// The lit play or pause button; the lamp spinner while the audio is
-/// [busy] loading.
 class AudiobookPlayButton extends StatelessWidget {
   const AudiobookPlayButton({
     super.key,

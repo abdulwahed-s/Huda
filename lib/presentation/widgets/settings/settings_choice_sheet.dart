@@ -4,7 +4,6 @@ import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:huda/presentation/widgets/design/huda_sheet.dart';
 import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 
-/// One option in [showSettingsChoiceSheet].
 class SettingsChoice<T> {
   const SettingsChoice({
     required this.value,
@@ -18,16 +17,10 @@ class SettingsChoice<T> {
   final String title;
   final String? subtitle;
 
-  /// The title's own direction (a language name in its script).
   final TextDirection? titleDirection;
   final Key? key;
 }
 
-/// Pick one of [choices] in the shared sheet (a bottom sheet on phones, a
-/// dialog from medium width): a list of choice rows under an optional
-/// [description], the current one marked. Choosing closes the sheet and
-/// returns the value; closing it returns null. Used by Settings' language
-/// and the home-screen widgets' languages.
 Future<T?> showSettingsChoiceSheet<T>({
   required BuildContext context,
   required String title,
@@ -62,7 +55,6 @@ Future<T?> showSettingsChoiceSheet<T>({
               HudaChoiceRow(
                 key: choice.key,
                 title: choice.title,
-                // A language's local name often is its own name: say it once.
                 subtitle: choice.subtitle == choice.title
                     ? null
                     : choice.subtitle,

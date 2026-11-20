@@ -15,9 +15,6 @@ import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:huda/presentation/widgets/notifications/notification_access_controller.dart';
 import 'package:huda/presentation/widgets/onboarding/onboarding_stage.dart';
 
-/// What every step reads from the wizard: the environment (storage,
-/// flavor, services), the one notification access controller the screen
-/// owns, and the language switch with its veil.
 class OnboardingScope extends InheritedWidget {
   const OnboardingScope({
     super.key,
@@ -33,24 +30,17 @@ class OnboardingScope extends InheritedWidget {
   final OnboardingEnvironment environment;
   final NotificationAccessController access;
 
-  /// Ends setup (from the summary or "Skip setup") and opens Home.
   final Future<void> Function() finish;
 
-  /// Switches the app's language behind the veil: the words fade out, the
-  /// language (and its direction) changes while nothing shows, and the
-  /// words fade back in, so right to left never jumps.
   final Future<void> Function(Locale locale) switchLanguage;
 
-  /// The words' opacity (1 normally; down while the language changes).
   final Animation<double> veil;
 
-  /// What the steps share across the wizard.
   final OnboardingSession sheet;
 
   static OnboardingScope of(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<OnboardingScope>()!;
 
-  /// Without listening, for callbacks and initializers.
   static OnboardingScope read(BuildContext context) =>
       context.getInheritedWidgetOfExactType<OnboardingScope>()!;
 
@@ -64,22 +54,13 @@ class OnboardingScope extends InheritedWidget {
       oldWidget.sheet != sheet;
 }
 
-/// What the wizard remembers across its steps: the top of the last
-/// step's sheet (in its frame, so the next sheet grows or shrinks from
-/// there), and whether notifications were refused on the permissions step
-/// (the adhan step then offers the fix instead of asking again).
 class OnboardingSession {
   double? top;
   bool notificationsDeclined = false;
 }
 
-/// How the shell lays a step out: the stage inside the step's frame, over
-/// its sheet (phones and portrait tablets), or the stage in its own
-/// chrome pane and the step alone on the page (wide windows, tabletop).
 enum OnboardingFrameMode { stacked, pane }
 
-/// The step a frame belongs to and how it's moving: coming in (with the
-/// transition's [animation], 0 → 1) or leaving (1 → 0).
 class OnboardingStepSlot extends InheritedWidget {
   const OnboardingStepSlot({
     super.key,
@@ -96,7 +77,6 @@ class OnboardingStepSlot extends InheritedWidget {
   final bool incoming;
   final Animation<double> animation;
 
-  /// 1 after moving forward, -1 after going back.
   final int direction;
 
   static OnboardingStepSlot? maybeOf(BuildContext context) =>
@@ -111,7 +91,6 @@ class OnboardingStepSlot extends InheritedWidget {
       oldWidget.direction != direction;
 }
 
-/// A button in a step's action bar.
 @immutable
 class OnboardingAction {
   const OnboardingAction(
@@ -125,40 +104,22 @@ class OnboardingAction {
 
   final String label;
 
-  /// A quiet button's mark ("Skip this step" carries a skip mark), so
-  /// every button in the bar says what it does at a glance.
   final IconData? icon;
 
-  /// The step's way on (Continue, Get started): it reads "Done" when the
-  /// step was opened from the summary, and returns there.
   final bool advances;
 
-  /// Null disables the button.
   final VoidCallback? onPressed;
 
-  /// While set, the lit button works in place (a turning khatam and this
-  /// label, "Locating…") and can't be tapped again.
   final String? busyLabel;
   final Key? key;
 }
 
-/// The mark of "Skip this step" (mirrored in RTL); "Skip all" uses a
-/// double arrow.
 const IconData onboardingSkipIcon = Icons.skip_next_rounded;
 
-/// The widest a step's content runs: options, cards and the action bar.
 const double onboardingContentWidth = 560;
 
-/// The widest a step's content runs in a wide pane (large windows).
 const double onboardingWideContentWidth = 720;
 
-/// A step's page. On phones and portrait tablets: the step's stage (its
-/// doorway and question on the chrome) above a sheet holding the
-/// explanation and the choice, with the action bar pinned under it. The
-/// stage takes whatever room the sheet leaves, so a short step shows a
-/// large doorway rather than an empty page, and a long one folds the stage
-/// into a band that scrolls away. On wide windows the stage has its own
-/// pane: the step sits centered on the page with its buttons under it.
 class OnboardingStepFrame extends StatelessWidget {
   const OnboardingStepFrame({
     super.key,
@@ -174,9 +135,6 @@ class OnboardingStepFrame extends StatelessWidget {
   final OnboardingAction? primary;
   final OnboardingAction? quiet;
 
-  /// Whether the step's content fades during a language change. The
-  /// language tiles don't: their words are each in their own language, so
-  /// they stay put (the step veils its own label).
   final bool veilContent;
 
   @override
@@ -189,13 +147,9 @@ class OnboardingStepFrame extends StatelessWidget {
     final slot = OnboardingStepSlot.maybeOf(context);
     final step = slot?.step ?? context.read<OnboardingCubit>().state.current;
     final mode = slot?.mode ?? OnboardingFrameMode.stacked;
-    // Changing one step from the summary: its way on reads "Done" and
-    // returns there (its skip does too).
     final reviewing = context.select<OnboardingCubit, bool>(
       (cubit) => cubit.state.reviewing,
     );
-    // Back to the previous step sits with the step's own buttons. While
-    // changing a step from the summary, its "Done" is the way back.
     final canGoBack = context.select<OnboardingCubit, bool>(
       (cubit) =>
           cubit.state.canGoBack &&
@@ -213,8 +167,6 @@ class OnboardingStepFrame extends StatelessWidget {
       primary = given;
       quiet = this.quiet;
     } else if (given != null && given.advances) {
-      // Its way on reads "Done" and returns to the summary; skipping would
-      // mark an answered step as skipped, so it isn't offered.
       primary = OnboardingAction(
         l10n.done,
         key: given.key,
@@ -224,8 +176,6 @@ class OnboardingStepFrame extends StatelessWidget {
       );
       quiet = null;
     } else {
-      // A step whose main button does something else (Allow location,
-      // Search for a city): "Done" beside it returns to the summary.
       primary = given;
       quiet = OnboardingAction(
         l10n.done,
@@ -235,11 +185,6 @@ class OnboardingStepFrame extends StatelessWidget {
       );
     }
 
-    // The words come in after the sheet has moved, sliding from the
-    // reading end (from the start when going back); leaving ones clear
-    // quickly. The veil fades them during a language change.
-    // Steps slide whole (the shell turns them like pages); only a
-    // language change fades their words, behind the veil.
     Widget words(Widget child, {bool slide = true, bool veiled = true}) =>
         veiled ? FadeTransition(opacity: scope.veil, child: child) : child;
 
@@ -280,9 +225,6 @@ class OnboardingStepFrame extends StatelessWidget {
       );
     }
 
-    // The sheet and its bar run edge to edge on every width (a narrower,
-    // centered sheet left strips of chrome beside the bar); the content
-    // inside keeps its readable width.
     const sheetWidth = double.infinity;
     final scale = (media.textScaler.scale(16) / 16).clamp(1.0, 1.6);
     final surface = theme.colorScheme.surface;
@@ -297,13 +239,9 @@ class OnboardingStepFrame extends StatelessWidget {
                 surface: surface,
                 radius: tokens.radius.xl,
                 sheetWidth: sheetWidth,
-                // Each page carries its own sheet as it slides.
                 paintSurface: true,
                 enter: kAlwaysCompleteAnimation,
                 memory: scope.sheet,
-                // The stage veils its own words; its art stays.
-                // The stage's form follows the device, not the step:
-                // short screens always show the band.
                 stage: OnboardingStage(
                   step: step,
                   band: constraints.maxHeight < 560 * scale,
@@ -343,11 +281,6 @@ class OnboardingStepFrame extends StatelessWidget {
   }
 }
 
-/// The step on the page beside (or under) the stage, headed by its
-/// question: one block centered, its buttons right under it. When the
-/// block doesn't fit the pane (phone landscape, open folds, small
-/// laptops, large text), the buttons move to the pane's foot so the main
-/// one never scrolls away; once pinned they stay pinned for the step.
 class _PaneStep extends StatefulWidget {
   const _PaneStep({
     required this.heading,
@@ -374,10 +307,6 @@ class _PaneStep extends StatefulWidget {
 }
 
 class _PaneStepState extends State<_PaneStep> {
-  /// The tallest the step's block runs on a tall pane: the step and its
-  /// bar stay together (no wide gap between a choice and its Continue),
-  /// and the block is centered, so the bar sits in the same place on every
-  /// step.
   static const double _maxBlockHeight = 640;
 
   @override
@@ -411,8 +340,6 @@ class _PaneStepState extends State<_PaneStep> {
             alignment: Alignment.topCenter,
             child: ReadableWidth(
               maxWidth: maxWidth,
-              // Content that stays through a language change still veils
-              // the heading.
               child: widget.words(
                 veiled: widget.veilContent,
                 Column(
@@ -453,11 +380,6 @@ class _PaneStepState extends State<_PaneStep> {
 
 enum _FillSlot { stage, panel }
 
-/// The stage over the sheet: the sheet is as tall as its content; the
-/// stage gets the rest of [viewport] (or its own height, if more). Paints
-/// the sheet's surface (rounded at the top, at most [sheetWidth] wide,
-/// centered) from where the last step's sheet began to where this one
-/// begins, as [enter] runs.
 class _StageFill
     extends SlottedMultiChildRenderObjectWidget<_FillSlot, RenderBox> {
   const _StageFill({
@@ -591,7 +513,6 @@ class _RenderStageFill extends RenderBox
 
   OnboardingSession memory;
 
-  /// Where the previous step's sheet began, captured once.
   double? _from;
   bool _captured = false;
   double _top = 0;
@@ -674,7 +595,6 @@ class _RenderStageFill extends RenderBox
             left,
             offset.dy + top,
             left + width,
-            // Past the bottom, so a sheet that grows never shows a gap.
             offset.dy + math.max(size.height, top + _viewport),
           ),
           topLeft: radius,
@@ -717,11 +637,6 @@ class _RenderStageFill extends RenderBox
   double computeMaxIntrinsicHeight(double width) => 0;
 }
 
-/// The step's buttons: the lit one and the quiet one, side by side, or
-/// stacked (lit on top) when the window is narrow for the text size.
-/// Pinned at the bottom edge on phones (the sheet's surface continues to
-/// the edge, the buttons lifted above the navigation bar), or [inline]
-/// under the step's content.
 class OnboardingActionBar extends StatelessWidget {
   const OnboardingActionBar({
     super.key,
@@ -738,20 +653,14 @@ class OnboardingActionBar extends StatelessWidget {
   final OnboardingAction? primary;
   final OnboardingAction? quiet;
 
-  /// Back to the previous step, beside the step's own buttons (not in the
-  /// chrome above, where it read as leaving something else).
   final VoidCallback? back;
   final bool inline;
 
-  /// Paints the sheet's surface behind the buttons (a leaving step's bar
-  /// doesn't).
   final bool surface;
   final double sheetWidth;
 
-  /// The step's content column, so the buttons line up with its edges.
   final double contentWidth;
 
-  /// Wraps the buttons (their fade in a step change).
   final Widget Function(Widget child)? wrap;
 
   @override
@@ -791,10 +700,7 @@ class OnboardingActionBar extends StatelessWidget {
       math.min(media.size.width, sheetWidth) - 2 * gutter,
       contentWidth,
     );
-    // Large text: the lit button takes the row and Back is its arrow (the
-    // same on every step of a device, so nothing jumps between steps).
     final largeText = scale >= 1.5;
-    // Back keeps the word while it fits in a third of the bar.
     final backLabeled =
         !largeText &&
         l10n.back.length * body * 0.55 * scale + 56 <= available / 3;
@@ -828,11 +734,6 @@ class OnboardingActionBar extends StatelessWidget {
             onPressed: quiet.onPressed,
             flip: quiet.icon == onboardingSkipIcon,
           );
-    // One layout on every step and size: the lit button has one width
-    // and sits at the end of the bar, so Continue, Allow location, Done
-    // and Start are always in the same place, whether or not Back is
-    // there at the start. A step's second answer ("Skip this step",
-    // "Don't allow", "Done") is on its own line above, at the end.
     final litWidth = (available * 0.5).clamp(160.0, 280.0);
     Widget buttons = Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -892,8 +793,6 @@ class _LitButton extends StatelessWidget {
     final duration = tokens.motion.of(context, tokens.motion.short);
     final Widget child;
     if (busy != null) {
-      // The lit button working, as the shared "Retrying…" pill does: the
-      // chrome, its engraving and a turning khatam; it can't be re-tapped.
       child = Semantics(
         key: const ValueKey('busy'),
         liveRegion: true,
@@ -931,7 +830,6 @@ class _LitButton extends StatelessWidget {
         ),
       );
     } else {
-      // The way on points onward (mirrored in RTL).
       child = action.advances
           ? FilledButton.icon(
               key: action.key ?? ValueKey(action.label),
@@ -950,7 +848,6 @@ class _LitButton extends StatelessWidget {
     }
     return AnimatedSwitcher(
       duration: duration,
-      // Keep the bar's width for the button (the default centers it loose).
       layoutBuilder: (current, previous) => Stack(
         fit: StackFit.passthrough,
         alignment: Alignment.center,
@@ -961,9 +858,6 @@ class _LitButton extends StatelessWidget {
   }
 }
 
-/// One choice among several: a tile with a preview or mark, a title and a
-/// line under it, and a round mark at the end that fills when chosen.
-/// Chosen, the tile tints with the primary and its border turns primary.
 class OnboardingOption extends StatelessWidget {
   const OnboardingOption({
     super.key,
@@ -984,23 +878,15 @@ class OnboardingOption extends StatelessWidget {
   final bool selected;
   final VoidCallback onTap;
 
-  /// A small mark before the title (row tiles).
   final Widget? leading;
 
-  /// Art for the choice (Home focus, Mushaf, Asr): above the title in a
-  /// grid of tiles, before it ([previewWidth] wide) in a single column.
   final Widget? preview;
   final double previewWidth;
 
-  /// A short label after the title ("Suggested").
   final String? badge;
 
-  /// Keeps the preview above the text in a single column too (a diagram
-  /// that reads only when wide: the Asr shadows).
   final bool previewAbove;
 
-  /// A figure under the text that matters for the choice (today's Asr
-  /// time), in a stronger role than the subtitle.
   final String? detail;
 
   @override
@@ -1089,8 +975,6 @@ class OnboardingOption extends StatelessWidget {
         (preview != null && !inGrid
             ? SizedBox(width: previewWidth, child: preview)
             : null);
-    // In a tile, the mark sits on the preview's corner so the title gets
-    // the whole width and never breaks mid-word.
     final content = preview != null && inGrid
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -1159,8 +1043,6 @@ class OnboardingOption extends StatelessWidget {
   }
 }
 
-/// Options in a column, or in [columns] columns when there's room for
-/// tiles at least [minTileWidth] wide (scaled with the text size).
 class OnboardingOptionGrid extends StatelessWidget {
   const OnboardingOptionGrid({
     super.key,
@@ -1174,8 +1056,6 @@ class OnboardingOptionGrid extends StatelessWidget {
   final double minTileWidth;
   final int maxColumns;
 
-  /// The column counts allowed, if not every count up to [maxColumns]
-  /// (three options: one row of three or a column, never two and one).
   final List<int>? columnChoices;
 
   @override
@@ -1253,8 +1133,6 @@ class _OptionColumns extends InheritedWidget {
       oldWidget.columns != columns;
 }
 
-/// What happened, inline in a step: led by a lamp, lit for good news
-/// ("Alerts are on"), unlit and red for a problem.
 class OnboardingNotice extends StatelessWidget {
   const OnboardingNotice({
     super.key,
@@ -1284,8 +1162,6 @@ class OnboardingNotice extends StatelessWidget {
     );
     final title = this.title;
     final trailing = this.trailing;
-    // Status leads with a lamp: unlit and red with a still khatam for a
-    // problem (as the shared status banner), lit for good news.
     final lamp = problem
         ? Container(
             width: 40,
@@ -1356,8 +1232,6 @@ class OnboardingNotice extends StatelessWidget {
   }
 }
 
-/// A secondary action inside a step ("Search for a city"): a quiet text
-/// button with a leading icon, aligned to the reading start.
 class OnboardingLink extends StatelessWidget {
   const OnboardingLink({
     super.key,

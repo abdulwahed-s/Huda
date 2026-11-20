@@ -17,13 +17,6 @@ import 'package:huda/presentation/widgets/design/huda_lamp.dart';
 import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:huda/presentation/widgets/design/huda_states.dart';
 
-/// The player, a night focus screen: the recording's swatch whose plait is
-/// the book (an eye per chapter, the heard ones filled, the current one
-/// filling), the chapter, the seek slider, the transport, speed and the
-/// sleep timer, then the chapters. Chapters beside the player from 840
-/// wide and on open folds (split at a vertical fold); swatch beside the
-/// controls on short windows; swatch above a tabletop fold. See
-/// `design/features/audiobooks/brief.md`.
 class AudiobookNowPlayingScreen extends StatefulWidget {
   const AudiobookNowPlayingScreen({super.key});
 
@@ -47,7 +40,6 @@ class _AudiobookNowPlayingScreenState extends State<AudiobookNowPlayingScreen> {
     return HudaNight(
       child: BlocConsumer<AudiobookPlayerCubit, AudiobookPlayerState>(
         listener: (context, state) {
-          // Stopped from elsewhere (the notification, another audio).
           if (state is AudiobookPlayerInitial) _close();
         },
         builder: (context, state) {
@@ -84,7 +76,6 @@ class _AudiobookNowPlayingScreenState extends State<AudiobookNowPlayingScreen> {
                   ),
                 ),
                 AudiobookPlayerError() => Padding(
-                  // The state view scrolls and keeps off folds itself.
                   padding: EdgeInsets.only(
                     top: MediaQuery.paddingOf(context).top + kToolbarHeight,
                   ),
@@ -115,8 +106,6 @@ class _AudiobookNowPlayingScreenState extends State<AudiobookNowPlayingScreen> {
   }
 }
 
-/// The recording being prepared: its swatch, dimmed, over the lamp and
-/// "Preparing…".
 class _Preparing extends StatelessWidget {
   const _Preparing({required this.seed});
 
@@ -154,7 +143,6 @@ class _Preparing extends StatelessWidget {
   }
 }
 
-/// Clear of the bar and the insets, centered, scrolling when it must.
 class _Centered extends StatelessWidget {
   const _Centered({required this.child});
 
@@ -193,8 +181,6 @@ class _PlayerBody extends StatelessWidget {
     final top = media.padding.top + (sideChrome ? space.md : kToolbarHeight);
     final size = media.size;
 
-    // The swatch keeps to about a third of the height, so the controls
-    // and the speed and sleep pills fit below it without scrolling.
     final room = size.height - top - media.padding.bottom;
     final byHeight = room * 0.34 * AudiobookSwatch.aspect;
     Widget art({double maxWidth = 320, bool capped = true}) =>
@@ -233,7 +219,6 @@ class _PlayerBody extends StatelessWidget {
     );
 
     if (TabletopSplit.applies(context)) {
-      // What to look at above the fold, the controls and chapters below.
       return TabletopSplit(
         top: Builder(
           builder: (context) {
@@ -329,8 +314,6 @@ class _PlayerBody extends StatelessWidget {
     }
 
     if (size.width >= 600 && size.width > size.height * 1.2) {
-      // Short and wide: the swatch on the leading side, sized to the
-      // height; everything else scrolls beside it.
       final artWidth =
           ((size.height - top - media.padding.bottom) *
                   AudiobookSwatch.aspect *
@@ -413,8 +396,6 @@ class _PlayerBody extends StatelessWidget {
   }
 }
 
-/// The chapters beside the player: scrolls the current one into view
-/// when the chapter changes.
 class _ChaptersPane extends StatefulWidget {
   const _ChaptersPane({
     required this.index,
@@ -463,8 +444,6 @@ class _ChaptersPaneState extends State<_ChaptersPane> {
   Widget build(BuildContext context) {
     final m = MediaQuery.of(context);
     final space = context.tokens.space;
-    // The pane starts below the bar, so rows never scroll under its
-    // buttons.
     return Padding(
       padding: EdgeInsets.only(top: widget.top),
       child: ClipRect(
@@ -487,7 +466,6 @@ class _ChaptersPaneState extends State<_ChaptersPane> {
   }
 }
 
-/// Centers [child] in the room it has, and scrolls when it doesn't fit.
 class _Scrolling extends StatelessWidget {
   const _Scrolling({required this.child, required this.padding});
 

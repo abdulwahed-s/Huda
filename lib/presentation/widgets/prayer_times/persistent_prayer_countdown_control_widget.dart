@@ -8,9 +8,6 @@ import 'package:huda/presentation/widgets/feedback/huda_snack_bar.dart';
 import 'package:huda/presentation/widgets/notifications/permission_handlers.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_palette.dart';
 
-/// The Android prayer countdown card in "On this device". The countdown itself
-/// runs natively; this card saves the user's choices and shows what Android
-/// reports, including problems only the user can fix.
 class PersistentPrayerCountdownControlWidget extends StatefulWidget {
   const PersistentPrayerCountdownControlWidget({super.key});
 
@@ -35,7 +32,6 @@ class _PersistentPrayerCountdownControlWidgetState
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    // The user may have changed notification settings in Android.
     if (state == AppLifecycleState.resumed) unawaited(_refreshStatus());
   }
 
@@ -212,7 +208,6 @@ class _PersistentPrayerCountdownControlWidgetState
     return l10n.prayerCountdownNotShowing;
   }
 
-  /// The first thing stopping the countdown from showing as the user chose.
   _CountdownProblem? _problem(AppLocalizations l10n) {
     final status = _status;
     final settings = _settings;
@@ -318,7 +313,6 @@ class _ProblemBanner extends StatelessWidget {
   }
 }
 
-/// A style choice with a small sketch of how the notification looks.
 class _StyleChoice extends StatelessWidget {
   const _StyleChoice({
     required this.style,

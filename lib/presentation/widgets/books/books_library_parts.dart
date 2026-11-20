@@ -14,8 +14,6 @@ import 'package:huda/presentation/widgets/design/huda_sheet.dart';
 import 'package:huda/presentation/widgets/design/huda_states.dart';
 import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 
-/// The library's content column: the gutters and side insets, capped at
-/// [maxWidth] and centered, ending above the bottom inset.
 class BooksPage extends StatelessWidget {
   const BooksPage({super.key, required this.children, this.maxWidth = 1280});
 
@@ -45,9 +43,6 @@ class BooksPage extends StatelessWidget {
   }
 }
 
-/// The language the library shows, as a quiet chip that opens the
-/// language list. It is the filter's one control: "All languages" is the
-/// list's first row.
 class BooksLanguageChip extends StatelessWidget {
   const BooksLanguageChip({
     super.key,
@@ -55,7 +50,6 @@ class BooksLanguageChip extends StatelessWidget {
     required this.onSelected,
   });
 
-  /// A language code, or null for all languages.
   final String? selected;
   final ValueChanged<String?> onSelected;
 
@@ -125,7 +119,6 @@ class BooksLanguageChip extends StatelessWidget {
   }
 }
 
-/// A choice from the language list (null code: all languages).
 class _Pick {
   const _Pick(this.code);
   final String? code;
@@ -248,7 +241,6 @@ class _LanguageListState extends State<_LanguageList> {
   }
 }
 
-/// The last book read, at the top of the library.
 class BooksContinueCard extends StatelessWidget {
   const BooksContinueCard({
     super.key,
@@ -325,7 +317,6 @@ class BooksContinueCard extends StatelessWidget {
   }
 }
 
-/// You're offline: the library shows only downloaded books.
 class BooksOfflineNotice extends StatelessWidget {
   const BooksOfflineNotice({
     super.key,
@@ -417,8 +408,6 @@ class BooksOfflineNotice extends StatelessWidget {
   }
 }
 
-/// Moves between the catalogue's pages: Previous, "Page n of m" (opens the
-/// page jump), Next. Labels drop to icons when the row is narrow.
 class BooksPager extends StatelessWidget {
   const BooksPager({
     super.key,
@@ -435,7 +424,6 @@ class BooksPager extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final space = context.tokens.space;
-    // Chevrons mirror themselves in RTL (matchTextDirection).
     const back = Icons.chevron_left_rounded;
     const forward = Icons.chevron_right_rounded;
     final hasPrevious = page > 1;
@@ -510,8 +498,6 @@ class BooksPager extends StatelessWidget {
   }
 }
 
-/// Asks for a page number from 1 to [count]; null when dismissed. Used by
-/// the library's pager and the reader's page pill.
 Future<int?> showBooksPageJump(
   BuildContext context, {
   required int current,

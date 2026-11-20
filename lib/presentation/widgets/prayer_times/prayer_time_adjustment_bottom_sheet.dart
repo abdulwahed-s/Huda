@@ -16,10 +16,6 @@ import 'package:huda/presentation/widgets/design/huda_toast.dart';
 import 'package:intl/intl.dart' hide TextDirection;
 import 'package:vector_graphics/vector_graphics.dart';
 
-/// Prayer time settings: the calculation method (custom angles for
-/// "Other"), the Asr method, the high-latitude rule and minute offsets per
-/// prayer. Nothing changes until Apply; Reset returns to the defaults.
-/// Opens as a bottom sheet on phones and a dialog from medium width.
 void showPrayerTimeAdjustmentSheet(BuildContext context) {
   final cubit = context.read<PrayerTimesCubit>();
   showHudaSheet<void>(
@@ -216,7 +212,6 @@ class _PrayerTimeAdjustmentBottomSheetState
       try {
         await AndroidPrayerCountdown.refresh();
       } catch (_) {
-        // The native countdown also refreshes when the widget settings commit.
       }
     }
 
@@ -315,7 +310,6 @@ class _PrayerTimeAdjustmentBottomSheetState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // Header: the title, what it's for, and Close.
         Padding(
           padding: EdgeInsetsDirectional.fromSTEB(
             space.xl,
@@ -482,8 +476,6 @@ class _PrayerTimeAdjustmentBottomSheetState
             ],
           ),
         ),
-        // Pinned: its surface reaches the edge, its buttons sit above the
-        // navigation bar.
         DecoratedBox(
           decoration: BoxDecoration(
             border: Border(
@@ -665,8 +657,6 @@ class _Chevron extends StatelessWidget {
   );
 }
 
-/// A labeled row with a control (a segmented choice) that wraps under the
-/// label when there's no room beside it.
 class _ControlRow extends StatelessWidget {
   const _ControlRow({
     required this.icon,
@@ -827,8 +817,6 @@ class _OffsetRow extends StatelessWidget {
   }
 }
 
-/// A choice list for a picker sheet: a search field when [searchHint] is
-/// given, the options with the selected one checked; a tap picks.
 class _PickerList extends StatefulWidget {
   const _PickerList({
     required this.options,
@@ -941,8 +929,6 @@ class _LocalizedAngleInputFormatter extends TextInputFormatter {
   }
 }
 
-/// A method's name for display; "Automatic" names the method it resolves
-/// to for [countryCode] ("Automatic (Umm al-Qura)").
 String prayerMethodDisplayLabel(
   AppLocalizations l10n,
   String token,
@@ -957,9 +943,6 @@ String prayerMethodDisplayLabel(
   return '$prefix (${prayerMethodLabel(l10n, resolved.name)})';
 }
 
-/// The page's card for how the times are calculated: the method, the Asr
-/// method and how many times are adjusted; a tap opens the settings. It
-/// replaced the app bar's tune button (owner round 2).
 class PrayerTimeSettingsCard extends StatelessWidget {
   const PrayerTimeSettingsCard({
     super.key,
@@ -1049,7 +1032,6 @@ class PrayerTimeSettingsCard extends StatelessWidget {
   }
 }
 
-/// A setting at a glance on the settings card.
 class _Fact extends StatelessWidget {
   const _Fact({required this.icon, required this.label});
 
@@ -1088,8 +1070,6 @@ class _Fact extends StatelessWidget {
   }
 }
 
-/// A calculation method's name, by its token (also used by onboarding's
-/// method choice).
 String prayerMethodLabel(AppLocalizations l10n, String token) {
   switch (token) {
     case PrayerTimesCalculator.autoMethodToken:

@@ -15,8 +15,6 @@ import 'package:huda/presentation/widgets/home/home_identity.dart';
 import 'package:huda/presentation/widgets/quran_home/quran_identity.dart';
 import 'package:intl/intl.dart' as intl;
 
-/// Where the reading is: the last ayah read, else the start of today's
-/// Khatma portion, else Al-Fatihah to start from ([fresh]).
 typedef HomeReadingPlace = ({
   int surah,
   int ayah,
@@ -49,8 +47,6 @@ HomeReadingPlace homeReadingPlace(
     return (
       surah: khatma.startSurah!,
       ayah: khatma.startAyah!,
-      // Today's portion is where the reading goes on (the Khatma card
-      // under it says "Khatma progress").
       eyebrow: l10n.continueHome,
       fresh: false,
       fromKhatma: true,
@@ -67,14 +63,11 @@ HomeReadingPlace homeReadingPlace(
   );
 }
 
-/// "Ayah 24 · Page 296 · Juz 15", in the app's numerals.
 String homeReadingWhere(BuildContext context, int surah, int ayah) {
   final l10n = AppLocalizations.of(context)!;
   final digits = intl.NumberFormat.decimalPattern(
     Localizations.localeOf(context).toString(),
   );
-  // Each part keeps together ("Juz 15" never splits); lines break only at
-  // the separators.
   String keep(String part) => part.replaceAll(' ', '\u00A0');
   try {
     return [
@@ -87,12 +80,6 @@ String homeReadingWhere(BuildContext context, int surah, int ayah) {
   }
 }
 
-/// Quran Journey's bookmark: where the reading stopped, on the night
-/// chrome. A gilt ribbon hangs from its top edge; the surah, then the
-/// ayah, page and juz; a go disc at the end; and along its foot a fine
-/// line of the whole Mushaf, its thirty juz ticked, lit up to the place.
-/// The whole card continues the reading. Small on purpose: it's a
-/// bookmark, not a page.
 class HomeContinueCard extends StatelessWidget {
   const HomeContinueCard({super.key, required this.place});
 
@@ -192,8 +179,6 @@ class HomeContinueCard extends StatelessWidget {
                               ),
                             ),
                             SizedBox(width: space.sm),
-                            // The way on: a warm disc with the arrow, part
-                            // of the card's one tap.
                             DecoratedBox(
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
@@ -207,7 +192,6 @@ class HomeContinueCard extends StatelessWidget {
                               ),
                               child: SizedBox.square(
                                 dimension: 44,
-                                // Mirrors itself in right-to-left.
                                 child: Icon(
                                   Icons.arrow_forward_rounded,
                                   size: 22,
@@ -242,8 +226,6 @@ class HomeContinueCard extends StatelessWidget {
   }
 }
 
-/// A silk bookmark hanging from the card's top edge: a gilt ribbon with a
-/// stitched edge and a swallowtail.
 class _BookmarkPainter extends CustomPainter {
   const _BookmarkPainter({required this.gilt});
 
@@ -261,7 +243,6 @@ class _BookmarkPainter extends CustomPainter {
       ..lineTo(w / 2, h - notch)
       ..lineTo(0, h)
       ..close();
-    // Its shadow on the card.
     canvas.drawPath(
       ribbon.shift(const Offset(1.5, 2)),
       Paint()
@@ -281,7 +262,6 @@ class _BookmarkPainter extends CustomPainter {
           stops: const [0, 0.45, 1],
         ).createShader(rect),
     );
-    // The stitching along both edges.
     final stitch = Paint()
       ..color = Color.lerp(gilt, Colors.black, 0.35)!.withValues(alpha: 0.7)
       ..strokeWidth = 0.8;
@@ -297,8 +277,6 @@ class _BookmarkPainter extends CustomPainter {
   bool shouldRepaint(_BookmarkPainter old) => old.gilt != gilt;
 }
 
-/// The whole Mushaf as a fine line with its thirty juz ticked, lit in gilt
-/// up to [place] (0–1, by page) with a small glowing mark there.
 class _MushafPlacePainter extends CustomPainter {
   const _MushafPlacePainter({
     required this.place,
@@ -362,17 +340,12 @@ class _MushafPlacePainter extends CustomPainter {
       old.rtl != rtl;
 }
 
-/// The paper of Home's ayah card: the page, a little warmer.
 Color homePaper(BuildContext context) => Color.lerp(
   Theme.of(context).colorScheme.surfaceContainerLowest,
   context.tokens.gilt,
   Theme.of(context).brightness == Brightness.dark ? 0.04 : 0.07,
 )!;
 
-/// Today's Ayah on a quiet paper card that only reads: its head names the
-/// surah (once), the verse follows in the Mushaf's script and ends in its
-/// numbered rosette (the ayah's number, once). At most [lines] lines; a
-/// longer verse fades out at the card's foot. A tap opens the surah at it.
 class HomeAyahCard extends StatelessWidget {
   const HomeAyahCard({
     super.key,
@@ -386,7 +359,6 @@ class HomeAyahCard extends StatelessWidget {
   final HomeActions actions;
   final int lines;
 
-  /// A larger script, for wide windows.
   final bool large;
 
   @override
@@ -448,8 +420,6 @@ class HomeAyahCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // The eyebrow at the start, the surah at the end; at
-                  // large text the surah goes under it.
                   Wrap(
                     alignment: WrapAlignment.spaceBetween,
                     crossAxisAlignment: WrapCrossAlignment.center,
@@ -484,8 +454,6 @@ class HomeAyahCard extends StatelessWidget {
                           final line =
                               scaler.scale(style.fontSize!) * style.height!;
                           final room = line * lines;
-                          // One measurement: does the verse fit its room?
-                          // (The rosette counts as a short word.)
                           final painter = TextPainter(
                             text: TextSpan(
                               text: '${ayah.text} ۝۝',
@@ -535,7 +503,6 @@ class HomeAyahCard extends StatelessWidget {
   }
 }
 
-/// A small eight-pointed star, the ayah card's mark.
 class _StarPainter extends CustomPainter {
   const _StarPainter({required this.color});
 
@@ -559,11 +526,6 @@ class _StarPainter extends CustomPainter {
   bool shouldRepaint(_StarPainter old) => old.color != color;
 }
 
-/// The Khatma on the page: the day, the share read, and its thirty days
-/// as a ribbon (read in gilt, today's taller), with where today's portion
-/// starts unless the bookmark above already shows it ([showStart]). A tap
-/// opens today's portion. With no plan (or a finished one) a quiet
-/// invitation that opens the Khatma sheet.
 class HomeKhatmaRibbon extends StatelessWidget {
   const HomeKhatmaRibbon({
     super.key,
@@ -737,8 +699,6 @@ class _RibbonPainter extends CustomPainter {
       old.rtl != rtl;
 }
 
-/// The Quran's own tools, as the first medallions of Quran Journey's
-/// gallery: the Quran, its recitations, the radio and bookmarks.
 List<Widget> homeQuranToolTiles(BuildContext context, HomeActions actions) {
   final l10n = AppLocalizations.of(context)!;
   final tools = [

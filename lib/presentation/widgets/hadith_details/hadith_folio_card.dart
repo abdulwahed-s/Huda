@@ -7,11 +7,6 @@ import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 import 'package:huda/presentation/widgets/hadith/hadith_identity.dart';
 import 'package:huda/presentation/widgets/hadith_details/hadith_text.dart';
 
-/// One hadith as a folio: a card ruled inside with a jadwal; at its head
-/// the hadith's number in an ink seal and its chain of narrators as linked
-/// nodes, and the one action, Share; then the Arabic (in Arabic the chain
-/// too, quieter than the text) and, in other languages, the translation;
-/// the grade at its foot as marginalia. The text is selectable.
 class HadithFolioCard extends StatelessWidget {
   const HadithFolioCard({
     super.key,
@@ -31,8 +26,6 @@ class HadithFolioCard extends StatelessWidget {
     final space = tokens.space;
     final arabicUi = Localizations.localeOf(context).languageCode == 'ar';
     final showArabic = entry.arabic.isNotEmpty;
-    // Arabic readers get the whole chain; others the matn and the
-    // translation (which names the companion).
     final showIsnad = arabicUi && entry.isnad.isNotEmpty;
     final showTranslation =
         entry.translation.isNotEmpty && (!arabicUi || !showArabic);
@@ -62,8 +55,6 @@ class HadithFolioCard extends StatelessWidget {
           ),
         ),
         SizedBox(width: space.sm),
-        // The chain beside the seal, at its own step (not stretched across
-        // the card, where it read as a progress track).
         Expanded(
           child: LayoutBuilder(
             builder: (context, constraints) => Align(
@@ -100,8 +91,6 @@ class HadithFolioCard extends StatelessWidget {
         HadithRunsText(
           runs: entry.arabic,
           arabic: true,
-          // An unmarked chain for non-Arabic readers: the whole narration
-          // at the chain's quieter size, the translation leads.
           style: !arabicUi && entry.unmarkedChain ? chain : hadith,
         ),
       if (showTranslation) ...[
@@ -121,7 +110,6 @@ class HadithFolioCard extends StatelessWidget {
     return HudaCard(
       padding: EdgeInsets.zero,
       child: CustomPaint(
-        // The jadwal: a double rule just inside the card's edge.
         painter: RuledFramePainter(
           style: OrnamentStyle.of(context, quiet: true),
           rules: const [5, 8],
@@ -147,7 +135,6 @@ class HadithFolioCard extends StatelessWidget {
                   ),
                 ),
               ),
-              // The verdict closes the folio, as in the books.
               if (entry.grade != null) ...[
                 SizedBox(height: space.lg),
                 Padding(
@@ -166,7 +153,6 @@ class HadithFolioCard extends StatelessWidget {
   }
 }
 
-/// Between the Arabic and the translation: a short hairline with a lozenge.
 class _Divider extends StatelessWidget {
   const _Divider();
 
@@ -186,8 +172,6 @@ class _Divider extends StatelessWidget {
   );
 }
 
-/// A bab heading as a rubric: the section's title in the ink accent,
-/// centered between the hadith it heads, over a short rule.
 class HadithRubric extends StatelessWidget {
   const HadithRubric({super.key, required this.title});
 
@@ -223,7 +207,6 @@ class HadithRubric extends StatelessWidget {
   }
 }
 
-/// A loading card shaped like [HadithFolioCard].
 class HadithFolioCardSkeleton extends StatelessWidget {
   const HadithFolioCardSkeleton({super.key, this.announce = false});
 

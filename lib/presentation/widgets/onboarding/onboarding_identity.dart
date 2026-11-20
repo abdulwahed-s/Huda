@@ -8,11 +8,6 @@ import 'package:huda/presentation/widgets/design/feature_identity.dart';
 import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 import 'package:huda/presentation/widgets/share/share_image_frame.dart';
 
-/// Onboarding's voice: the threshold arcade. A receding arcade of
-/// multifoil (polylobed) arches, one per step, nested toward a doorway of
-/// light, in luminous gilt on the chrome. Lit arches are the steps behind
-/// you; the next one lights as you step forward. See
-/// `design/IDENTITIES.md`.
 final FeatureIdentity onboardingIdentity = FeatureIdentity(
   id: 'onboarding',
   motif: 'A receding arcade of multifoil arches, one per step',
@@ -22,14 +17,8 @@ final FeatureIdentity onboardingIdentity = FeatureIdentity(
   headerArt: (style) => OnboardingArcadePainter(style: style, count: 7),
 );
 
-/// The lobes on each arch's crown (Córdoba's cusped arches).
 const int _lobes = 7;
 
-/// Draws the arcade: [count] arches, the outermost first, framed by a
-/// rectangular alfiz. [lit] arches are drawn bright (a fraction lights the
-/// next arch from both jambs up to its crown); the rest are quiet.
-/// [reveal] draws the whole arcade in on first open (0 → 1, outer arch
-/// first); [flood] fills the doorway with light when setup finishes.
 class OnboardingArcadePainter extends CustomPainter {
   const OnboardingArcadePainter({
     required this.style,
@@ -45,10 +34,6 @@ class OnboardingArcadePainter extends CustomPainter {
   final double reveal;
   final double flood;
 
-  /// Each arch's crown in a box of [width] × [height] whose base is at the
-  /// bottom: two jambs and seven lobes cut into a round head, drawn as two
-  /// halves (left jamb up to the keystone, right jamb up to the keystone),
-  /// so the light can climb both jambs at once.
   static (Path, Path) archHalves(Rect box) {
     final r = box.width / 2;
     final cx = box.center.dx;
@@ -57,7 +42,6 @@ class OnboardingArcadePainter extends CustomPainter {
     final right = Path()..moveTo(box.right, box.bottom);
     left.lineTo(box.left, spring);
     right.lineTo(box.right, spring);
-    // Lobe points on the head, from the left spring over the top.
     final points = [
       for (var i = 0; i <= _lobes; i++)
         Offset(
@@ -67,7 +51,6 @@ class OnboardingArcadePainter extends CustomPainter {
     ];
     final chord = (points[1] - points[0]).distance;
     final lobe = Radius.circular(chord * 0.62);
-    // The middle lobe is split at its top so both halves meet there.
     final mid = _lobes ~/ 2;
     for (var i = 0; i < mid; i++) {
       left.arcToPoint(points[i + 1], radius: lobe);
@@ -81,8 +64,6 @@ class OnboardingArcadePainter extends CustomPainter {
     return (left, right);
   }
 
-  /// The [i]th arch's box: smaller and higher toward the doorway, as if
-  /// seen down an arcade.
   static Rect archBox(Size size, int i, int count) {
     final outerW = math.min(size.width * 0.86, size.height * 0.64);
     final outerH = outerW / 0.64;
@@ -111,8 +92,6 @@ class OnboardingArcadePainter extends CustomPainter {
     );
     final bright = style;
 
-    // The doorway: the innermost arch filled with soft light that grows to
-    // a flood when setup finishes.
     final inner = archBox(size, count - 1, count);
     final (dl, dr) = archHalves(inner);
     final doorGlow = 0.08 + 0.22 * (lit / count).clamp(0.0, 1.0) + 0.5 * flood;
@@ -143,8 +122,6 @@ class OnboardingArcadePainter extends CustomPainter {
     }
 
     for (var i = 0; i < count; i++) {
-      // The arcade draws in from the outside: each arch over its own slice
-      // of the reveal, overlapping the next.
       final window = 1 / (count + 1);
       final drawn = ((reveal - i * window) / (window * 2)).clamp(0.0, 1.0);
       if (drawn <= 0) continue;
@@ -163,7 +140,6 @@ class OnboardingArcadePainter extends CustomPainter {
     }
   }
 
-  /// The rectangular frame around the outer arch's head.
   void _alfiz(Canvas canvas, Rect box, double drawn, OrnamentStyle s) {
     final pad = box.width * 0.08;
     final top = box.top - pad;
@@ -187,10 +163,6 @@ class OnboardingArcadePainter extends CustomPainter {
       old.flood != flood;
 }
 
-/// The arcade on the chrome, moving with the wizard: it draws itself in
-/// once when [entrance] (1.1 s), lights the next arch as [lit] grows and
-/// puts it out as it shrinks (700 ms), and floods the doorway as [flood]
-/// turns on (900 ms). Under reduce motion it shows the end state.
 class OnboardingArcade extends StatefulWidget {
   const OnboardingArcade({
     super.key,
@@ -208,7 +180,6 @@ class OnboardingArcade extends StatefulWidget {
   final bool entrance;
   final String? semanticLabel;
 
-  /// Huda's logo in gilt inside the doorway (the welcome).
   final bool logo;
 
   static const drawIn = Duration(milliseconds: 1100);
@@ -319,14 +290,11 @@ class _OnboardingArcadeState extends State<OnboardingArcade>
   }
 }
 
-/// Huda's logo glyph tinted [color], fitted into its box (the asset's
-/// padding cropped away).
 class OnboardingLogo extends StatelessWidget {
   const OnboardingLogo({super.key, required this.color});
 
   final Color color;
 
-  // The glyph's box inside the 1024 square asset.
   static const _glyphWidth = 830 / 1024;
   static const _glyphHeight = 448 / 1024;
 
@@ -360,7 +328,6 @@ class OnboardingLogo extends StatelessWidget {
   );
 }
 
-/// Draws [paths] up to [t] of their length (each path from its start).
 void _drawPartial(
   Canvas canvas,
   OrnamentStyle style,
@@ -379,10 +346,6 @@ void _drawPartial(
   }
 }
 
-/// A step's emblem: what the step sets up, drawn as gilt line work in a
-/// square [r] (a minaret calling the adhan, a gnomon's shadow for Asr, a
-/// globe and pin for the location…). [masks] are filled with the ground
-/// first, so a shape in front hides the lines behind it.
 ({List<Path> lines, List<Path> masks}) onboardingEmblem(
   OnboardingStep step,
   Rect r,
@@ -467,8 +430,6 @@ void _drawPartial(
 
   switch (step) {
     case OnboardingStep.appearance:
-      // Light and dark in one disc: the terminator between them, stars on
-      // the night side (no sun: the rising sun is Athkar's).
       lines
         ..add(circle(0.5, 0.5, 0.26))
         ..add(
@@ -479,7 +440,6 @@ void _drawPartial(
         ..add(sparkle(0.82, 0.26, 0.06))
         ..add(sparkle(0.86, 0.72, 0.035));
     case OnboardingStep.focus:
-      // Three doorways to choose from, the middle one taller.
       Path door(double x, double w, double h) {
         const base = 0.82;
         final half = w / 2;
@@ -496,7 +456,6 @@ void _drawPartial(
         ..add(door(0.8, 0.2, 0.44))
         ..add(line([p(0.04, 0.82), p(0.96, 0.82)]));
     case OnboardingStep.permissions:
-      // A location pin beside a bell: the two things Huda asks for.
       final bell = Path()
         ..moveTo(p(0.52, 0.7).dx, p(0.52, 0.7).dy)
         ..quadraticBezierTo(
@@ -533,7 +492,6 @@ void _drawPartial(
           ),
         );
     case OnboardingStep.location:
-      // A globe with a pin standing on it.
       lines
         ..add(circle(0.5, 0.6, 0.3))
         ..add(
@@ -563,8 +521,6 @@ void _drawPartial(
         ..add(head)
         ..add(circle(0.5, 0.2, 0.045));
     case OnboardingStep.asr:
-      // A gnomon on the ground, the light's line over its tip, and its
-      // shadow: Asr is told by the length of a shadow.
       lines
         ..add(line([p(0.06, 0.78), p(0.94, 0.78)]))
         ..add(line([p(0.32, 0.78), p(0.32, 0.4)]))
@@ -572,8 +528,6 @@ void _drawPartial(
         ..add(line([p(0.7, 0.74), p(0.7, 0.82)]))
         ..add(line([p(0.32, 0.4), p(0.88, 0.78)]));
     case OnboardingStep.alerts:
-      // A minaret calling the adhan: the shaft, the balcony, the dome and
-      // its crescent, and the call spreading out on both sides.
       final dome = Path()
         ..moveTo(p(0.44, 0.31).dx, p(0.44, 0.31).dy)
         ..quadraticBezierTo(
@@ -617,7 +571,6 @@ void _drawPartial(
           ..add(Path()..addArc(box, -math.pi * 0.06, math.pi * 0.2));
       }
     case OnboardingStep.reliability:
-      // A shield that holds: alerts that always arrive.
       lines
         ..add(
           Path()
@@ -645,7 +598,6 @@ void _drawPartial(
         )
         ..add(line([p(0.37, 0.51), p(0.47, 0.61), p(0.65, 0.41)]));
     case OnboardingStep.mushaf:
-      // An open Mushaf on its folding stand (rahle).
       Path page(double sign) {
         double x(double v) => 0.5 + sign * v;
         return Path()
@@ -688,7 +640,6 @@ void _drawPartial(
         ..add(line([p(0.28, 0.9), p(0.72, 0.62)]))
         ..add(line([p(0.72, 0.9), p(0.28, 0.62)]));
     case OnboardingStep.reminders:
-      // A reminder's hour: a clock face under the crescent and a star.
       lines
         ..add(circle(0.42, 0.6, 0.24))
         ..add(line([p(0.42, 0.6), p(0.42, 0.44)]))
@@ -697,7 +648,6 @@ void _drawPartial(
         ..add(crescent(0.76, 0.26, 0.1))
         ..add(sparkle(0.9, 0.44, 0.04));
     case OnboardingStep.privacy:
-      // A padlock: crash reports only with your consent.
       lines
         ..add(
           Path()..addRRect(
@@ -723,9 +673,6 @@ void _drawPartial(
   return (lines: lines, masks: masks);
 }
 
-/// A step's threshold: one cusped doorway in its alfiz frame, with an
-/// inner arch behind it, and the step's emblem standing inside. [t] draws
-/// it in (the doorway from both jambs up to the crown, then the emblem).
 class OnboardingDoorwayPainter extends CustomPainter {
   const OnboardingDoorwayPainter({
     required this.step,
@@ -737,12 +684,9 @@ class OnboardingDoorwayPainter extends CustomPainter {
   final OnboardingStep step;
   final OrnamentStyle style;
 
-  /// The chrome behind, for the emblem's masks.
   final Color ground;
   final double t;
 
-  /// The doorway's box in [size]: the arch's width over its height is
-  /// 0.64, with room above for the alfiz.
   static Rect doorBox(Size size) {
     final w = math.min(size.width * 0.84, size.height * 0.6);
     final h = w / 0.64;
@@ -755,8 +699,6 @@ class OnboardingDoorwayPainter extends CustomPainter {
     if (size.isEmpty) return;
     final box = doorBox(size);
     final w = box.width;
-    // The doorway stands from the first frame (it doesn't redraw on every
-    // step, which read as a flash); its emblem draws itself in.
     const arch = 1.0;
     final emblemT = Curves.easeOutCubic.transform(t.clamp(0.0, 1.0));
     final quiet = style.copyWith(
@@ -764,7 +706,6 @@ class OnboardingDoorwayPainter extends CustomPainter {
       render: OrnamentRender.line,
     );
 
-    // The light inside the doorway.
     final (gl, gr) = OnboardingArcadePainter.archHalves(box);
     canvas.drawPath(
       Path.combine(
@@ -779,7 +720,6 @@ class OnboardingDoorwayPainter extends CustomPainter {
       Paint()..color = style.color.withValues(alpha: 0.07 * arch),
     );
 
-    // The inner arch, quiet, a step deeper.
     final inner = Rect.fromLTRB(
       box.left + w * 0.09,
       box.top + w * 0.1,
@@ -789,7 +729,6 @@ class OnboardingDoorwayPainter extends CustomPainter {
     final (il, ir) = OnboardingArcadePainter.archHalves(inner);
     _drawPartial(canvas, quiet, [il, ir], arch);
 
-    // The doorway and its alfiz.
     _drawPartial(canvas, style, [gl, gr], arch);
     final pad = w * 0.08;
     final spring = box.top + w / 2 + pad * 0.6;
@@ -805,14 +744,12 @@ class OnboardingDoorwayPainter extends CustomPainter {
       frameLeft,
       frameRight,
     ], arch);
-    // The threshold stone.
     _drawPartial(canvas, quiet, [
       Path()
         ..moveTo(box.left - pad * 1.6, box.bottom)
         ..lineTo(box.right + pad * 1.6, box.bottom),
     ], arch);
 
-    // The emblem, standing in the doorway.
     if (emblemT <= 0) return;
     final side = w * 0.84;
     final emblemBox = Rect.fromCenter(
@@ -836,8 +773,6 @@ class OnboardingDoorwayPainter extends CustomPainter {
       old.t != t;
 }
 
-/// The doorway for [step]; its emblem draws itself in when it first shows
-/// (at once under reduce motion).
 class OnboardingDoorway extends StatefulWidget {
   const OnboardingDoorway({super.key, required this.step});
 
@@ -851,8 +786,6 @@ class OnboardingDoorway extends StatefulWidget {
 
 class _OnboardingDoorwayState extends State<OnboardingDoorway>
     with SingleTickerProviderStateMixin {
-  /// The page turn the doorway arrives with: the emblem waits for it to
-  /// settle, so it draws on a still page (drawing mid-slide was lost).
   static const _settle = Duration(milliseconds: 400);
 
   late final AnimationController _t = AnimationController(
@@ -860,8 +793,6 @@ class _OnboardingDoorwayState extends State<OnboardingDoorway>
     duration: _settle + OnboardingDoorway.drawIn,
   );
 
-  /// The emblem's own progress: nothing while the page turns, then the
-  /// stroke draws in.
   late final Animation<double> _draw = CurvedAnimation(
     parent: _t,
     curve: Interval(
@@ -910,9 +841,6 @@ class _OnboardingDoorwayState extends State<OnboardingDoorway>
   }
 }
 
-/// The wizard's progress: one small cusped arch per step in a row, lit
-/// up to where you stand; the next one lights from its base as you step
-/// forward. Painted, so it shrinks to the room it gets.
 class OnboardingProgressPainter extends CustomPainter {
   const OnboardingProgressPainter({
     required this.count,
@@ -928,7 +856,6 @@ class OnboardingProgressPainter extends CustomPainter {
   final Color quiet;
   final bool rtl;
 
-  /// The widest one arch gets, and the gap after it.
   static const double archWidth = 11;
   static const double gap = 6;
 
@@ -965,7 +892,6 @@ class OnboardingProgressPainter extends CustomPainter {
           ..close(),
       );
       if (f > 0) {
-        // Lit from the base up as f grows.
         canvas.save();
         canvas.clipRect(
           Rect.fromLTRB(
@@ -1002,8 +928,6 @@ class OnboardingProgressPainter extends CustomPainter {
       old.rtl != rtl;
 }
 
-/// The progress row, lighting the next arch as [lit] grows (700 ms) and
-/// putting it out as it shrinks.
 class OnboardingProgress extends StatelessWidget {
   const OnboardingProgress({
     super.key,

@@ -5,9 +5,6 @@ import 'package:huda/presentation/widgets/hijri_calendar/calendar_format.dart';
 import 'package:huda/presentation/widgets/hijri_calendar/calendar_identity.dart';
 import 'package:huda/presentation/widgets/ramadan/fasting_progress_widget.dart';
 
-/// Ramadan's plate on the chrome: the night's moon (the hilal while
-/// Ramadan is awaited), the day of Ramadan or the days until it, and
-/// today's fast.
 class RamadanPlate extends StatelessWidget {
   const RamadanPlate({
     super.key,

@@ -90,7 +90,6 @@ class NotificationAccessController extends ChangeNotifier
           flipSensorAvailable = state.capabilities.flipSensor;
         }
       } catch (_) {
-        /* Existing notification permissions remain available during native recovery. */
       }
     }
 
@@ -123,7 +122,6 @@ class NotificationAccessController extends ChangeNotifier
     if (shouldReschedule) await onAccessGained?.call();
   }
 
-  /// [explain] false when the caller's own card already says why.
   Future<void> requestNotifications(
     BuildContext context, {
     bool explain = true,
@@ -134,7 +132,6 @@ class NotificationAccessController extends ChangeNotifier
     ),
   );
 
-  /// Opens the system page; only from a tap on "Open settings".
   Future<void> openNotificationSettings() =>
       _request(NotificationPermissions.openSettings);
 

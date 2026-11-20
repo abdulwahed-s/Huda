@@ -10,14 +10,6 @@ import 'package:huda/presentation/widgets/notifications/notification_access_cont
 
 enum NotificationFeature { prayerTimes, hijriCalendar, reminders, khatma }
 
-/// Shows the actions needed before a notification-based feature can work.
-///
-/// Contextual pages hide this section once they are correctly configured. The
-/// notification settings page passes [showConfiguredStatus] so it can continue
-/// to show the current setup status after everything is enabled.
-///
-/// Drawn in Lantern: a card led by a lit lamp (an invitation) with the lit
-/// button for the first thing to allow, and quiet rows for the rest.
 class NotificationRequirementsSection extends StatefulWidget {
   const NotificationRequirementsSection({
     super.key,
@@ -33,8 +25,6 @@ class NotificationRequirementsSection extends StatefulWidget {
   final Future<void> Function()? onNotificationEnabled;
   final double bottomSpacing;
 
-  /// A controller the page already owns (it keeps it and disposes it);
-  /// otherwise the section makes its own.
   final NotificationAccessController? controller;
 
   @override
@@ -105,8 +95,6 @@ class _NotificationRequirementsSectionState
           actionIcon: access.notificationNeedsSettings
               ? Icons.settings_outlined
               : Icons.notifications_active_outlined,
-          // This card is the explanation; a tap goes straight to the prompt
-          // or, when only the user can allow it, to the system settings.
           onPressed: access.notificationNeedsSettings
               ? _controller.openNotificationSettings
               : () => _controller.requestNotifications(context, explain: false),
@@ -232,7 +220,6 @@ class _NotificationSetupPanel extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Lit: an invitation, not a fault.
                 HudaLamp(
                   size: 40,
                   child: Icon(primary.icon, size: 20, color: tokens.gilt),
@@ -330,8 +317,6 @@ class _Text extends StatelessWidget {
   }
 }
 
-/// Everything needed is allowed: one lamp-led line, lit. [detailed] adds
-/// Android's exact alarms and battery lines under it.
 class NotificationsReadyStatus extends StatelessWidget {
   const NotificationsReadyStatus({super.key, this.detailed = false});
 

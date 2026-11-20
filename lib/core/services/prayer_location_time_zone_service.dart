@@ -24,6 +24,7 @@ abstract final class PrayerLocationTimeZoneService {
     try {
       return resolveOfflineExact(latitude, longitude);
     } on StateError {
+      // No offline boundary match; fall back to the platform resolver below.
     }
     if (!PlatformUtils.isMobile && !PlatformUtils.isMacOS) {
       throw StateError('No IANA timezone boundary covers the coordinates');

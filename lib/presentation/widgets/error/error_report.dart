@@ -8,8 +8,6 @@ import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:huda/presentation/widgets/design/huda_states.dart';
 import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 
-/// Where the automatic report stands, said honestly: sending, sent, off,
-/// or failed with a retry (and "Retrying…" after the tap).
 class ErrorReportStatus extends StatelessWidget {
   const ErrorReportStatus({
     super.key,
@@ -102,8 +100,6 @@ class ErrorReportStatus extends StatelessWidget {
   }
 }
 
-/// The exception's text: a toggle on phones ([collapsible]), always open in
-/// the details pane on wide windows.
 class ErrorTechnicalDetails extends StatefulWidget {
   const ErrorTechnicalDetails({
     super.key,
@@ -180,7 +176,6 @@ class _ErrorTechnicalDetailsState extends State<ErrorTechnicalDetails> {
       ),
       child: SingleChildScrollView(
         child: Directionality(
-          // Stack traces read left to right in every language.
           textDirection: TextDirection.ltr,
           child: SelectableText(
             widget.errorMessage,
@@ -205,8 +200,6 @@ class _ErrorTechnicalDetailsState extends State<ErrorTechnicalDetails> {
   }
 }
 
-/// "Help us improve": a note added to the report that was sent. It only
-/// shows once there is a report to add it to.
 class ErrorFeedbackCard extends StatefulWidget {
   const ErrorFeedbackCard({super.key, required this.state});
 

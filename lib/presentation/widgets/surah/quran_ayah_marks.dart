@@ -8,13 +8,6 @@ import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/data/models/bookmark_model.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
-/// What a reader has marked on an ayah, beside it: a bookmark (in its
-/// color), a note, a star, and where today's khatma portion (wird) starts
-/// and ends. Empty when there's nothing. Follows bookmark and khatma
-/// changes while it's on screen.
-///
-/// It replaces the old number circle that showed one of these *instead*
-/// of the ayah's number; the number now stays in its rosette.
 class QuranAyahMarks extends StatefulWidget {
   const QuranAyahMarks({
     super.key,

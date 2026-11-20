@@ -8,10 +8,8 @@ import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 import 'package:huda/presentation/widgets/miqaat_lock/miqaat_lock_format.dart';
 import 'package:huda/presentation/widgets/miqaat_lock/miqaat_lock_identity.dart';
 
-/// Where the lock stands right now.
 enum MiqaatGateStatus { needsAccess, off, noWindows, waiting, locked, done }
 
-/// The lock's state, read from the cubit's state at [now].
 class MiqaatGate {
   const MiqaatGate({
     required this.status,
@@ -80,8 +78,6 @@ class MiqaatGate {
   final int windows;
   final int windowsDone;
 
-  /// How far the doors are shut: wide when off or done, ajar while
-  /// waiting, shut while locked.
   double get closed => switch (status) {
     MiqaatGateStatus.locked => 1,
     MiqaatGateStatus.waiting => 0.55,
@@ -89,7 +85,6 @@ class MiqaatGate {
   };
 }
 
-/// Whether this platform's access is still missing.
 bool miqaatNeedsAccess(MiqaatLockPermissions permissions) =>
     switch (MiqaatLockPlatform.current) {
       MiqaatLockPlatform.android => !permissions.isAndroidReady,
@@ -97,9 +92,6 @@ bool miqaatNeedsAccess(MiqaatLockPermissions permissions) =>
       MiqaatLockPlatform.other => false,
     };
 
-/// The lock's signature card on the night chrome: the carved door, what
-/// the lock is doing now, and the one switch that turns it on. [large]
-/// stacks a big door above the words (a pane of its own).
 class MiqaatLockGate extends StatelessWidget {
   const MiqaatLockGate({
     super.key,
@@ -235,7 +227,6 @@ class _GateBody extends StatelessWidget {
       ],
     );
 
-    // The words cross-fade as the doors move, so they never run ahead.
     final fadeWords = AnimatedSwitcher(
       duration: tokens.motion.of(context, tokens.motion.long),
       layoutBuilder: (current, previous) => Stack(
@@ -280,7 +271,6 @@ class _GateBody extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
-          // A zero-length AnimatedSize throws under reduce motion.
           if (resize == Duration.zero)
             status
           else

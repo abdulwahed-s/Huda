@@ -6,19 +6,14 @@ import 'package:huda/presentation/widgets/design/huda_states.dart';
 import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 import 'package:huda/presentation/widgets/quran_home/quran_index_widgets.dart';
 
-/// What a bookmark's ⋮ offers.
 enum QuranBookmarkAction { editNote, delete }
 
-/// The mark for a kind of saved ayah: a bookmark in its color, a note, a
-/// star.
 IconData quranBookmarkIcon(BookmarkType type) => switch (type) {
   BookmarkType.bookmark => Icons.bookmark_rounded,
   BookmarkType.note => Icons.sticky_note_2_rounded,
   BookmarkType.star => Icons.star_rounded,
 };
 
-/// A saved ayah: where it is, its kind, the ayah, and the note. Tapping it
-/// opens the ayah in the reader; ⋮ edits the note or deletes it.
 class QuranBookmarkCard extends StatelessWidget {
   const QuranBookmarkCard({
     super.key,
@@ -148,7 +143,6 @@ class QuranBookmarkCard extends StatelessWidget {
   }
 }
 
-/// A bookmark card while they load, in its shape.
 class QuranBookmarkCardSkeleton extends StatelessWidget {
   const QuranBookmarkCardSkeleton({super.key, this.announce = false});
 

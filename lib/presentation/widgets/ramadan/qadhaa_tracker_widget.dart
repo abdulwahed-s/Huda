@@ -8,17 +8,6 @@ import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 import 'package:huda/presentation/widgets/hijri_calendar/calendar_format.dart';
 import 'package:huda/presentation/widgets/hijri_calendar/calendar_identity.dart';
 
-/// Ramadan's 30 moons, one a night in its phase: a fasted night's moon is
-/// lit gilt, a missed one ringed in the error tone, an unmarked one a quiet
-/// outline; nights still to come are faint and can't be marked. Tap a
-/// night to mark it. As the card opens the fasted moons light in turn.
-///
-/// Outside Ramadan the card tracks the last Ramadan (its missed fasts are
-/// made up before the next) and can fold to its header. It starts open
-/// once anything is marked; with nothing marked it starts folded, with a
-/// line saying what it is for, so a first visit isn't a page of last
-/// year's moons. Opening or folding it by hand is remembered
-/// ([nightsOpen], [onNightsOpen]). During Ramadan it's always open.
 class RamadanNightsCard extends StatefulWidget {
   const RamadanNightsCard({
     super.key,
@@ -42,8 +31,6 @@ class RamadanNightsCard extends StatefulWidget {
   final int hijriYear;
   final void Function(int dayNumber, String status) onSetStatus;
 
-  /// The person's own choice to open or fold the nights outside Ramadan;
-  /// null until they make one.
   final bool? nightsOpen;
   final ValueChanged<bool>? onNightsOpen;
   final DateTime Function()? clock;
@@ -54,8 +41,6 @@ class RamadanNightsCard extends StatefulWidget {
 
 class _RamadanNightsCardState extends State<RamadanNightsCard>
     with SingleTickerProviderStateMixin {
-  // Made up front: a card that never unfolds would otherwise first make it
-  // in dispose, where the ticker can't look up its ancestors.
   late final AnimationController _open;
 
   @override
@@ -85,7 +70,6 @@ class _RamadanNightsCardState extends State<RamadanNightsCard>
     _light();
   }
 
-  /// The fasted moons light in turn the first time the nights show.
   void _light() {
     if (!_showsNights || _open.isAnimating || _open.value > 0) return;
     final tokens = context.tokens;
@@ -165,8 +149,6 @@ class _RamadanNightsCardState extends State<RamadanNightsCard>
                 onPressed: () => showQadhaaAboutSheet(context),
                 icon: const Icon(Icons.info_outline_rounded),
               ),
-              // Folded with nothing marked, "Mark your fasts" opens it: one
-              // way in, not two.
               if (_foldable && (showsNights || _marked))
                 IconButton(
                   key: const ValueKey('ramadan-nights-toggle'),
@@ -184,8 +166,6 @@ class _RamadanNightsCardState extends State<RamadanNightsCard>
             ],
           ),
           SizedBox(height: space.sm),
-          // Nothing marked outside Ramadan: what the card is for, in place
-          // of counts that would all be zero.
           if (_foldable && !_marked)
             Text(
               l10n.ramadanNightsIntro,
@@ -334,7 +314,6 @@ class _Count extends StatelessWidget {
   }
 }
 
-/// One night: its number, its moon and its mark.
 class _Night extends StatelessWidget {
   const _Night({
     super.key,
@@ -346,13 +325,11 @@ class _Night extends StatelessWidget {
     required this.moon,
   });
 
-  /// The moon's size: it grows with the tile on wide windows.
   final double moon;
   final RamadanDayInfo day;
   final bool today;
   final bool editable;
 
-  /// The opening light-up, 0 → 1.
   final double opened;
   final ValueChanged<String> onSet;
 
@@ -494,7 +471,6 @@ class _Night extends StatelessWidget {
   }
 }
 
-/// About making up missed fasts, in Huda's sheet.
 Future<void> showQadhaaAboutSheet(BuildContext context) {
   final l10n = AppLocalizations.of(context)!;
   return showHudaSheet<void>(

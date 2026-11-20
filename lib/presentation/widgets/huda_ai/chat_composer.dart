@@ -4,12 +4,6 @@ import 'package:huda/core/layout/insets.dart';
 import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
-/// Where the person writes: a field that grows to six lines, then
-/// scrolls, and a lit Send. Pinned to the bottom edge: its surface runs
-/// under the navigation bar and its content is lifted by the inset (the
-/// inset drops to zero while the keyboard is up).
-///
-/// On desktops Enter sends and Shift+Enter starts a new line.
 class ChatComposer extends StatefulWidget {
   const ChatComposer({
     super.key,
@@ -24,12 +18,10 @@ class ChatComposer extends StatefulWidget {
   final TextEditingController controller;
   final String hintText;
 
-  /// False while an answer is coming: typing stays possible, sending not.
   final bool enabled;
   final ValueChanged<String> onSend;
   final double maxWidth;
 
-  /// Whether the bar owns the window's bottom edge (lifts by its inset).
   final bool reachesBottom;
 
   @override

@@ -4,13 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/data/models/home/home_preferences.dart';
 
-/// A small picture of a Home style as it now looks, drawn for a 3:4 box
-/// (onboarding's Focus step scales a 120×160 one into its tiles; the
-/// editor's style choices show it as it is). Classic: the landing band
-/// with the logo, then the plates. Path of Prayer: the chrome hero with
-/// the prayer dial and the five times, the medallions. Quran Journey: the
-/// bookmark on the chrome, Today's Ayah on paper, the Khatma's ribbon, the
-/// medallions. No text, in the person's colors.
 class HomeThemePreview extends StatelessWidget {
   const HomeThemePreview({super.key, required this.theme});
 
@@ -79,7 +72,6 @@ class _PreviewPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // Drawn on a 120 × 160 grid, scaled to the box.
     final sx = size.width / 120;
     final sy = size.height / 160;
     canvas.save();
@@ -102,7 +94,6 @@ class _PreviewPainter extends CustomPainter {
     canvas.restore();
   }
 
-  /// Huda's logo, in brief: its bracket with the letters' notch.
   void _logo(Canvas canvas, Rect rect, Color color) {
     final paint = Paint()
       ..color = color
@@ -130,7 +121,6 @@ class _PreviewPainter extends CustomPainter {
           colors: [chrome, chromeEnd],
         ).createShader(band),
     );
-    // The logo in gilt as the name.
     canvas.drawCircle(
       const Offset(20, 26),
       12,
@@ -159,7 +149,6 @@ class _PreviewPainter extends CustomPainter {
     }
   }
 
-  /// A tool's plate with a small mark in it: a ring, a crescent, a star.
   void _plate(Canvas canvas, Rect rect, int n) {
     final side = rect.width;
     final plate = RRect.fromRectAndRadius(rect, Radius.circular(side * 0.16));
@@ -205,9 +194,6 @@ class _PreviewPainter extends CustomPainter {
     }
   }
 
-  /// Path of Prayer's hero: the chrome from the top with the logo, the
-  /// dial (the day's arc over the horizon, the lamps, the sun at now, the
-  /// next prayer inside), the five times under it.
   void _dial(Canvas canvas) {
     const hero = Rect.fromLTWH(0, 0, 120, 108);
     canvas.drawRect(
@@ -232,7 +218,6 @@ class _PreviewPainter extends CustomPainter {
       const Offset(96, 58),
       ring..color = gilt.withValues(alpha: 0.5),
     );
-    // The walked arc and the rest of the day.
     final rect = Rect.fromCircle(center: c, radius: r);
     canvas.drawArc(
       rect,
@@ -269,7 +254,6 @@ class _PreviewPainter extends CustomPainter {
         ..strokeWidth = 0.9,
     );
     canvas.drawCircle(at(math.pi * 1.75), 3.4, Paint()..color = onChrome);
-    // The next prayer and the time left, inside.
     _bar(canvas, const Rect.fromLTWH(52, 38, 16, 1.8), gilt);
     _bar(canvas, const Rect.fromLTWH(48, 43, 24, 6), onChrome);
     _bar(canvas, const Rect.fromLTWH(51, 51, 18, 2.6), gilt);
@@ -278,7 +262,6 @@ class _PreviewPainter extends CustomPainter {
       const Rect.fromLTWH(50, 63, 20, 3.4),
       onChrome.withValues(alpha: 0.8),
     );
-    // The five times.
     for (var i = 0; i < 5; i++) {
       final x = 12 + i * 20.0;
       _bar(
@@ -290,7 +273,6 @@ class _PreviewPainter extends CustomPainter {
     _bar(canvas, const Rect.fromLTWH(56, 100.5, 8, 1.2), gilt);
   }
 
-  /// The tools as round medallions, three to a row.
   void _medallions(Canvas canvas, {required double top}) {
     for (var row = 0; row < 2; row++) {
       for (var i = 0; i < 3; i++) {
@@ -324,8 +306,6 @@ class _PreviewPainter extends CustomPainter {
     }
   }
 
-  /// Quran Journey's bookmark on the chrome: the gilt ribbon from its top
-  /// edge, two lines, the go disc, the place line along its foot.
   void _bookmark(Canvas canvas) {
     final card = RRect.fromLTRBR(8, 22, 112, 48, const Radius.circular(4));
     canvas.drawRRect(
@@ -361,8 +341,6 @@ class _PreviewPainter extends CustomPainter {
     _bar(canvas, const Rect.fromLTWH(25, 42.5, 38, 0.9), gilt);
   }
 
-  /// Today's Ayah on paper: its eyebrow, two lines of the verse ending in
-  /// the rosette.
   void _ayah(Canvas canvas) {
     final card = RRect.fromLTRBR(8, 54, 112, 88, const Radius.circular(4));
     canvas.drawRRect(card, Paint()..color = surface);
@@ -387,8 +365,6 @@ class _PreviewPainter extends CustomPainter {
     );
   }
 
-  /// The Khatma's ribbon on the page: the days read in gilt, today's
-  /// taller.
   void _ribbon(Canvas canvas) {
     final card = RRect.fromLTRBR(8, 94, 112, 118, const Radius.circular(4));
     canvas.drawRRect(card, Paint()..color = surface);

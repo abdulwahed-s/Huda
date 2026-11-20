@@ -26,13 +26,6 @@ import 'package:huda/presentation/widgets/prayer_times/prayer_timeline_card.dart
 import 'package:intl/intl.dart' hide TextDirection;
 import 'package:prayer_time_plus/prayer_time_plus.dart' show Prayer;
 
-/// The gallery: Home's tools in a grid whose columns follow the space
-/// (even across a fold, the middle gap on the crease). Classic shows them
-/// as square plates; the focused styles ([medallions]) as round medallions,
-/// smaller, under what the style leads with. Quran Kit unfolds its tools
-/// under its row; "View More" (only when tools were moved there) unfolds
-/// the rest into the same grid, right after it, filling its row first.
-/// Both remember being open across a fold, a rotation or a resize.
 class HomeGallery extends StatefulWidget {
   const HomeGallery({
     super.key,
@@ -48,33 +41,23 @@ class HomeGallery extends StatefulWidget {
     this.take,
   });
 
-  /// The tools on Home, in the person's order, and the ones in View More.
   final List<HomeFeatureDefinition> tools;
   final List<HomeFeatureDefinition> more;
   final HomeActions actions;
 
-  /// Tiles that come first (Quran Journey's Quran tools).
   final List<Widget> lead;
 
-  /// Round medallions (the focused styles) instead of square plates.
   final bool medallions;
 
-  /// Where the lamplighter is when it reaches this gallery's first plate.
   final int lampOffset;
 
-  /// The Prayer plate says when the next prayer is (off where the page
-  /// already shows it).
   final bool showPrayerLine;
 
-  /// Whether the grid crosses the window's fold (false inside a pane).
   final bool spansFold;
 
-  /// Shows only part of the gallery (a tabletop half): [skip] tiles, then
-  /// at most [take].
   final int skip;
   final int? take;
 
-  /// A medallion tile's narrowest width at 100% text.
   static double medallionWidth(BuildContext context) =>
       context.windowClass.isCompact || context.windowClass.isCompactHeight
       ? 80
@@ -92,10 +75,6 @@ class _HomeGalleryState extends State<HomeGallery>
   bool _kitOpen = false;
   bool _moreOpen = false;
 
-  // One controller per unfold, run forward to open and back to close, so
-  // both ways move the same: the panel or the extra rows open by height
-  // and fade, View More's tiles arrive one after another and leave in
-  // reverse.
   late final AnimationController _kit = AnimationController(vsync: this)
     ..addStatusListener(_settled);
   late final AnimationController _more = AnimationController(vsync: this)
@@ -103,7 +82,6 @@ class _HomeGalleryState extends State<HomeGallery>
   bool _restored = false;
 
   void _settled(AnimationStatus status) {
-    // Closed: drop what was kept on screen while it folded away.
     if (status == AnimationStatus.dismissed && mounted) setState(() {});
   }
 
@@ -222,8 +200,6 @@ class _HomeGalleryState extends State<HomeGallery>
           onTap: () => _toggle(_moreKey),
         ),
       );
-      // Open (or still folding away): the rest follow in the same grid,
-      // filling View More's row before starting a new one.
       if (_moreOpen || !_more.isDismissed) {
         revealFrom = all.length;
         for (final tool in widget.more) {
@@ -239,8 +215,6 @@ class _HomeGalleryState extends State<HomeGallery>
         }
       }
     }
-    // The columns are counted for the closed grid, so opening View More
-    // never changes them.
     final closed = revealFrom ?? all.length;
 
     final start = widget.skip.clamp(0, all.length);
@@ -273,10 +247,6 @@ class _HomeGalleryState extends State<HomeGallery>
   }
 }
 
-/// One tool: its plate over its name (and, for Prayer, when the next
-/// prayer is). The whole tile is the button; it presses in and shows ink.
-/// [expanded] marks a tile that unfolds something (Quran Kit, View More):
-/// a chevron beside the name turns with it.
 class HomeToolTile extends StatelessWidget {
   const HomeToolTile({
     super.key,
@@ -294,15 +264,11 @@ class HomeToolTile extends StatelessWidget {
   final Widget? meta;
   final bool? expanded;
 
-  /// A round medallion (the focused styles): smaller than a plate.
   final bool medallion;
 
-  /// The widest a plate gets (smaller on short windows); wider tiles
-  /// center it.
   static double maxPlate(BuildContext context) =>
       context.windowClass.isCompactHeight ? 88 : 132;
 
-  /// The widest a medallion gets.
   static double maxMedallion(BuildContext context) =>
       context.windowClass.isCompact || context.windowClass.isCompactHeight
       ? 64
@@ -345,9 +311,6 @@ class HomeToolTile extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
           style: style,
         );
-        // A word wider than the tile (a long German name, large text) never
-        // breaks inside: the label lays out at that word's width and the
-        // block scales down to the tile. One measurement, no retrying.
         final room = constraints.maxWidth - tokens.space.xxs * 2;
         final word = _longestWord(context, title, style);
         final fitted = word <= room
@@ -396,8 +359,6 @@ class HomeToolTile extends StatelessWidget {
   }
 }
 
-/// The width of [title]'s longest word in [style] at the text scale (an
-/// expand chevron included).
 double _longestWord(BuildContext context, String title, TextStyle? style) {
   final scaler = MediaQuery.textScalerOf(context);
   var widest = 0.0;
@@ -415,11 +376,6 @@ double _longestWord(BuildContext context, String title, TextStyle? style) {
   return widest;
 }
 
-/// Rows of tiles: as many columns as fit [minTileWidth] (widened with the
-/// text scale), an even count with a fold and the middle gap on the crease
-/// when the grid crosses it ([spansFold]; it assumes it's centered in the
-/// window, as Home's grids are). [unfold] sits full width under the row
-/// holding the tile at [unfoldAfter].
 class HomeGrid extends StatelessWidget {
   const HomeGrid({
     super.key,
@@ -439,34 +395,22 @@ class HomeGrid extends StatelessWidget {
   final Widget? unfold;
   final int? unfoldAfter;
 
-  /// How many tiles the rows are balanced for: the closed grid's, so tiles
-  /// that unfold into it never change its columns. All of them when null.
   final int? balanceCount;
 
-  /// Tiles from [revealFrom] on come and go with [reveal] (View More's):
-  /// each fades and grows in turn (and leaves in reverse), and the rows
-  /// made only of them open and close by height.
   final int? revealFrom;
   final Animation<double>? reveal;
 
-  /// Between rows; the medium space when null.
   final double? rowGap;
 
-  /// Defaults to [defaultTileWidth].
   final double? minTileWidth;
   final int maxColumns;
   final bool spansFold;
 
-  /// Plates on phones stay phone-sized (four across); wider windows get
-  /// larger ones rather than a field of small ones.
-  /// Short windows (phone and Duo landscape) keep them small too, so more
-  /// than a row shows.
   static double defaultTileWidth(BuildContext context) {
     final window = context.windowClass;
     return window.isCompact || window.isCompactHeight ? 76 : 112;
   }
 
-  /// How many columns a grid of [width] gets.
   static int columnsFor(
     BuildContext context,
     double width, {
@@ -485,18 +429,13 @@ class HomeGrid extends StatelessWidget {
       preferEven: fold.hasFold,
     );
     final n = itemCount;
-    // One row or less keeps the full count (a short row stays in place).
     if (n == null || n <= most) return most;
-    // Balanced rows: six tools in a five-column space sit 3 + 3, not 5 + 1.
     final rows = (n / most).ceil();
     var columns = (n / rows).ceil();
     if (fold.hasFold && columns.isOdd && columns < most) columns++;
     return columns;
   }
 
-  /// A tile's minimum width at the text scale: labels are short words
-  /// under a plate, so tiles widen almost with the text (two across on a
-  /// phone at 200%), unlike `AdaptiveGrid.tileWidth`'s half pace.
   static double _scaled(BuildContext context, double base) {
     final scale = MediaQuery.textScalerOf(context).scale(100) / 100;
     return base * (1 + (scale - 1).clamp(0.0, 1.0) * 0.85);
@@ -554,8 +493,6 @@ class HomeGrid extends StatelessWidget {
             : -1;
         final rows = (tiles.length / columns).ceil();
         final unfoldRow = unfoldAfter == null ? -1 : unfoldAfter! ~/ columns;
-        // The first row made only of revealed tiles: from it on, the rows
-        // open and close by height together.
         final firstRevealRow = from == null ? rows : (from / columns).ceil();
         final children = <Widget>[];
         final revealed = <Widget>[];
@@ -584,8 +521,6 @@ class HomeGrid extends StatelessWidget {
           if (row == unfoldRow && unfold != null) into.add(unfold!);
         }
         if (revealed.isNotEmpty) {
-          // A curve that's its own mirror in time, so folding away moves
-          // exactly as opening did, backwards.
           children.add(
             SizeTransition(
               sizeFactor: reveal!.drive(
@@ -610,9 +545,6 @@ class HomeGrid extends StatelessWidget {
   }
 }
 
-/// Something a tile unfolds (the Quran Kit's tools) under the tile's
-/// row: it opens by height and fades in with [animation], and closes the
-/// same way back (instant under reduce motion).
 class HomeUnfold extends StatelessWidget {
   const HomeUnfold({super.key, required this.animation, required this.child});
 
@@ -621,8 +553,6 @@ class HomeUnfold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // A curve that's its own mirror in time: closing moves exactly as
-    // opening did, backwards.
     return SizeTransition(
       key: const ValueKey('home-unfold'),
       sizeFactor: animation.drive(CurveTween(curve: Curves.easeInOutCubic)),
@@ -642,8 +572,6 @@ class HomeUnfold extends StatelessWidget {
   }
 }
 
-/// The View More plate: the first four tools inside it, small, as lamps
-/// behind a door.
 class HomeMorePlate extends StatelessWidget {
   const HomeMorePlate({
     super.key,
@@ -687,7 +615,6 @@ class _QuartetPainter extends CustomPainter {
       render: style.render,
       stroke: math.max(0.8, style.stroke * 0.75),
     );
-    // Too small for the arts (a chip's plate): four little lamps.
     if (cell - pad * 2 < 18) {
       for (var i = 0; i < 4; i++) {
         final center = Offset(
@@ -721,8 +648,6 @@ class _QuartetPainter extends CustomPainter {
       old.style != style || old.arts.length != arts.length;
 }
 
-/// Quran Kit unfolded: the Quran, its recitations, the radio and
-/// bookmarks, then where the person left off.
 class HomeQuranKitPanel extends StatelessWidget {
   const HomeQuranKitPanel({
     super.key,
@@ -732,7 +657,6 @@ class HomeQuranKitPanel extends StatelessWidget {
 
   final HomeActions actions;
 
-  /// Quran Journey shows the last read in its own card.
   final bool showReading;
 
   @override
@@ -762,7 +686,6 @@ class HomeQuranKitPanel extends StatelessWidget {
   }
 }
 
-/// The Quran's four tools as small plates.
 class HomeQuranTools extends StatelessWidget {
   const HomeQuranTools({super.key, required this.actions});
 
@@ -794,8 +717,6 @@ class HomeQuranTools extends StatelessWidget {
   }
 }
 
-/// Where the person left off: the last ayah read, the last reciter, the
-/// last station, each one tap away; a quiet line when there's nothing yet.
 class HomeContinueRows extends StatelessWidget {
   const HomeContinueRows({
     super.key,
@@ -808,10 +729,8 @@ class HomeContinueRows extends StatelessWidget {
   final HomeActions actions;
   final bool showReading;
 
-  /// Above the rows; "Pick up where you left off" when null.
   final String? eyebrow;
 
-  /// Nothing at all, rather than a quiet line, when there's nothing yet.
   final bool hideWhenEmpty;
 
   @override
@@ -880,7 +799,6 @@ class HomeContinueRows extends StatelessWidget {
               SizedBox(height: tokens.space.xs),
               LayoutBuilder(
                 builder: (context, constraints) {
-                  // Side by side once each row gets about 280.
                   final across = math.max(
                     1,
                     math.min(rows.length, (constraints.maxWidth / 280).floor()),
@@ -945,8 +863,6 @@ class _ContinueRow extends StatelessWidget {
   }
 }
 
-/// Under the Prayer plate: the next prayer and its time ("Asr 4:22 PM").
-/// Nothing until there are times.
 class HomeNextPrayerLine extends StatelessWidget {
   const HomeNextPrayerLine({super.key});
 
@@ -980,10 +896,6 @@ class HomeNextPrayerLine extends StatelessWidget {
   }
 }
 
-/// The prayer Home points to: its name, its time on the place's clock, the
-/// moment itself, whether it has just begun ([started], the minutes since
-/// in [minutesSince]), and whether it falls on the place's next day
-/// ([tomorrow]: Fajr after Isha).
 typedef HomeNextPrayer = ({
   Prayer prayer,
   String name,
@@ -994,10 +906,6 @@ typedef HomeNextPrayer = ({
   bool tomorrow,
 });
 
-/// Builds with the prayer Home points to. While today has one left it's
-/// today's next ([homeNextPrayer]); after Isha it's what the prayer cubit
-/// counts down to, as the Prayer page shows it: Isha while it has just
-/// begun, then tomorrow's Fajr. Null only until the cubit first answers.
 class HomeNextPrayerBuilder extends StatefulWidget {
   const HomeNextPrayerBuilder({
     super.key,
@@ -1028,7 +936,6 @@ class _HomeNextPrayerBuilderState extends State<HomeNextPrayerBuilder> {
     if (old.state != widget.state) _follow();
   }
 
-  /// Listens to the cubit's countdown only while today has nothing left.
   void _follow() {
     final today = homeNextPrayer(context, widget.state);
     if (today != null) {
@@ -1044,7 +951,6 @@ class _HomeNextPrayerBuilderState extends State<HomeNextPrayerBuilder> {
           if (!mounted) return;
           if (countdown.prayer == null || countdown.instant == null) return;
           final last = _later;
-          // Rebuild only when the prayer, its moment or the minute changes.
           if (last != null &&
               last.prayer == countdown.prayer &&
               last.instant == countdown.instant &&
@@ -1104,8 +1010,6 @@ class _HomeNextPrayerBuilderState extends State<HomeNextPrayerBuilder> {
   }
 }
 
-/// Today's next prayer after now (Sunrise isn't a prayer): its name, its
-/// time on the place's clock and the moment itself. Null after Isha.
 ({Prayer prayer, String name, String time, DateTime instant})? homeNextPrayer(
   BuildContext context,
   PrayerTimesLoaded state,
@@ -1137,7 +1041,6 @@ class _HomeNextPrayerBuilderState extends State<HomeNextPrayerBuilder> {
   return null;
 }
 
-/// A prayer's time on the place's own clock.
 DateTime homePrayerWallTime(
   BuildContext context,
   PrayerTimesLoaded state,

@@ -16,9 +16,6 @@ import 'package:huda/presentation/widgets/design/huda_sheet.dart';
 import 'package:huda/presentation/widgets/design/huda_states.dart';
 import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 
-/// A recording in the library: its woven swatch, the title in ink under
-/// it, who prepared it and how many chapters it has. Tapping it opens the
-/// recording's page from the tile.
 class AudiobookTile extends StatelessWidget {
   const AudiobookTile({
     super.key,
@@ -36,7 +33,6 @@ class AudiobookTile extends StatelessWidget {
   final int? chapters;
   final bool downloaded;
 
-  /// Called with the tile's context, so the page can open from it.
   final ValueChanged<BuildContext> onTap;
 
   @override
@@ -74,7 +70,6 @@ class AudiobookTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     AudiobookSwatch(seed: seed),
-                    // Clear of the fringe (owner round 1).
                     SizedBox(height: space.lg),
                     Text(
                       title,
@@ -130,8 +125,6 @@ class AudiobookTile extends StatelessWidget {
   }
 }
 
-/// The last recording listened to, at the top of the library: its swatch
-/// with the chapters heard, the title and where it stopped.
 class AudiobookContinueCard extends StatelessWidget {
   const AudiobookContinueCard({
     super.key,
@@ -207,7 +200,6 @@ class AudiobookContinueCard extends StatelessWidget {
   }
 }
 
-/// You're offline: the library shows only the downloaded recordings.
 class AudiobooksOfflineNotice extends StatelessWidget {
   const AudiobooksOfflineNotice({
     super.key,
@@ -297,9 +289,6 @@ class AudiobooksOfflineNotice extends StatelessWidget {
   }
 }
 
-/// The language the library shows, as a quiet chip that opens the
-/// language list: the filter's one control ("All languages" is the
-/// list's first row). Like the Books library's.
 class AudiobooksLanguageChip extends StatelessWidget {
   const AudiobooksLanguageChip({
     super.key,
@@ -307,7 +296,6 @@ class AudiobooksLanguageChip extends StatelessWidget {
     required this.onSelected,
   });
 
-  /// A language code, or null for all languages.
   final String? selected;
   final ValueChanged<String?> onSelected;
 
@@ -377,7 +365,6 @@ class AudiobooksLanguageChip extends StatelessWidget {
   }
 }
 
-/// A choice from the language list (null code: all languages).
 class _Pick {
   const _Pick(this.code);
   final String? code;

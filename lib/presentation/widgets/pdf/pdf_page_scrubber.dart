@@ -16,7 +16,6 @@ class PdfPageScrubber extends StatefulWidget {
   final PdfScrollMetrics metrics;
   final ColorScheme colorScheme;
 
-  /// Room kept free at the foot (the reader's capsule, the bottom inset).
   final double bottomClearance;
 
   @override
@@ -194,8 +193,6 @@ class _ScrubberTrack extends StatelessWidget {
                 color: tokens.onChrome.withValues(alpha: 0.24),
               ),
             ),
-            // The capsule shows the page; the thumb is a grip (the number shows
-            // in the bubble while dragging).
             child: Icon(
               Icons.drag_handle_rounded,
               size: 18,

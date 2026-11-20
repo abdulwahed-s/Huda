@@ -11,15 +11,6 @@ import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:huda/presentation/widgets/design/huda_sheet.dart';
 import 'package:intl/intl.dart' as intl;
 
-/// Huda's time picker, on the shared sheet presenter: a bottom sheet on
-/// phones, a dialog from medium width, fold-aware. Returns the chosen time,
-/// or null when dismissed.
-///
-/// [title] says what the time is for ("Sahur Alarm", "Start time"); it
-/// defaults to the platform's "Select time". [daily] is for times that come
-/// back every day (reminders, alarms): the sheet then says when the chosen
-/// time next comes ("Tomorrow at 4:00 AM · in 7 h 12 min"), read from
-/// [clock].
 Future<TimeOfDay?> showHudaTimePicker({
   required BuildContext context,
   required TimeOfDay initialTime,
@@ -41,7 +32,6 @@ class _TimePickerSheet extends StatefulWidget {
 
   final TimeOfDay initialTime;
 
-  /// Set for daily times: the hint says when the time next comes.
   final DateTime Function()? clock;
 
   @override
@@ -60,7 +50,6 @@ class _TimePickerSheetState extends State<_TimePickerSheet> {
     final picker = HudaTimePicker(
       initialTime: widget.initialTime,
       onChanged: (time) => setState(() => _time = time),
-      // Keyboards type straight into the hour; touch shows no ring.
       autofocus: !HudaHaptics.available(context),
       visibleItems: short ? 3 : 5,
     );
@@ -82,8 +71,6 @@ class _TimePickerSheetState extends State<_TimePickerSheet> {
         children: [
           HudaDayPath(time: _time, height: short ? 36 : 56),
           SizedBox(height: short ? space.xs : space.md),
-          // Short windows (phone landscape): Done beside the wheels, so it
-          // stays on screen without scrolling.
           if (short)
             Row(
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -106,7 +93,6 @@ class _TimePickerSheetState extends State<_TimePickerSheet> {
           else ...[
             picker,
             SizedBox(height: space.xl),
-            // When it next comes, beside Done: read just before confirming.
             Row(
               children: [
                 Expanded(child: hint ?? const SizedBox.shrink()),
@@ -121,18 +107,8 @@ class _TimePickerSheetState extends State<_TimePickerSheet> {
   }
 }
 
-/// Which of the picker's wheels.
 enum _Part { hour, minute, period }
 
-/// The picker itself, to embed where a time is chosen inline: an hour and
-/// a minute wheel, and AM/PM when the locale counts in twelve hours, behind
-/// one lit band (the Lantern window) that holds the chosen time.
-///
-/// Drag or flick a wheel, tap a neighbour, scroll with a mouse, or use the
-/// keyboard: arrows step, digits type (07 then 30), A and P pick the half
-/// of the day. Hours roll on past 12 into the other half of the day, as on
-/// a clock. Each step ticks (`selection`). Screen readers get each wheel as
-/// an adjustable value.
 class HudaTimePicker extends StatefulWidget {
   const HudaTimePicker({
     super.key,
@@ -146,7 +122,6 @@ class HudaTimePicker extends StatefulWidget {
   final ValueChanged<TimeOfDay> onChanged;
   final bool autofocus;
 
-  /// Rows shown per wheel: 5, or 3 where height is short.
   final int visibleItems;
 
   @override
@@ -166,8 +141,6 @@ class _HudaTimePickerState extends State<HudaTimePicker> {
   };
   _Part? _highlighted;
 
-  /// Set while the picker moves a wheel itself, so that move neither ticks
-  /// nor pushes back.
   bool _quiet = false;
   bool _periodMoving = false;
 
@@ -238,13 +211,11 @@ class _HudaTimePickerState extends State<HudaTimePicker> {
     final pm = item == 1;
     if ((_hour >= 12) == pm) return;
     _tick();
-    // The hour wheel reads the same twelve hours later: jump, unseen.
     _quiet = true;
     _hours.jumpToItem(_hours.selectedItem + (pm ? 12 : -12));
     _quiet = false;
   }
 
-  /// Rolling the hours past 12 turns the day's half over, as on a clock.
   void _syncPeriod() {
     if (!_twelveHour || !_period.hasClients || _periodMoving) return;
     final target = _hour >= 12 ? 1 : 0;
@@ -278,7 +249,6 @@ class _HudaTimePickerState extends State<HudaTimePicker> {
     _moveTo(controller, target);
   }
 
-  /// The item nearest [current] that shows [value] on a wheel of [length].
   static int _nearest(int current, int value, int length) {
     var target = current - current % length + value;
     if (target - current > length / 2) target -= length;
@@ -294,8 +264,6 @@ class _HudaTimePickerState extends State<HudaTimePicker> {
     _moveTo(_period, pm ? 1 : 0);
   }
 
-  /// Typed digits: "7" or "07" sets the hour, then the minute takes the
-  /// next two.
   void _type(_Part part, int digit) {
     if (part == _Part.period) return;
     if (_typedPart != part) _typed = '';
@@ -317,7 +285,6 @@ class _HudaTimePickerState extends State<HudaTimePicker> {
     } else {
       _moveTo(_minutes, _nearest(_minutes.selectedItem, value, 60));
     }
-    // Done when no further digit could follow.
     if (typed.length == 2 || value * 10 > max) {
       _typed = '';
       final next = part == _Part.hour
@@ -347,7 +314,6 @@ class _HudaTimePickerState extends State<HudaTimePicker> {
       _type(part, digit);
       return KeyEventResult.handled;
     }
-    // The first letter of the locale's AM or PM ("a", "p"; "ص", "م").
     final localizations = MaterialLocalizations.of(context);
     final lower = char.toLowerCase();
     bool starts(String label) =>
@@ -371,8 +337,6 @@ class _HudaTimePickerState extends State<HudaTimePicker> {
     final use24 = MediaQuery.alwaysUse24HourFormatOf(context);
     final format = _format(context);
     final twelve = _twelveHour;
-    // The numerals clamp at 1.6×, like chrome titles: inside the band they
-    // must stay whole.
     final scaler = MediaQuery.textScalerOf(context).clamp(maxScaleFactor: 1.6);
     final digits = theme.textTheme.displaySmall!.copyWith(
       fontFeatures: const [FontFeature.tabularFigures()],
@@ -519,8 +483,6 @@ class _HudaTimePickerState extends State<HudaTimePicker> {
       ],
     );
 
-    // The Lantern window: one lit band across every wheel, carrying the
-    // engraving, that holds the chosen time.
     final band = DecoratedBox(
       decoration: ShapeDecoration(
         color: tokens.lit,
@@ -550,8 +512,6 @@ class _HudaTimePickerState extends State<HudaTimePicker> {
       ],
     );
 
-    // Very narrow windows at large text: the whole picker scales down
-    // rather than clip.
     return Semantics(
       container: true,
       explicitChildNodes: true,
@@ -562,9 +522,6 @@ class _HudaTimePickerState extends State<HudaTimePicker> {
   }
 }
 
-/// One wheel: a looping list of numbers (or AM and PM) that snaps to an
-/// item. Items fade with their distance from the band and take the warm
-/// text inside it.
 class _Wheel extends StatelessWidget {
   const _Wheel({
     super.key,
@@ -597,7 +554,6 @@ class _Wheel extends StatelessWidget {
   final double extent;
   final int visible;
 
-  /// Null loops forever (hours, minutes); a count stops at the ends.
   final int? count;
   final String Function(int item) label;
   final TextStyle style;
@@ -648,7 +604,6 @@ class _Wheel extends StatelessWidget {
       ),
     );
 
-    // The focused wheel (keyboard only) gets a warm ring inside the band.
     final ring = IgnorePointer(
       child: AnimatedOpacity(
         opacity: highlighted ? 1 : 0,
@@ -690,7 +645,6 @@ class _Wheel extends StatelessWidget {
               width: width,
               height: height,
               child: ShaderMask(
-                // The wheel's ends fade into the page.
                 shaderCallback: (rect) => const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -743,13 +697,10 @@ class _WheelItem extends StatefulWidget {
 }
 
 class _WheelItemState extends State<_WheelItem> {
-  /// Small scroll deltas (touchpads) add up to one step.
   double _scrolled = 0;
 
   void _onPointerSignal(PointerSignalEvent event) {
     if (event is! PointerScrollEvent) return;
-    // Taken before the wheel's own scrolling, which would stop between
-    // items: one notch, one step.
     GestureBinding.instance.pointerSignalResolver.register(event, (event) {
       final dy = (event as PointerScrollEvent).scrollDelta.dy;
       if (dy == 0) return;
@@ -777,8 +728,6 @@ class _WheelItemState extends State<_WheelItem> {
                 ? controller.offset
                 : controller.initialItem * widget.extent;
             final distance = (widget.index - offset / widget.extent).abs();
-            // Warm inside the band, the page's text outside, fading out
-            // toward the wheel's ends.
             final warmth = ((distance - 0.3) / 0.4).clamp(0.0, 1.0);
             final fade = (1 - (distance - 0.5).clamp(0.0, 2.0) * 0.4);
             final color = Color.lerp(
@@ -801,11 +750,6 @@ class _WheelItemState extends State<_WheelItem> {
   }
 }
 
-/// The picker's voice: a day's path over the horizon, with the sun (by
-/// day) or a crescent (by night) where the chosen time falls, so 4:00
-/// before dawn never reads like 4:00 in the afternoon. It follows the
-/// wheels, glides the short way round midnight, and runs with the reading
-/// direction. Decorative: the wheels say the time.
 class HudaDayPath extends StatefulWidget {
   const HudaDayPath({super.key, required this.time, this.height = 56});
 
@@ -817,8 +761,6 @@ class HudaDayPath extends StatefulWidget {
 }
 
 class _HudaDayPathState extends State<HudaDayPath> {
-  /// Minutes since the first midnight, unwrapped, so the mark glides the
-  /// short way across midnight instead of running back across the day.
   late double _target = _minutes(widget.time).toDouble();
 
   static int _minutes(TimeOfDay time) => time.hour * 60 + time.minute;
@@ -875,7 +817,6 @@ class _DayPathPainter extends CustomPainter {
     required this.stroke,
   });
 
-  /// The chosen time as a fraction of the day (0 = midnight).
   final double day;
   final bool rtl;
   final Color path;
@@ -889,7 +830,6 @@ class _DayPathPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final h = size.height;
     final mark = math.max(5.0, h * 0.11);
-    // Room for the mark at either end and at the top and bottom.
     final left = mark * 2;
     final width = size.width - left * 2;
     final mid = h * 0.6;
@@ -903,8 +843,6 @@ class _DayPathPainter extends CustomPainter {
       return mid - s * (s > 0 ? rise : fall);
     }
 
-    // The lines go on their own layer, so the mark can clear a gap in them
-    // whatever the background (a sheet, a tinted option).
     canvas.saveLayer(Offset.zero & size, Paint());
     canvas.drawLine(
       Offset(0, mid),
@@ -914,8 +852,6 @@ class _DayPathPainter extends CustomPainter {
         ..strokeWidth = 1,
     );
 
-    // The whole day in the quiet line, then the hours above the horizon
-    // (sunrise at 6 to sunset at 18) in the ornament's.
     Path curve(double from, double to) {
       final curve = Path()..moveTo(x(from), y(from));
       const steps = 96;
@@ -933,7 +869,6 @@ class _DayPathPainter extends CustomPainter {
     canvas.drawPath(curve(0, 1), line..color = quiet);
     canvas.drawPath(curve(0.25, 0.75), line..color = path);
 
-    // Sunrise, noon and sunset as small studs.
     final stud = Paint()..color = path;
     for (final t in const [0.25, 0.5, 0.75]) {
       canvas.drawCircle(Offset(x(t), y(t)), stroke * 1.4, stud);
@@ -959,7 +894,6 @@ class _DayPathPainter extends CustomPainter {
       }
       canvas.drawCircle(at, mark, Paint()..color = sun);
     } else {
-      // A crescent: the disc less a disc shifted toward the day's end.
       final shift = Offset((rtl ? -1 : 1) * mark * 0.55, -mark * 0.25);
       final crescent = Path.combine(
         PathOperation.difference,
@@ -983,8 +917,6 @@ class _DayPathPainter extends CustomPainter {
       old.stroke != stroke;
 }
 
-/// How long until something fires, as on the Reminders page: "in 2 h
-/// 40 min", "in 3 h", "in 25 min", in the locale's digits.
 String hudaTimeUntil(BuildContext context, int minutes) {
   final l10n = AppLocalizations.of(context)!;
   final digits = intl.NumberFormat.decimalPattern(
@@ -996,9 +928,6 @@ String hudaTimeUntil(BuildContext context, int minutes) {
   return l10n.remindersInHoursMinutes(n(minutes ~/ 60), n(minutes % 60));
 }
 
-/// When a daily [time] next comes after [now]: "Today at 6:00 PM · in 2 h
-/// 40 min" or "Tomorrow at 4:00 AM · in 7 h 12 min". A time equal to now
-/// is tomorrow's.
 String hudaNextTimeLabel(BuildContext context, TimeOfDay time, DateTime now) {
   final l10n = AppLocalizations.of(context)!;
   var next = DateTime(now.year, now.month, now.day, time.hour, time.minute);
@@ -1014,12 +943,9 @@ String hudaNextTimeLabel(BuildContext context, TimeOfDay time, DateTime now) {
       ? l10n.remindersNextToday(spoken)
       : l10n.remindersNextTomorrow(spoken);
   final left = (next.difference(now).inSeconds + 59) ~/ 60;
-  // A no-break space keeps the dot with the day when the line wraps.
   return '$when\u00A0· ${hudaTimeUntil(context, left)}';
 }
 
-/// The line under a daily time: when it next comes. It keeps up with the
-/// clock while it shows (every 20 s), and follows the wheels as they turn.
 class HudaNextTime extends StatefulWidget {
   const HudaNextTime({
     super.key,

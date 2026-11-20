@@ -20,12 +20,6 @@ import 'package:huda/presentation/widgets/huda_ai/counseling_view.dart';
 import 'package:huda/presentation/widgets/huda_ai/huda_ai_share_sheet.dart';
 import 'package:huda/presentation/widgets/huda_ai/mode_switcher.dart';
 
-/// Huda AI: ask about Islam (Chat) or share a feeling (Counseling), and
-/// come back to past conversations. A standard-tier screen: the
-/// conversation at a reading measure over a pinned composer; the history
-/// in a sheet on phones and medium windows, inline beside the
-/// conversation from 840 and on folds, under the composer on a tabletop
-/// fold. See `design/features/huda-ai/brief.md`.
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
 
@@ -33,19 +27,12 @@ class ChatScreen extends StatefulWidget {
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
-/// History goes inline from portrait tablets up: a 720 window leaves the
-/// conversation 400 beside a 320 pane.
 
 class _ChatScreenState extends State<ChatScreen> {
-  /// The chat composer's text.
   final TextEditingController _controller = TextEditingController();
 
-  /// Counseling's writing area (kept across mode switches, refilled by
-  /// Edit).
   final TextEditingController _feeling = TextEditingController();
 
-  /// The conversation whose Retry was tapped, until its answer stops
-  /// generating ("Retrying…" instead of "thinking").
   String? _retrying;
 
   @override
@@ -83,7 +70,6 @@ class _ChatScreenState extends State<ChatScreen> {
     _cubit.startNewSession();
   }
 
-  /// After a safety refusal: the feeling back on the writing page.
   void _editFeeling(String? text) {
     if (text == null) return;
     _feeling
@@ -108,7 +94,6 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  /// Puts [text] back in the composer to rephrase it.
   void _edit(String? text) {
     if (text == null) return;
     _controller
@@ -156,9 +141,6 @@ class _ChatScreenState extends State<ChatScreen> {
       ],
       child: BlocBuilder<ChatCubit, ChatState>(
         builder: (context, state) {
-          // History is never a standing pane on wide windows (it took half
-          // the screen): it opens from the app bar, as a side sheet there.
-          // Only a tabletop fold keeps it inline, in the bottom half.
           final inline = TabletopSplit.applies(context);
           final tabletop = inline;
           return HudaScaffold(
@@ -226,7 +208,6 @@ class _ChatScreenState extends State<ChatScreen> {
       state.hasActiveRequest &&
       state.activeRequestSessionId != state.activeSession?.id;
 
-  /// The chat composer (counseling writes in its page instead).
   List<Widget> _composer(ChatState state, {required bool reachesBottom}) {
     final l10n = AppLocalizations.of(context)!;
     return [
@@ -244,20 +225,15 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Widget _conversationPane(ChatState state, {required bool composer}) {
     final content = _content(state);
-    // The segment sits over the pane, except on tabletop (below the band).
     final modes = composer;
-    // Counseling has no composer: its page owns the bottom edge.
     composer = composer && !state.isCounselingMode;
     return Column(
       children: [
         if (modes) _modes(state),
         Expanded(
-          // The pane's own context: inside a tabletop half or a pane the
-          // screen's would bring back the whole window's size and fold.
           child: Builder(
             builder: (context) => MediaQuery.removePadding(
               context: context,
-              // The composer owns the bottom edge.
               removeBottom: composer,
               child: HudaStateSwitcher(
                 stateKey: content.key!,
@@ -279,7 +255,6 @@ class _ChatScreenState extends State<ChatScreen> {
     final session = state.activeSession;
     final waiting = state.isLoading;
     if (state.isCounselingMode) {
-      // A chat session can't show here (the mode follows the session).
       final counsel = session?.mode == ChatSessionMode.counseling
           ? session
           : null;
@@ -341,7 +316,6 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 }
 
-/// The saved history loading: a conversation's shape.
 class _ConversationSkeleton extends StatelessWidget {
   const _ConversationSkeleton({super.key});
 

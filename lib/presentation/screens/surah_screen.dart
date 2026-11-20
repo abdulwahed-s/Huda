@@ -40,18 +40,10 @@ import 'package:huda/presentation/widgets/surah/quran_mushaf_page_view.dart';
 import 'package:huda/presentation/widgets/surah/quran_page_view.dart';
 import 'package:huda/presentation/widgets/surah/quran_reader_menus.dart';
 
-/// The Quran reader: a surah as scrolling text (under its illuminated
-/// headpiece) or as Mushaf pages, by the saved reading mode. Its bar
-/// carries Surahs (an index sheet; a side sheet on wide windows, so the
-/// text keeps the page), Display (reading mode, Mushaf layout, font) and
-/// More (Memorize, Khatma). Another surah opens in place. See
-/// `design/features/quran/brief.md`.
 class SurahScreen extends StatefulWidget {
   final QuranModel surahInfo;
   final int? scrollToAyah;
 
-  /// Light up [scrollToAyah] once it's in view, in either reading mode
-  /// (`QuranAyahFlash`): the reader came from a search hit.
   final bool flashAyah;
   final double? ayahPosition;
   final bool shouldRestorePosition;
@@ -67,9 +59,6 @@ class SurahScreen extends StatefulWidget {
     this.isBookmarkVisit = false,
   });
 
-  /// The reader as its route builds it: the network-backed cubits it
-  /// reads, and the redesign's theme. Used by `AppRoute.surahScreen` and
-  /// by lists that open a surah from the tapped tile (`pushFromCard`).
   static Widget route({
     required QuranModel surahInfo,
     int? scrollToAyah,
@@ -89,7 +78,6 @@ class SurahScreen extends StatefulWidget {
     ),
   );
 
-  /// Seams for the device matrix, which has no network.
   @visibleForTesting
   static AudioCubit Function() createAudioCubit = () =>
       AudioCubit(AudioRepository(audioServices: AudioServices()));
@@ -118,19 +106,13 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
 
   int _currentMushafPage = 1;
 
-  // Mushaf pages span surahs; ayah actions switch the screen to the surah
-  // of the touched ayah so audio, highlight and the ayah sheet agree. The
-  // index and previous/next open another surah in place too.
   late int _surahNumber = widget.surahInfo.number ?? 1;
   int? _pendingAyahSheet;
 
   bool get _isOpeningSurah => _surahNumber == widget.surahInfo.number;
 
-  /// The found ayah still waits for its flash: it runs once, in whichever
-  /// mode shows it first, not again after a mode or layout change.
   late bool _flashPending = widget.flashAyah && widget.scrollToAyah != null;
 
-  /// The ayah to light up in the Mushaf, while it's pending.
   (int, int)? get _mushafFlash => _flashPending && _isOpeningSurah
       ? (_surahNumber, widget.scrollToAyah!)
       : null;
@@ -177,7 +159,6 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    // Back to edge to edge (`RESPONSIVE.md`), not `manual`.
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     WakelockPlus.disable();
     super.dispose();
@@ -224,8 +205,6 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
     _readingMode = QuranReadingMode.fromStorageValue(
       cache.getData(key: QuranReadingMode.key) as String?,
     );
-    // Until a reader picks, two pages on wide windows and open foldables,
-    // one on phones (`QuranMushafPageView.showsSpread`); zoom is off.
     _mushafLayout = MushafLayout.read(cache);
     _mushafFlipDirection = MushafFlipDirection.fromStorageValue(
       cache.getData(key: MushafFlipDirection.key) as String?,
@@ -238,8 +217,6 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
     _quranFont = getQuranFonts();
   }
 
-  /// A Mushaf ayah of another surah was touched: switch to it and open
-  /// its sheet.
   void _switchSurah(BuildContext context, int surahNumber, int verseNumber) {
     setState(() {
       _surahNumber = surahNumber;
@@ -249,7 +226,6 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
     context.read<AudioCubit>().fetchAudioInfo(surahNumber.toString());
   }
 
-  /// Opens [number] in this reader, at its start.
   void _openSurah(BuildContext context, int number) {
     if (number == _surahNumber) return;
     getIt<ReadingPositionService>().saveReadingPosition(
@@ -270,7 +246,6 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
 
   void _setMode(QuranReadingMode mode) {
     setState(() {
-      // IndoPak and Madani pages differ: stay on the same ayah.
       try {
         _currentMushafPage = _readingMode.pagination.convertPage(
           _currentMushafPage,
@@ -310,9 +285,6 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
     }
   }
 
-  /// A mode that reads page images may need its pack first: the tile shows
-  /// the download, and the mode switches (and the sheet closes) once it's
-  /// ready.
   Future<void> _selectReadingMode(
     QuranReadingMode mode,
     BuildContext sheetContext,
@@ -337,8 +309,6 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
     }
   }
 
-  /// The surah the reader is on: the open one, or the first on the
-  /// Mushaf's page.
   int _visibleSurah() {
     if (!_readingMode.isMushaf) return _surahNumber;
     try {
@@ -372,8 +342,6 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
       sideSheet: true,
       builder: (sheetContext) => StatefulBuilder(
         builder: (sheetContext, setSheetState) {
-          // Rebuilt with the window; the fold is the screen's (a sheet's own
-          // view of it is cut to the sheet).
           MediaQuery.sizeOf(sheetContext);
           final size = MediaQuery.sizeOf(context);
           final fold = FoldInfo.of(context);
@@ -384,8 +352,6 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
           );
           return QuranDisplaySettings(
             readingMode: _readingMode,
-            // What's on the screen now: the reader's choice, or the
-            // window's default until they choose.
             twoPages: twoPages,
             twoPagesAvailable: QuranMushafPageView.allowsSpread(size, fold),
             zoomed: _mushafLayout.zoomed,
@@ -437,7 +403,6 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
     );
   }
 
-  // The Khatma sizes its own sheet to the step (see `showKhatmaSheet`).
   void _showKhatma(BuildContext context) => showKhatmaSheet(context);
 
   void _startMemorization(MemorizationCubit memorization) {
@@ -450,7 +415,6 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
     memorization.toggleMemorizationMode(ayahTexts, surah);
   }
 
-  /// Surahs, Display, More.
   List<Widget> _actions(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return [
@@ -475,7 +439,6 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
           _ => _showKhatma(context),
         },
         itemBuilder: (_) => [
-          // Speech recognition isn't available on Linux.
           if (!PlatformUtils.isLinux)
             PopupMenuItem(
               value: 'memorize',
@@ -521,9 +484,6 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
     final l10n = AppLocalizations.of(context)!;
     final language = Localizations.localeOf(context).languageCode;
     final ref = QuranSurahRef.number(_surahNumber, language);
-    // The surah has the page to itself on every window, the ayat centred
-    // under its headpiece, folds and tabletop included: the index opens
-    // from Surahs when it's wanted (owner rounds 1 and 3).
     final reader = _scrollBody(context);
     return HudaScaffold(
       title: ref.title,
@@ -548,7 +508,6 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
 
   Widget _scrollBody(BuildContext context, {bool showHeader = true}) {
     final l10n = AppLocalizations.of(context)!;
-    // The screen's context: sheets open for the whole window.
     final screen = context;
     return BlocBuilder<SurahCubit, SurahState>(
       builder: (context, state) {
@@ -585,11 +544,7 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
 
   Widget _buildMushaf(BuildContext context) {
     final language = Localizations.localeOf(context).languageCode;
-    // Edge to edge over the page, with icons for the paper under them.
     final page = Theme.of(context).brightness;
-    // On the closed Duo, Back and the actions live in the side column
-    // under the camera, as on the scrolling reader; the page's own bar
-    // stays out of the way there.
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: HudaSystemUi.over(top: page, bottom: page),
       child: HudaChromeFrame(
@@ -649,7 +604,6 @@ class _SurahScreenState extends State<SurahScreen> with WidgetsBindingObserver {
   }
 }
 
-/// The reader while a surah builds: the headpiece's place, then lines.
 class _ReaderSkeleton extends StatelessWidget {
   const _ReaderSkeleton();
 

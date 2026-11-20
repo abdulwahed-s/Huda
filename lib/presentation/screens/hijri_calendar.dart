@@ -26,10 +26,6 @@ import 'package:huda/presentation/widgets/hijri_calendar/islamic_calendar_event.
 import 'package:huda/presentation/widgets/notifications/notification_access_controller.dart';
 import 'package:huda/presentation/widgets/notifications/notification_requirements_section.dart';
 
-/// The Hijri calendar: a month of days and the chosen day's plate (its
-/// moon, both dates, occasions) with the person's events. One column on
-/// phones; the month beside the day from 840 and on open folds; the month
-/// above a tabletop fold. Reads the route's [HijriCalendarCubit].
 class HijriCalendarScreenNew extends StatefulWidget {
   const HijriCalendarScreenNew({
     super.key,
@@ -40,10 +36,8 @@ class HijriCalendarScreenNew extends StatefulWidget {
 
   final HijriCalendarService? calendarService;
 
-  /// The device matrix's fixed "now".
   final DateTime Function()? debugClock;
 
-  /// The device matrix's notification access (no plugins).
   final NotificationAccessController Function()? debugAccess;
 
   @override
@@ -55,13 +49,11 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew> {
       widget.calendarService ?? getIt<HijriCalendarService>();
   late final NotificationAccessController? _access = widget.debugAccess?.call();
 
-  /// The chosen day, kept as a Gregorian date so an adjustment keeps it.
   late DateTime _day;
   late HijriDate _selected;
   late HijriDate _month;
   late HijriDate _today;
 
-  /// +1 when the last month change went later, −1 earlier.
   int _direction = 1;
   bool _ready = false;
 
@@ -90,7 +82,6 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew> {
     super.dispose();
   }
 
-  /// Hijri dates from the Gregorian ones, after an adjustment too.
   void _sync() {
     final now = _now();
     _today = _service.toHijri(DateTime(now.year, now.month, now.day));
@@ -131,7 +122,6 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew> {
     setState(() {
       _direction = by;
       _month = HijriDate(year, month, 1);
-      // The selection moves with the month: the same day where it exists.
       final day = math.min(_selected.day, _service.daysInMonth(year, month));
       _selected = HijriDate(year, month, day);
       _day = _gregorian(_selected);
@@ -214,7 +204,6 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew> {
     ),
   ];
 
-  /// A scroll view whose content keeps a readable width, centered.
   Widget _scroll(List<Widget> children, {double maxWidth = 760}) {
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -300,9 +289,6 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew> {
     final width = MediaQuery.sizeOf(context).width;
     final fold = FoldInfo.of(context);
     final prompt = _prompt();
-    // Short windows get dense rows (`_monthCard`); below 840 the month
-    // keeps the width: beside the Duo's side column a split leaves cells
-    // too narrow to tap.
     const twoPaneMinWidth = 840.0;
 
     if (AdaptivePanes.showsTwoPanes(
@@ -321,7 +307,6 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew> {
             maxPrimaryWidth: 920,
             primary: LayoutBuilder(
               builder: (context, constraints) {
-                // Rows grow to fill the pane's height, then the page scrolls.
                 final room =
                     constraints.maxHeight -
                     space.sm -
@@ -329,13 +314,12 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew> {
                     context.bottomInset -
                     CalendarMonthCard.chromeHeight(context) -
                     (prompt == null ? 0 : 180) -
-                    // The month's key of occasions under the grid.
                     (IslamicCalendarEvents.all.any(
                           (o) => o.hijriMonth == _month.month,
                         )
                         ? 72
                         : 0);
-                final cell = (room / 6).clamp(0.0, 132.0); // six weeks fit
+                final cell = (room / 6).clamp(0.0, 132.0);
                 return _scroll([
                   ?prompt,
                   HudaReveal(child: _monthCard(state, minCellHeight: cell)),
@@ -370,7 +354,6 @@ class _HijriCalendarScreenState extends State<HijriCalendarScreenNew> {
         actions: _actions(l10n),
         body: _scroll([
           ?prompt,
-          // Tablets in portrait: rows tall enough to name the day's events.
           HudaReveal(
             child: _monthCard(state, minCellHeight: width >= 600 ? 84 : 0),
           ),

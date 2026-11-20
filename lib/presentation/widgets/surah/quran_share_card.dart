@@ -6,12 +6,6 @@ import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 import 'package:huda/presentation/widgets/quran_home/quran_identity.dart';
 import 'package:huda/presentation/widgets/share/share_image_frame.dart';
 
-/// Quran's share image: an illuminated page. A deep border band from the
-/// owner's color theme carries a gilt interlace with a 12-lobed rosette at
-/// each corner, around a vellum field; the surah's headpiece (its name in
-/// the cartouche) opens it, the ayah ends in its rosette, the translation
-/// and tafsir follow when chosen, and Huda's logo sits at the foot with
-/// the reference. Not Athkar's night arch, not Hadith's ruled folio.
 class QuranShareCard extends StatelessWidget {
   const QuranShareCard({
     super.key,
@@ -27,7 +21,6 @@ class QuranShareCard extends StatelessWidget {
   final String ayahText;
   final int ayahNumber;
 
-  /// Draws the surah's headpiece with its calligraphy.
   final int? surahNumber;
   final String? quranFontFamily;
   final String? translation;
@@ -40,8 +33,6 @@ class QuranShareCard extends StatelessWidget {
   static const _arabic = 25.0;
   static const _body = 15.0;
 
-  /// Height over width, estimated from the text's length (no
-  /// measure-and-retry), so the sheet can scroll a tall preview.
   static double cardRatio({
     required String arabic,
     String translation = '',
@@ -66,7 +57,6 @@ class QuranShareCard extends StatelessWidget {
     final tokens = context.tokens;
     final scheme = Theme.of(context).colorScheme;
     final text = Theme.of(context).textTheme;
-    // The vellum is light in both themes; the band is the deep chrome.
     final vellum = Color.lerp(Colors.white, tokens.gilt, 0.08)!;
     final ink = Color.lerp(tokens.chrome, Colors.black, 0.35)!;
     final gold = HudaTokensGold.onPaper(scheme, tokens);
@@ -200,7 +190,6 @@ class QuranShareCard extends StatelessWidget {
   }
 }
 
-/// The card's gold on vellum: the scheme's gilt tone for light pages.
 abstract final class HudaTokensGold {
   static Color onPaper(ColorScheme scheme, HudaTokens tokens) =>
       scheme.brightness == Brightness.light
@@ -208,7 +197,6 @@ abstract final class HudaTokensGold {
       : Color.lerp(tokens.gilt, Colors.black, 0.35)!;
 }
 
-/// A small 12-lobed rosette between two fading rules.
 class _Divider extends StatelessWidget {
   const _Divider({required this.color});
 
@@ -248,7 +236,6 @@ class _Divider extends StatelessWidget {
   }
 }
 
-/// The reference and Huda's mark at the foot of the page.
 class _Foot extends StatelessWidget {
   const _Foot({required this.reference, required this.ink, required this.gold});
 
@@ -302,8 +289,6 @@ class _Foot extends StatelessWidget {
   }
 }
 
-/// The illuminated border band: a gilt double rule along each edge, an
-/// interlace running between them, and a 12-lobed rosette in each corner.
 class _IlluminatedBandPainter extends CustomPainter {
   const _IlluminatedBandPainter({required this.gold, required this.band});
 

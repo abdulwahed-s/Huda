@@ -33,12 +33,8 @@ class PdfViewerContent extends StatefulWidget {
   final ColorScheme colorScheme;
   final ValueChanged<PdfDocument> onFullDocumentReady;
 
-  /// Room the reader's capsule and the bottom inset take at the foot, so
-  /// the page scrubber's track ends above them.
   final double bottomClearance;
 
-  /// Opens the document directly instead of reading [pdfUrl], for the
-  /// redesign harness (no files or network there).
   @visibleForTesting
   static Future<PdfDocument> Function(String url)? debugOpenDocument;
 
@@ -138,7 +134,7 @@ class _PdfViewerContentState extends State<PdfViewerContent> {
         if (!_isCurrentLoad(generation, source)) return;
         setState(() => _previewDocument = preview);
       } on Object {
-        //
+        // Preview is optional; the full document still loads.
       }
     }
 
@@ -196,7 +192,6 @@ class _PdfViewerContentState extends State<PdfViewerContent> {
     return uri != null && (uri.scheme == 'http' || uri.scheme == 'https');
   }
 
-  /// Opens the file again after a failure.
   void _reload() {
     _closeSource();
     setState(() {
@@ -212,8 +207,6 @@ class _PdfViewerContentState extends State<PdfViewerContent> {
 
   @override
   Widget build(BuildContext context) {
-    // Pages lie on the reader's backdrop, edge to edge; at night they dim
-    // so white paper doesn't glare.
     return Expanded(
       child: ColorFiltered(
         colorFilter: ColorFilter.mode(

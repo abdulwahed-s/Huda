@@ -32,12 +32,6 @@ import 'package:huda/presentation/widgets/design/huda_sheet.dart';
 import 'package:huda/presentation/widgets/design/huda_states.dart';
 import 'package:huda/presentation/widgets/design/huda_toast.dart';
 
-/// A recording's page: its swatch (an eye per chapter, those heard
-/// filled), the title, Play or Resume and Download, what it is about and
-/// its chapters. Standard tier; the ribbon weaves in as the page opens.
-/// Two panes from 840 wide and on open folds, the hero above a tabletop
-/// fold. The bar of what's playing is pinned under it. See
-/// `design/features/audiobooks/brief.md`.
 class AudioDetailScreen extends StatefulWidget {
   const AudioDetailScreen({
     super.key,
@@ -50,8 +44,6 @@ class AudioDetailScreen extends StatefulWidget {
   final String language;
   final String title;
 
-  /// The page with its cubits and the Lantern theme, as the route opens
-  /// it. The player's cubits come from the app.
   static Widget page({
     required int audioId,
     required String language,
@@ -132,7 +124,6 @@ class _AudioDetailScreenState extends State<AudioDetailScreen> {
               _ => null,
             };
             return HudaScaffold(
-              // The hero names the recording; the bar names the place.
               title: l10n.audios,
               body: HudaRevealScope(
                 child: HudaStateSwitcher(
@@ -260,12 +251,10 @@ class _AudioDetailScreenState extends State<AudioDetailScreen> {
     if (remove != true || !context.mounted) return;
     HudaHaptics.light(context);
     await context.read<AudiobookDownloadCubit>().delete(widget.audioId);
-    // Offline, the page showed the saved copy: now there is none.
     if (state is AudioDetailOfflineLoaded && mounted) _load();
   }
 }
 
-/// What the page shows of a recording, online or saved.
 class _View {
   const _View({
     required this.title,
@@ -319,9 +308,6 @@ class _View {
   final bool saved;
 }
 
-/// The player, as far as this recording is concerned: on which chapter it
-/// is, whether it plays and how far the chapter has played; null when it
-/// plays another recording or nothing.
 class _Active {
   const _Active({
     required this.index,
@@ -344,8 +330,6 @@ class _ActivePlayer extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AudiobookPlayerCubit, AudiobookPlayerState>(
       builder: (context, state) {
-        // The same tree whether or not this recording plays, so the page
-        // (and the ribbon's weave) isn't rebuilt from scratch on Play.
         final player =
             state is AudiobookPlayerPlaying && state.audiobookId == audioId
             ? state.audioPlayer
@@ -379,9 +363,6 @@ class _ActivePlayer extends StatelessWidget {
   }
 }
 
-/// The page's layout for a loaded recording: one column on phones, the
-/// hero beside the chapters from 840 wide and on open folds (and on short
-/// windows from 600), the hero above a tabletop fold.
 class _Layout extends StatelessWidget {
   const _Layout({
     required this.view,
@@ -523,8 +504,6 @@ class _Layout extends StatelessWidget {
         );
         if (twoPanes) {
           final media = MediaQuery.of(context);
-          // Short windows: the swatch sized to the height and the buttons
-          // at the top of the other pane, so Play shows without scrolling.
           final shortSwatch =
               ((media.size.height - kToolbarHeight - media.padding.vertical) *
                       0.42 *

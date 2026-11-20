@@ -10,9 +10,6 @@ import 'package:huda/presentation/widgets/design/huda_toast.dart';
 import 'package:huda/presentation/widgets/feedback/feedback_form_card.dart';
 import 'package:huda/presentation/widgets/rating/star_rating_input.dart';
 
-/// "Enjoying Huda?": five stars; under four, a short note and an optional
-/// email open below them. Led by the lit lamp (an invitation). From Home
-/// it offers "Maybe later" and "Don't ask again"; from Settings, Cancel.
 class AppRatingDialog extends StatelessWidget {
   final bool showDismissActions;
 
@@ -150,8 +147,6 @@ class _AppRatingDialogState extends State<_AppRatingDialog>
           child: Dialog(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 420),
-              // The actions stay pinned; the stars and note scroll above
-              // them on short screens.
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -168,8 +163,6 @@ class _AppRatingDialogState extends State<_AppRatingDialog>
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          // Short windows (landscape phones) give the note
-                          // the room: no lamp, a smaller title.
                           if (!short) ...[
                             const Center(
                               child: HudaLamp(

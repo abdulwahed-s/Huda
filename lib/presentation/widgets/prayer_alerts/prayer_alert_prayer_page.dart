@@ -9,7 +9,6 @@ import 'package:huda/presentation/widgets/prayer_alerts/prayer_alert_test_tile.d
 import 'package:huda/presentation/widgets/prayer_alerts/prayer_alert_widgets.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_palette.dart';
 
-/// One prayer: follow every prayer's settings, or set its own.
 class PrayerAlertPrayerPage extends StatelessWidget {
   const PrayerAlertPrayerPage({super.key, required this.prayer});
 
@@ -121,7 +120,6 @@ class PrayerAlertPrayerPage extends StatelessWidget {
   }
 }
 
-/// Default (following every prayer), on, or off.
 class _TriStateRow extends StatelessWidget {
   const _TriStateRow({
     required this.title,

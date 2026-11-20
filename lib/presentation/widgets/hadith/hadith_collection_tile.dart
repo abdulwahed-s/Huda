@@ -8,9 +8,6 @@ import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 import 'package:huda/presentation/widgets/hadith/hadith_identity.dart';
 import 'package:huda/presentation/widgets/hadith/hadith_refs.dart';
 
-/// A hadith collection. It grows into the collection's screen when tapped.
-/// A collection whose hadith aren't in yet is a quiet tile that says so
-/// (it used to answer a tap with a "Coming soon" snackbar).
 class HadithCollectionTile extends StatelessWidget {
   const HadithCollectionTile({super.key, required this.collection});
 
@@ -47,11 +44,9 @@ class HadithCollectionTile extends StatelessWidget {
   }
 }
 
-/// A loading tile shaped like [HadithCollectionTile].
 class HadithCollectionTileSkeleton extends StatelessWidget {
   const HadithCollectionTileSkeleton({super.key, this.announce = false});
 
-  /// Reads "Loading" (one tile per screen does).
   final bool announce;
 
   @override

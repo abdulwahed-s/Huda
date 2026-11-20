@@ -9,11 +9,6 @@ import 'package:huda/presentation/widgets/onboarding/onboarding_frame.dart';
 import 'package:huda/presentation/widgets/onboarding/onboarding_identity.dart';
 import 'package:huda/presentation/widgets/onboarding/onboarding_steps.dart';
 
-/// A step's stage on the chrome: its art (the receding arcade on the
-/// welcome and the summary, the step's doorway and emblem otherwise), the
-/// step's number and its question. With room, the art stands large over a
-/// centered question; with little room, the stage folds into a band: the
-/// question at the start, a small doorway at the end.
 class OnboardingStage extends StatelessWidget {
   const OnboardingStage({
     super.key,
@@ -24,16 +19,10 @@ class OnboardingStage extends StatelessWidget {
 
   final OnboardingStep step;
 
-  /// Always the band (short screens), whatever room the step leaves.
   final bool band;
 
-  /// Only the art, large and centered: the stage in its own pane, where
-  /// the question heads the step on the page instead
-  /// ([OnboardingStepHeading]).
   final bool artOnly;
 
-  /// The height from which the art stands over the question, for a text
-  /// scale (clamped like chrome titles).
   static double tallFrom(double scale) => 72 + 140 * scale;
 
   @override
@@ -54,8 +43,6 @@ class OnboardingStage extends StatelessWidget {
     final state = context.watch<OnboardingCubit>().state;
     final choices = state.steps.where((step) => step.isChoice).toList();
     final number = choices.indexOf(step) + 1;
-    // While changing a step from the summary, the eyebrow names what's
-    // being changed rather than counting from the start again.
     final eyebrow = state.reviewing
         ? step.label(l10n)
         : step.isChoice
@@ -81,8 +68,6 @@ class OnboardingStage extends StatelessWidget {
       _ => OnboardingDoorway(step: step),
     };
 
-    // During a language change the words fade under the veil; the art
-    // (symmetric, so the mirror can't be seen) stays.
     final veil =
         context.getInheritedWidgetOfExactType<OnboardingScope>()?.veil ??
         kAlwaysCompleteAnimation;
@@ -191,13 +176,7 @@ class OnboardingStage extends StatelessWidget {
             ),
           );
         }
-        // Short screens: a band, the question at the start and a small
-        // receding arcade at the end, lit to here. Slimmer still on short
-        // landscape windows (the closed iPhone Duo on its side).
         final slim = media.size.height < 480;
-        // The arcade grows into a tall band rather than leaving bare chrome
-        // above the question; at large text on short screens the band is
-        // the words alone, so the step keeps the room.
         final artHeight = slim
             ? 58.0
             : (height - space.xs - space.lg).clamp(88.0, 180.0);
@@ -267,9 +246,6 @@ class OnboardingStage extends StatelessWidget {
   }
 }
 
-/// The step's number and question on the page, heading the step where the
-/// stage has its own pane (wide windows, tabletop). Large, so the step
-/// reads as one composed block beside the art.
 class OnboardingStepHeading extends StatelessWidget {
   const OnboardingStepHeading({super.key, required this.step});
 
@@ -313,8 +289,6 @@ class OnboardingStepHeading extends StatelessWidget {
                   ? theme.textTheme.displaySmall
                   : wide
                   ? theme.textTheme.headlineLarge
-                  // Short landscape windows: a smaller heading leaves the
-                  // step its room.
                   : size.height < 480
                   ? theme.textTheme.titleLarge
                   : theme.textTheme.headlineSmall,

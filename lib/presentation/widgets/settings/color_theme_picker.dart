@@ -6,15 +6,10 @@ import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 
-/// The color theme choice: a swatch per palette with its name under it.
-/// One implementation for Settings (with its header and note) and
-/// onboarding's Look step ([showHeader] false). Restyled for Lantern by
-/// the `onboarding` run.
 class ColorThemePicker extends StatelessWidget {
   final AppColorTheme selectedTheme;
   final Function(AppColorTheme) onThemeSelected;
 
-  /// Settings' title, description and note around the swatches.
   final bool showHeader;
 
   const ColorThemePicker({
@@ -56,13 +51,10 @@ class _ColorThemePickerBody extends StatelessWidget {
     final scale = MediaQuery.textScalerOf(context).scale(16) / 16;
     final grid = LayoutBuilder(
       builder: (context, constraints) {
-        // Swatches stay swatch-sized: 4 across a phone, more on wider
-        // columns, never a row of giant tiles (changed in `settings`).
         final minTile = 64 * scale;
         var columns = ((constraints.maxWidth + space.sm) / (minTile + space.sm))
             .floor()
             .clamp(3, 8);
-        // Divide evenly across a fold.
         if (fold.hasFold && columns.isOdd && columns > 3) columns--;
         final themes = AppColors.availableThemes;
         final rows = <Widget>[];
@@ -146,8 +138,6 @@ class _ColorThemePickerBody extends StatelessWidget {
   }
 }
 
-/// One palette: a rounded swatch of its primary and accent, ringed in the
-/// palette's own color with a check when chosen, its name below.
 class _Swatch extends StatelessWidget {
   const _Swatch({
     required this.theme,
@@ -230,8 +220,6 @@ class _Swatch extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: space.xs),
-                // One line, scaled down if a long name needs it: words
-                // never break mid-way (changed in `settings`).
                 FittedBox(
                   fit: BoxFit.scaleDown,
                   child: Text(

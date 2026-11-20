@@ -5,7 +5,6 @@ import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 import 'package:huda/presentation/widgets/settings/settings_choice_sheet.dart';
 
-/// The language's name in the app's current language.
 String localizedLanguageName(AppLocalizations l10n, String code) =>
     switch (code) {
       'en' => l10n.english,
@@ -21,18 +20,12 @@ String localizedLanguageName(AppLocalizations l10n, String code) =>
       _ => code.toUpperCase(),
     };
 
-/// The language's name in its own language and script ("Deutsch").
 String nativeLanguageName(String code) =>
     LocalizationCubit.languageNames[code] ?? code.toUpperCase();
 
-/// The direction of [code]'s own script.
 TextDirection languageDirection(String code) =>
     const {'ar', 'ur'}.contains(code) ? TextDirection.rtl : TextDirection.ltr;
 
-/// Settings' language row: the language in its own name; it opens the
-/// language sheet, where every language is listed in its own name (so
-/// someone who switched by mistake still finds theirs) with its name in
-/// the current language under it.
 class LanguageRow extends StatelessWidget {
   const LanguageRow({super.key});
 

@@ -6,14 +6,6 @@ import 'package:huda/core/layout/insets.dart';
 import 'package:huda/core/layout/tabletop_split.dart';
 import 'package:huda/core/theme/huda_tokens.dart';
 
-/// The page of a settings-like screen (Settings, Feedback): one scroll view
-/// holding one readable column, or two columns side by side once both get
-/// at least [minColumnWidth] (× the text scale, up to 2×).
-///
-/// Two columns split exactly at a vertical fold (each column on its own
-/// side of the crease or the half-open band); otherwise they share
-/// [maxWidth], centered. Both layouts take the bottom and side insets
-/// inside the scroll view, so the page runs edge to edge.
 class SettingsColumns extends StatelessWidget {
   const SettingsColumns({
     super.key,
@@ -27,27 +19,20 @@ class SettingsColumns extends StatelessWidget {
     this.controller,
   });
 
-  /// The first column (and the top of the single column).
   final List<Widget> start;
 
-  /// The second column (and the rest of the single column).
   final List<Widget> end;
 
   final double minColumnWidth;
   final double maxWidth;
   final double singleMaxWidth;
 
-  /// Extra end padding (a pinned bar's height laid over the page).
   final double bottom;
 
-  /// Space between [start] and [end] in one column; defaults to
-  /// `space.xl` (a section gap).
   final double? gap;
 
   final ScrollController? controller;
 
-  /// Whether the page shows two columns at this width, fold and text scale
-  /// (side by side; tabletop stacks them on either side of the band).
   static bool showsTwo(
     BuildContext context,
     double width, {
@@ -83,8 +68,6 @@ class SettingsColumns extends StatelessWidget {
           children: children,
         );
 
-        // Tabletop: nothing may cross the half-open band, so the first
-        // column scrolls in the top half and the rest in the bottom half.
         if (TabletopSplit.applies(context)) {
           Widget half(List<Widget> children) => Builder(
             builder: (context) => SingleChildScrollView(
@@ -122,7 +105,6 @@ class SettingsColumns extends StatelessWidget {
         final fold = FoldInfo.of(context);
         final Widget row;
         if (fold.splitsHorizontally) {
-          // Split at the crease: each column keeps a gutter from it.
           final insets = MediaQuery.paddingOf(context);
           final startWidth = fold.bounds.left - insets.left - gutter * 2;
           final endWidth =
@@ -160,11 +142,6 @@ class SettingsColumns extends StatelessWidget {
   }
 }
 
-/// Tabletop posture for a page under an app bar: [top] above the
-/// half-open band and [bottom] below it, each with its own `MediaQuery`
-/// (size, its own edge's inset, no display features). Unlike
-/// `TabletopSplit`, which assumes it starts at the window's top, it finds
-/// where it sits after its first layout and splits at the band from there.
 class SettingsTabletop extends StatefulWidget {
   const SettingsTabletop({super.key, required this.top, required this.bottom});
 

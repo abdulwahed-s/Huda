@@ -4,23 +4,16 @@ import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/design/huda_lamp.dart';
 import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 
-/// What a reminder row is doing besides being on or off.
 enum ReminderRowStatus {
   idle,
 
-  /// The cubit is scheduling it (a switch or a time change).
   scheduling,
 
-  /// Scheduling again after the person tapped Retry.
   retrying,
 
-  /// Scheduling failed; the switch is back off.
   failed,
 }
 
-/// One reminder: its mark, title and what it does, the switch, and the
-/// schedule as chips that change it in place. Below, a status line while
-/// it's being scheduled, or after it failed with Retry.
 class ReminderRow extends StatelessWidget {
   const ReminderRow({
     super.key,
@@ -42,16 +35,12 @@ class ReminderRow extends StatelessWidget {
   final bool value;
   final ValueChanged<bool> onChanged;
 
-  /// The time chips (or a frequency chip).
   final List<Widget> schedule;
   final ReminderRowStatus status;
   final VoidCallback? onRetry;
 
-  /// Why it failed and what fixes it ("Alarms are off…", "Open Settings"),
-  /// in place of "Couldn't schedule" and Retry; [onRetry] runs the fix.
   final (String message, String action)? failure;
 
-  /// A platform note under the description (Sahur on older iOS).
   final String? footnote;
 
   @override
@@ -121,8 +110,6 @@ class ReminderRow extends StatelessWidget {
             ),
             child: Wrap(spacing: space.xs, children: schedule),
           ),
-          // A cross-fade whose outgoing line takes no room: rows sit in
-          // equal-height grid rows sized from the current line only.
           AnimatedSwitcher(
             duration: tokens.motion.of(context, tokens.motion.medium),
             switchInCurve: tokens.motion.standard,
@@ -200,8 +187,6 @@ class _StatusLine extends StatelessWidget {
     return Semantics(
       liveRegion: true,
       container: true,
-      // A known cause is a sentence or two: its fix goes under it, so the
-      // message keeps the row's width.
       child: failed && failure != null
           ? Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -233,8 +218,6 @@ class _StatusLine extends StatelessWidget {
   }
 }
 
-/// A reminder's schedule as a chip: tapping it changes that time (or the
-/// interval) in place.
 class ReminderTimeChip extends StatelessWidget {
   const ReminderTimeChip({
     super.key,
@@ -252,8 +235,6 @@ class ReminderTimeChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    // The chip keeps its own button semantics (and tap action); only the
-    // spoken label says what it changes.
     return ActionChip(
       avatar: Icon(icon, size: 18, color: scheme.primary),
       label: Text(label, semanticsLabel: semanticLabel),
@@ -262,7 +243,6 @@ class ReminderTimeChip extends StatelessWidget {
   }
 }
 
-/// "HH:mm" as saved by the cubit.
 TimeOfDay parseReminderTime(String value) {
   final parts = value.split(':');
   return TimeOfDay(
@@ -275,7 +255,6 @@ String formatReminderTime(TimeOfDay time) =>
     '${time.hour.toString().padLeft(2, '0')}:'
     '${time.minute.toString().padLeft(2, '0')}';
 
-/// A saved time in the person's locale and 12/24-hour setting.
 String localReminderTime(BuildContext context, String value) =>
     MaterialLocalizations.of(context).formatTimeOfDay(
       parseReminderTime(value),

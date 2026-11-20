@@ -16,7 +16,6 @@ import 'package:huda/presentation/widgets/miqaat_lock/miqaat_lock_format.dart';
 import 'package:huda/presentation/widgets/miqaat_lock/miqaat_lock_sections.dart';
 import 'package:uuid/uuid.dart';
 
-/// Cancel and the lit confirm, pinned under a sheet's content.
 Widget _actions(
   BuildContext context, {
   required String confirm,
@@ -38,10 +37,7 @@ Widget _actions(
   );
 }
 
-// ---------------------------------------------------------------- Apps
 
-/// Chooses the apps to lock (Android). Returns the chosen apps, or null
-/// when cancelled.
 Future<List<LockedApp>?> showMiqaatAppsSheet(
   BuildContext context, {
   required MiqaatLockCubit cubit,
@@ -72,7 +68,6 @@ Future<List<LockedApp>?> showMiqaatAppsSheet(
           final s = cubit.state;
           final installed = s is MiqaatLockLoaded ? s.installedApps : [];
           final apps = [
-            // Keep the order apps were locked in, then the new ones.
             for (final app in current)
               if (chosen.contains(app.packageId)) app,
             for (final id in chosen)
@@ -222,10 +217,7 @@ class _AppsChooserState extends State<_AppsChooser> {
   }
 }
 
-// -------------------------------------------------------------- Window
 
-/// Adds or edits a time window. Returns the window, or null when
-/// cancelled.
 Future<TimeSlot?> showMiqaatWindowSheet(
   BuildContext context, {
   TimeSlot? existing,
@@ -394,9 +386,7 @@ class _WindowEditor extends StatelessWidget {
   }
 }
 
-// ---------------------------------------------------------------- Goal
 
-/// Any goal from 1 to 120 minutes. Returns the minutes, or null.
 Future<int?> showMiqaatGoalSheet(BuildContext context, {required int current}) {
   final l10n = AppLocalizations.of(context)!;
   final value = ValueNotifier<int>(current);
@@ -454,10 +444,7 @@ Future<int?> showMiqaatGoalSheet(BuildContext context, {required int current}) {
   );
 }
 
-// ------------------------------------------------------- Accessibility
 
-/// Explains the accessibility service before Android's settings open.
-/// True when the person agrees.
 Future<bool?> showMiqaatAccessibilitySheet(BuildContext context) {
   final l10n = AppLocalizations.of(context)!;
   return showHudaSheet<bool>(

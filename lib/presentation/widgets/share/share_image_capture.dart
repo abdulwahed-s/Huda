@@ -13,8 +13,6 @@ class ShareImageCapture {
   static const double _maxPixelRatio = 3;
   static const double _maxImageSide = 8192;
 
-  /// Replaces the capture in tests, where `toImage` can't complete under
-  /// the fake clock (added in `athkar`).
   @visibleForTesting
   static Future<Uint8List> Function(Widget card)? debugCaptureOverride;
 
@@ -27,10 +25,6 @@ class ShareImageCapture {
     final override = debugCaptureOverride;
     if (override != null) return override(card);
     final overlay = Overlay.of(context);
-    // The overlay sits above the route, so it would miss a theme the
-    // screen adds (such as `HudaNight`): carry the screen's themes
-    // over, or a card reading them renders the error box instead (fixed in
-    // `athkar`).
     final themes = InheritedTheme.capture(from: context, to: overlay.context);
     await precacheImage(const AssetImage(BrandedShareFrame.logoAsset), context);
     if (!context.mounted) {
@@ -101,7 +95,6 @@ class ShareImageCapture {
     );
   }
 
-  /// Shares an image already captured with [capturePng].
   static Future<void> sharePng({
     required BuildContext context,
     required Uint8List pngBytes,

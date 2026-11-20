@@ -6,11 +6,6 @@ import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:intl/intl.dart' show NumberFormat;
 
-/// The in-app text size, relative to the device's: a slider in 5% steps
-/// (50–200%), its value, a sample line and Reset (only when it isn't
-/// 100%). The whole app follows while dragging (the root scaler applies
-/// it), so the sample is set in the page's own body style, not scaled a
-/// second time.
 class TextSizeControl extends StatelessWidget {
   const TextSizeControl({super.key});
 

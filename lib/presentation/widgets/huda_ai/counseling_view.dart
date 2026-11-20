@@ -16,19 +16,6 @@ import 'package:huda/presentation/widgets/huda_ai/chat_turns.dart';
 import 'package:huda/presentation/widgets/huda_ai/huda_ai_identity.dart';
 import 'package:huda/presentation/widgets/huda_ai/huda_ai_text.dart';
 
-/// Counseling: one feeling, one counsel, as a page rather than a chat
-/// (owner round 1: each request is its own session, so the chat's bubbles
-/// and composer suggested a thread that wasn't there).
-///
-/// - **Write**: the breathing light, "What's on your heart?", a writing
-///   area in the page with the feelings as quick picks, and a lit Seek
-///   counsel.
-/// - **Waiting**: the feeling quoted, the full gathering of light centered.
-/// - **Failed**: the feeling, what failed, Retry (or Edit after a safety
-///   refusal).
-/// - **Counsel**: opened by the quoted feeling, then Guidance, the ayah and
-///   the duaa rising in by section, Copy and Share, and "Share another
-///   feeling" for a new one.
 class CounselingView extends StatefulWidget {
   const CounselingView({
     super.key,
@@ -56,14 +43,10 @@ class CounselingView extends StatefulWidget {
   final ChatErrorType? errorType;
   final bool retrying;
 
-  /// The writing area's text, kept by the screen (it survives switching
-  /// modes and comes back for Edit).
   final TextEditingController controller;
 
-  /// No other answer is being generated.
   final bool canSeek;
 
-  /// Another conversation is being answered ([canSeek] is false).
   final bool busyElsewhere;
   final ValueChanged<String> onSeek;
   final VoidCallback onRetry;
@@ -72,7 +55,6 @@ class CounselingView extends StatefulWidget {
   final VoidCallback onShare;
   final VoidCallback onAnother;
 
-  /// The writing page's width.
   static const double writingMeasure = 600;
 
   @override
@@ -82,7 +64,6 @@ class CounselingView extends StatefulWidget {
 enum _Phase { write, waiting, failed, counsel }
 
 class _CounselingViewState extends State<CounselingView> {
-  /// A counsel already there when it opened doesn't rise in.
   late bool _arrived = widget.response == null;
 
   @override
@@ -133,8 +114,6 @@ class _CounselingViewState extends State<CounselingView> {
       ),
     };
     return HudaStateSwitcher(
-      // One key per session: waiting, failed and the counsel swap in place
-      // under the same quoted feeling (it would blink in a cross-fade).
       stateKey: phase == _Phase.write ? 'write' : 'session-${widget.sessionId}',
       sequential: true,
       child: page,
@@ -142,8 +121,6 @@ class _CounselingViewState extends State<CounselingView> {
   }
 }
 
-/// A page at [measure], scrolling, its insets inside the scroll view;
-/// [center] keeps a short page in the middle of the room.
 class _Page extends StatelessWidget {
   const _Page({
     required this.children,
@@ -188,7 +165,6 @@ class _Page extends StatelessWidget {
   }
 }
 
-/// "What's on your heart?": the writing page.
 class _WritePage extends StatefulWidget {
   const _WritePage({
     required this.controller,
@@ -230,7 +206,6 @@ class _WritePageState extends State<_WritePage> {
     if (_ready) widget.onSeek(widget.controller.text.trim());
   }
 
-  /// Enter is a new line in a letter; Ctrl or ⌘ + Enter sends it.
   KeyEventResult _onKey(FocusNode node, KeyEvent event) {
     if (event is! KeyDownEvent ||
         event.logicalKey != LogicalKeyboardKey.enter) {
@@ -244,7 +219,6 @@ class _WritePageState extends State<_WritePage> {
     return KeyEventResult.handled;
   }
 
-  /// A quick pick starts the letter; there's room to say more.
   void _pick(String text) {
     widget.controller
       ..text = text
@@ -259,15 +233,11 @@ class _WritePageState extends State<_WritePage> {
     final scheme = theme.colorScheme;
     final tokens = context.tokens;
     final space = tokens.space;
-    // Laid out by the room this page really gets (a tabletop half, a pane)
-    // and the text size, so the writing area always has the room.
     final size = MediaQuery.sizeOf(context);
     final scale = MediaQuery.textScalerOf(context).scale(1);
     final large = scale >= 1.5;
     final short =
         !large && (context.windowClass.isCompactHeight || size.height < 520);
-    // Small phones: a smaller light and a shorter page, so the field and
-    // the quick picks show above Seek counsel.
     final small = !short && size.height < 720;
     final roomy = size.width >= 840 && size.height >= 800;
     final showIntro = !large && size.height >= 380;
@@ -368,15 +338,11 @@ class _WritePageState extends State<_WritePage> {
     );
 
     final insets = MediaQuery.paddingOf(context);
-    // Seek counsel is pinned to the bottom edge, so it's always in reach
-    // (its surface runs under the navigation bar, the button lifted by
-    // the inset); the letter scrolls above it.
     final bar = DecoratedBox(
       decoration: BoxDecoration(
         color: scheme.surface,
         border: Border(top: BorderSide(color: scheme.outlineVariant)),
       ),
-      // The page's own measure, so the button lines up with the field.
       child: LayoutBuilder(
         builder: (context, constraints) {
           final side = hudaAiSidePadding(
@@ -414,7 +380,6 @@ class _WritePageState extends State<_WritePage> {
         Expanded(
           child: MediaQuery.removePadding(
             context: context,
-            // The bar owns the bottom edge.
             removeBottom: true,
             child: HudaRevealScope(
               child: _Page(
@@ -439,7 +404,6 @@ class _WritePageState extends State<_WritePage> {
   }
 }
 
-/// What a counsel brings: guidance, a verse and a duaa.
 class _Receives extends StatelessWidget {
   const _Receives();
 
@@ -475,8 +439,6 @@ class _Receives extends StatelessWidget {
   }
 }
 
-/// The feeling as the counsel's opening line: a quotation under a gilt
-/// rule at its start, not a chat bubble.
 class _FeelingQuote extends StatelessWidget {
   const _FeelingQuote(this.feeling);
 
@@ -522,8 +484,6 @@ class _FeelingQuote extends StatelessWidget {
   }
 }
 
-/// The counsel is coming: the feeling, and the full gathering of light in
-/// the middle of the page.
 class _WaitingPage extends StatelessWidget {
   const _WaitingPage({required this.feeling, required this.retrying});
 
@@ -538,7 +498,6 @@ class _WaitingPage extends StatelessWidget {
     final feeling = this.feeling?.trim();
     final title = retrying ? l10n.stateRetrying : l10n.hudaAIThinking;
     final short = context.windowClass.isCompactHeight;
-    // The quote stays where the counsel will open, at the top.
     return _Page(
       children: [
         if (feeling != null && feeling.isNotEmpty) ...[
@@ -604,7 +563,6 @@ class _FailedPage extends StatelessWidget {
           child: HudaStatusBanner(
             status: HudaStatus.failed,
             message: hudaAiErrorMessage(l10n, error),
-            // Sharing the same again won't pass the safety check.
             onRetry: safety ? null : onRetry,
           ),
         ),
@@ -625,7 +583,6 @@ class _FailedPage extends StatelessWidget {
   }
 }
 
-/// The counsel: one composed page, opened by the feeling.
 class _CounselPage extends StatelessWidget {
   const _CounselPage({
     required this.feeling,
@@ -737,8 +694,6 @@ class _Section extends StatelessWidget {
   );
 }
 
-/// An ayah or a duaa: the Arabic first and large, its meaning and its
-/// source below, on a quiet panel.
 class _Scripture extends StatelessWidget {
   const _Scripture({
     required this.arabic,

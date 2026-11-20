@@ -34,13 +34,11 @@ class _BookmarkSectionState extends State<BookmarkSection> {
   String _currentNote = '';
   Color _selectedColor = BookmarkColors.getDefaultColor();
 
-  // Create a local BookmarksCubit if one isn't available in the context
   BookmarksCubit? _localBookmarksCubit;
   BookmarksCubit get _bookmarksCubit {
     try {
       return context.read<BookmarksCubit>();
     } catch (e) {
-      // If no cubit is found in context, create a local one
       _localBookmarksCubit ??= BookmarksCubit(
         bookmarkService: getIt<BookmarkService>(),
       );
@@ -82,7 +80,6 @@ class _BookmarkSectionState extends State<BookmarkSection> {
       BookmarkType.star,
     );
 
-    // Get existing note if any
     if (hasNote) {
       final noteBookmark = await bookmarksCubit.getBookmark(
         widget.surahNumber,
@@ -92,7 +89,6 @@ class _BookmarkSectionState extends State<BookmarkSection> {
       _currentNote = noteBookmark?.note ?? '';
     }
 
-    // Get existing bookmark color if any
     if (isBookmarked) {
       final bookmark = await bookmarksCubit.getBookmark(
         widget.surahNumber,
@@ -113,7 +109,6 @@ class _BookmarkSectionState extends State<BookmarkSection> {
     }
   }
 
-  /// The note being written, while the editor is open.
   TextEditingController? _noteEditor;
 
   @override
@@ -240,8 +235,6 @@ class _BookmarkSectionState extends State<BookmarkSection> {
     WidgetsBinding.instance.addPostFrameCallback((_) => editor?.dispose());
   }
 
-  /// A mark the ayah has or hasn't: a hairline tile, tinted in the mark's
-  /// color with a filled icon when it has it.
   Widget _option({
     required Key key,
     required IconData icon,
@@ -315,7 +308,6 @@ class _BookmarkSectionState extends State<BookmarkSection> {
     );
   }
 
-  /// A bookmark color: a disc, ringed and checked when chosen.
   Widget _swatch(Color color) {
     final selected = _selectedColor.toARGB32() == color.toARGB32();
     final scheme = Theme.of(context).colorScheme;
@@ -417,7 +409,6 @@ class _BookmarkSectionState extends State<BookmarkSection> {
       _selectedColor = color;
     });
 
-    // Update the bookmark with new color
     if (_isBookmarked) {
       final bookmarksCubit = _bookmarksCubit;
       final currentPosition = widget.getCurrentScrollPosition?.call();

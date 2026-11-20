@@ -17,13 +17,9 @@ import 'package:huda/presentation/widgets/hadith/hadith_collection_tile.dart';
 import 'package:huda/presentation/widgets/hadith/hadith_identity.dart';
 import 'package:huda/presentation/widgets/hadith/hadith_refs.dart';
 
-/// The Hadith landing screen: the collections, the Six Books first. Landing
-/// tier; the header's folio inks itself in as it opens. See
-/// `design/features/hadith/brief.md`.
 class Hadith extends StatefulWidget {
   const Hadith({super.key});
 
-  /// Content is capped at this width and centered, with the header.
   static const double maxContentWidth = 1280;
 
   @override
@@ -31,8 +27,6 @@ class Hadith extends StatefulWidget {
 }
 
 class _HadithState extends State<Hadith> {
-  /// After a tap on Retry, until the cubit answers: the failure stays on
-  /// screen with "Retrying…" instead of turning into a skeleton.
   bool _retrying = false;
   HadithState? _failure;
 
@@ -70,8 +64,6 @@ class _HadithState extends State<Hadith> {
               slivers: slivers,
             ),
           );
-          // Tabletop: the Six Books above the band, the rest below it.
-          // Loading takes the same shape.
           if (TabletopSplit.applies(context) &&
               (shown is HadithLoaded || shown is HadithLoading)) {
             final loaded = shown is HadithLoaded ? shown : null;
@@ -131,7 +123,6 @@ class _HadithState extends State<Hadith> {
       HadithOffline() => fill(
         HudaOfflineState(onRetry: _retry, retrying: _retrying),
       ),
-      // The page's real shape: the Six Books, then the rest.
       _ => _Page(
         children: [
           _skeletonLabel(),
@@ -171,15 +162,11 @@ class _HadithState extends State<Hadith> {
     ),
   );
 
-  /// Tiles at least this wide, so names don't wrap into narrow columns:
-  /// one column on phones, two on portrait tablets, three or four wider.
-  /// Short windows (phone and Duo-cover landscape) take two narrower ones.
   static double _minTileWidth(BuildContext context) => AdaptiveGrid.tileWidth(
     context,
     context.windowClass.isCompactHeight ? 260 : 300,
   );
 
-  /// The Six Books, then the other collections (or one [part] of them).
   List<Widget> _sections(
     BuildContext context,
     HadithBooksModel model,
@@ -215,7 +202,6 @@ class _HadithState extends State<Hadith> {
         ),
       ),
     );
-    // Labels rise with their tiles, not before them.
     Widget label(String text, {required double top, int reveal = 0}) =>
         SliverPadding(
           padding: EdgeInsets.only(top: top, bottom: space.xs),
@@ -229,7 +215,6 @@ class _HadithState extends State<Hadith> {
     return [
       if (showSix) ...[
         label(l10n.hadithSixBooks, top: space.lg),
-        // Three by two (two by three on phones): the six stay even.
         grid(six, maxColumns: 3),
       ],
       if (showRest) ...[
@@ -244,17 +229,13 @@ class _HadithState extends State<Hadith> {
   }
 }
 
-/// Which collections a part of a split (tabletop) page shows.
 enum _Part { all, six, rest }
 
-/// The page's content column: the gutters and side insets, capped at
-/// [Hadith.maxContentWidth] and centered, ending above the bottom inset.
 class _Page extends StatelessWidget {
   const _Page({required this.children, this.tight = false});
 
   final List<Widget> children;
 
-  /// Above a tabletop band: tighter top and bottom, no bottom inset.
   final bool tight;
 
   @override

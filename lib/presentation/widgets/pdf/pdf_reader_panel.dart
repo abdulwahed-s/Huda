@@ -8,9 +8,6 @@ import 'package:huda/presentation/widgets/pdf/huda_pdf_search_controller.dart';
 import 'package:huda/presentation/widgets/pdf/marker.dart';
 import 'package:pdf_document/pdf_document.dart';
 
-/// The reader's panel: the book's contents, search, page thumbnails and
-/// highlights, as tabs. Inline on the reading start from 840 wide; a sheet
-/// on narrower windows ([onNavigate] closes it after a jump).
 class PdfReaderPanel extends StatelessWidget {
   const PdfReaderPanel({
     super.key,
@@ -31,12 +28,9 @@ class PdfReaderPanel extends StatelessWidget {
   final ValueNotifier<PdfDocument?> document;
   final Map<int, List<Marker>> markers;
 
-  /// Ticks whenever [markers] change, so the list follows in a sheet too.
   final Listenable markersVersion;
   final VoidCallback onMarkersChanged;
 
-  /// Called after a jump (a contents entry, a result, a page), so a sheet
-  /// can close and show the page.
   final VoidCallback? onNavigate;
   final int? initialTab;
 
@@ -129,7 +123,6 @@ class _Spinner extends StatelessWidget {
       HudaLampSpinner(size: 28, color: context.tokens.gilt);
 }
 
-/// A quiet empty tab: an icon, a line and a hint.
 class _Empty extends StatelessWidget {
   const _Empty({required this.icon, required this.title, this.hint});
 
@@ -603,8 +596,6 @@ class _Highlights extends StatelessWidget {
   }
 }
 
-/// Lets the reader offer Undo after a highlight is removed (the panel
-/// may sit in a sheet, so the reader shows the toast).
 class PdfReaderPanelUndo extends InheritedWidget {
   const PdfReaderPanelUndo({
     super.key,

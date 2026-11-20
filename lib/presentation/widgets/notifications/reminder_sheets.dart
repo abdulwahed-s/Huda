@@ -15,8 +15,6 @@ import 'package:huda/presentation/widgets/design/huda_toast.dart';
 import 'package:huda/presentation/widgets/notifications/reminder_row.dart';
 import 'package:intl/intl.dart' as intl;
 
-/// How often Random Athkar comes: common intervals as chips (one tap),
-/// or a number of minutes (10–1440). Returns the chosen minutes.
 Future<int?> showReminderFrequencySheet(BuildContext context, int current) {
   return showHudaSheet<int>(
     context: context,
@@ -129,17 +127,11 @@ class _FrequencySheetState extends State<_FrequencySheet> {
   }
 }
 
-/// The Sahur alarm: at an exact time (chosen on the wheels right in the
-/// option), or some minutes before Fajr. Each change is saved and scheduled
-/// once it settles; a change that can't be scheduled is undone and says
-/// so. [clock] is a test seam for "Tomorrow at 4:00 AM · in 7 h".
 Future<void> showSahurSheet(
   BuildContext context,
   NotificationsCubit cubit, {
   DateTime Function() clock = DateTime.now,
 }) {
-  // Failures are told on the page, so one that lands after the sheet has
-  // closed is still heard.
   final page = context;
   return showHudaSheet<void>(
     context: context,
@@ -163,20 +155,15 @@ class _SahurSheet extends StatefulWidget {
 }
 
 class _SahurSheetState extends State<_SahurSheet> {
-  /// The slider's value while dragging, before it's saved.
   int? _dragging;
 
-  /// The exact time on the wheels, waiting for them to settle.
   TimeOfDay? _pending;
   Timer? _settle;
 
-  /// Saving the exact time: "Scheduling…" under the wheels.
   bool _scheduling = false;
 
-  /// A new key puts the wheels back on the saved time after a failure.
   int _wheels = 0;
 
-  // Read up front: a save can still run from dispose.
   late final NotificationsCubit _cubit;
   late String _failed;
 
@@ -194,7 +181,6 @@ class _SahurSheetState extends State<_SahurSheet> {
 
   @override
   void dispose() {
-    // Closed while the wheels were still settling: save it anyway.
     _settle?.cancel();
     final pending = _pending;
     if (pending != null) {
@@ -216,8 +202,6 @@ class _SahurSheetState extends State<_SahurSheet> {
     }
   }
 
-  /// The wheels moved: save once they've rested a moment, not on every
-  /// hour they pass.
   void _exactChanged(TimeOfDay time) {
     _pending = time;
     _settle?.cancel();
@@ -236,7 +220,6 @@ class _SahurSheetState extends State<_SahurSheet> {
     if (!mounted) return;
     setState(() {
       _scheduling = false;
-      // The cubit kept the old time: the wheels go back to it.
       if (!saved) _wheels++;
     });
   }
@@ -319,7 +302,6 @@ class _SahurSheetState extends State<_SahurSheet> {
                   value: minutes.toDouble(),
                   min: 10,
                   max: 150,
-                  // Five-minute steps: a tick each, not a buzz.
                   divisions: 28,
                   label: '${digits.format(minutes)} ${l10n.minutesUnit}',
                   onChanged: (value) {
@@ -346,9 +328,6 @@ class _SahurSheetState extends State<_SahurSheet> {
   }
 }
 
-/// Sahur's exact time, inside its option: the day's path (the crescent
-/// before dawn), the wheels, and when it rings next, or "Scheduling…" while
-/// a new time is saved.
 class _ExactTime extends StatefulWidget {
   const _ExactTime({
     super.key,
@@ -404,7 +383,6 @@ class _ExactTimeState extends State<_ExactTime> {
             textAlign: TextAlign.center,
           );
     return Padding(
-      // The wheels center on the tile, past the radio's indent.
       padding: EdgeInsetsDirectional.only(
         end: 20 + space.sm - space.xs,
         top: space.xs,
@@ -438,8 +416,6 @@ class _ExactTimeState extends State<_ExactTime> {
   }
 }
 
-/// A selectable option tile: a radio mark, its title and, when chosen,
-/// the option's own control below.
 class _ChoiceTile extends StatelessWidget {
   const _ChoiceTile({
     super.key,

@@ -8,7 +8,6 @@ import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:huda/presentation/widgets/design/huda_states.dart';
 import 'package:huda/presentation/widgets/huda_ai/chat_turns.dart';
 
-/// The message for an answer that failed, by its type.
 String hudaAiErrorMessage(AppLocalizations l10n, ChatErrorType type) =>
     switch (type) {
       ChatErrorType.noConnection => l10n.chatErrorNoConnection,
@@ -19,19 +18,11 @@ String hudaAiErrorMessage(AppLocalizations l10n, ChatErrorType type) =>
       ChatErrorType.unknown => l10n.chatErrorGeneric,
     };
 
-/// Horizontal padding that keeps a column at [measure] in a box of
-/// [width], never less than the page gutter.
 double hudaAiSidePadding(BuildContext context, double width, double measure) {
   final gutter = context.tokens.space.gutter(width);
   return ((width - measure) / 2).clamp(gutter, double.infinity);
 }
 
-/// A conversation: the person's turns, Huda AI's answers at the reading
-/// measure, and at the end whatever is happening now (the gathering
-/// light while waiting, or what failed with Retry).
-///
-/// Opens at its end. While an answer is written it follows it, unless
-/// the reader has scrolled up to read.
 class ChatConversation extends StatefulWidget {
   const ChatConversation({
     super.key,
@@ -49,18 +40,14 @@ class ChatConversation extends StatefulWidget {
   final String? sessionId;
   final List<ChatMessage> messages;
 
-  /// An answer is being generated for this conversation.
   final bool waiting;
   final ChatErrorType? errorType;
 
-  /// Retry was tapped and the answer is coming again.
   final bool retrying;
   final VoidCallback onRetry;
   final ValueChanged<String> onCopy;
   final void Function(String? question, String answer) onShare;
 
-  /// Puts the request back in the composer, offered instead of Retry when
-  /// it didn't pass the safety check.
   final VoidCallback? onEdit;
 
   static const double measure = 720;
@@ -72,11 +59,8 @@ class ChatConversation extends StatefulWidget {
 class _ChatConversationState extends State<ChatConversation> {
   final ScrollController _scroll = ScrollController();
 
-  /// Messages already there when the conversation opened: they don't
-  /// rise in.
   late Set<String> _opened = _ids();
 
-  /// The answer in the status slot, and the slot's generation.
   String? _tailId;
   int _slotEpoch = 0;
 
@@ -110,7 +94,6 @@ class _ChatConversationState extends State<ChatConversation> {
     if (changed && (sent || _atEnd)) _toEnd();
   }
 
-  /// Within reach of the end: the reader is following along.
   bool get _atEnd {
     if (!_scroll.hasClients) return true;
     final position = _scroll.position;
@@ -134,7 +117,6 @@ class _ChatConversationState extends State<ChatConversation> {
           curve: context.tokens.motion.standard,
         );
       }
-      // Markdown may settle a frame later; land on the true end.
       if (jump) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted && _scroll.hasClients) {
@@ -161,9 +143,6 @@ class _ChatConversationState extends State<ChatConversation> {
         widget.waiting && (last == null || last.sender == Sender.user);
     final error = widget.waiting ? null : widget.errorType;
 
-    // The newest answer, while it's the last thing said and arrived while
-    // the conversation was open, lives in the status slot at the end: the
-    // gathering light fades out there and the answer rises in its place.
     final tail =
         last != null &&
             last.sender == Sender.model &&
@@ -171,7 +150,6 @@ class _ChatConversationState extends State<ChatConversation> {
         ? last
         : null;
     if (_tailId != null && _tailId != tail?.id) {
-      // It moved into the list: a fresh slot, so no ghost fades out.
       _slotEpoch++;
     }
     _tailId = tail?.id;
@@ -234,7 +212,6 @@ class _ChatConversationState extends State<ChatConversation> {
               HudaStatusBanner(
                 status: HudaStatus.failed,
                 message: hudaAiErrorMessage(l10n, error),
-                // Asking the same again won't pass the safety check.
                 onRetry: safety ? null : widget.onRetry,
               ),
               if (safety && onEdit != null) ...[
@@ -268,8 +245,6 @@ class _ChatConversationState extends State<ChatConversation> {
           itemCount: items.length,
           separatorBuilder: (context, index) => SizedBox(height: space.xl),
           itemBuilder: (context, index) => items[index],
-          // Items keep their state by key as the list grows: the status
-          // slot stays itself when an answer arrives above it.
           findItemIndexCallback: (key) {
             final index = items.indexWhere((item) => item.key == key);
             return index < 0 ? null : index;

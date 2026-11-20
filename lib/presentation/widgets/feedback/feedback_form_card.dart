@@ -5,7 +5,6 @@ import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 
-/// Feedback's kinds in order, with their titles, descriptions and hints.
 extension FeedbackCategoryCopy on FeedbackCategory {
   static const ordered = [
     FeedbackCategory.general,
@@ -38,8 +37,6 @@ extension FeedbackCategoryCopy on FeedbackCategory {
   };
 }
 
-/// "What would you like to do?": the three kinds as choice rows; the
-/// chosen one says what it's for.
 class FeedbackKindChoice extends StatelessWidget {
   const FeedbackKindChoice({
     super.key,
@@ -110,8 +107,6 @@ class FeedbackKindChoice extends StatelessWidget {
   }
 }
 
-/// The message and the optional email, in Lantern fields (filled, a
-/// hairline that turns primary on focus, the error under the field).
 class FeedbackFields extends StatelessWidget {
   const FeedbackFields({
     super.key,
@@ -194,7 +189,6 @@ class FeedbackFields extends StatelessWidget {
   }
 }
 
-/// A Lantern text field's decoration (Feedback and the rating dialog).
 InputDecoration feedbackFieldDecoration(
   BuildContext context, {
   required String label,

@@ -2,15 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/presentation/widgets/design/huda_motion.dart';
 
-/// A card: a crisp surface with a hairline outline and a soft shadow.
 class HudaCard extends StatelessWidget {
   const HudaCard({super.key, required this.child, this.onTap, this.padding});
 
   final Widget child;
   final VoidCallback? onTap;
 
-  /// Defaults to `space.md`. Pass [EdgeInsets.zero] for rows that pad
-  /// themselves.
   final EdgeInsetsGeometry? padding;
 
   @override
@@ -19,7 +16,6 @@ class HudaCard extends StatelessWidget {
       padding: padding ?? EdgeInsets.all(context.tokens.space.md),
       child: child,
     );
-    // Confirm: ink plus a slight press-in on tappable cards.
     return HudaPressable(
       enabled: onTap != null,
       child: Card(
@@ -29,15 +25,12 @@ class HudaCard extends StatelessWidget {
   }
 }
 
-/// The eyebrow role in capitals: a small tracked label above a title or a
-/// section. Gilt on surfaces; pass [color] on chrome.
 class HudaEyebrow extends StatelessWidget {
   const HudaEyebrow(this.text, {super.key, this.color, this.header = false});
 
   final String text;
   final Color? color;
 
-  /// Marks it as a heading for screen readers (section labels).
   final bool header;
 
   @override
@@ -50,7 +43,6 @@ class HudaEyebrow extends StatelessWidget {
   );
 }
 
-/// A section label with an optional trailing widget (a "See all" button).
 class HudaSectionHeader extends StatelessWidget {
   const HudaSectionHeader(this.title, {super.key, this.trailing});
 
@@ -77,7 +69,6 @@ class HudaSectionHeader extends StatelessWidget {
   }
 }
 
-/// A titled group of rows in one card, separated by hairlines.
 class HudaSection extends StatelessWidget {
   const HudaSection({
     super.key,
@@ -131,14 +122,11 @@ class HudaSection extends StatelessWidget {
   }
 }
 
-/// The round mark that carries a row's icon: a soft tint of the accent
-/// with a quiet gilt ring, like the medallions of the share cards.
 class HudaIconMark extends StatelessWidget {
   const HudaIconMark(this.icon, {super.key, this.accent});
 
   final IconData icon;
 
-  /// Defaults to the palette's primary.
   final Color? accent;
 
   @override
@@ -160,8 +148,6 @@ class HudaIconMark extends StatelessWidget {
   }
 }
 
-/// A settings row: an icon mark, a title, an optional subtitle and a
-/// trailing control. At least 48 tall; wraps instead of clipping.
 class HudaSettingsRow extends StatelessWidget {
   const HudaSettingsRow({
     super.key,
@@ -184,8 +170,6 @@ class HudaSettingsRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final subtitle = this.subtitle;
-    // A row is content: the page or section has already taken the side
-    // insets (the iPhone Duo's column), so `ListTile` mustn't add them again.
     return MediaQuery.removePadding(
       context: context,
       removeLeft: true,
@@ -203,10 +187,6 @@ class HudaSettingsRow extends StatelessWidget {
   }
 }
 
-/// A content row for lists of things (collections, chapters, reciters):
-/// a leading mark or art, an optional Arabic title above the title, a
-/// meta line, and a chevron that points the reading direction. Put it in a
-/// [HudaCard] for tiles, or in a [HudaSection] for grouped lists.
 class HudaContentRow extends StatelessWidget {
   const HudaContentRow({
     super.key,
@@ -221,13 +201,10 @@ class HudaContentRow extends StatelessWidget {
 
   final String title;
 
-  /// Shown above [title] in the Arabic title role; skip it when the app
-  /// language is Arabic and [title] is already the Arabic name.
   final String? arabicTitle;
   final String? meta;
   final Widget? leading;
 
-  /// Defaults to a chevron when [onTap] is set.
   final Widget? trailing;
   final VoidCallback? onTap;
   final bool selected;
@@ -302,14 +279,6 @@ class HudaContentRow extends StatelessWidget {
   }
 }
 
-/// One choice among several, as a tile: a hairline-bordered row (radius md,
-/// at least 56 tall) with an optional [leading] mark, a title, an optional
-/// subtitle and a round mark at the end that fills with the primary and a
-/// check when chosen. Chosen, the tile tints with the primary and its
-/// border turns primary, like `HudaTickOption` (its square-box sibling for
-/// on/off options). Read as a radio button in a mutually exclusive group.
-/// Added by `settings` for the language lists, the font, the widget design
-/// and Feedback's kinds.
 class HudaChoiceRow extends StatelessWidget {
   const HudaChoiceRow({
     super.key,
@@ -329,13 +298,10 @@ class HudaChoiceRow extends StatelessWidget {
   final String? subtitle;
   final Widget? leading;
 
-  /// Overrides the title's style (a font preview); defaults to titleSmall.
   final TextStyle? titleStyle;
 
-  /// The title's own direction (a language name in its script).
   final TextDirection? titleDirection;
 
-  /// What a screen reader says; defaults to the title and subtitle.
   final String? semanticLabel;
 
   @override
@@ -452,7 +418,6 @@ class _ChoiceMark extends StatelessWidget {
             shape: BoxShape.circle,
             color: selected ? scheme.primary : Colors.transparent,
             border: Border.all(
-              // Off keeps 3:1 against the page.
               color: selected ? scheme.primary : scheme.onSurfaceVariant,
               width: 1.5,
             ),

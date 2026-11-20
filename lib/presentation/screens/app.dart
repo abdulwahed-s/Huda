@@ -210,8 +210,6 @@ class _AppState extends State<App> {
                   debugShowCheckedModeBanner: false,
                   initialRoute: widget.initialRoute,
                   themeMode: themeState.themeMode,
-                  // Lantern for every screen, sheet and route transition
-                  // (design/LANGUAGE.md, "Decided in foundation").
                   theme: HudaTheme.build(
                     colorTheme: themeState.colorTheme,
                     brightness: Brightness.light,
@@ -246,14 +244,10 @@ class _AppState extends State<App> {
                   onGenerateRoute: PageRouter().generateRoute,
                   builder: (context, child) {
                     QuickActionsService.updateLocalizedLabels(context);
-                    // Native tray and menu-bar cards draw their own text:
-                    // hand them the effective scale, as before.
                     final effectiveTextScale =
                         MediaQuery.textScalerOf(context).scale(14) /
                         14 *
                         themeState.textScaleFactor;
-                    // Native cards keep the palette's own tint, as under
-                    // the old root theme: primary by day, accent at night.
                     final palette = AppColors.getColorScheme(
                       themeState.colorTheme,
                     );
@@ -337,9 +331,6 @@ class _AppState extends State<App> {
                         }),
                       );
                     }
-                    // The device's text size × the in-app adjustment,
-                    // UI capped at 2× (design/RESPONSIVE.md, "Text
-                    // scale").
                     return MediaQuery(
                       data: MediaQuery.of(context).copyWith(
                         textScaler: CombinedTextScaler(

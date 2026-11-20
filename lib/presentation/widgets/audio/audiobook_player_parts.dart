@@ -13,10 +13,6 @@ import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:huda/presentation/widgets/design/huda_sheet.dart';
 import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 
-/// The recording's swatch at full size, its plait the book: an eye per
-/// chapter, the ones heard filled, the current one ringed and filling as
-/// it plays. It weaves in as the player opens and weaves forward on each
-/// new chapter.
 class AudiobookPlayerArt extends StatelessWidget {
   const AudiobookPlayerArt({
     super.key,
@@ -54,8 +50,6 @@ class AudiobookPlayerArt extends StatelessWidget {
   }
 }
 
-/// The recording's title as an eyebrow, the chapter's title (cross-fading
-/// on a new chapter), then "Chapter n of m · author".
 class AudiobookPlayerTitles extends StatelessWidget {
   const AudiobookPlayerTitles({
     super.key,
@@ -67,7 +61,6 @@ class AudiobookPlayerTitles extends StatelessWidget {
   final AudiobookPlayerPlaying state;
   final int index;
 
-  /// Short windows: a smaller chapter title.
   final bool compact;
 
   @override
@@ -112,7 +105,6 @@ class AudiobookPlayerTitles extends StatelessWidget {
   }
 }
 
-/// The seek slider, with how much is buffered, and the times under it.
 class AudiobookSeek extends StatefulWidget {
   const AudiobookSeek({super.key, required this.player, required this.onSeek});
 
@@ -206,8 +198,6 @@ class _AudiobookSeekState extends State<AudiobookSeek> {
   }
 }
 
-/// Previous chapter, back 15 seconds, play or pause (lit), forward 15
-/// seconds, next chapter. Mirrored in RTL.
 class AudiobookTransport extends StatelessWidget {
   const AudiobookTransport({
     super.key,
@@ -283,7 +273,6 @@ class AudiobookTransport extends StatelessWidget {
   }
 }
 
-/// A 15-second skip: the circular arrow with the seconds in it.
 class _Skip extends StatelessWidget {
   const _Skip({
     required this.forward,
@@ -334,8 +323,6 @@ class _Skip extends StatelessWidget {
   }
 }
 
-/// Speed and the sleep timer as two quiet pills (the timer lit while it
-/// runs, with what's left); each opens its sheet.
 class AudiobookPlayerOptions extends StatelessWidget {
   const AudiobookPlayerOptions({
     super.key,
@@ -347,9 +334,6 @@ class AudiobookPlayerOptions extends StatelessWidget {
   final AudioPlayer player;
   final AudiobookPlayerCubit cubit;
 
-  /// Opens the sheets: a context outside the player's panes, so they see
-  /// the whole window (a dialog on wide windows, centered across a flat
-  /// fold) rather than one pane.
   final BuildContext? sheetContext;
 
   @override
@@ -425,7 +409,6 @@ class AudiobookPlayerOptions extends StatelessWidget {
   }
 }
 
-/// "1.25×" in the locale's numerals.
 String speedLabel(BuildContext context, double speed) {
   final format = intl.NumberFormat(
     '0.##',
@@ -436,7 +419,6 @@ String speedLabel(BuildContext context, double speed) {
 
 const List<double> audiobookSpeeds = [0.75, 1.0, 1.25, 1.5, 1.75, 2.0];
 
-/// The speeds as lit choice chips; choosing one sets it and closes.
 Future<void> showAudiobookSpeedSheet(
   BuildContext context,
   AudiobookPlayerCubit cubit,
@@ -473,8 +455,6 @@ Future<void> showAudiobookSpeedSheet(
   );
 }
 
-/// The sleep timer: what it does now, the times as lit choice chips and
-/// End of chapter; Turn off while it runs.
 Future<void> showAudiobookSleepSheet(
   BuildContext context,
   AudiobookPlayerCubit cubit,
@@ -568,8 +548,6 @@ Future<void> showAudiobookSleepSheet(
   );
 }
 
-/// The chapters in the player: a section header and a row per chapter;
-/// a tap plays that chapter.
 class AudiobookPlayerChapters extends StatelessWidget {
   const AudiobookPlayerChapters({
     super.key,
@@ -583,7 +561,6 @@ class AudiobookPlayerChapters extends StatelessWidget {
   final int index;
   final AudiobookPlayerCubit cubit;
 
-  /// On the current row, so a pane can scroll it into view.
   final Key? currentKey;
 
   @override

@@ -1,14 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:huda/core/layout/fold.dart';
 
-/// A chapter's dhikr in rows of [columns], each row on one top line, so
-/// the order on screen is the chapter's order: across from the reading
-/// side, then down (owner round 2: a masonry broke the sequence). A row is
-/// as tall as its tallest card.
-///
-/// Two columns split exactly at a vertical fold (flat or half open, so
-/// nothing moves when the device bends), the gap on the crease. Assumes
-/// it's centered in the window, as the reader's page is.
 class AthkarDhikrColumns extends StatelessWidget {
   const AthkarDhikrColumns({
     super.key,
@@ -29,7 +21,6 @@ class AthkarDhikrColumns extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final width = constraints.maxWidth;
-        // Column widths from left to right.
         final widths = <double>[];
         final gaps = <double>[];
         final offset = (window - width) / 2;
@@ -48,7 +39,6 @@ class AthkarDhikrColumns extends StatelessWidget {
           widths.addAll(List.filled(columns, each));
           gaps.addAll(List.filled(columns - 1, spacing));
         }
-        // Cells laid out left to right; in RTL the first is on the right.
         final rows = (children.length / columns).ceil();
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

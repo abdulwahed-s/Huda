@@ -19,7 +19,6 @@ import 'package:huda/presentation/widgets/design/huda_lamp.dart';
 import 'package:huda/presentation/widgets/design/huda_states.dart';
 import 'package:huda/presentation/widgets/error/system_identity.dart';
 
-// The native launch screen's color and logo: the splash continues it.
 const Color _bootBackground = Color(0xFF0c1d2b);
 const String _bootLogo = 'assets/images/huda.png';
 
@@ -41,8 +40,6 @@ class _BootstrapperState extends State<Bootstrapper> {
     _runGate();
   }
 
-  /// A retry keeps the failure on screen with "Retrying…" until it's
-  /// settled, instead of falling back to the splash.
   void _runGate({bool retry = false}) {
     setState(() {
       _initialRoute = null;
@@ -94,8 +91,6 @@ class _BootstrapperState extends State<Bootstrapper> {
   }
 }
 
-/// Lantern's night on the launch screen's color. Built without the
-/// owner's settings, which aren't loaded yet.
 ThemeData bootTheme() {
   final night = HudaTheme.build(
     colorTheme: AppColors.defaultTheme,
@@ -113,9 +108,6 @@ class BootSplash extends StatelessWidget {
       Scaffold(
         backgroundColor: _bootBackground,
         body: Center(
-          // GTK can report a transient 1x1 surface before the Linux window gets
-          // its first real allocation. Scale the splash during that frame rather
-          // than overflowing its fixed-size column.
           child: FittedBox(
             fit: BoxFit.scaleDown,
             child: Column(
@@ -136,8 +128,6 @@ class BootSplash extends StatelessWidget {
   }
 }
 
-/// Startup failed: the broken line, what happened, Retry (then
-/// "Retrying…", while the line mends) and Restart.
 class BootRetry extends StatelessWidget {
   const BootRetry({super.key, required this.onRetry, this.retrying = false});
 
@@ -153,7 +143,6 @@ class BootRetry extends StatelessWidget {
       Scaffold(
         body: LayoutBuilder(
           builder: (context, outer) {
-            // Tabletop: the gate stays above the hinge.
             final fold = FoldInfo.of(context);
             final top = fold.separatorAxis == Axis.horizontal && fold.avoided
                 ? fold.start
@@ -270,7 +259,6 @@ class _BootLogo extends StatelessWidget {
   }
 }
 
-/// Transparent bars with light icons over the night.
 Widget _bootBars(Widget child) => AnnotatedRegion<SystemUiOverlayStyle>(
   value: HudaSystemUi.over(top: Brightness.dark, bottom: Brightness.dark),
   child: child,

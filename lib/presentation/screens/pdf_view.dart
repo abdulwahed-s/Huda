@@ -19,12 +19,6 @@ import 'package:huda/presentation/widgets/pdf/pdf_reader_panel.dart';
 import 'package:huda/presentation/widgets/pdf/pdf_viewer_content.dart';
 import 'package:pdf_document/pdf_document.dart';
 
-/// The book reader: the PDF's pages edge to edge on the reader's backdrop
-/// under a bar that names the book, a floating capsule at the foot (zoom,
-/// the page, which opens Go to page; highlight inks while text is
-/// selected), and the panel (contents, search, pages, highlights): inline
-/// on the reading start from 840 wide, a sheet below. Immersive tier;
-/// follows light and dark. See `design/features/books/brief.md`.
 class PdfView extends StatefulWidget {
   const PdfView({
     super.key,
@@ -40,7 +34,6 @@ class PdfView extends StatefulWidget {
   final String? bookTitle;
   final String? language;
 
-  /// Remote copy retained when [pdfUrl] is a downloaded local file.
   final String? fallbackPdfUrl;
 
   @override
@@ -200,9 +193,6 @@ class _PdfViewState extends State<PdfView> {
       }
     }
 
-    // `restoreViewport` can intentionally wait for the viewer's next layout.
-    // Keep persistence disabled until that queued restore has had a frame to
-    // land, otherwise the initial page can overwrite saved progress.
     await WidgetsBinding.instance.endOfFrame;
     await WidgetsBinding.instance.endOfFrame;
   }
@@ -331,7 +321,6 @@ class _PdfViewState extends State<PdfView> {
     );
   }
 
-  /// The panel inline beside the pages (wide windows) is open.
   bool _panelOpen = false;
 
   static const double _panelWidth = 360;
@@ -406,12 +395,8 @@ class _PdfViewState extends State<PdfView> {
           builder: (context) {
             final insets = MediaQuery.paddingOf(context);
             final capsuleRoom = insets.bottom + space.md + 56;
-            // The capsule centers under the pages, except on a half-open
-            // vertical fold (book): it keeps to the trailing half, never on
-            // the crease.
             final fold = FoldInfo.of(context);
             final windowWidth = MediaQuery.sizeOf(context).width;
-            // Absolute sides: the panel is on the reading start.
             final panelRoom = panelShown ? _panelWidth : 0.0;
             var capsuleLeft = (rtl ? 0.0 : panelRoom) + space.md;
             var capsuleRight = (rtl ? panelRoom : 0.0) + space.md;
@@ -424,8 +409,6 @@ class _PdfViewState extends State<PdfView> {
                 capsuleLeft = math.max(capsuleLeft, left + space.md);
               }
             }
-            // Pages run under the side insets' background; the controls on
-            // them (the scrubber, the capsule) stay inside the insets.
             return Padding(
               padding: EdgeInsets.fromLTRB(
                 insets.left,
@@ -514,7 +497,6 @@ class _PdfViewState extends State<PdfView> {
     );
   }
 
-  // The reader's highlight inks (marker pens, not theme colors).
   static const Color _inkRed = Colors.red;
   static const Color _inkGreen = Colors.green;
   static const Color _inkOrange = Colors.orange;

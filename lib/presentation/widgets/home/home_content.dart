@@ -19,11 +19,6 @@ import 'package:huda/presentation/widgets/home/themes/classic_home.dart';
 import 'package:huda/presentation/widgets/home/themes/prayer_today_home.dart';
 import 'package:huda/presentation/widgets/home/themes/quran_journey_home.dart';
 
-/// Home in the person's chosen style. Each style has its own page: Classic
-/// on the landing tier (Huda's logo in the band, the gallery below), Path
-/// of Prayer on the sky (immersive, edge to edge), Quran Journey on a
-/// paper page (the standard tier) that opens like a surah. Home's editor
-/// lives in Settings. Content caps at [maxContentWidth] and centers.
 class HomeView extends StatelessWidget {
   const HomeView({super.key, required this.actions});
 
@@ -42,8 +37,6 @@ class HomeView extends StatelessWidget {
       builder: (context, state) {
         final preferences = switch (state) {
           HomeCustomizationReady(:final preferences) => preferences,
-          // The saved layout can't be read: the default one, rather than a
-          // skeleton that never ends.
           HomeCustomizationError() => HomePreferences.defaults(),
           _ => null,
         };
@@ -70,7 +63,6 @@ class HomeView extends StatelessWidget {
             actions: actions,
           ),
           HomeThemeId.prayerToday => PrayerTodayHome(
-            // The Quran always first; Prayer Times is the dial above.
             tools: [?byId[HomeFeatureId.quranKit], ...tools],
             more: more,
             actions: actions,
@@ -88,9 +80,6 @@ class HomeView extends StatelessWidget {
   }
 }
 
-/// Classic's page: the landing tier with Huda's logo in gilt as its name,
-/// then [body]. On a tabletop, [tabletop]'s top sits above
-/// the band with the header and its bottom below.
 class HomeLanding extends StatelessWidget {
   const HomeLanding({super.key, required this.body, this.tabletop});
 
@@ -112,8 +101,6 @@ class HomeLanding extends StatelessWidget {
   }
 
   Widget _scaffold(BuildContext context, Widget body) => HudaLandingScaffold(
-    // Huda's logo is Home's name: in gilt where a title would be (no word
-    // beside it), small in the toolbar once the band collapses.
     title: AppLocalizations.of(context)!.huda,
     titleMark: const Align(
       alignment: AlignmentDirectional.centerStart,
@@ -131,17 +118,12 @@ class HomeLanding extends StatelessWidget {
   static const _logoHeight = 46.0;
 }
 
-/// Whether Home splits above and below a horizontal fold: half open on a
-/// table, or two screens one above the other (the Duo held upright, whose
-/// hinge would cut through whatever lies across it).
 bool homeSplitsAtFold(BuildContext context) {
   final fold = FoldInfo.of(context);
   return TabletopSplit.applies(context) ||
       (fold.separatorAxis == Axis.horizontal && fold.avoided);
 }
 
-/// [body] between the page's gutters, capped and centered, ending above
-/// the system bar.
 Widget homePageSliver(BuildContext context, Widget body) {
   final width = MediaQuery.sizeOf(context).width;
   final space = context.tokens.space;
@@ -161,13 +143,11 @@ Widget homePageSliver(BuildContext context, Widget body) {
   );
 }
 
-/// The gap between Home's blocks.
 double homeBlockGap(BuildContext context) {
   final space = context.tokens.space;
   return context.windowClass.isCompact ? space.lg : space.xl;
 }
 
-/// Blocks stacked with Home's gap.
 class HomeColumn extends StatelessWidget {
   const HomeColumn({super.key, required this.children});
 
@@ -189,10 +169,6 @@ class HomeColumn extends StatelessWidget {
   }
 }
 
-/// The dashboard: the style's day ([start]) beside its tools ([end]). Split
-/// exactly at a vertical fold (nothing on a half-open band), otherwise
-/// about 40% for the day. Each pane sees no fold. Assumes it's centered
-/// in the window, as Home's content is.
 class HomePanes extends StatelessWidget {
   const HomePanes({
     super.key,
@@ -204,14 +180,8 @@ class HomePanes extends StatelessWidget {
   final Widget start;
   final Widget end;
 
-  /// Two equal halves (a book's spread) instead of about 40% for [start].
   final bool even;
 
-  /// Whether the window gets the dashboard: with a vertical fold (the Duo
-  /// and Fold open, flat or as a book: the halves are the panes), on short
-  /// windows from medium (phone landscape, the Duo closed sideways), and on
-  /// expanded windows wider than they're tall. Tall tablets keep one
-  /// column, the day above the tools, so the page isn't half empty.
   static bool applies(BuildContext context) {
     final window = context.windowClass;
     final size = MediaQuery.sizeOf(context);
@@ -259,7 +229,6 @@ class HomePanes extends StatelessWidget {
   }
 }
 
-/// While Home's layout loads: plates and a hero, shaped like Home.
 class HomeSkeleton extends StatelessWidget {
   const HomeSkeleton({super.key});
 

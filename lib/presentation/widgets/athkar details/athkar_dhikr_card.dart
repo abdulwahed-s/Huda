@@ -5,8 +5,6 @@ import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/athkar/athkar_identity.dart';
 import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 
-/// Where a dhikr's audio is: not this one, or this one playing or paused
-/// at [position] of [duration].
 @immutable
 class AthkarCardAudio {
   const AthkarCardAudio({
@@ -33,9 +31,6 @@ class AthkarCardAudio {
   int get hashCode => Object.hash(current, playing, position, duration);
 }
 
-/// One dhikr. Tapping the card says it once: the medallion's petals light
-/// and its numeral counts down. Once done it folds into a one-line row
-/// ([folded]); tapping the row opens it again.
 class AthkarDhikrCard extends StatelessWidget {
   const AthkarDhikrCard({
     super.key,
@@ -64,17 +59,13 @@ class AthkarDhikrCard extends StatelessWidget {
   final VoidCallback onReset;
   final VoidCallback onShare;
 
-  /// Null when the dhikr has no audio.
   final VoidCallback? onPlay;
   final ValueChanged<Duration>? onSeek;
 
   @override
   Widget build(BuildContext context) {
-    // Continue: the card folds and opens in place, shrinking while it
-    // cross-fades, so the cards below move up instead of jumping.
     const motion = HudaMotion();
     final duration = motion.of(context, motion.long);
-    // Reduce motion: swap at once (a zero-length size animation throws).
     if (duration == Duration.zero) {
       return folded ? _folded(context) : _open(context);
     }
@@ -140,17 +131,12 @@ class AthkarDhikrCard extends StatelessWidget {
         : remaining == total
         ? l10n.athkarRepeatTimes(total)
         : l10n.athkarLeft(remaining);
-    // Short athkar read best centered; long ones from the start (never
-    // justified: narrow columns and large text open wide gaps).
     final short = arabic.length <= 90;
     final onPlay = this.onPlay;
 
     return Semantics(
       value: status,
       hint: done ? null : l10n.athkarTapToCount,
-      // A faint press over the Arabic instead of an ink splash flooding it
-      // on every tap (owner round 1); the press-in and the medallion
-      // answer the tap.
       child: Theme(
         data: theme.copyWith(
           splashFactory: NoSplash.splashFactory,
@@ -226,7 +212,6 @@ class AthkarDhikrCard extends StatelessWidget {
   }
 }
 
-/// Listen, and while this dhikr's audio is loaded, where it is.
 class _AudioRow extends StatelessWidget {
   const _AudioRow({required this.audio, required this.onPlay, this.onSeek});
 

@@ -6,7 +6,6 @@ import 'package:huda/presentation/widgets/prayer_alerts/prayer_alert_sheet.dart'
 import 'package:huda/presentation/widgets/prayer_alerts/prayer_alert_widgets.dart';
 import 'package:huda/presentation/widgets/prayer_alerts/prayer_flip_check.dart';
 
-/// Switches most people never need, for every prayer.
 class PrayerAlertMorePage extends StatelessWidget {
   const PrayerAlertMorePage({super.key});
 
@@ -72,7 +71,6 @@ class PrayerAlertMorePage extends StatelessWidget {
                           SetPrayerAlertToggle(toggle.key, value),
                         ),
                       );
-                      // Flip to stop can be checked right here.
                       if (toggle.key != 'flipToStopEnabled' || !on) return row;
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,

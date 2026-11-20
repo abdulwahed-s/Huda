@@ -4,13 +4,8 @@ import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/design/huda_motion.dart';
 
-/// A highlight ink the reader offers on a selection.
 typedef PdfInk = ({Color color, String label});
 
-/// The reader's floating capsule over the page's foot: zoom out, the page
-/// ("12 / 412", opens Go to page), zoom in. While text is selected it
-/// turns into the highlight inks and a clear button. A chrome capsule;
-/// the two modes cross-fade.
 class PdfReaderCapsule extends StatelessWidget {
   const PdfReaderCapsule({
     super.key,

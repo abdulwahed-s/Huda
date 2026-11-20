@@ -3,8 +3,6 @@ import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/presentation/widgets/design/huda_states.dart';
 import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 
-/// Ramadan loading, in the shape of what's coming: the plate, then the
-/// nights card with its moons.
 class RamadanPlateSkeleton extends StatelessWidget {
   const RamadanPlateSkeleton({super.key});
 

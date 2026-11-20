@@ -6,7 +6,6 @@ import 'package:huda/presentation/widgets/design/huda_lamp.dart';
 import 'package:huda/presentation/widgets/huda_ai/huda_ai_identity.dart';
 import 'package:huda/presentation/widgets/huda_ai/huda_ai_text.dart';
 
-/// The person's turn: their words in a tinted bubble at the end edge.
 class HudaAiUserTurn extends StatelessWidget {
   const HudaAiUserTurn({super.key, required this.text});
 
@@ -64,8 +63,6 @@ class HudaAiUserTurn extends StatelessWidget {
   }
 }
 
-/// Signs Huda AI's turn: its five-mote mark and name, and "Writing…"
-/// while the answer is still coming (the mark gathers meanwhile).
 class HudaAiTurnHeader extends StatelessWidget {
   const HudaAiTurnHeader({super.key, this.writing = false});
 
@@ -110,8 +107,6 @@ class HudaAiTurnHeader extends StatelessWidget {
   }
 }
 
-/// A chat answer: Huda AI's mark, the text at the reading measure (no
-/// bubble: it's the thing to read), then Copy, Share and the AI note.
 class HudaAiAnswer extends StatelessWidget {
   const HudaAiAnswer({
     super.key,
@@ -149,8 +144,6 @@ class HudaAiAnswer extends StatelessWidget {
   }
 }
 
-/// Copy and Share for an answer, and the note that it's AI generated
-/// (quiet, beside them: it used to be an orange box under every answer).
 class HudaAiAnswerActions extends StatelessWidget {
   const HudaAiAnswerActions({
     super.key,
@@ -167,7 +160,6 @@ class HudaAiAnswerActions extends StatelessWidget {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
     final space = context.tokens.space;
-    // Small text and narrow windows: the note goes under the buttons.
     final narrow =
         MediaQuery.sizeOf(context).width <
         420 * MediaQuery.textScalerOf(context).scale(1);
@@ -179,7 +171,6 @@ class HudaAiAnswerActions extends StatelessWidget {
         color: scheme.onSurfaceVariant,
         icon: const Icon(Icons.copy_rounded, size: 20),
       ),
-      // Linux has no image or system share.
       if (!PlatformUtils.isLinux)
         IconButton(
           key: const ValueKey('huda_ai_share'),
@@ -226,9 +217,6 @@ class HudaAiAnswerActions extends StatelessWidget {
   }
 }
 
-/// The wait for an answer: the gathering of light, breathing and drawing
-/// in, and what's happening ("Huda AI is thinking…", or "Retrying…" after
-/// a tap on Retry).
 class HudaAiThinking extends StatelessWidget {
   const HudaAiThinking({super.key, this.retrying = false});
 
@@ -276,8 +264,6 @@ class HudaAiThinking extends StatelessWidget {
   }
 }
 
-/// A one-line status with a lit lamp, for work elsewhere ("Huda AI is
-/// answering another conversation").
 class HudaAiStatusLine extends StatelessWidget {
   const HudaAiStatusLine({super.key, required this.text});
 
@@ -322,8 +308,6 @@ class HudaAiStatusLine extends StatelessWidget {
   }
 }
 
-/// Content arriving: it fades in and rises a little, after [delay], once.
-/// Under reduce motion it's simply there.
 class HudaAiRiseIn extends StatefulWidget {
   const HudaAiRiseIn({
     super.key,
@@ -348,7 +332,6 @@ class _HudaAiRiseInState extends State<HudaAiRiseIn>
     duration: widget.delay + _motion.long,
     value: widget.animate ? 0 : 1,
   );
-  // The delay is the start of the curve: no timers.
   late final CurvedAnimation _curve = CurvedAnimation(
     parent: _controller,
     curve: Interval(

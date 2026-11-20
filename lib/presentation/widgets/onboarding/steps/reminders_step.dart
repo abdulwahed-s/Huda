@@ -9,8 +9,6 @@ import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 import 'package:huda/presentation/widgets/onboarding/onboarding_frame.dart';
 
-/// The reminders the wizard offers, with the keys `NotificationsCubit`
-/// keeps them under. Their times are the app's defaults.
 enum OnboardingReminder {
   athkar('sabahMasaa', Icons.wb_twilight_rounded),
   kahf('kahfFriday', Icons.menu_book_rounded),
@@ -42,9 +40,6 @@ enum OnboardingReminder {
       };
 }
 
-/// Step 8 (only when notifications are allowed): daily reminders, all off
-/// until turned on. Each switch schedules at once; if the system refuses,
-/// the switch goes back off and a toast says so.
 class RemindersStep extends StatefulWidget {
   const RemindersStep({super.key});
 
@@ -53,14 +48,11 @@ class RemindersStep extends StatefulWidget {
 }
 
 class _RemindersStepState extends State<RemindersStep> {
-  /// The reminder the system just refused, said inline under the switches
-  /// (a toast would cover the step's buttons).
   OnboardingReminder? _refused;
   final _refusedKey = GlobalKey();
 
   void _showRefused(OnboardingReminder reminder) {
     setState(() => _refused = reminder);
-    // On short phones it lands below the fold: bring it into view.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final target = _refusedKey.currentContext;
       if (target != null && target.mounted) {

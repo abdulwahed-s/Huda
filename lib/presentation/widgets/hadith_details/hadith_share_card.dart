@@ -11,17 +11,6 @@ import 'package:huda/presentation/widgets/hadith/hadith_identity.dart';
 import 'package:huda/presentation/widgets/hadith_details/hadith_text.dart';
 import 'package:huda/presentation/widgets/share/share_image_frame.dart';
 
-/// Hadith's share image: a manuscript folio on paper, in both themes (the
-/// card is an image, and paper is Hadith's material; Athkar's is night).
-/// A gilt jadwal frames the page; at its head the collection and the bab
-/// as a rubric in ink, the chain of narrators as linked nodes; then the
-/// matn and, if chosen, the translation; at its foot an ink seal with the
-/// collection's Arabic name and the hadith's number, tilted as if pressed
-/// by hand, the grade, and Huda's mark. Only the capture pipeline is
-/// shared.
-///
-/// Width: [width]. As tall as the hadith needs, never shorter than a
-/// square: the text keeps its size and the card grows (as Athkar's).
 class HadithShareCard extends StatelessWidget {
   const HadithShareCard({
     super.key,
@@ -37,32 +26,23 @@ class HadithShareCard extends StatelessWidget {
     this.quietArabic = false,
   });
 
-  /// The collection in the app's language.
   final String collection;
 
-  /// Its Arabic name, for the seal.
   final String? collectionArabic;
   final String number;
 
-  /// The bab, or the book's name.
   final String? rubric;
   final List<HadithTextRun> arabic;
 
-  /// Empty leaves the translation out.
   final List<HadithTextRun> translation;
   final int narrators;
   final String? grade;
   final String? gradedBy;
 
-  /// The Arabic is a chain the source doesn't mark: set it at the chain's
-  /// quieter size, as the reader does for non-Arabic readers.
   final bool quietArabic;
 
   static const double width = BrandedShareFrame.width;
 
-  /// The card's height over its width, estimated from the text's length
-  /// (character counts, not a measure-and-retry text widget): the share
-  /// sheet scrolls the preview of a card taller than 9:16.
   static double cardRatio({required String arabic, String translation = ''}) {
     const room = width - 2 * (_margin + _inset);
     int lines(int chars, double em, double size) =>
@@ -86,7 +66,6 @@ class HadithShareCard extends StatelessWidget {
   static const _arabic = 22.0;
   static const _translation = 15.0;
 
-  /// The owner's colors on paper: the light theme, whatever the app's.
   static ThemeData _paper(BuildContext context) {
     final theme = Theme.of(context);
     if (theme.brightness == Brightness.light) return theme;
@@ -103,8 +82,6 @@ class HadithShareCard extends StatelessWidget {
   }
 
   @override
-  // Captured in an overlay with no Material above it; the reader's text
-  // size doesn't apply to an image.
   Widget build(BuildContext context) => MediaQuery.withNoTextScaling(
     child: Theme(
       data: _paper(context),
@@ -120,9 +97,7 @@ class HadithShareCard extends StatelessWidget {
     final scheme = theme.colorScheme;
     final tokens = context.tokens;
     final ink = scheme.primary;
-    // Paper: the page warmed a little toward the gilt.
     final paper = Color.lerp(scheme.surfaceContainerLowest, tokens.gilt, 0.07)!;
-    // The gilt on surfaces (the chrome's is too pale on paper).
     final gilt = OrnamentStyle(
       color: tokens.ornament.withValues(alpha: 0.8),
       render: OrnamentRender.line,
@@ -275,8 +250,6 @@ class HadithShareCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(_margin),
         child: CustomPaint(
-          // The jadwal: a gilt double rule, an ink hairline inside it, and
-          // small squares at the corners.
           painter: RuledFramePainter(
             style: gilt,
             rules: const [0, 4, 10],
@@ -294,8 +267,6 @@ class HadithShareCard extends StatelessWidget {
                     const SizedBox(height: 22),
                     const Spacer(),
                     ...text,
-                    // The verdict closes the text, as in the books and the
-                    // reader (owner round 1).
                     if (grade != null) ...[
                       const SizedBox(height: 22),
                       HadithGrade(
@@ -318,13 +289,11 @@ class HadithShareCard extends StatelessWidget {
   }
 }
 
-/// Huda's logo above its name, in ink, small: the card's signature.
 class _Mark extends StatelessWidget {
   const _Mark({required this.color});
 
   final Color color;
 
-  // The glyph's box inside the 1024 square asset.
   static const _glyphWidth = 830 / 1024;
   static const _glyphHeight = 448 / 1024;
   static const _height = 16.0;

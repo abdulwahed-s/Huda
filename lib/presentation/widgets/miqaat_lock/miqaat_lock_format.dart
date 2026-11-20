@@ -3,21 +3,17 @@ import 'package:huda/data/models/miqaat_lock/miqaat_lock.dart';
 import 'package:huda/l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 
-/// A time of day in the locale's own format (12 or 24 hours, numerals).
 String miqaatTime(BuildContext context, TimeOfDay time) =>
     MaterialLocalizations.of(context).formatTimeOfDay(
       time,
       alwaysUse24HourFormat: MediaQuery.alwaysUse24HourFormatOf(context),
     );
 
-/// A window's range, "5:00 AM – 6:00 AM".
 String miqaatRange(BuildContext context, TimeSlot slot) =>
     '${miqaatTime(context, slot.startTime)} – ${miqaatTime(context, slot.endTime)}';
 
-/// The short name of an ISO weekday (1 = Monday … 7 = Sunday).
 String miqaatWeekday(BuildContext context, int weekday) {
   final locale = Localizations.localeOf(context).toLanguageTag();
-  // 2024-01-01 was a Monday.
   final day = DateTime(2024, 1, weekday);
   try {
     return DateFormat.E(locale).format(day);
@@ -26,7 +22,6 @@ String miqaatWeekday(BuildContext context, int weekday) {
   }
 }
 
-/// "Every day", or the window's days in week order.
 String miqaatDays(BuildContext context, List<int> weekdays) {
   if (weekdays.isEmpty || weekdays.length == 7) {
     return AppLocalizations.of(context)!.everyday;
@@ -35,7 +30,6 @@ String miqaatDays(BuildContext context, List<int> weekdays) {
   return sorted.map((d) => miqaatWeekday(context, d)).join(' · ');
 }
 
-/// When the next window starts after [now], within a week.
 DateTime? miqaatNextWindow(List<TimeSlot> slots, DateTime now) {
   DateTime? best;
   for (var offset = 0; offset <= 7; offset++) {
@@ -59,7 +53,6 @@ DateTime? miqaatNextWindow(List<TimeSlot> slots, DateTime now) {
   return best;
 }
 
-/// "5:00 AM" today, "Fri 5:00 AM" on another day.
 String miqaatWhen(BuildContext context, DateTime at, {DateTime? now}) {
   final today = now ?? DateTime.now();
   final time = miqaatTime(context, TimeOfDay.fromDateTime(at));

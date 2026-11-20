@@ -21,11 +21,6 @@ import 'package:huda/presentation/widgets/reciter_surahs/reciter_recitation.dart
 import 'package:huda/presentation/widgets/reciters/reciter_catalog.dart';
 import 'package:huda/presentation/widgets/reciters/reciters_parts.dart';
 
-/// Quran Audio's front screen: the reciters by letter, each with their
-/// recitations. Phones open a recitation as a page over the list; wide
-/// windows and open folds show it beside the list. The open recitation
-/// survives folding and unfolding. While a surah plays, the player's bar
-/// is pinned under everything.
 class RecitersScreen extends StatefulWidget {
   const RecitersScreen({super.key, this.source = const ReciterCatalogSource()});
 
@@ -45,20 +40,17 @@ class _RecitersScreenState extends State<RecitersScreen> {
   String _query = '';
   String? _dir;
 
-  /// Downloaded file names, to count each recitation's surahs on the device.
   Set<String> _files = const {};
   final _search = TextEditingController();
   final _nested = GlobalKey<NavigatorState>();
   final _storage = PageStorageBucket();
 
-  /// The open recitation.
   (Reciter, Moshaf)? _open;
   bool _started = false;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Loads once; the catalog's language is the app's.
     if (_started) return;
     _started = true;
     _init();
@@ -130,7 +122,6 @@ class _RecitersScreenState extends State<RecitersScreen> {
     return _files.where((f) => f.startsWith(prefix)).length;
   }
 
-  /// Offline, only recitations with something downloaded are listed.
   List<Reciter> get _shown {
     var base = _reciters;
     if (_offline) {
@@ -165,7 +156,6 @@ class _RecitersScreenState extends State<RecitersScreen> {
     if (_open == null) return;
     setState(() {
       _open = null;
-      // Downloads made inside count on the list.
       _listFiles();
     });
   }
@@ -173,9 +163,6 @@ class _RecitersScreenState extends State<RecitersScreen> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
-    // Short windows (phone landscape) keep the one-column flow: a pane
-    // there is too narrow to read. A failed or empty catalog fills the
-    // window instead of sitting beside the chooser.
     final stateOnly = !_loading && (_failed || (_offline && _reciters.isEmpty));
     final wide =
         AdaptivePanes.showsTwoPanes(width, FoldInfo.of(context)) &&
@@ -197,7 +184,6 @@ class _RecitersScreenState extends State<RecitersScreen> {
     return HudaScaffold(
       title: l10n.quranAudio,
       body: AdaptivePanes(
-        // Reciter names and riwayat need room to read on one or two lines.
         minPrimaryWidth: 360,
         primary: CustomScrollView(
           key: const PageStorageKey('reciters-index'),
@@ -221,8 +207,6 @@ class _RecitersScreenState extends State<RecitersScreen> {
     );
   }
 
-  /// The list, and the open recitation pushed over it, in a navigator of
-  /// their own so Back (and the back gesture) closes the recitation.
   Widget _narrow(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final open = _open;
@@ -236,13 +220,10 @@ class _RecitersScreenState extends State<RecitersScreen> {
             key: const ValueKey('reciters-index'),
             child: PageStorage(
               bucket: _storage,
-              // The vine grows in as the index opens.
               child: HudaDrawIn(
                 builder: (context, grow) {
                   final index = _index(context, wide: false);
                   if (TabletopSplit.applies(context)) {
-                    // The art and the search above the fold, the reciters
-                    // below it.
                     return HudaScaffold(
                       title: l10n.quranAudio,
                       leading: _leaveButton,
@@ -312,7 +293,6 @@ class _RecitersScreenState extends State<RecitersScreen> {
     );
   }
 
-  /// Back out of Quran Audio, from inside the nested navigator.
   Widget? get _leaveButton {
     final canLeave = ModalRoute.of(context)?.impliesAppBarDismissal ?? false;
     if (!canLeave) return null;
@@ -420,7 +400,6 @@ class _RecitersScreenState extends State<RecitersScreen> {
           showChevron: !wide,
           onOpen: (m) => _openRecitation(reciter, m),
         );
-        // The first screenful rises in, after the search (index 0).
         Widget reveal(int order, Widget child) =>
             order < 6 ? HudaReveal(index: order, child: child) : child;
         final columns = AdaptiveGrid.columns(
@@ -429,8 +408,6 @@ class _RecitersScreenState extends State<RecitersScreen> {
           spacing: space.sm,
         );
         if (columns > 1) {
-          // Several columns: one flowing grid, each letter on the first
-          // card that starts with it (per-letter rows left gaps).
           final firsts = {for (final g in groups) g.reciters.first.id};
           body = capped(
             SliverPadding(
@@ -493,8 +470,6 @@ class _RecitersScreenState extends State<RecitersScreen> {
   }
 }
 
-/// The reciters' page in parts: [head] (search, offline banner) and the
-/// [body] slivers, so a tabletop can put the head above the fold.
 class _Index {
   const _Index({required this.head, required this.wrap, required this.body});
 

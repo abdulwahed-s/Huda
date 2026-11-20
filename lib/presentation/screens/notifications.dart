@@ -38,15 +38,6 @@ extension NotificationContextExtension on BuildContext {
   }
 }
 
-/// The reminders screen. The day dial at the top shows when today's
-/// reminders fire and what comes next; under it whatever access is still
-/// needed, then the reminders by theme (Athkar, Quran, daily routine), each
-/// with its switch and its times as chips, then "Check delivery".
-///
-/// Phones: one column. Medium windows: one column with the reminders two
-/// to a row. From 840 wide and on open folds: the overview (dial, access,
-/// delivery) beside the reminders. Tabletop: the dial above the band, the
-/// reminders below it.
 class Notifications extends StatefulWidget {
   const Notifications({
     super.key,
@@ -56,7 +47,6 @@ class Notifications extends StatefulWidget {
     this.debugIosStatus,
   });
 
-  /// Notification access without the platform, for the device matrix.
   @visibleForTesting
   final NotificationAccessController Function(
     NotificationsCubit cubit,
@@ -64,15 +54,12 @@ class Notifications extends StatefulWidget {
   )?
   debugAccess;
 
-  /// A fixed "now" for the device matrix.
   @visibleForTesting
   final DateTime Function()? debugClock;
 
-  /// Shows the Sahur alarm off a phone (the matrix runs on the desktop).
   @visibleForTesting
   final bool? debugSahur;
 
-  /// The iOS alarm and notification state, as if on an iPhone.
   @visibleForTesting
   final IOSPrayerStatus Function()? debugIosStatus;
 
@@ -80,7 +67,6 @@ class Notifications extends StatefulWidget {
   State<Notifications> createState() => _NotificationsState();
 }
 
-/// A reminder's preference key, and what's shown for it.
 enum _Reminder {
   athkar('sabahMasaa'),
   random('randomAthkar'),
@@ -96,30 +82,24 @@ enum _Reminder {
 class _NotificationsState extends State<Notifications> {
   late final NotificationAccessController _access;
 
-  /// Keys whose last scheduling failed, with what Retry runs.
   final Map<String, Future<void> Function()> _failed = {};
 
-  /// Why a key failed and the fix its action runs, when it's known.
   final Map<String, (String, String)> _failure = {};
 
-  /// Re-checks a known cause when Huda comes back from Settings.
   late final AppLifecycleListener _lifecycle = AppLifecycleListener(
     onResume: () {
       if (_failure.containsKey(_Reminder.sahur.key)) _explainSahur();
     },
   );
 
-  /// Keys being scheduled again after Retry.
   final Set<String> _retrying = {};
 
-  /// Keys whose time is being saved and scheduled.
   final Set<String> _saving = {};
 
   bool get _sahurAvailable => widget.debugSahur ?? PlatformUtils.isMobile;
 
   DateTime _now() => widget.debugClock?.call() ?? DateTime.now();
 
-  /// Moves the shadow and the countdown on with the clock.
   Timer? _minute;
 
   @override
@@ -159,14 +139,12 @@ class _NotificationsState extends State<Notifications> {
     await cubit.getIsNotificationEnabled();
     await cubit.loadPreferences();
     await cubit.initializeNotifications();
-    // Sahur that's on but can't ring (alarms denied, sounds off…) says so.
     final state = cubit.state;
     if (state is NotificationPreferencesLoaded && state.sahurAlarmEnabled) {
       await _explainSahur(onlyIfUnscheduled: true);
     }
   }
 
-  /// The iOS alarm and notification state; null off iOS.
   Future<IOSPrayerStatus?> _iosStatus() async {
     final debug = widget.debugIosStatus;
     if (debug != null) return debug();
@@ -178,8 +156,6 @@ class _NotificationsState extends State<Notifications> {
     }
   }
 
-  /// Why Sahur can't be scheduled on iOS, and the fix, on its row. A
-  /// denied permission never prompts again, so Retry alone can't help.
   Future<void> _explainSahur({bool onlyIfUnscheduled = false}) async {
     final status = await _iosStatus();
     if (status == null || !mounted) return;
@@ -193,7 +169,7 @@ class _NotificationsState extends State<Notifications> {
       try {
         await IOSPrayerBridge.openSettings();
       } on Object {
-        // Settings can't open (or no iOS bridge): the message still says where.
+        // Best effort: the settings page may be unavailable.
       }
     }
 
@@ -212,7 +188,7 @@ class _NotificationsState extends State<Notifications> {
               try {
                 await cubit.setSahurAlarmType(0);
               } on NotificationNotScheduledException {
-                // Saved; turning it on below schedules it, or says why not.
+                // Sahur alarm couldn't be switched; the toggle below retries.
               }
               await _toggle(key, true, retry: true);
             },
@@ -220,7 +196,6 @@ class _NotificationsState extends State<Notifications> {
         : null;
     if (!mounted) return;
     if (problem == null) {
-      // Fixed in Settings since: clear the explanation.
       if (_failure.containsKey(key)) {
         setState(() {
           _failure.remove(key);
@@ -244,16 +219,13 @@ class _NotificationsState extends State<Notifications> {
     showHudaToast(context, message: message, kind: kind);
   }
 
-  /// Notification access first, when turning a reminder on needs it.
   Future<bool> _allowed(bool on, {bool sahur = false}) async {
-    // The matrix has no native Sahur gateway (debugSahur): it asks.
     final needs =
         on &&
         (!sahur ||
             widget.debugSahur != null ||
             await NativeSahurAlarmGateway.requiresNotificationPermission());
     if (!mounted) return false;
-    // Already allowed (the access card knows): no need to ask again.
     if (!needs || (_access.access?.notificationsEnabled ?? false)) return true;
     return PermissionHandlers.requestNotificationPermission(context);
   }
@@ -278,8 +250,6 @@ class _NotificationsState extends State<Notifications> {
     }
   }
 
-  /// Saves a time or interval and, for a reminder that's on, schedules it;
-  /// a failure stays on the row with Retry.
   Future<void> _saveSetting(
     String key,
     Future<void> Function() save, {
@@ -321,7 +291,6 @@ class _NotificationsState extends State<Notifications> {
       context: context,
       initialTime: parseReminderTime(current),
       title: help,
-      // Al-Kahf is weekly: "in 7 h" would be wrong for it.
       daily: daily,
       clock: _now,
     );
@@ -365,7 +334,6 @@ class _NotificationsState extends State<Notifications> {
     return ReminderRowStatus.idle;
   }
 
-  // Rows ----------------------------------------------------------------------
 
   Widget _row(NotificationPreferencesLoaded state, _Reminder reminder) {
     final l10n = AppLocalizations.of(context)!;
@@ -540,10 +508,7 @@ class _NotificationsState extends State<Notifications> {
     ),
   ];
 
-  // The day --------------------------------------------------------------------
 
-  /// What fires on a day: (id, title, time, Friday only, icon). Each
-  /// carries its row's icon; morning and evening Athkar are named apart.
   List<(String, String, TimeOfDay, bool, IconData)> _occurrences(
     NotificationPreferencesLoaded state,
     AppLocalizations l10n,
@@ -580,7 +545,6 @@ class _NotificationsState extends State<Notifications> {
         true,
         Icons.auto_stories_rounded,
       ),
-    // Before Fajr depends on the day's prayer times: not placed.
     if (_sahurAvailable && state.sahurAlarmEnabled && state.sahurAlarmType == 0)
       (
         'sahur',
@@ -605,7 +569,6 @@ class _NotificationsState extends State<Notifications> {
     final occurrences = _occurrences(state, l10n);
     double hours(TimeOfDay t) => t.hour + t.minute / 60;
 
-    // The next one to fire, within a week.
     (String, String, DateTime, int)? next;
     final today = DateTime(now.year, now.month, now.day);
     for (var day = 0; day < 8 && next == null; day++) {
@@ -660,7 +623,6 @@ class _NotificationsState extends State<Notifications> {
           time,
         ),
       };
-      // Within a day: how long until it fires.
       final left = (next.$3.difference(now).inSeconds + 59) ~/ 60;
       final until = left > 24 * 60 ? null : hudaTimeUntil(context, left);
       caption = _Caption(
@@ -704,7 +666,6 @@ class _NotificationsState extends State<Notifications> {
       child: LayoutBuilder(
         builder: (context, constraints) {
           final width = constraints.maxWidth;
-          // Side by side when there's room, so the card stays short.
           final short = MediaQuery.sizeOf(context).height < 480;
           if (width >= 480) {
             return Row(
@@ -732,8 +693,6 @@ class _NotificationsState extends State<Notifications> {
               _DayLine(now),
               SizedBox(height: space.sm),
               Center(
-                // Short windows (phone landscape): a smaller dial, so the
-                // caption and status stay on the first screen.
                 child: ConstrainedBox(
                   constraints: BoxConstraints(maxWidth: short ? 220 : 400),
                   child: dial,
@@ -748,7 +707,6 @@ class _NotificationsState extends State<Notifications> {
     );
   }
 
-  // Layouts --------------------------------------------------------------------
 
   Widget _accessSection() => NotificationRequirementsSection(
     feature: NotificationFeature.reminders,
@@ -784,7 +742,6 @@ class _NotificationsState extends State<Notifications> {
     return slivers;
   }
 
-  /// Very wide panes: the groups side by side, each a column of rows.
   Widget _groupColumns(NotificationPreferencesLoaded state) {
     final l10n = AppLocalizations.of(context)!;
     final space = context.tokens.space;
@@ -819,7 +776,6 @@ class _NotificationsState extends State<Notifications> {
     );
   }
 
-  /// A scroll view whose content keeps a readable width, centered.
   Widget _scroll(List<Widget> slivers, {double maxWidth = 760}) {
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -922,7 +878,6 @@ class _NotificationsState extends State<Notifications> {
   }
 }
 
-/// The dial's caption: what fires next, or that nothing's on.
 class _Caption extends StatelessWidget {
   const _Caption({
     super.key,
@@ -936,7 +891,6 @@ class _Caption extends StatelessWidget {
   final String title;
   final String message;
 
-  /// How long until it fires ("in 2 h 40 min"), when it's within a day.
   final String? until;
 
   @override
@@ -997,8 +951,6 @@ class _Caption extends StatelessWidget {
   }
 }
 
-/// The day the dial shows: the weekday and the Hijri date, so a Friday's
-/// Al-Kahf and the day's place in the month read at a glance.
 class _DayLine extends StatelessWidget {
   const _DayLine(this.now);
 
@@ -1018,20 +970,17 @@ class _DayLine extends StatelessWidget {
     final muted = theme.textTheme.bodyMedium?.copyWith(
       color: theme.colorScheme.onSurfaceVariant,
     );
-    // Two pieces that wrap whole at large text, never mid-name.
     return Wrap(
       spacing: context.tokens.space.xs,
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         Text(day, style: theme.textTheme.titleSmall),
-        // The separator leads the date, so a wrap never leaves it dangling.
         Text('·  $date', style: muted),
       ],
     );
   }
 }
 
-/// Loading: the dial card and a few rows, in their shapes.
 class _Skeleton extends StatelessWidget {
   const _Skeleton();
 

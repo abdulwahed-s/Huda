@@ -4,9 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/presentation/widgets/home/special_event/event_visual_identity.dart';
 
-/// The colors an event scene is painted in: the person's chrome and gilt,
-/// tinted toward night or golden hour by the event's family (never a hue
-/// of its own).
 @immutable
 class HomeEventPalette {
   const HomeEventPalette({
@@ -30,10 +27,8 @@ class HomeEventPalette {
   final Color chromeEnd;
   final Color gilt;
 
-  /// The moon's and the lamps' brightest light.
   final Color light;
 
-  /// Silhouettes against the sky: the chrome, much darker.
   Color get dark => Color.lerp(chrome, Colors.black, 0.5)!;
 
   @override
@@ -48,28 +43,8 @@ class HomeEventPalette {
   int get hashCode => Object.hash(chrome, chromeEnd, gilt, light);
 }
 
-/// Where a scene's picture is composed: at the end of a banner (its words
-/// at the start) or centered in a band with no words over it.
 enum HomeEventStage { end, center }
 
-/// An event's scene. The sky fills the box; the land, sea and wall run
-/// across it (fading out toward the words at the start); the picture
-/// itself is composed inside a stage ([stageRect]) whose proportions stay
-/// between about 4:5 and 5:3 whatever the box, so nothing is cut or
-/// squeezed. Mirrored in right-to-left.
-///
-/// Ramadan: the crescent and three lanterns hanging. The last ten nights:
-/// ten lanterns on a garland, the odd nights brighter, the twenty-seventh
-/// brightest. Eid al-Fitr: a mosque under fireworks. Eid al-Adha: the
-/// Kaaba before the colonnade, light behind it. Arafah: the Mount of Mercy
-/// with its pillar and pilgrims, the sun low behind it. The first ten of
-/// Dhul Hijjah: ten lamps rising to the tenth. Ashura: the sea parted, a
-/// path to the dawn. Tashreeq: three lamps on the ground at dusk. The
-/// white days: three full moons over still water. Monday and Thursday:
-/// the week as seven arches, two lit. Others: the crescent and a star.
-///
-/// [reveal] (0–1) brings it in: the sky first, then its light, then the
-/// lamps one by one.
 class HomeEventScenePainter extends CustomPainter {
   HomeEventScenePainter({
     required this.eventKey,
@@ -87,20 +62,15 @@ class HomeEventScenePainter extends CustomPainter {
   final HomeEventStage stage;
   final Animation<double>? reveal;
 
-  /// The stage's width at the end of a banner [width] wide: about two
-  /// fifths of it, up to 180 on compact banners and 300 on wide ones.
   static double endStageWidth(double width) =>
       math.min(width * 0.4, width >= 600 ? 300.0 : 180.0);
 
-  /// The rect the picture is composed in (unmirrored: the end is right).
   static Rect stageRect(Size size, HomeEventStage stage) {
     if (stage == HomeEventStage.center) {
       final w = math.min(size.height * 1.6, size.width * 0.8);
       final h = math.min(size.height, w / 0.8);
       return Rect.fromLTWH((size.width - w) / 2, size.height - h, w, h);
     }
-    // Never wider than the banner's own share, nor than about 5:3 on a
-    // short banner.
     final w = math.min(endStageWidth(size.width), size.height * 1.7);
     final h = math.min(size.height, w / 0.8);
     return Rect.fromLTWH(size.width - w, size.height - h, w, h);
@@ -108,7 +78,6 @@ class HomeEventScenePainter extends CustomPainter {
 
   double get _t => reveal?.value ?? 1;
 
-  /// A phase of the reveal: 0 before [from], 1 after [to].
   double _phase(double from, double to) =>
       Curves.easeOutCubic.transform(((_t - from) / (to - from)).clamp(0, 1));
 
@@ -192,7 +161,6 @@ class HomeEventScenePainter extends CustomPainter {
     canvas.restore();
   }
 
-  // Skies ---------------------------------------------------------------------
 
   void _gradient(Canvas canvas, List<Color> colors) {
     final rect = Offset.zero & _size;
@@ -262,8 +230,6 @@ class HomeEventScenePainter extends CustomPainter {
     _stars(canvas, 10);
   }
 
-  /// Stars in the upper sky, gathering toward the stage (fewer over the
-  /// words); they come in with the reveal, each at its own moment.
   void _stars(Canvas canvas, int count) {
     final random = math.Random(eventKey.hashCode);
     final paint = Paint();
@@ -283,8 +249,6 @@ class HomeEventScenePainter extends CustomPainter {
     }
   }
 
-  /// A fill for the land, sea or wall that runs across the box: solid
-  /// under the stage, fading out toward the words at the start.
   Paint _across(Color color) {
     if (stage == HomeEventStage.center) return Paint()..color = color;
     final w = _size.width;
@@ -302,7 +266,6 @@ class HomeEventScenePainter extends CustomPainter {
       ).createShader(Offset.zero & _size);
   }
 
-  /// A gilt line across the box at [y], fading toward the start.
   void _horizon(Canvas canvas, double y, {double alpha = 0.6}) {
     canvas.drawRect(
       Rect.fromLTWH(0, y - 0.5, _size.width, 1),
@@ -310,7 +273,6 @@ class HomeEventScenePainter extends CustomPainter {
     );
   }
 
-  // Lights --------------------------------------------------------------------
 
   void _crescent(Canvas canvas, Offset c, double r) {
     final t = _phase(0.15, 0.6);
@@ -350,9 +312,6 @@ class HomeEventScenePainter extends CustomPainter {
     );
   }
 
-  /// A lantern (fanous) [w] wide whose cap is at [cap]: a ring and a dome,
-  /// a faceted body glowing from within, a base and a drop. About 2.3 [w]
-  /// tall. With [from], a cord runs up to it.
   void _lantern(
     Canvas canvas,
     Offset cap,
@@ -441,7 +400,6 @@ class HomeEventScenePainter extends CustomPainter {
     );
   }
 
-  /// A starburst: an eight-pointed star with rays around it.
   void _burst(Canvas canvas, Offset c, double r, double t) {
     if (t <= 0) return;
     final p = palette;
@@ -473,9 +431,7 @@ class HomeEventScenePainter extends CustomPainter {
     );
   }
 
-  // Scenes --------------------------------------------------------------------
 
-  /// The crescent with three lanterns hanging from the top edge.
   void _ramadan(Canvas canvas) {
     final u = _u;
     _crescent(canvas, _at(0.6, 0.34), 0.2 * u);
@@ -493,8 +449,6 @@ class HomeEventScenePainter extends CustomPainter {
     }
   }
 
-  /// Ten lanterns on a garland, the odd nights brighter, the 27th
-  /// brightest; a slim crescent above.
   void _lastTen(Canvas canvas) {
     final u = _u;
     final left = _at(0.07, 0.1);
@@ -536,8 +490,6 @@ class HomeEventScenePainter extends CustomPainter {
     }
   }
 
-  /// A mosque on its wall under fireworks: the dome on its drum with the
-  /// crescent finial, two minarets, lit windows.
   void _eidFitr(Canvas canvas) {
     final p = palette;
     final u = _u;
@@ -550,7 +502,6 @@ class HomeEventScenePainter extends CustomPainter {
       p.gilt,
       0.32 * _phase(0.2, 0.7),
     );
-    // The wall, across.
     final wallTop = ground - 0.07 * u;
     canvas.drawRect(
       Rect.fromLTRB(0, wallTop, _size.width, _size.height),
@@ -626,7 +577,6 @@ class HomeEventScenePainter extends CustomPainter {
     canvas.drawPath(dome, edge);
     canvas.drawPath(left, edge..color = p.gilt.withValues(alpha: 0.4));
     canvas.drawPath(right, edge);
-    // The finial and its crescent.
     final apex = Offset(cx, ground - 0.56 * u);
     canvas.drawLine(
       apex,
@@ -636,7 +586,6 @@ class HomeEventScenePainter extends CustomPainter {
         ..strokeWidth = 1,
     );
     _crescent(canvas, apex - Offset(0, 0.075 * u), 0.024 * u);
-    // Lit windows.
     final glow = _phase(0.35, 0.8);
     for (final k in const [-1, 0, 1]) {
       final x = cx + k * 0.16 * u;
@@ -666,12 +615,10 @@ class HomeEventScenePainter extends CustomPainter {
     }
   }
 
-  /// The Kaaba before the colonnade of the Haram, light rising behind it.
   void _eidAdha(Canvas canvas) {
     final p = palette;
     final u = _u;
     final ground = _y(0.94);
-    // The colonnade, across: a low wall pierced by small arches.
     final top = ground - 0.15 * u;
     final colonnade = Path()
       ..addRect(Rect.fromLTRB(0, top, _size.width, _size.height));
@@ -702,7 +649,6 @@ class HomeEventScenePainter extends CustomPainter {
       _across(p.gilt.withValues(alpha: 0.25 * _phase(0.3, 0.8))),
     );
     _horizon(canvas, top, alpha: 0.5);
-    // Light behind the Kaaba.
     final s = 0.42 * u;
     final depth = s * 0.28;
     final front = Rect.fromLTWH(_x(0.5) - (s + depth) / 2, ground - s, s, s);
@@ -732,7 +678,6 @@ class HomeEventScenePainter extends CustomPainter {
       Paint()..color = Color.lerp(dark, Colors.black, 0.35)!,
     );
     canvas.drawPath(roof, Paint()..color = Color.lerp(dark, p.chrome, 0.3)!);
-    // The gilt band, a quarter down, on both faces; the door.
     final band = s * 0.08;
     final y = front.top + s * 0.22;
     final gold = Paint()..color = p.gilt;
@@ -762,15 +707,11 @@ class HomeEventScenePainter extends CustomPainter {
     _burst(canvas, _at(0.82, 0.22), 0.075 * u, _phase(0.45, 0.85));
   }
 
-  /// The Mount of Mercy at golden hour: far ridges across, the sun low
-  /// behind the mount, its pillar on the summit, pilgrims in white on its
-  /// slopes and a path winding up.
   void _arafah(Canvas canvas) {
     final p = palette;
     final u = _u;
     final w = _size.width;
     _sun(canvas, _at(0.74, 0.5), 0.15 * u);
-    // Far ridges, across the box: soft hills, no edges.
     void ridge(double base, double rise, double phase, Color color) {
       final path = Path()..moveTo(0, _size.height);
       const steps = 24;
@@ -789,7 +730,6 @@ class HomeEventScenePainter extends CustomPainter {
 
     ridge(0.8, 0.1, 0.6, Color.lerp(p.chromeEnd, p.gilt, 0.18)!);
     ridge(0.9, 0.07, 2.2, Color.lerp(p.chrome, p.chromeEnd, 0.35)!);
-    // The mount, inside the stage.
     final peak = _at(0.52, 0.5);
     final mount = Path()
       ..moveTo(_x(0.08), _y(0.97))
@@ -799,7 +739,6 @@ class HomeEventScenePainter extends CustomPainter {
       ..lineTo(_x(0.08), _size.height)
       ..close();
     canvas.drawPath(mount, Paint()..color = p.dark);
-    // The sun's light on its far flank.
     canvas.drawPath(
       Path()
         ..moveTo(peak.dx, peak.dy)
@@ -809,7 +748,6 @@ class HomeEventScenePainter extends CustomPainter {
         ..style = PaintingStyle.stroke
         ..strokeWidth = 1.2,
     );
-    // The path winding up, dotted in gilt.
     final trail = Path()
       ..moveTo(_x(0.3), _size.height)
       ..cubicTo(
@@ -827,7 +765,6 @@ class HomeEventScenePainter extends CustomPainter {
         if (pos != null) canvas.drawCircle(pos, 0.8, dots);
       }
     }
-    // Pilgrims in white on the lower slopes.
     final random = math.Random(9);
     final pilgrim = Paint()
       ..color = p.light.withValues(alpha: 0.7 * _phase(0.4, 0.9));
@@ -840,13 +777,11 @@ class HomeEventScenePainter extends CustomPainter {
         canvas.drawCircle(at, 0.7 + random.nextDouble() * 0.5, pilgrim);
       }
     }
-    // The plain in front, grounding the mount's foot.
     canvas.drawRect(
       Rect.fromLTRB(0, _y(0.95), _size.width, _size.height),
       _across(Color.lerp(p.dark, Colors.black, 0.25)!),
     );
     _horizon(canvas, _y(0.95), alpha: 0.35);
-    // The pillar on the summit, catching the light.
     final pillar = Rect.fromLTWH(
       peak.dx - 0.018 * u,
       peak.dy - 0.15 * u,
@@ -860,8 +795,6 @@ class HomeEventScenePainter extends CustomPainter {
     );
   }
 
-  /// Ten lamps rising along an arc to the tenth day, a burst; the dawn on
-  /// the horizon.
   void _tenRising(Canvas canvas) {
     final p = palette;
     final u = _u;
@@ -906,8 +839,6 @@ class HomeEventScenePainter extends CustomPainter {
     }
   }
 
-  /// The sea parted: two walls of water with curling crests, a dry path
-  /// between them running to the dawn.
   void _partedSea(Canvas canvas) {
     final p = palette;
     final w = _size.width;
@@ -1007,8 +938,6 @@ class HomeEventScenePainter extends CustomPainter {
     wall(1);
   }
 
-  /// Three lamps standing on the ground at dusk, the three days; a slim
-  /// crescent.
   void _tashreeq(Canvas canvas) {
     final p = palette;
     final u = _u;
@@ -1032,8 +961,6 @@ class HomeEventScenePainter extends CustomPainter {
     }
   }
 
-  /// Three full moons along an arc, the middle one brightest: the 13th,
-  /// 14th and 15th.
   void _moons(Canvas canvas, List<(double, double, double)> at) {
     final p = palette;
     for (var i = 0; i < at.length; i++) {
@@ -1061,7 +988,6 @@ class HomeEventScenePainter extends CustomPainter {
     }
   }
 
-  /// Still water across the foot, the moons' light on it.
   void _water(Canvas canvas, {required double top}) {
     final p = palette;
     final y0 = _y(top);
@@ -1084,8 +1010,6 @@ class HomeEventScenePainter extends CustomPainter {
     }
   }
 
-  /// The week as seven pointed arches on the ground, Monday and Thursday
-  /// lit (the week from Sunday).
   void _week(Canvas canvas, {required double ground}) {
     final p = palette;
     final y = _y(ground);

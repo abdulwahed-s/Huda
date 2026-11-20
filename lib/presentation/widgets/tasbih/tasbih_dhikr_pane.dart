@@ -11,10 +11,6 @@ import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 import 'package:huda/presentation/widgets/tasbih/tasbih_dhikr_list.dart';
 
-/// The dhikr list beside or below the counter wherever there is room for
-/// it: pick what to count, see every count and the total, add and remove
-/// dhikr. Everything about the list happens here; these layouts have no
-/// dhikr sheet and no list button in the bar.
 class TasbihDhikrPane extends StatelessWidget {
   const TasbihDhikrPane({
     super.key,
@@ -26,8 +22,6 @@ class TasbihDhikrPane extends StatelessWidget {
   final TasbihLoaded state;
   final TasbihUndo undo;
 
-  /// Whether the pane starts under the transparent app bar (side by side),
-  /// or below the counter (tabletop).
   final bool belowToolbar;
 
   @override
@@ -41,22 +35,17 @@ class TasbihDhikrPane extends StatelessWidget {
     final total = state.notes.fold<int>(0, (sum, n) => sum + n.count);
     return LayoutBuilder(
       builder: (context, constraints) {
-        // A pane, but in a big window: at least the medium gutter.
         final gutter = math.max(space.gutter(constraints.maxWidth), space.xl);
-        // The scaffold's top padding already clears the transparent bar.
         final padding = context.scrollPadding(
           EdgeInsets.fromLTRB(gutter, space.md, gutter, space.md),
           includeTop: belowToolbar,
         );
         return SingleChildScrollView(
           padding: padding,
-          // Top-aligned: the list runs down the pane and scrolls.
           child: ReadableWidth(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // The total rides on the header line, so it's in view at
-                // rest however long the list is.
                 HudaReveal(
                   child: HudaSectionHeader(
                     l10n.tasbihYourDhikr,
@@ -89,11 +78,8 @@ class TasbihDhikrPane extends StatelessWidget {
                           ),
                   ),
                 ),
-                // Adding comes first, as in the phone sheet: it stays in
-                // view however long the list grows.
                 HudaReveal(index: 1, child: TasbihDhikrComposer(cubit: cubit)),
                 SizedBox(height: space.md),
-                // Keyed: it keeps its Undo when the list empties.
                 TasbihDhikrList(
                   key: const ValueKey('tasbih-dhikr-list'),
                   state: state,

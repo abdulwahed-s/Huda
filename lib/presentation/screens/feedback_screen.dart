@@ -13,10 +13,6 @@ import 'package:huda/presentation/widgets/feedback/feedback_form_card.dart';
 import 'package:huda/presentation/widgets/feedback/feedback_privacy_card.dart';
 import 'package:huda/presentation/widgets/settings/settings_layout.dart';
 
-/// Send feedback or report a problem, in the standard tier: the kind, the
-/// message and an optional email, and Send. On phones Send is pinned at
-/// the bottom; on wide windows the kinds sit beside the fields and Send
-/// follows them.
 class FeedbackScreen extends StatefulWidget {
   const FeedbackScreen({super.key});
 
@@ -126,8 +122,6 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
         final page = SettingsColumns(
           maxWidth: 960,
           start: [
-            // On phones the kinds lead, so the message field shows on the
-            // first screen; wide layouts have room for the why.
             if (twoColumns) ...[
               HudaReveal(
                 child: Text(
@@ -185,7 +179,6 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                   ? page
                   : Column(
                       children: [
-                        // The bar below owns the bottom edge.
                         Expanded(
                           child: MediaQuery.removePadding(
                             context: context,
@@ -204,8 +197,6 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
   }
 }
 
-/// The pinned bar on phones: its surface runs to the screen edge and its
-/// button rests above the navigation bar or home indicator.
 class _SendBar extends StatelessWidget {
   const _SendBar({required this.child});
 
@@ -240,8 +231,6 @@ class _SendBar extends StatelessWidget {
   }
 }
 
-/// Send: lit; while sending it keeps its look, shows the lamp spinner and
-/// "Sending…", and ignores taps.
 class _SendButton extends StatelessWidget {
   const _SendButton({required this.sending, required this.onSend});
 

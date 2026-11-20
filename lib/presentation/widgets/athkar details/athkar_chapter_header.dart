@@ -6,8 +6,6 @@ import 'package:huda/presentation/widgets/design/huda_states.dart';
 import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 
-/// The chapter's names and how much of it is done. Above the first dhikr
-/// on phones; at the top of the overview pane on wide windows.
 class AthkarChapterHeader extends StatelessWidget {
   const AthkarChapterHeader({
     super.key,
@@ -23,8 +21,6 @@ class AthkarChapterHeader extends StatelessWidget {
   final int done;
   final int total;
 
-  /// Compact height: no eyebrow or Arabic line, the title on one line, and
-  /// the progress bar beside its count.
   final bool compact;
 
   @override
@@ -89,7 +85,6 @@ class AthkarChapterHeader extends StatelessWidget {
         HudaEyebrow(l10n.athkarSource),
         SizedBox(height: space.xs),
         if (!arabicUi) ...[
-          // From the same edge as the title under it.
           Text(
             title,
             textDirection: TextDirection.rtl,
@@ -111,8 +106,6 @@ class AthkarChapterHeader extends StatelessWidget {
   }
 }
 
-/// The skeleton of the header and two dhikr cards, for loading; without
-/// the header beside a chapter panel.
 class AthkarChapterSkeleton extends StatelessWidget {
   const AthkarChapterSkeleton({super.key, this.header = true});
 
@@ -122,8 +115,6 @@ class AthkarChapterSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     final space = context.tokens.space;
     final text = Theme.of(context).textTheme;
-    // The sheen runs inside each card, so the cards keep their surface
-    // (a sheen over a whole card makes it a flat slab).
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -143,7 +134,6 @@ class AthkarChapterSkeleton extends StatelessWidget {
           ),
           SizedBox(height: space.xl),
         ],
-        // Enough cards to fill the screen, as a chapter does.
         for (var i = 0; i < 4; i++) ...[
           if (i > 0) SizedBox(height: space.md),
           AthkarDhikrCardSkeleton(announce: !header && i == 0),
@@ -153,8 +143,6 @@ class AthkarChapterSkeleton extends StatelessWidget {
   }
 }
 
-/// Every dhikr done: the sun rises fully over the horizon, and the chapter
-/// can start again.
 class AthkarCompletion extends StatelessWidget {
   const AthkarCompletion({super.key, required this.onStartAgain});
 
@@ -173,11 +161,9 @@ class AthkarCompletion extends StatelessWidget {
           SizedBox(
             height: 112,
             width: 160,
-            // The signature moment: the sun clears the horizon.
             child: AthkarRisingSun(
               from: athkarSunAtRest,
               to: 1,
-              // After the last dhikr folds and the card scrolls into view.
               delay: const Duration(milliseconds: 900),
               builder: (context, rise) => Ornament(
                 painter: AthkarHorizonPainter(
@@ -215,10 +201,6 @@ class AthkarCompletion extends StatelessWidget {
   }
 }
 
-/// The chapter panel: a banner across the top of the columns on wide
-/// windows ([horizontal]), and above the band on tabletop: the chapter's own medallion (its petals light as its
-/// dhikr are done; its center reads "done/total", unlike a dhikr's count
-/// left), its names and its progress. It lists no dhikr: they are in the reader (owner round 1).
 class AthkarChapterPanel extends StatelessWidget {
   const AthkarChapterPanel({
     super.key,
@@ -234,7 +216,6 @@ class AthkarChapterPanel extends StatelessWidget {
   final int done;
   final int total;
 
-  /// The medallion beside the names and progress, as a banner.
   final bool horizontal;
 
   @override
@@ -286,7 +267,6 @@ class AthkarChapterPanel extends StatelessWidget {
   }
 }
 
-/// The chapter panel's skeleton.
 class AthkarChapterPanelSkeleton extends StatelessWidget {
   const AthkarChapterPanelSkeleton({super.key, this.horizontal = false});
 
@@ -335,11 +315,9 @@ class AthkarChapterPanelSkeleton extends StatelessWidget {
   }
 }
 
-/// A dhikr card's skeleton: the medallion, Arabic lines and a translation.
 class AthkarDhikrCardSkeleton extends StatelessWidget {
   const AthkarDhikrCardSkeleton({super.key, this.announce = false});
 
-  /// Reads "Loading" (one skeleton per screen does).
   final bool announce;
 
   @override

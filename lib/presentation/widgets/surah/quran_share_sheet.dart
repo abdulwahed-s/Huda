@@ -14,10 +14,6 @@ import 'package:huda/presentation/widgets/share/share_image_saver.dart';
 import 'package:huda/presentation/widgets/surah/quran_share_card.dart';
 import 'package:share_plus/share_plus.dart';
 
-/// Opens Quran's share sheet for one ayah: a live preview of its
-/// illuminated card, the translation and tafsir (when the reader chose
-/// them) ticked in or out, then share as an image or text, copy, or save.
-/// The image renders ahead, as Hadith's does.
 Future<void> shareAyah(
   BuildContext context, {
   required int surah,
@@ -53,7 +49,6 @@ class QuranShareSheet extends StatefulWidget {
     this.tafsir,
   });
 
-  /// The reader's context: captures and toasts run there.
   final BuildContext screenContext;
   final int surah;
   final int ayah;
@@ -103,7 +98,6 @@ class _QuranShareSheetState extends State<QuranShareSheet> {
   }
 
   QuranShareCard get _card => QuranShareCard(
-    // The sheet cross-fades the preview, and forgets "Saved", per option.
     key: ValueKey((_translation != null, _tafsir != null)),
     ayahText: widget.text,
     ayahNumber: widget.ayah,

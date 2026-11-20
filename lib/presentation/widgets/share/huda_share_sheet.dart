@@ -15,14 +15,6 @@ import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 import 'package:huda/presentation/widgets/share/share_image_frame.dart';
 import 'package:huda/presentation/widgets/share/share_image_saver.dart';
 
-/// The shared share sheet: a preview of the feature's own [card] and the
-/// two ways to share, through the adaptive presenter (bottom sheet on
-/// compact, dialog beside a fold on wider windows). Only this scaffold and
-/// the capture pipeline (`ShareImageCapture`) are shared; every feature
-/// designs its own card. See `design/LANGUAGE.md`, "Share cards".
-///
-/// [onShareImage] usually calls `ShareImageCapture.share` with the same
-/// card; the image button shows "Generating…" until it completes.
 Future<void> showHudaShareSheet({
   required BuildContext context,
   required String title,
@@ -60,25 +52,15 @@ class HudaShareSheetBody extends StatefulWidget {
   final Widget card;
   final double cardWidth;
 
-  /// The card's height over its width, if the feature knows it. A card
-  /// taller than 9:16 keeps a readable width in the preview and scrolls
-  /// in it, under a fade (changed in `athkar`, owner round 4: a tall card
-  /// fitted whole was a sliver).
   final double? cardAspect;
   final String? previewLabel;
   final Future<void> Function() onShareImage;
   final VoidCallback onShareText;
 
-  /// The feature's own options for its card (Athkar's translation
-  /// switch), above the actions (changed in `athkar`).
   final Widget? controls;
 
-  /// Copies the text to the clipboard; the tile then says so for a moment.
   final VoidCallback? onCopyText;
 
-  /// Saves the image to the device (photos on phones, Downloads on
-  /// desktops). The tile turns busy, then says how it went (see
-  /// `ShareImageSaver`).
   final Future<ShareImageSaveResult> Function()? onSaveImage;
 
   @override
@@ -96,8 +78,6 @@ class _HudaShareSheetBodyState extends State<HudaShareSheetBody> {
   @override
   void didUpdateWidget(HudaShareSheetBody oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // A new card (another option, say the translation off) hasn't been saved or
-    // copied yet; features key their cards by option for this.
     if (oldWidget.card.key != widget.card.key) {
       _copiedTimer?.cancel();
       _copied = false;
@@ -137,9 +117,6 @@ class _HudaShareSheetBodyState extends State<HudaShareSheetBody> {
           _saved = saved;
         });
         if (saved == ShareImageSaveResult.saved) HudaHaptics.light(context);
-        // On short sheets the failure lands below the fold: it is the
-        // sheet's last line, so scroll to the end, past the bottom inset
-        // the scroll view pads with.
         if (saved != ShareImageSaveResult.saved) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             final failure = _failureKey.currentContext;
@@ -177,9 +154,7 @@ class _HudaShareSheetBodyState extends State<HudaShareSheetBody> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final space = context.tokens.space;
-    // Inside the sheet, this is the side of the fold the sheet is on.
     final window = MediaQuery.sizeOf(context);
-    // A capability, not layout: Linux has no image share target.
     final canShareImage = !PlatformUtils.isLinux;
     final actions = [
       if (canShareImage) ...[
@@ -192,12 +167,9 @@ class _HudaShareSheetBodyState extends State<HudaShareSheetBody> {
         ),
         SizedBox(height: space.sm, width: space.sm),
       ],
-      // The quieter ways in one row of compact tiles, each saying how it
-      // went; full tiles, stacked, where three would squeeze their labels.
       LayoutBuilder(
         builder: (context, constraints) {
           final copy = widget.onCopyText != null;
-          // Saving needs no share target: Linux saves to Downloads too.
           final save = widget.onSaveImage != null;
           final stacked =
               constraints.maxWidth <
@@ -225,7 +197,6 @@ class _HudaShareSheetBodyState extends State<HudaShareSheetBody> {
                 label: _saving
                     ? l10n.generatingImage
                     : _saved == ShareImageSaveResult.saved
-                    // Desktops save to Downloads (owner round 4).
                     ? (PlatformUtils.isDesktop
                           ? l10n.shareImageSavedDownloads
                           : l10n.shareImageSaved)
@@ -260,8 +231,6 @@ class _HudaShareSheetBodyState extends State<HudaShareSheetBody> {
         },
       ),
     ];
-    // A failure leads with the lamp, as status does everywhere.
-    // "Not available" can't be retried; a failed save can.
     final failure = switch (_saved) {
       null || ShareImageSaveResult.saved => null,
       final result => HudaStatusBanner(
@@ -276,26 +245,14 @@ class _HudaShareSheetBodyState extends State<HudaShareSheetBody> {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        // Short spaces (compact height, a horizontal fold) put the preview
-        // beside the actions so both stay visible.
         final side =
             constraints.maxWidth >= 600 ||
             (constraints.maxWidth >= 420 && window.height < 600);
-        // Leaves room for the sheet's title and bottom padding in short
-        // windows.
-        // Stacked (phones), the preview stays small enough for every action
-        // to show without scrolling (changed in `athkar`, owner round 2).
         var previewHeight =
             (window.height * (side ? 0.62 : (window.height < 700 ? 0.24 : 0.3)))
                 .clamp(160.0, 560.0)
                 .clamp(0.0, (window.height - 220).clamp(160.0, 560.0));
-        // Beside the iPhone Duo's side column a bottom sheet starts below
-        // the column's cutouts: keep the preview small enough for both
-        // actions to rest above the bottom inset (changed in `athkar`).
         final column = SideChrome.sideOf(context);
-        // Under the column the sheet is short: the preview sits beside the
-        // card's options, the actions full width below (owner round 3).
-        // Large text needs the width: the preview goes above them.
         final besideOptions =
             column != null &&
             !side &&
@@ -309,8 +266,6 @@ class _HudaShareSheetBodyState extends State<HudaShareSheetBody> {
         }
         final motion = context.tokens.motion;
         final change = motion.of(context, motion.medium);
-        // Changing an option cross-fades the card and eases the preview to
-        // its new height (owner round 3: it snapped).
         final preview = Semantics(
           label: widget.previewLabel,
           image: true,
@@ -320,8 +275,6 @@ class _HudaShareSheetBodyState extends State<HudaShareSheetBody> {
               curve: motion.standard,
               child: AnimatedSwitcher(
                 duration: change,
-                // The new card sets the size at once, so the resize runs
-                // with the fade; the old one fades at its own size.
                 layoutBuilder: (current, previous) => Stack(
                   clipBehavior: Clip.none,
                   alignment: Alignment.center,
@@ -378,7 +331,6 @@ class _HudaShareSheetBodyState extends State<HudaShareSheetBody> {
           return Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Short windows give the actions more of the width.
               Flexible(
                 flex: window.height < 600 ? 2 : 3,
                 child: Center(child: preview),
@@ -394,9 +346,6 @@ class _HudaShareSheetBodyState extends State<HudaShareSheetBody> {
                       SizedBox(height: space.lg),
                     ],
                     ...actions,
-                    // Under the actions it is said, and the sheet scrolls to
-                    // it on short windows (critic, owner round 4: under the
-                    // preview it ran past the dialog's edge).
                     if (failure != null) ...[
                       SizedBox(height: space.sm),
                       failure,
@@ -411,9 +360,6 @@ class _HudaShareSheetBodyState extends State<HudaShareSheetBody> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // The preview takes its own width (up to 40%), so the options
-              // end where the actions do, whatever the card's shape (critic,
-              // `athkar` owner round 5).
               LayoutBuilder(
                 builder: (context, row) => Row(
                   children: [
@@ -447,13 +393,6 @@ class _HudaShareSheetBodyState extends State<HudaShareSheetBody> {
   }
 }
 
-/// One way to share, as a tile. The primary way is lit: the chrome with a
-/// lamp holding the icon (no ring on a tile this wide: it would read as a
-/// double border) (a turning khatam
-/// while [busy]). The other sits quietly on the sheet. At least 64 tall;
-/// the label wraps instead of clipping. While [busy] the tile keeps its
-/// look and ignores taps; the icon and label cross-fade to the busy ones
-/// (changed in `athkar`, owner round 3: the swap used to jump).
 class HudaShareOption extends StatelessWidget {
   const HudaShareOption({
     super.key,
@@ -471,7 +410,6 @@ class HudaShareOption extends StatelessWidget {
   final bool lit;
   final bool busy;
 
-  /// The mark above a centered label, for a row of small tiles.
   final bool compact;
 
   @override
@@ -482,15 +420,12 @@ class HudaShareOption extends StatelessWidget {
     final shape = HudaLanternBorder(
       radius: tokens.radius.lg,
       side: lit ? BorderSide.none : BorderSide(color: scheme.outline),
-      // The lit tile carries the buttons' engraving in its corner.
       engraving: lit ? tokens.onChrome.withValues(alpha: 0.24) : null,
     );
     final fade = tokens.motion.of(context, tokens.motion.medium);
     Widget swap(Widget child, {AlignmentGeometry? alignment}) =>
         AnimatedSwitcher(
           duration: fade,
-          // The outgoing one leaves in the first half and the incoming
-          // arrives in the second, so the two never overlap.
           transitionBuilder: (child, animation) {
             final half = CurvedAnimation(
               parent: animation,
@@ -608,8 +543,6 @@ class HudaShareOption extends StatelessWidget {
   }
 }
 
-/// `AnimatedSize`, or its child as is when there's nothing to animate
-/// (reduce motion): at zero duration `AnimatedSize` asserts in layout.
 class _EaseSize extends StatelessWidget {
   const _EaseSize({
     required this.duration,
@@ -627,8 +560,6 @@ class _EaseSize extends StatelessWidget {
       : AnimatedSize(duration: duration, curve: curve, child: child);
 }
 
-/// A tall card in a window of the preview's height: it scrolls, and fades
-/// at the foot while there's more below.
 class _ScrollingPreview extends StatefulWidget {
   const _ScrollingPreview({required this.child});
 
@@ -668,7 +599,6 @@ class _ScrollingPreviewState extends State<_ScrollingPreview> {
         ),
       ),
     );
-    // One tree either way, so the scroll position survives the fade's end.
     return ClipRect(
       child: ShaderMask(
         blendMode: BlendMode.dstIn,
@@ -688,15 +618,6 @@ class _ScrollingPreviewState extends State<_ScrollingPreview> {
   }
 }
 
-/// An option to include or leave out, as a tile in the share sheet's
-/// family: the option's mark ([icon]), its label, and a square tick box at
-/// the end (filled with the primary and ticked when on, an empty box at
-/// 3:1 when off). On, the tile takes a primary tint and border, so its
-/// state reads at a glance. It reads as a setting, not a share action: a
-/// bare mark, no fill while off, a smaller radius and height. The whole tile is the target. A share sheet's card options use
-/// it (`HudaShareSheetBody.controls`). From Athkar's tick (`athkar` owner
-/// round 6); a tile since `hadith` owner round 1 (the bare row looked
-/// unfinished beside the share tiles).
 class HudaTickOption extends StatelessWidget {
   const HudaTickOption({
     super.key,
@@ -710,7 +631,6 @@ class HudaTickOption extends StatelessWidget {
   final bool value;
   final ValueChanged<bool> onChanged;
 
-  /// What the option adds (a translate mark for a translation).
   final IconData? icon;
 
   @override
@@ -720,8 +640,6 @@ class HudaTickOption extends StatelessWidget {
     final tokens = context.tokens;
     final motion = tokens.motion;
     final change = motion.of(context, motion.short);
-    // A setting, not a share action: a smaller radius and height, no fill
-    // while off and a bare mark, unlike the action tiles below it.
     final radius = BorderRadius.circular(tokens.radius.md);
     final icon = this.icon;
     final tick = AnimatedContainer(
@@ -732,7 +650,6 @@ class HudaTickOption extends StatelessWidget {
       decoration: BoxDecoration(
         color: value ? scheme.primary : Colors.transparent,
         borderRadius: BorderRadius.circular(tokens.radius.sm),
-        // Off keeps 3:1 against the page: its outline is its state.
         border: Border.all(
           color: value ? scheme.primary : scheme.onSurfaceVariant,
           width: 2,
@@ -778,8 +695,6 @@ class HudaTickOption extends StatelessWidget {
               borderRadius: radius,
               child: ConstrainedBox(
                 constraints: const BoxConstraints(minHeight: 52),
-                // A narrow tile (beside the preview under the iPhone Duo's
-                // column) drops the mark, so the label keeps whole words.
                 child: LayoutBuilder(
                   builder: (context, constraints) => Padding(
                     padding: const EdgeInsetsDirectional.fromSTEB(12, 8, 16, 8),

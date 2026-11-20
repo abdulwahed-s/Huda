@@ -18,30 +18,16 @@ import 'package:huda/presentation/widgets/hadith/hadith_refs.dart';
 import 'package:huda/presentation/widgets/hadith_chapters/hadith_index.dart';
 import 'package:huda/presentation/widgets/hadith_details/hadith_reader.dart';
 
-/// A hadith collection: its books as an index, and the open book's hadith.
-/// Standard tier.
-///
-/// Like Mail on a foldable: on narrow windows the index, and a book opens
-/// over it (Back returns); on wide windows and open folds the index sits
-/// beside the reader, split at the fold, and the reader pane shows the
-/// collection's title page until a book is chosen. The open book, its page
-/// and its place are kept here, so folding, unfolding or resizing shows the
-/// same book. See `design/features/hadith/brief.md`.
 class HadithChapters extends StatefulWidget {
   const HadithChapters({super.key, required this.collection});
 
   final HadithCollectionRef collection;
 
-  /// Create the page's cubits. Seams for the redesign harness, which can't
-  /// reach the network.
   @visibleForTesting
   static ChaptersCubit Function() createCubit = ChaptersCubit.new;
-  // Also used by `HadithDetails`, the reader's own route.
   static HadithDetailsCubit Function() createDetailsCubit =
       HadithDetailsCubit.new;
 
-  /// The screen with its cubit, as the route and the collection tiles open
-  /// it.
   static Widget page({required HadithCollectionRef collection}) =>
       BlocProvider<ChaptersCubit>(
         create: (_) => createCubit()..fetchChaptersByBook(collection.slug),
@@ -57,13 +43,10 @@ class _HadithChaptersState extends State<HadithChapters> {
   String _query = '';
   final _nested = GlobalKey<NavigatorState>();
 
-  /// The open book and its cubit; null until one is chosen.
   HadithBookRef? _open;
   HadithDetailsCubit? _details;
   HadithReaderMemory _memory = HadithReaderMemory();
 
-  /// Scroll positions (the index's, each book's), kept here rather than in
-  /// a route, so both layouts and the nested navigator share them.
   final _storage = PageStorageBucket();
 
   bool _retrying = false;
@@ -95,7 +78,6 @@ class _HadithChaptersState extends State<HadithChapters> {
       _open = null;
       _details = null;
     });
-    // After the reader has left (its route animates out with it).
     Future<void>.delayed(const Duration(seconds: 1), () => details?.close());
   }
 
@@ -123,7 +105,6 @@ class _HadithChaptersState extends State<HadithChapters> {
     );
   }
 
-  /// Back out of the collection, from inside the nested navigator.
   Widget? get _leaveButton {
     final canLeave = ModalRoute.of(context)?.impliesAppBarDismissal ?? false;
     if (!canLeave) return null;
@@ -138,8 +119,6 @@ class _HadithChaptersState extends State<HadithChapters> {
       leading: _leaveButton,
       body: AdaptivePanes(
         primary: _index(context, wide: true),
-        // The pane changes with the open book: the title page, or one
-        // book's reader, fading through (never two at once).
         secondary: HudaStateSwitcher(
           stateKey: open?.number ?? '',
           sequential: true,
@@ -151,12 +130,9 @@ class _HadithChaptersState extends State<HadithChapters> {
                     bookCount: state is ChaptersLoaded
                         ? state.bookChapters.data?.length
                         : null,
-                    // Art only beside the books: not beside an error's or
-                    // an empty index's own art.
                     showArt:
                         state is ChaptersLoaded &&
                         (state.bookChapters.data ?? const []).isNotEmpty,
-                    // "Choose a book" only when there are books to choose.
                     canChoose:
                         state is ChaptersLoaded &&
                         (state.bookChapters.data ?? const []).isNotEmpty,
@@ -177,8 +153,6 @@ class _HadithChaptersState extends State<HadithChapters> {
     );
   }
 
-  /// The index, and the open book pushed over it, in a navigator of their
-  /// own so Back (and the back gesture) closes the book.
   Widget _narrow(BuildContext context) {
     final open = _open;
     final details = _details;
@@ -226,8 +200,6 @@ class _HadithChaptersState extends State<HadithChapters> {
     );
   }
 
-  /// The collection's header, the search and its books; on tabletop the
-  /// header and search above the band and the books below it.
   Widget _index(BuildContext context, {required bool wide}) {
     final l10n = AppLocalizations.of(context)!;
     return BlocBuilder<ChaptersCubit, ChaptersState>(
@@ -248,17 +220,12 @@ class _HadithChaptersState extends State<HadithChapters> {
                   HadithBookRef.of(data, language),
               ];
         final compactHeight = context.windowClass.isCompactHeight;
-        // The names and counts lead the index on phones. Wide windows have
-        // them on the title page, which "About this collection" brings
-        // back; short windows keep the room for books.
         final Widget? header = wide
             ? (books == null || books.isEmpty
                   ? null
                   : HudaContentRow(
                       key: const ValueKey('hadith-about'),
                       selected: _open == null,
-                      // Tappable while selected too, so it shows its tint
-                      // (it does nothing then).
                       onTap: () {
                         if (_open != null) _closeBook();
                       },
@@ -276,9 +243,6 @@ class _HadithChaptersState extends State<HadithChapters> {
           controller: _search,
           onChanged: (value) => setState(() => _query = value.trim()),
         );
-        // Full states fill the room under the header and keep their
-        // actions above the bottom inset. One lead per state at every
-        // size: the system's lamp for a failure, the folio for empty.
         Widget? fill;
         var rows = <Widget>[];
         if (shown is ChaptersError) {
@@ -396,8 +360,6 @@ class _HadithChaptersState extends State<HadithChapters> {
     ];
   }
 
-  /// A scrolling column at the reading measure, in the gutters, ending
-  /// above the bottom inset.
   Widget _list(
     BuildContext context,
     List<Widget> slivers, {
@@ -430,7 +392,6 @@ class _HadithChaptersState extends State<HadithChapters> {
               ),
               sliver: SliverMainAxisGroup(slivers: slivers),
             ),
-            // A full state: the room that's left, scrolling inside.
             if (fill != null)
               SliverFillRemaining(hasScrollBody: true, child: fill),
           ],

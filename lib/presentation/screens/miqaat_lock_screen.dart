@@ -20,11 +20,6 @@ import 'package:huda/presentation/widgets/miqaat_lock/miqaat_lock_identity.dart'
 import 'package:huda/presentation/widgets/miqaat_lock/miqaat_lock_sections.dart';
 import 'package:huda/presentation/widgets/miqaat_lock/miqaat_lock_sheets.dart';
 
-/// Miqaat Lock: the carved door (what the lock is doing now, and its
-/// switch), then what it needs: access, the apps, the time windows and
-/// the goal. Phones stack them; from 840 wide (and on folds) the door
-/// and the goal sit beside the setup; tabletop puts the door above the
-/// band.
 class MiqaatLockScreen extends StatefulWidget {
   const MiqaatLockScreen({super.key});
 
@@ -157,8 +152,6 @@ class _MiqaatLockScreenState extends State<MiqaatLockScreen>
     final loaded = state is MiqaatLockLoaded ? state : null;
     final size = MediaQuery.sizeOf(context);
     final short = size.height < 480;
-    // From 700 the door gets a pane of its own; short windows (phone and
-    // Duo closed landscape) keep one column so the gate stays wide.
     const twoPaneMin = 700.0;
     final fold = FoldInfo.of(context);
     final wide =
@@ -257,8 +250,6 @@ class _MiqaatLockScreenState extends State<MiqaatLockScreen>
     );
   }
 
-  /// Very wide windows without a fold keep the panes together in the
-  /// middle, so rows don't stretch across a desktop.
   Widget _capped(FoldInfo fold, double width, Widget panes) {
     if (width <= 1200 || fold.posture != FoldPosture.none) return panes;
     return Center(
@@ -269,8 +260,6 @@ class _MiqaatLockScreenState extends State<MiqaatLockScreen>
     );
   }
 
-  /// A scroll view built in its pane's own context, so its gutter and
-  /// insets are the pane's.
   Widget _pane(WidgetBuilder content, {Key? key}) => Builder(
     builder: (context) {
       final space = context.tokens.space;
@@ -292,7 +281,6 @@ class _MiqaatLockScreenState extends State<MiqaatLockScreen>
     gate: MiqaatGate.of(state),
     enabled: state.settings.isEnabled,
     large: large,
-    // Turning on waits for access; turning off never does.
     onToggle: state.settings.isEnabled || !miqaatNeedsAccess(state.permissions)
         ? _toggle
         : null,
@@ -359,7 +347,6 @@ class _MiqaatLockScreenState extends State<MiqaatLockScreen>
   );
 }
 
-/// The page's shape while settings load.
 class _Skeleton extends StatelessWidget {
   const _Skeleton();
 

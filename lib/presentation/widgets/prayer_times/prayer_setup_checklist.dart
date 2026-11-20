@@ -9,11 +9,6 @@ import 'package:huda/presentation/widgets/prayer_times/prayer_attention_strip.da
 import 'package:huda/presentation/widgets/prayer_times/prayer_identity.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_palette.dart';
 
-/// The one question before there are times: where is the user? Two equal
-/// ways to answer (this device's location, or a city), so a page about
-/// prayer times never insists on location. A problem from the last try
-/// shows above them with its own fix; alerts are set up after the times
-/// (the ready card), never before.
 class PrayerPlaceStep extends StatelessWidget {
   const PrayerPlaceStep({
     super.key,
@@ -30,7 +25,6 @@ class PrayerPlaceStep extends StatelessWidget {
 
   final PrayerLocationProblem? problem;
 
-  /// False where the device has no location at all (Linux): a city only.
   final bool canUseDeviceLocation;
   final bool canOpenSettings;
   final bool locating;
@@ -103,8 +97,6 @@ class PrayerPlaceStep extends StatelessWidget {
             ),
             SizedBox(height: tokens.space.md),
           ],
-          // Side by side when both fit at the current text size, else
-          // stacked; either way the same weight.
           LayoutBuilder(
             builder: (context, constraints) {
               final scale = MediaQuery.textScalerOf(context).scale(1);
@@ -136,8 +128,6 @@ class PrayerPlaceStep extends StatelessWidget {
   }
 }
 
-/// The device-location button for [problem]: what fixes it, or "Use my
-/// location" when nothing has gone wrong.
 PrayerSetupAction prayerLocationFixAction(
   AppLocalizations l10n,
   PrayerLocationProblem? problem, {
@@ -169,7 +159,6 @@ PrayerSetupAction prayerLocationFixAction(
   _ => PrayerSetupAction(l10n.tryAgain, Icons.refresh_rounded, onUseLocation),
 };
 
-/// A short name for [problem], above its explanation.
 String prayerLocationProblemTitle(
   AppLocalizations l10n,
   PrayerLocationProblem problem,
@@ -182,7 +171,6 @@ String prayerLocationProblemTitle(
   _ => l10n.prayerProblemPlaceTitle,
 };
 
-/// What happened and what to do, for [problem]. Never a raw error.
 String prayerLocationProblemText(
   AppLocalizations l10n,
   PrayerLocationProblem problem,
@@ -199,30 +187,21 @@ String prayerLocationProblemText(
   PrayerLocationProblem.unknown => l10n.prayerProblemUnknown,
 };
 
-/// The problem [state] reports, if any.
 PrayerLocationProblem? prayerLocationProblemIn(PrayerTimesState state) =>
     state is PrayerTimesNeedsPlace ? state.problem : null;
 
-/// Why the location couldn't be used, grouped by the fix, for onboarding's
-/// location and permissions steps.
 enum PrayerLocationIssue {
-  /// Declined this time: ask again.
   denied,
 
-  /// Declined for good: only Settings can turn it back on.
   blocked,
 
-  /// Location services are off on the device.
   servicesOff,
 
-  /// No location here (Linux), or blocked where no settings page opens.
   unavailable,
 
-  /// The location or the place couldn't be used.
   failed,
 }
 
-/// The location issue [state] shows, or null when there is none.
 PrayerLocationIssue? prayerLocationIssueOf(
   PrayerTimesState state, {
   required bool canOpenSettings,
@@ -272,8 +251,6 @@ class PrayerSetupStep {
   final List<PrayerSetupAction> links;
 }
 
-/// Before there are times: the day path with no sun yet (an empty
-/// horizon), "Where are you?" and why it matters.
 class PrayerSetupHeader extends StatelessWidget {
   const PrayerSetupHeader({
     super.key,
@@ -281,10 +258,8 @@ class PrayerSetupHeader extends StatelessWidget {
     this.cityOnly = false,
   });
 
-  /// Taller beside the place step on wide windows.
   final double skyHeight;
 
-  /// The device has no location: the message asks for a city only.
   final bool cityOnly;
 
   @override
@@ -292,8 +267,6 @@ class PrayerSetupHeader extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final tokens = context.tokens;
-    // The living sky at the device's time (no place, no times yet), the
-    // question over it and room for the horizon below.
     return PrayerSkyBand(
       skyRoom: skyHeight,
       child: Column(
@@ -337,7 +310,6 @@ class PrayerSetupActiveStep extends StatelessWidget {
   final PrayerSetupStep step;
   final bool busy;
 
-  /// Replaces "Step n of m" above the title.
   final String? heading;
 
   @override
@@ -448,7 +420,6 @@ class PrayerSetupWarningNote extends StatelessWidget {
   final String title;
   final String text;
 
-  /// Kept for callers; the lamp's station carries the tone now.
   final IconData icon;
   final PrayerAttentionTone tone;
 
@@ -457,8 +428,6 @@ class PrayerSetupWarningNote extends StatelessWidget {
     final theme = Theme.of(context);
     final scheme = theme.colorScheme;
     final space = context.tokens.space;
-    // The same voice as the page's notices: a lamp with a piece of the day
-    // path, then what happened. No tinted box.
     return Semantics(
       liveRegion: true,
       container: true,

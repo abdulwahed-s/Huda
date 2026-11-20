@@ -10,17 +10,8 @@ import 'package:huda/core/theme/huda_lantern_border.dart';
 import 'package:huda/presentation/widgets/design/huda_lamp.dart';
 import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 
-/// Shared states. Every screen designs loading, empty, error, offline and
-/// permission with these, giving them its identity's art. Status follows
-/// `CLAUDE.md`: "updating" while automatic work runs, an error after it
-/// fails, and a separate "retrying" after a tap. Nothing assumes it will
-/// fix itself.
 
-// Loading -------------------------------------------------------------------
 
-/// A loading placeholder shaped like the content: compose [HudaSkeletonBlock]
-/// and [HudaSkeletonLines] in the content's layout and wrap them in this.
-/// The sheen stops when the platform asks to reduce motion.
 class HudaSkeleton extends StatelessWidget {
   const HudaSkeleton({
     super.key,
@@ -31,10 +22,8 @@ class HudaSkeleton extends StatelessWidget {
 
   final Widget child;
 
-  /// Read out instead of the shapes; defaults to "Loading…".
   final String? label;
 
-  /// False for all but one skeleton in a grid, so "Loading" is read once.
   final bool announce;
 
   @override
@@ -54,7 +43,6 @@ class HudaSkeleton extends StatelessWidget {
   }
 }
 
-/// One rounded block of a skeleton (an image, an icon mark, a button).
 class HudaSkeletonBlock extends StatelessWidget {
   const HudaSkeletonBlock({
     super.key,
@@ -81,14 +69,11 @@ class HudaSkeletonBlock extends StatelessWidget {
   );
 }
 
-/// Lines of text in a skeleton, sized from a text role so they follow the
-/// text scale. The last line is shorter.
 class HudaSkeletonLines extends StatelessWidget {
   const HudaSkeletonLines({super.key, this.lines = 3, this.style});
 
   final int lines;
 
-  /// Defaults to `bodyMedium`.
   final TextStyle? style;
 
   @override
@@ -113,11 +98,7 @@ class HudaSkeletonLines extends StatelessWidget {
   }
 }
 
-// Full states -----------------------------------------------------------------
 
-/// The shared layout of empty, error, offline and permission states: the
-/// identity's art (or an icon), a title, a message and actions, centered
-/// at a readable width. Scrolls when the text is large or the space small.
 class HudaStateView extends StatelessWidget {
   const HudaStateView({
     super.key,
@@ -133,11 +114,9 @@ class HudaStateView extends StatelessWidget {
   final String title;
   final String? message;
 
-  /// Draws the identity's state art; [icon] is used when null.
   final FeatureIdentity? identity;
   final IconData? icon;
 
-  /// The lamp the state leads with when it has no identity art.
   final HudaStateMark mark;
   final List<Widget> actions;
   final String? footnote;
@@ -162,12 +141,10 @@ class HudaStateView extends StatelessWidget {
                 painter: identity.stateArt(OrnamentStyle.of(context)),
               )
             : switch (mark) {
-                // An invitation: a lit lamp.
                 HudaStateMark.lit => HudaLamp(
                   size: markSize,
                   child: Icon(icon ?? Icons.info_outline_rounded),
                 ),
-                // A failure: the lamp unlit and red, a still khatam.
                 HudaStateMark.alert => _UnlitLamp(
                   size: markSize,
                   tint: scheme.error,
@@ -187,7 +164,6 @@ class HudaStateView extends StatelessWidget {
                 ),
               };
         return SingleChildScrollView(
-          // Edge to edge: the insets are end padding inside the scroll.
           padding: context.scrollPadding(
             EdgeInsets.all(space.gutter(constraints.maxWidth)),
           ),
@@ -229,7 +205,6 @@ class HudaStateView extends StatelessWidget {
                       SizedBox(height: space.xl),
                       Wrap(
                         alignment: WrapAlignment.center,
-                        // Buttons of different heights share one line.
                         crossAxisAlignment: WrapCrossAlignment.center,
                         spacing: space.sm,
                         runSpacing: space.sm,
@@ -254,9 +229,6 @@ class HudaStateView extends StatelessWidget {
         );
       },
     );
-    // A horizontal fold that content must stay off (a band, or tabletop):
-    // the state takes the top half. Assumes the view reaches the window's
-    // bottom, as a screen body does.
     final fold = FoldInfo.of(context);
     if (fold.separatorAxis != Axis.horizontal || !fold.avoided) return view;
     return LayoutBuilder(
@@ -275,11 +247,8 @@ class HudaStateView extends StatelessWidget {
   }
 }
 
-/// The lamp a state leads with: unlit (nothing is wrong, nothing to do
-/// yet), alert (a failure) or lit (an invitation, like a permission).
 enum HudaStateMark { unlit, alert, lit }
 
-/// An unlit lamp: a disc softly tinted by [tint], with a fine ring.
 class _UnlitLamp extends StatelessWidget {
   const _UnlitLamp({
     required this.size,
@@ -318,7 +287,6 @@ class _UnlitLamp extends StatelessWidget {
   }
 }
 
-/// Nothing here yet: the feature's motif and a next step.
 class HudaEmptyState extends StatelessWidget {
   const HudaEmptyState({
     super.key,
@@ -350,9 +318,6 @@ class HudaEmptyState extends StatelessWidget {
   }
 }
 
-/// A retry button with the separate "retrying" state: after a tap it
-/// shows a spinner and "Retrying…" and can't be tapped again until the
-/// caller sets [retrying] back to false.
 class HudaRetryButton extends StatelessWidget {
   const HudaRetryButton({
     super.key,
@@ -371,8 +336,6 @@ class HudaRetryButton extends StatelessWidget {
     final tokens = context.tokens;
     final duration = tokens.motion.of(context, tokens.motion.short);
     if (retrying) {
-      // Not a disabled button: a readable "in progress" pill in the
-      // button's place, that can't be tapped again.
       return Semantics(
         liveRegion: true,
         label: l10n.stateRetrying,
@@ -381,8 +344,6 @@ class HudaRetryButton extends StatelessWidget {
           duration: duration,
           constraints: const BoxConstraints(minHeight: 48, minWidth: 48),
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-          // The lit button itself, working: the chrome, its engraving, a
-          // turning khatam. Readable, and it can't be tapped again.
           decoration: ShapeDecoration(
             color: tokens.lit,
             shape: HudaLanternBorder(
@@ -418,8 +379,6 @@ class HudaRetryButton extends StatelessWidget {
   }
 }
 
-/// Something failed: what happened, and a retry with its own "retrying"
-/// state.
 class HudaErrorState extends StatelessWidget {
   const HudaErrorState({
     super.key,
@@ -430,7 +389,6 @@ class HudaErrorState extends StatelessWidget {
     this.retrying = false,
   });
 
-  /// Defaults to "Something went wrong".
   final String? title;
   final String? message;
   final FeatureIdentity? identity;
@@ -454,8 +412,6 @@ class HudaErrorState extends StatelessWidget {
   }
 }
 
-/// No connection. Says whether saved content is still shown, and offers a
-/// retry with its own "retrying" state.
 class HudaOfflineState extends StatelessWidget {
   const HudaOfflineState({
     super.key,
@@ -465,10 +421,8 @@ class HudaOfflineState extends StatelessWidget {
     this.retrying = false,
   });
 
-  /// Defaults to the network-settings hint.
   final String? message;
 
-  /// True when the screen behind still shows saved content.
   final bool showingSaved;
   final VoidCallback? onRetry;
   final bool retrying;
@@ -490,8 +444,6 @@ class HudaOfflineState extends StatelessWidget {
   }
 }
 
-/// A permission is needed: explain why before the system prompt, then
-/// ask. [secondaryLabel] offers a way out ("Not now", "Open settings").
 class HudaPermissionState extends StatelessWidget {
   const HudaPermissionState({
     super.key,
@@ -529,24 +481,15 @@ class HudaPermissionState extends StatelessWidget {
   }
 }
 
-// Inline status ---------------------------------------------------------------
 
 enum HudaStatus {
-  /// Automatic work is running (a refresh, a sync).
   updating,
 
-  /// It failed; the content shown may be stale.
   failed,
 
-  /// The person tapped retry and it's running.
   retrying,
 }
 
-/// A banner over content that is still usable. Its lead is a lamp: lit
-/// (the turning khatam on the chrome) while work runs, unlit and red with
-/// a still khatam after a failure. "Updating…" (automatic) sits on a quiet
-/// surface; "Retrying…" (after a tap) is warmed with the gilt; the failure
-/// is tinted with the error color and offers a retry.
 class HudaStatusBanner extends StatelessWidget {
   const HudaStatusBanner({
     super.key,
@@ -557,8 +500,6 @@ class HudaStatusBanner extends StatelessWidget {
 
   final HudaStatus status;
 
-  /// What failed (for [HudaStatus.failed]); defaults to "Something went
-  /// wrong".
   final String? message;
   final VoidCallback? onRetry;
 
@@ -622,11 +563,6 @@ class HudaStatusBanner extends StatelessWidget {
         ),
         child: Padding(
           padding: const EdgeInsetsDirectional.fromSTEB(12, 10, 8, 10),
-          // At large text in a narrow window, Retry takes its own row under
-          // the message instead of squeezing it into a column of a few
-          // words per line (changed in `zakat`). Decided from the window
-          // and text scale, not a LayoutBuilder, so the banner still sizes
-          // under intrinsic layouts (dialog content).
           child: Builder(
             builder: (context) {
               final message = Row(

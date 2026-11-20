@@ -16,11 +16,7 @@ import 'package:intl/intl.dart' hide TextDirection;
 
 export 'package:huda/presentation/widgets/prayer_times/prayer_sky.dart';
 
-/// Prayer's hero pieces on the living sky (`prayer_sky.dart`): the band
-/// the sky is painted in, and the card that tells the next prayer over it.
 
-/// A night band (the Lantern chrome) with a faint girih field: the sky
-/// behind the day path. Its content gets the night theme.
 class PrayerSkyBand extends StatelessWidget {
   const PrayerSkyBand({
     super.key,
@@ -34,12 +30,9 @@ class PrayerSkyBand extends StatelessWidget {
   final Widget child;
   final EdgeInsetsGeometry? padding;
 
-  /// The day and the moment the sky shows; the device's time on a plain day
-  /// when not given (setup, loading).
   final PrayerSkyTimes? times;
   final double? hour;
 
-  /// Extra room at the foot for the sky's horizon and hills.
   final double skyRoom;
 
   @override
@@ -50,7 +43,6 @@ class PrayerSkyBand extends StatelessWidget {
         padding?.resolve(Directionality.of(context)) ??
         EdgeInsets.all(tokens.space.md);
     return DecoratedBox(
-      // A faint rim, so the band holds its edge on a dark page.
       position: DecorationPosition.foreground,
       decoration: BoxDecoration(
         borderRadius: radius,
@@ -80,9 +72,6 @@ class PrayerSkyBand extends StatelessWidget {
   }
 }
 
-/// The hero: where the day is. The place (tap to change it), the next
-/// prayer (or the one that has begun), its time and the time left, and the
-/// day path with the sun at now.
 class PrayerSkyCard extends StatelessWidget {
   const PrayerSkyCard({
     super.key,
@@ -95,7 +84,6 @@ class PrayerSkyCard extends StatelessWidget {
     this.clock = DateTime.now,
   });
 
-  /// "Now" for the countdown's own ticks (fixed in the device matrix).
   final DateTime Function() clock;
 
   final PrayerTimesLoaded state;
@@ -104,8 +92,6 @@ class PrayerSkyCard extends StatelessWidget {
   final PrayerLocationMode locationMode;
   final String? timeZoneId;
 
-  /// Opens the Location sheet; the place line never changes the place by
-  /// itself.
   final VoidCallback onOpenLocation;
 
   DateTime _wallClock(DateTime instant) => timeZoneId == null
@@ -122,7 +108,6 @@ class PrayerSkyCard extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final short = MediaQuery.sizeOf(context).height < 480;
-        // Short windows: the words tighten and the sky keeps less room.
         final beside = short && constraints.maxWidth >= 420;
         final words = _Words(
           clock: clock,
@@ -147,7 +132,6 @@ class PrayerSkyCard extends StatelessWidget {
               ),
               SizedBox(height: space.sm),
               words,
-              // Room for the sky to show itself: the horizon, the low sun.
               SizedBox(
                 height: beside ? space.lg : (short ? space.xxl : space.giant),
               ),
@@ -160,14 +144,11 @@ class PrayerSkyCard extends StatelessWidget {
   }
 }
 
-/// A soft dark shadow under words laid on the sky, so they hold over a
-/// low sun or moon, a halo or a bright wisp.
 const prayerSkyTextShadows = [
   Shadow(color: Color(0x73000000), blurRadius: 10),
   Shadow(color: Color(0x40000000), blurRadius: 3, offset: Offset(0, 1)),
 ];
 
-/// "City, Country" for the place the times are for.
 String prayerPlaceName(AppLocalizations l10n, PrayerTimesLoaded state) {
   if (state.placemarks.isEmpty) return l10n.unknown;
   final place = state.placemarks.first;
@@ -178,10 +159,6 @@ String prayerPlaceName(AppLocalizations l10n, PrayerTimesLoaded state) {
   return parts.isEmpty ? l10n.unknown : parts.join(', ');
 }
 
-/// The place, with how it's chosen (an arrow for this device's location, a
-/// pin for a chosen city). A tap opens the Location sheet. While Huda
-/// updates on its own, a lit lamp and "Updating…" sit beside it, quietly,
-/// instead of a card over the page.
 class _PlaceRow extends StatelessWidget {
   const _PlaceRow({
     required this.place,
@@ -297,10 +274,8 @@ class _Words extends StatelessWidget {
   final DateTime Function(DateTime instant) wallClock;
   final bool provisional;
 
-  /// Short windows: the name and time on one line, the time left inline.
   final bool compact;
 
-  /// "Now" for the countdown's own ticks.
   final DateTime Function() clock;
 
   @override
@@ -374,7 +349,6 @@ class _Words extends StatelessWidget {
           ),
       ],
     );
-    // Before the first tick: a quiet placeholder, not a running clock.
     final remaining = !ready
         ? Text(
             '--:--',
@@ -478,8 +452,6 @@ class _Words extends StatelessWidget {
             ],
           );
           if (remaining == null) return words;
-          // The time left at the end, or under the name when narrow or
-          // large text leaves no room beside it.
           final scale = MediaQuery.textScalerOf(context).scale(1);
           if (constraints.maxWidth < 250 * scale) {
             return Column(
@@ -555,7 +527,6 @@ class _Chip extends StatelessWidget {
   }
 }
 
-/// Today's date, Gregorian and Hijri, under the horizon.
 class _DayLine extends StatelessWidget {
   const _DayLine({required this.state});
 
@@ -579,10 +550,6 @@ class _DayLine extends StatelessWidget {
   }
 }
 
-/// The time left to [target], read from the clock on every whole second
-/// (not from a stream that drifts and skips), each changed digit rolling
-/// down into place. It ticks only while its page is showing, and swaps
-/// digits at once under reduce motion.
 class PrayerCountdown extends StatefulWidget {
   const PrayerCountdown({
     super.key,
@@ -619,7 +586,6 @@ class _PrayerCountdownState extends State<PrayerCountdown> {
         .toUtc()
         .difference(widget.clock().toUtc())
         .inMilliseconds;
-    // Wake just after the next whole second, so no second is skipped.
     final wait = ms % 1000 + 1;
     _timer = Timer(Duration(milliseconds: wait), () {
       if (!mounted) return;
@@ -632,7 +598,6 @@ class _PrayerCountdownState extends State<PrayerCountdown> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Covered by another route, or the app in the background: stop.
     final active = TickerMode.valuesOf(context).enabled;
     if (active != _active || _timer == null) {
       _active = active;
@@ -677,7 +642,6 @@ class _PrayerCountdownState extends State<PrayerCountdown> {
           for (var i = 0; i < chars.length; i++)
             ClipRect(
               child: AnimatedSwitcher(
-                // Keyed from the end, so each digit keeps its place.
                 key: ValueKey(chars.length - i),
                 duration: duration,
                 switchInCurve: Curves.easeInOutCubic,
@@ -688,9 +652,6 @@ class _PrayerCountdownState extends State<PrayerCountdown> {
                 ),
                 transitionBuilder: (child, animation) {
                   final incoming = child.key == ValueKey('${chars[i]}$i');
-                  // Counting down: the new digit comes from above, the old
-                  // one rolls on below. Slide only, no fade, so a digit is
-                  // never half gone.
                   return SlideTransition(
                     position: Tween(
                       begin: Offset(0, incoming ? -1 : 1),

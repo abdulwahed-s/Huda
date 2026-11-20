@@ -22,23 +22,10 @@ import 'package:huda/presentation/widgets/hadith_details/hadith_folio_card.dart'
 import 'package:huda/presentation/widgets/hadith_details/hadith_share_sheet.dart';
 import 'package:huda/presentation/widgets/hadith_details/hadith_text.dart';
 
-/// Where a reader was, kept by the screen that owns it, so folding,
-/// unfolding or resizing (a new layout builds a new reader) returns to the
-/// same page and place.
-///
-/// The place on a page is kept by `PageStorage` (each page has its own
-/// key), so a screen that wants it across layouts gives them one bucket.
 class HadithReaderMemory {
   int page = 1;
 }
 
-/// A book's hadith, one page at a time: the book's header (its rule inks
-/// in as it opens), the hadith as folios under their bab rubrics, and the
-/// pager after the last one. Reads the [HadithDetailsCubit] above it,
-/// whose first page its creator has asked for.
-///
-/// Used full screen on phones and in the reader pane on wide windows; on
-/// tabletop the header sits above the band and the hadith below it.
 class HadithReader extends StatefulWidget {
   const HadithReader({
     super.key,
@@ -52,12 +39,8 @@ class HadithReader extends StatefulWidget {
   final HadithBookRef book;
   final HadithReaderMemory memory;
 
-  /// Where the share sheet opens: a context that sees the fold (outside
-  /// `AdaptivePanes`, which hides it from its panes). Defaults to this
-  /// reader's.
   final BuildContext? overlayContext;
 
-  /// The hadith column's width.
   static const double measure = 720;
 
   @override
@@ -68,8 +51,6 @@ class _HadithReaderState extends State<HadithReader> {
   bool _retrying = false;
   HadithDetailsState? _failure;
 
-  /// The shown page's scroll position: back to its top before the next
-  /// page comes, so the app bar's scrolled-under tint clears with it.
   ScrollPosition? _position;
 
   void _fetch(int page) => context
@@ -82,7 +63,6 @@ class _HadithReaderState extends State<HadithReader> {
   }
 
   void _goTo(int page) {
-    // The new page has its own place, at its top.
     final position = _position;
     if (position != null && position.hasPixels && position.pixels > 0) {
       position.jumpTo(0);
@@ -136,7 +116,6 @@ class _HadithReaderState extends State<HadithReader> {
     return limit > 0 && total > limit ? (total / limit).ceil() : 1;
   }
 
-  /// A scrolling column at the measure, centered in the space it has.
   Widget _column(
     BuildContext context,
     List<Widget> children, {
@@ -172,9 +151,6 @@ class _HadithReaderState extends State<HadithReader> {
     final l10n = AppLocalizations.of(context)!;
     final space = context.tokens.space;
     final head = [if (header != null) HudaReveal(child: header)];
-    // The states keep to the room under the header, so their actions
-    // rest on screen. One lead per state at every size: the system's lamp
-    // for a failure, the folio for empty.
     if (shown is HadithDetailsError) {
       return _state(
         context,
@@ -205,7 +181,6 @@ class _HadithReaderState extends State<HadithReader> {
       final items = <Widget>[];
       for (var i = 0; i < entries.length; i++) {
         final entry = entries[i];
-        // A bab heads the hadith under it once, not on every one.
         final bab = entry.bab(arabicUi: arabicUi);
         final gap = i == 0 ? space.xl : space.md;
         if (bab != null && bab != lastBab) {
@@ -255,7 +230,6 @@ class _HadithReaderState extends State<HadithReader> {
         ],
       ];
     } else {
-      // Loading: the header stays, cards in the shape of what's coming.
       children = [
         ...head,
         SizedBox(height: space.xl),
@@ -267,8 +241,6 @@ class _HadithReaderState extends State<HadithReader> {
       ];
     }
     final key = model == null ? 'loading' : 'loaded-${_pageOf(model)}';
-    // Sequential: one page's text fades out before the next comes in, so
-    // two pages never overlap.
     return HudaStateSwitcher(
       stateKey: key,
       sequential: true,
@@ -294,8 +266,6 @@ class _HadithReaderState extends State<HadithReader> {
     );
   }
 
-  /// A full-page state under the book's header, in the room that's left:
-  /// the state scrolls and keeps its actions above the bottom inset.
   Widget _state(
     BuildContext context,
     String key,
@@ -337,9 +307,6 @@ class _HadithReaderState extends State<HadithReader> {
   }
 }
 
-/// The open book's header: which book (its number as the eyebrow, its
-/// names), the hadith it covers and the page, over a ruled band that inks
-/// itself in from the middle when the book opens.
 class HadithBookHeader extends StatelessWidget {
   const HadithBookHeader({
     super.key,
@@ -354,10 +321,8 @@ class HadithBookHeader extends StatelessWidget {
   final HadithBookRef book;
   final int page;
 
-  /// Null while the page loads.
   final int? pages;
 
-  /// Short windows: no eyebrow, one line of meta.
   final bool compact;
 
   @override
@@ -387,7 +352,6 @@ class HadithBookHeader extends StatelessWidget {
         ),
       ),
     );
-    // Short windows: one line, so the hadith start on the first screen.
     if (compact) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -397,7 +361,6 @@ class HadithBookHeader extends StatelessWidget {
             child: Text.rich(
               TextSpan(
                 children: [
-                  // Arabic first, when it differs from the title.
                   if (!arabicUi && arabic != null && arabic != book.title)
                     TextSpan(
                       text: '$arabic  ·  ',
@@ -478,8 +441,6 @@ class HadithBookHeader extends StatelessWidget {
   }
 }
 
-/// The header's ruled band: a gilt double rule drawn out from its middle,
-/// with a small seal where the ink starts.
 class _InkRulePainter extends CustomPainter {
   _InkRulePainter({required this.style, required this.inkOf})
     : super(repaint: inkOf);
@@ -508,8 +469,6 @@ class _InkRulePainter extends CustomPainter {
       old.style != style || old.inkOf != inkOf;
 }
 
-/// After a page's last hadith: the page and the way to the previous and
-/// next ones. Next is lit; it's where reading goes.
 class HadithPager extends StatelessWidget {
   const HadithPager({
     super.key,
@@ -529,7 +488,6 @@ class HadithPager extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final theme = Theme.of(context);
     final space = context.tokens.space;
-    // Chevrons mirror themselves in RTL (matchTextDirection).
     const back = Icons.chevron_left_rounded;
     const forward = Icons.chevron_right_rounded;
     return Semantics(

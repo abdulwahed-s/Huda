@@ -6,8 +6,6 @@ import 'package:huda/presentation/widgets/quran_home/quran_identity.dart';
 import 'package:huda/presentation/widgets/quran_home/quran_index_widgets.dart';
 import 'package:huda/presentation/widgets/surah/animated_listening_waves.dart';
 
-/// The page and ink the reader draws with: the theme's surface and text,
-/// or the colors a reader saved in an earlier version.
 @immutable
 class QuranPageColors {
   const QuranPageColors({
@@ -31,14 +29,10 @@ class QuranPageColors {
     return QuranPageColors(
       page: page,
       ink: ink,
-      // The reader's chosen color, as the Mushaf marks its ayat: the
-      // headpiece, the ayah rosettes and the rules (owner round 4).
       accent: scheme.primary,
       muted: customInk?.withValues(alpha: 0.72) ?? scheme.onSurfaceVariant,
       tint: scheme.primary,
-      // Gold, as the search marks a hit, and apart from the playing tint.
       found: scheme.tertiary,
-      // Around the page on wide windows: a shade quieter than the paper.
       backdrop: Color.alphaBlend(
         Theme.of(context).brightness == Brightness.light
             ? ink.withValues(alpha: 0.06)
@@ -50,29 +44,20 @@ class QuranPageColors {
 
   final Color page;
 
-  /// Behind the paper sheet on wide windows.
   final Color backdrop;
   final Color ink;
-  /// Ornament: the headpiece, ayah rosettes, rules and sheet borders.
   final Color accent;
   final Color muted;
 
-  /// The playing ayah's wash.
   final Color tint;
 
-  /// An ayah found by search ([QuranAyahFlash]): the search's gold.
   final Color found;
 }
 
-/// The bismillah that opens every surah but Al-Fatiha (where it's the
-/// first ayah) and At-Tawbah (which has none).
 const quranBismillah = 'بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ';
 
 bool quranOpensWithBismillah(int surah) => surah != 1 && surah != 9;
 
-/// A surah's opening: its headpiece with the name in the cartouche, where
-/// it was revealed and how many verses, then the bismillah. The headpiece
-/// draws itself in as the surah opens ([draw]).
 class QuranSurahHeader extends StatelessWidget {
   const QuranSurahHeader({
     super.key,
@@ -86,14 +71,11 @@ class QuranSurahHeader extends StatelessWidget {
 
   final QuranSurahRef surah;
 
-  /// Grows with the Arabic on wide windows ([QuranAyahBlock.scale]), so
-  /// the opening stays the page's crown.
   final double scale;
   final QuranPageColors colors;
   final String fontFamily;
   final ValueListenable<double>? draw;
 
-  /// Short windows (phone landscape): a lower headpiece.
   final bool compact;
 
   @override
@@ -101,8 +83,6 @@ class QuranSurahHeader extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final space = context.tokens.space;
     final theme = Theme.of(context);
-    // With the text size too (capped), so the name keeps pace with the
-    // ayat at large text.
     final textScale = MediaQuery.textScalerOf(context).scale(1).clamp(1.0, 1.5);
     final height = (compact ? 52.0 : 80.0) * scale * textScale;
     return Semantics(
@@ -183,7 +163,6 @@ class QuranSurahHeader extends StatelessWidget {
   }
 }
 
-/// The name fades in once the cartouche has closed around it.
 class _NameIn extends StatelessWidget {
   const _NameIn({required this.child, this.draw});
 
@@ -203,11 +182,6 @@ class _NameIn extends StatelessWidget {
   }
 }
 
-/// One ayah on the reading page: the Arabic with its rosette at the end,
-/// as in a Mushaf, and the chosen translation under it. Tapping it opens
-/// the ayah's actions. While it's recited it takes a soft wash and its
-/// rosette fills with the accent; while memorizing, a hidden ayah shows the
-/// listening waves instead.
 class QuranAyahBlock extends StatelessWidget {
   const QuranAyahBlock({
     super.key,
@@ -229,13 +203,11 @@ class QuranAyahBlock extends StatelessWidget {
   final int number;
   final String text;
 
-  /// The Arabic's size against the type role (larger on wide windows).
   final double scale;
   final QuranPageColors colors;
   final String fontFamily;
   final VoidCallback onTap;
 
-  /// What the reader marked on this ayah ([QuranAyahMarks]), at its end.
   final Widget? marks;
   final String? translation;
   final String? translationSource;
@@ -243,8 +215,6 @@ class QuranAyahBlock extends StatelessWidget {
   final bool hidden;
   final bool listening;
 
-  /// The ayah the reader was opened at from search: how lit its "it's
-  /// here" is (0–1, [QuranAyahFlash]). Null on every other ayah.
   final Animation<double>? found;
 
   @override
@@ -279,8 +249,6 @@ class QuranAyahBlock extends StatelessWidget {
         ],
       ),
       textDirection: TextDirection.rtl,
-      // Justified on the wide page, as a Mushaf sets its lines; ragged on
-      // narrower measures, where justifying without kashida opens gaps.
       textAlign: scale > 1 ? TextAlign.justify : TextAlign.start,
       style: ayahStyle,
     );
@@ -360,7 +328,6 @@ class QuranAyahBlock extends StatelessWidget {
     );
     final found = this.found;
     if (found == null) return block;
-    // Behind the block, repainted with the level (no rebuilds).
     return CustomPaint(
       key: const ValueKey('quran-ayah-found'),
       painter: QuranFoundPainter(
@@ -373,10 +340,6 @@ class QuranAyahBlock extends StatelessWidget {
   }
 }
 
-/// The found ayah's mark ([QuranAyahBlock.found]): a wash strongest at the
-/// ayah's start (right, where Arabic begins) and a gilt band in that
-/// margin, like a reader's mark beside a line of a manuscript. The band
-/// grows from its middle as the level rises.
 class QuranFoundPainter extends CustomPainter {
   QuranFoundPainter({
     required this.level,
@@ -427,7 +390,6 @@ class QuranFoundPainter extends CustomPainter {
       old.level != level || old.accent != accent || old.radius != radius;
 }
 
-/// A hairline between ayat, in the accent at its middle and fading out.
 class QuranAyahRule extends StatelessWidget {
   const QuranAyahRule({super.key, required this.colors});
 
@@ -454,7 +416,6 @@ class QuranAyahRule extends StatelessWidget {
   }
 }
 
-/// The end of a surah: the next surah (lit) and the previous one.
 class QuranSurahEnd extends StatelessWidget {
   const QuranSurahEnd({super.key, required this.surah, required this.onOpen});
 
@@ -474,7 +435,6 @@ class QuranSurahEnd extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // In the button's own color: no gold on controls.
         Builder(
           builder: (context) => Text(
             eyebrow,
@@ -491,7 +451,6 @@ class QuranSurahEnd extends StatelessWidget {
         OutlinedButton.icon(
           key: const ValueKey('quran-previous-surah'),
           onPressed: () => onOpen(previous.number),
-          // Mirrors itself in right-to-left text.
           icon: const Icon(Icons.arrow_back_rounded),
           label: label(l10n.previousSurah, previous.title),
         ),
@@ -516,9 +475,6 @@ class QuranSurahEnd extends StatelessWidget {
   }
 }
 
-/// The recitation's controls, pinned to the bottom edge while an ayah
-/// plays: which ayah, previous, play or pause, next, and the ayah's sheet.
-/// Its surface reaches the screen edge; the controls sit above the inset.
 class QuranPlayerBar extends StatelessWidget {
   const QuranPlayerBar({
     super.key,
@@ -533,7 +489,6 @@ class QuranPlayerBar extends StatelessWidget {
     required this.onOpen,
   });
 
-  /// 1-based.
   final int ayah;
   final int total;
   final bool playing;
@@ -608,7 +563,6 @@ class QuranPlayerBar extends StatelessWidget {
                     rtl ? Icons.skip_next_rounded : Icons.skip_previous_rounded,
                   ),
                 ),
-                // Lit, as the ayah sheet's play: the primary action.
                 SizedBox.square(
                   dimension: 48,
                   child: Tooltip(

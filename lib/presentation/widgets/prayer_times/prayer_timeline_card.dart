@@ -22,9 +22,6 @@ String localizedPrayerName(AppLocalizations l10n, Prayer prayer) =>
       Prayer.none => '',
     };
 
-/// Today's six times, each prayer with its alert. A list of rows on narrow
-/// cards; on wide ones a strip of six stations under the sky card, in the
-/// day's order. The next prayer (or the one whose time it is) is lit.
 class PrayerTimelineCard extends StatelessWidget {
   const PrayerTimelineCard({
     super.key,
@@ -35,17 +32,13 @@ class PrayerTimelineCard extends StatelessWidget {
     this.alertsBlocked = false,
   });
 
-  /// Notifications are off for Huda: no prayer will alert, whatever its
-  /// style, so every bell says off.
   final bool alertsBlocked;
 
   final PrayerTimesLoaded state;
   final DateTime now;
 
-  /// Each prayer's alert, for its bell; null while loading.
   final PrayerAlertSettings? alerts;
 
-  /// Opens one prayer's alert settings.
   final void Function(String prayer)? onOpenAlerts;
 
   static const _rows = <({Prayer prayer, IconData? icon, String? asset})>[
@@ -61,7 +54,6 @@ class PrayerTimelineCard extends StatelessWidget {
     (prayer: Prayer.isha, icon: Icons.nights_stay_rounded, asset: null),
   ];
 
-  /// Wide enough for six stations side by side at this text size.
   static bool fitsStrip(BuildContext context, double width) =>
       width >= 6 * MediaQuery.textScalerOf(context).scale(100);
 
@@ -197,7 +189,6 @@ class _Entry {
   final IconData? icon;
   final String? asset;
 
-  /// Sunrise: a time, not a prayer (no alert).
   final bool marker;
   final String? highlight;
   final bool past;
@@ -284,7 +275,6 @@ class _Badge extends StatelessWidget {
   }
 }
 
-/// The bell that opens a prayer's alerts; its icon says how it alerts.
 class _Bell extends StatelessWidget {
   const _Bell({required this.entry, required this.onOpenAlerts});
 
@@ -380,7 +370,6 @@ class _TimelineRow extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: tokens.space.xs),
-                  // Wraps at very large text rather than overflowing.
                   Flexible(
                     child: Text(
                       entry.time,

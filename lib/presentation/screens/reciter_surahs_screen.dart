@@ -9,10 +9,6 @@ import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:huda/presentation/widgets/quran_player/player_bar_widget.dart';
 import 'package:huda/presentation/widgets/reciter_surahs/reciter_recitation.dart';
 
-/// One recitation as its own page: what Home's "continue listening" opens
-/// (resuming at [initialSurahIndex] and [initialPositionMs]). Inside Quran
-/// Audio, recitations open from the reciters screen instead. Brings its own
-/// Lantern scope, since Home pushes it directly.
 class ReciterSurahsScreen extends StatefulWidget {
   final Reciter reciter;
   final Moshaf moshaf;

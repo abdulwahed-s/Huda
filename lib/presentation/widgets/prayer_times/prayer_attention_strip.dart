@@ -11,11 +11,6 @@ import 'package:huda/presentation/widgets/prayer_times/prayer_attention_items.da
 import 'package:huda/presentation/widgets/prayer_times/prayer_palette.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_sky.dart';
 
-/// What needs attention about the times, as Prayer's own notices: a calm
-/// card led by a small lamp that holds a piece of the day path. Its
-/// station says the tone: broken off the path for an error, ringed for a
-/// warning, lit for information; while Huda works, the lamp turns. No
-/// tinted fill and no colored edge bar: the tone lives in the lamp.
 class PrayerAttentionStrip extends StatelessWidget {
   const PrayerAttentionStrip({
     super.key,
@@ -48,8 +43,6 @@ class PrayerAttentionStrip extends StatelessWidget {
   }
 }
 
-/// The color a tone is told in (the lamp's station and an error's card
-/// outline).
 Color attentionAccent(PrayerPalette palette, PrayerAttentionTone tone) =>
     switch (tone) {
       PrayerAttentionTone.error => palette.error,
@@ -161,7 +154,6 @@ class PrayerNotice extends StatelessWidget {
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
                         if (primary != null)
-                          // The fix is the lit action.
                           FilledButton.icon(
                             onPressed: primary.onPressed,
                             icon: Icon(primary.icon, size: 18),
@@ -188,9 +180,6 @@ class PrayerNotice extends StatelessWidget {
   }
 }
 
-/// The notice's lamp: a chrome disc with a fine ring and, inside, a short
-/// stretch of the day path ending in its station. While Huda works the
-/// lamp turns instead.
 class PrayerNoticeLamp extends StatelessWidget {
   const PrayerNoticeLamp({
     super.key,
@@ -208,7 +197,6 @@ class PrayerNoticeLamp extends StatelessWidget {
     final tokens = context.tokens;
     final scheme = Theme.of(context).colorScheme;
     final palette = PrayerPalette.of(context);
-    // Tones lifted toward the warm text so they read on the chrome.
     final mark = switch (tone) {
       PrayerAttentionTone.error => Color.lerp(
         scheme.error,
@@ -222,10 +210,6 @@ class PrayerNoticeLamp extends StatelessWidget {
       )!,
       PrayerAttentionTone.info => tokens.gilt,
     };
-    // A small disc of the page's sky, ringed; the tone is told on its sun
-    // (or moon): crossed for an error, ringed for a warning, glowing for
-    // information. While Huda works, the lamp turns over the sky.
-    // Below 32 the tone can't be told; the lamp never gets smaller.
     final size = math.max(this.size, 36.0);
     final inner = size - 4;
     return Container(
@@ -271,8 +255,6 @@ class PrayerNoticeLamp extends StatelessWidget {
   }
 }
 
-/// The tone on the lamp's sun (or moon): a crossed open disc for an error,
-/// a ring for a warning, a glow for information.
 class _SkyMarkPainter extends CustomPainter {
   _SkyMarkPainter({
     required this.tone,
@@ -290,8 +272,6 @@ class _SkyMarkPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // The mark is drawn on the sun but kept inside the disc, big enough to
-    // tell apart: a crossed disc, a double ring, a star of rays.
     final r = size.shortestSide * 0.2;
     final c = Offset(
       at.dx.clamp(r * 1.6, size.width - r * 1.6),
@@ -359,7 +339,6 @@ class _SkyMarkPainter extends CustomPainter {
       old.tone != tone || old.at != at || old.mark != mark;
 }
 
-/// A detail line: a small hollow station as its bullet.
 class _Detail extends StatelessWidget {
   const _Detail({required this.text});
 
@@ -464,7 +443,6 @@ class _CountryQuestion extends StatelessWidget {
   }
 }
 
-/// "You're offline", said quietly beside the title.
 class _OfflineMark extends StatelessWidget {
   const _OfflineMark({required this.label});
   final String label;
@@ -490,10 +468,6 @@ class _OfflineMark extends StatelessWidget {
   }
 }
 
-/// Prayer's inline status, in the page's one voice: the notice lamp (turning
-/// while Huda works, broken after a failure), what's happening, and Retry
-/// after a failure. Same meanings as the system's `HudaStatusBanner`
-/// (updating, retrying, failed), without its tinted fill.
 class PrayerStatusLine extends StatelessWidget {
   const PrayerStatusLine({
     super.key,
@@ -504,7 +478,6 @@ class PrayerStatusLine extends StatelessWidget {
 
   final HudaStatus status;
 
-  /// What failed; defaults to "Something went wrong".
   final String? message;
   final VoidCallback? onRetry;
 

@@ -23,7 +23,6 @@ import 'package:huda/l10n/app_localizations.dart';
 class ManualLocationSearchDialog extends StatefulWidget {
   const ManualLocationSearchDialog({super.key, this.service});
 
-  /// The search without the network, for tests and the device matrix.
   @visibleForTesting
   final LocationService? service;
 
@@ -172,8 +171,6 @@ class _ManualLocationSearchDialogState
     }
   }
 
-  // Shown in the sheet, above the results (a snack bar would sit behind
-  // the sheet).
   void _showSelectionError(LocationSearchErrorType type) {
     setState(() => _selectionError = type);
   }
@@ -200,9 +197,7 @@ class _ManualLocationSearchDialogState
     final tokens = context.tokens;
     final space = tokens.space;
     final media = MediaQuery.of(context);
-    // Above the keyboard, or the navigation bar when there's none.
     final bottom = max(media.viewInsets.bottom, media.padding.bottom);
-    // The night band follows the sheet's or dialog's rounded top.
     return ClipRRect(
       borderRadius: BorderRadius.vertical(
         top: Radius.circular(tokens.radius.xl),
@@ -300,8 +295,6 @@ class _ManualLocationSearchDialogState
     );
   }
 
-  /// The quiet states (hint, nothing found) under the horizon; an error
-  /// leads with the lamp, as every Prayer problem does.
   Widget _status({
     required String message,
     bool error = false,
@@ -331,9 +324,6 @@ class _ManualLocationSearchDialogState
   }
 }
 
-/// The search's night band: the title and Close over the horizon, where a
-/// gilt pin settles onto the day path, then the search field on the
-/// chrome.
 class _CitySearchHeader extends StatelessWidget {
   const _CitySearchHeader({
     required this.title,
@@ -355,8 +345,6 @@ class _CitySearchHeader extends StatelessWidget {
           final theme = Theme.of(context);
           return Stack(
             children: [
-              // The page's living sky (a plain day at the device's time
-              // when the search opens from somewhere without one).
               Positioned.fill(
                 child: Builder(
                   builder: (context) {
@@ -403,15 +391,12 @@ class _CitySearchHeader extends StatelessWidget {
                         ),
                       ],
                     ),
-                    // Short windows keep the room for the results.
                     if (MediaQuery.sizeOf(context).height >= 480)
                       const _PinOnHorizon()
                     else
                       SizedBox(height: space.xs),
                     Padding(
                       padding: EdgeInsetsDirectional.only(end: space.sm),
-                      // The field on the chrome: a raised tint of the band,
-                      // not the night's near-black surface.
                       child: Theme(
                         data: theme.copyWith(
                           colorScheme: theme.colorScheme.copyWith(
@@ -435,9 +420,6 @@ class _CitySearchHeader extends StatelessWidget {
   }
 }
 
-/// The horizon with its hour ticks and a faint day path; a gilt pin drops
-/// onto it once the search has opened (500 ms, once). Reduce motion: in
-/// place.
 class _PinOnHorizon extends StatelessWidget {
   const _PinOnHorizon();
 
@@ -449,7 +431,6 @@ class _PinOnHorizon extends StatelessWidget {
       height: 64,
       child: TweenAnimationBuilder<double>(
         tween: Tween(begin: reduce ? 1 : 0, end: 1),
-        // Once the sheet has landed (~250 ms), the pin settles (500 ms).
         duration: reduce ? Duration.zero : const Duration(milliseconds: 750),
         curve: const Interval(0.33, 1, curve: Curves.easeOutBack),
         builder: (context, t, _) => Ornament(
@@ -479,7 +460,6 @@ class _PinHorizonPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final ground = size.height * 0.86;
     final cx = size.width / 2;
-    // Its light on the ground, once it has landed.
     final landed = drop.clamp(0.0, 1.0);
     canvas.drawOval(
       Rect.fromCenter(
@@ -489,7 +469,6 @@ class _PinHorizonPainter extends CustomPainter {
       ),
       Paint()..color = gilt.withValues(alpha: 0.35 * landed),
     );
-    // The pin: a teardrop whose point rests on the ground.
     final tip = Offset(cx, ground - (1 - drop) * 26);
     const r = 9.0;
     final head = Offset(tip.dx, tip.dy - r * 2.1);
@@ -529,9 +508,6 @@ class _PinHorizonPainter extends CustomPainter {
       old.drop != drop || old.gilt != gilt || old.onChrome != onChrome;
 }
 
-/// A result: a station on its little horizon, the city with the typed part
-/// in the reading color, the country under it; while it's being used, the
-/// lamp turns in its place.
 class _CityRow extends StatelessWidget {
   const _CityRow({
     super.key,
@@ -641,8 +617,6 @@ class _CityRow extends StatelessWidget {
   }
 }
 
-/// A station: a short horizon, a gnomon and its roundel (filled while the
-/// city is being used).
 class _StationMarkPainter extends CustomPainter {
   _StationMarkPainter({required this.line, this.fill});
 
@@ -681,7 +655,6 @@ class _StationMarkPainter extends CustomPainter {
       old.line != line || old.fill != fill;
 }
 
-/// Searching: rows shaped like results.
 class _CitySkeleton extends StatelessWidget {
   const _CitySkeleton();
 
@@ -719,23 +692,14 @@ class _CitySkeleton extends StatelessWidget {
   }
 }
 
-/// What happened after [pickPrayerCity]: whether a city was picked, and if
-/// so what stopped it from being used (null once the times follow it).
 typedef PrayerCityPick = ({bool picked, PrayerLocationProblem? problem});
 
-/// Opens the city search and, when a city is picked, uses it (the
-/// "A city I choose" mode). The one way every screen picks a city.
-///
-/// [onPicked] runs once a city is picked, before it's applied (to show the
-/// caller's own busy state only while the place is being used).
 Future<PrayerCityPick> pickPrayerCity(
   BuildContext context,
   PrayerTimesCubit cubit, {
   VoidCallback? onPicked,
-  // The search without the network (tests and the device matrix).
   LocationService? service,
 }) async {
-  // The sheet is its own route: it takes the page's sky along.
   final scope = PrayerSkyScope.maybeOf(context);
   final result = await showHudaSheet<Map<String, dynamic>>(
     context: context,

@@ -11,9 +11,6 @@ import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 import 'package:huda/presentation/widgets/huda_ai/chat_conversation.dart';
 import 'package:huda/presentation/widgets/huda_ai/huda_ai_identity.dart';
 
-/// A new chat: the gathering of light drifting in and then breathing in
-/// place (owner round 1), a welcome, a quiet note, and things to ask that
-/// send at a tap. Counseling has its own writing page (`CounselingView`).
 class ChatWelcome extends StatelessWidget {
   const ChatWelcome({super.key, required this.onPick});
 
@@ -35,8 +32,6 @@ class ChatWelcome extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final width = constraints.maxWidth;
-        // Phone landscape: the light beside the words, so the first
-        // suggestions show without scrolling (not at large text).
         final short =
             context.windowClass.isCompactHeight &&
             MediaQuery.textScalerOf(context).scale(1) < 1.3;
@@ -49,7 +44,6 @@ class ChatWelcome extends StatelessWidget {
         final scale = MediaQuery.textScalerOf(context).scale(1);
         final tile = 168 * scale;
         var columns = (content / tile).floor().clamp(1, 4);
-        // An even count where a fold divides the space.
         if (context.fold.hasFold && columns.isOdd && columns > 1) columns--;
         if (columns == 3) columns = 2;
 
@@ -154,15 +148,12 @@ class ChatWelcome extends StatelessWidget {
                 minHeight: math.max(0, constraints.maxHeight - space.huge * 2),
               ),
               child: Column(
-                // On a short window the suggestions come first in view.
                 mainAxisAlignment: short
                     ? MainAxisAlignment.start
                     : MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   HudaReveal(index: 0, child: head),
-                  // Each answer carries the same note; a short window
-                  // keeps the room for the suggestions.
                   if (!short) ...[
                     SizedBox(height: space.lg),
                     HudaReveal(index: 1, child: Center(child: note)),
@@ -192,7 +183,6 @@ class ChatWelcome extends StatelessWidget {
   }
 }
 
-/// A suggestion: a quiet card with a mark and the words it sends.
 class _Suggestion extends StatelessWidget {
   const _Suggestion({
     required this.icon,

@@ -25,13 +25,9 @@ import 'package:huda/presentation/widgets/design/huda_toast.dart';
 import 'package:huda/presentation/widgets/quran_home/quran_identity.dart';
 import 'package:huda/presentation/widgets/quran_home/quran_index_widgets.dart';
 
-/// Saved ayat: bookmarks (in their colors), notes and stars. Search and a
-/// filter in the page; a tap opens the ayah, ⋮ edits a note or deletes
-/// (with Undo). Standard tier. See `design/features/quran/brief.md`.
 class BookmarksPage extends StatefulWidget {
   const BookmarksPage({super.key});
 
-  /// Content is capped at this width and centered.
   static const double maxContentWidth = 1280;
 
   @override
@@ -42,14 +38,10 @@ class _BookmarksPageState extends State<BookmarksPage> {
   final _search = TextEditingController();
   String _query = '';
 
-  /// Null shows every kind.
   BookmarkType? _filter;
 
-  /// Cards folding away before their bookmark is removed.
   final _leaving = <String>{};
 
-  /// The last list shown: it stays while a live update reloads (and after
-  /// a failed edit), instead of flashing the skeleton.
   List<BookmarkModel>? _shown;
   StreamSubscription<BookmarkChange>? _changes;
 
@@ -57,7 +49,6 @@ class _BookmarksPageState extends State<BookmarksPage> {
   void initState() {
     super.initState();
     context.read<BookmarksCubit>().loadBookmarks();
-    // Saved elsewhere (the reader) while this is open: reload.
     _changes = getIt<BookmarkService>().bookmarkChanges.listen((_) {
       if (mounted) context.read<BookmarksCubit>().loadBookmarks();
     });
@@ -86,7 +77,6 @@ class _BookmarksPageState extends State<BookmarksPage> {
     final l10n = AppLocalizations.of(context)!;
     final cubit = context.read<BookmarksCubit>();
     HudaHaptics.light(context);
-    // The card folds away first, then the list closes over it.
     final fold = context.tokens.motion.of(context, context.tokens.motion.long);
     if (fold > Duration.zero) {
       setState(() => _leaving.add(bookmark.id));
@@ -180,7 +170,6 @@ class _BookmarksPageState extends State<BookmarksPage> {
             onPressed: () => Navigator.pop(dialogContext, false),
             child: Text(l10n.cancel),
           ),
-          // Can't be undone: the error tone, not the lit primary.
           FilledButton(
             key: const ValueKey('quran-clear-all-confirm'),
             style: FilledButton.styleFrom(
@@ -230,8 +219,6 @@ class _BookmarksPageState extends State<BookmarksPage> {
             BookmarksLoading() || BookmarkOperationFailure() => _shown,
             _ => null,
           };
-          // The list follows saves live, so there's no Refresh; Clear all
-          // is the one action left, asked to confirm.
           final actions = [
             if (all != null && all.isNotEmpty)
               IconButton(
@@ -249,8 +236,6 @@ class _BookmarksPageState extends State<BookmarksPage> {
               body: whole,
             );
           }
-          // Tabletop: the bar, search and filters above the band, the
-          // saved ayat below it.
           if (TabletopSplit.applies(context)) {
             return TabletopSplit(
               top: HudaScaffold(
@@ -274,7 +259,6 @@ class _BookmarksPageState extends State<BookmarksPage> {
     );
   }
 
-  /// A state that takes the whole page: the error, or nothing saved yet.
   Widget? _whole(
     BuildContext context,
     BookmarksState state,
@@ -300,7 +284,6 @@ class _BookmarksPageState extends State<BookmarksPage> {
     return null;
   }
 
-  /// The page's column: gutters and insets, capped and centered.
   Widget _page(
     BuildContext context,
     List<Widget> slivers, {
@@ -334,8 +317,6 @@ class _BookmarksPageState extends State<BookmarksPage> {
   List<BookmarkModel>? _searched(List<BookmarkModel>? all) =>
       all == null ? null : _matching(all);
 
-  /// Search and the filter chips with their counts: one row when there's
-  /// room, the chips scrolling sideways on phones. Kept off a book fold.
   Widget _controls(BuildContext context, List<BookmarkModel>? all) {
     final l10n = AppLocalizations.of(context)!;
     final space = context.tokens.space;
@@ -363,7 +344,6 @@ class _BookmarksPageState extends State<BookmarksPage> {
             if (i > 0) SizedBox(width: space.xs),
             ChoiceChip(
               key: ValueKey('quran-filter-${type?.name}'),
-              // Lit when chosen: the mark takes the chip's warm text.
               avatar: Icon(
                 icon,
                 size: 18,
@@ -411,14 +391,12 @@ class _BookmarksPageState extends State<BookmarksPage> {
     );
   }
 
-  /// The saved ayat for the search and filter, or why there are none.
   Widget _results(BuildContext context, List<BookmarkModel>? all) {
     final l10n = AppLocalizations.of(context)!;
     final space = context.tokens.space;
     final list = _searched(
       all,
     )?.where((b) => _filter == null || b.type == _filter).toList();
-    // Two columns from phone landscape, more as the window widens.
     final minTile = AdaptiveGrid.tileWidth(
       context,
       context.windowClass.isCompactHeight ? 280 : 360,
@@ -447,9 +425,6 @@ class _BookmarksPageState extends State<BookmarksPage> {
               ),
               _ => (l10n.noBookmarksYet, l10n.startBookmarkingFavoriteVerses),
             };
-      // The rest of the page, bounded: the empty state centres itself in a
-      // scroll view and needs a height (in a plain box it threw and left
-      // every filter blank until the screen reopened; owner round 2).
       results = SliverFillRemaining(
         hasScrollBody: true,
         child: Padding(
@@ -475,8 +450,6 @@ class _BookmarksPageState extends State<BookmarksPage> {
         maxColumns: 3,
         equalHeights: false,
         itemCount: list.length,
-        // Keyed by bookmark: a card keeps its own state as the filter
-        // changes which cards are shown.
         itemBuilder: (context, i) => HudaReveal(
           key: ValueKey(list[i].id),
           index: i,
@@ -494,9 +467,6 @@ class _BookmarksPageState extends State<BookmarksPage> {
         ),
       );
     }
-    // The saved ayat arrive from their skeleton; a filter or search swaps
-    // the cards at once (the chip answers the tap), with no dimming between
-    // lists; a deleted card folds away on its own (owner round 1).
     return SliverHudaStateSwitcher(
       stateKey: list == null ? 'loading' : 'loaded',
       sliver: results,
@@ -504,9 +474,6 @@ class _BookmarksPageState extends State<BookmarksPage> {
   }
 }
 
-/// A card closing to nothing, as a deleted bookmark leaves: it fades over
-/// the first half while its height closes over the whole (long, ease in
-/// and out), so the cards below visibly move up into its place.
 class _FoldAway extends StatelessWidget {
   const _FoldAway({required this.leaving, required this.child});
 

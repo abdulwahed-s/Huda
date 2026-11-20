@@ -71,7 +71,6 @@ enum QuranReadingMode {
 
   bool get isMushaf => pack != null;
 
-  /// The page-image pack a Mushaf mode reads from.
   MushafPack? get pack {
     switch (this) {
       case QuranReadingMode.scrollList:
@@ -85,8 +84,6 @@ enum QuranReadingMode {
     }
   }
 
-  /// Page numbering of this mode's printed Mushaf; the scroll list keeps
-  /// Madani page numbers.
   MushafPagination get pagination => this == QuranReadingMode.indopak
       ? MushafPagination.indopak
       : MushafPagination.madani;
@@ -203,12 +200,6 @@ enum HorizontalPageDisplayMode {
   static String get key => _storageKey;
 }
 
-/// How the Mushaf lays out its pages (owner round 3): one page or two side
-/// by side ([twoPages]; null until the reader chooses: two on wide
-/// windows and open foldables, one on phones), and whether they fill the
-/// width and scroll ([zoomed], off unless chosen; two pages scroll
-/// together). Stored under [HorizontalPageDisplayMode.key] ("normal" one,
-/// "doublePage" two, nothing: by the window) and [zoomKey].
 @immutable
 class MushafLayout {
   const MushafLayout({this.twoPages, this.zoomed = false});
@@ -218,7 +209,6 @@ class MushafLayout {
 
   static const zoomKey = 'mushaf_zoomed';
 
-  /// The saved layout. An old "zoomed" mode reads as one page, zoomed.
   static MushafLayout read(CacheHelper cache) {
     final pages = cache.getData(key: HorizontalPageDisplayMode.key) as String?;
     final zoom = cache.getData(key: zoomKey);
@@ -297,12 +287,8 @@ class QuranMushafPageView extends StatefulWidget {
   final MushafLayout layout;
   final MushafFlipDirection flipDirection;
 
-  /// (surah, ayah) found by search: its lines light up once its page is
-  /// on screen ([QuranAyahFlash]), brought into view first on a zoomed
-  /// page. Runs once per view.
   final (int, int)? flashAyah;
 
-  /// Called as the flash starts.
   final VoidCallback? onFlashShown;
 
   const QuranMushafPageView({
@@ -325,8 +311,6 @@ class QuranMushafPageView extends StatefulWidget {
     this.flipDirection = MushafFlipDirection.horizontal,
   });
 
-  /// The Mushaf's paper: the surface warmed a little toward the gilt by
-  /// day, the surface at night, or a reader's saved page color.
   static Color paperOf(BuildContext context, [Color? custom]) {
     if (custom != null) return custom;
     final scheme = Theme.of(context).colorScheme;
@@ -335,12 +319,6 @@ class QuranMushafPageView extends StatefulWidget {
         : Color.lerp(scheme.surfaceContainerLowest, scheme.tertiary, 0.07)!;
   }
 
-  /// Two pages side by side, only where they can stand side by side
-  /// ([allowsSpread]): as the reader chose ([twoPages]), or, until they
-  /// choose, where the window has room: wide and tall enough for two
-  /// readable pages (by space, not device), or across a vertical fold (an
-  /// open Duo or Fold, flat or half open), one page a side like an open
-  /// Mushaf. Phones show one.
   static bool showsSpread(Size size, FoldInfo fold, {bool? twoPages}) {
     if (!allowsSpread(size, fold)) return false;
     if (twoPages != null) return twoPages;
@@ -350,17 +328,9 @@ class QuranMushafPageView extends StatefulWidget {
         size.height >= 560;
   }
 
-  /// Whether two pages may show at all: on a landscape window (a tablet,
-  /// a laptop, a phone turned sideways) or across a vertical fold, a page
-  /// a side. Never on a portrait screen, where two pages would each be
-  /// too small to read (owner round 4).
   static bool allowsSpread(Size size, FoldInfo fold) =>
       fold.splitsHorizontally || size.width > size.height;
 
-  /// Whether a single page keeps to one side of a vertical fold with a
-  /// hinge gap (the open Duo) or a bend (a half-open Fold): the right,
-  /// where a Mushaf starts, so no line crosses the hinge. A flat Fold has
-  /// one seamless screen: the page uses it whole.
   static bool keepsPageOffHinge(FoldInfo fold) =>
       fold.splitsHorizontally && (fold.isHalfOpened || fold.bounds.width > 0);
 
@@ -370,13 +340,9 @@ class QuranMushafPageView extends StatefulWidget {
 
 class _QuranMushafPageViewState extends State<QuranMushafPageView>
     with WidgetsBindingObserver, SingleTickerProviderStateMixin {
-  // Made up front: a lazy one would first be made in dispose() on a page
-  // that never flashed, which looks up a deactivated ancestor.
   late final AnimationController _flash;
   bool _flashStarted = false;
 
-  /// The page holding [QuranMushafPageView.flashAyah] has its image on
-  /// screen (and in view): light the ayah once the page has settled.
   void _onFlashReady() {
     if (_flashStarted) return;
     _flashStarted = true;
@@ -447,7 +413,6 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView>
     WidgetsBinding.instance.addObserver(this);
     _currentPage = widget.initialPageNumber.clamp(1, _pageCount);
 
-    // Settled from the window in didChangeDependencies.
     _currentIsDoubleMode = false;
     _pageController = PageController(
       initialPage: _toControllerPage(_currentPage, _currentIsDoubleMode),
@@ -555,10 +520,6 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView>
     scrolls: scrolls,
   );
 
-  /// The pages stay inside the system bars and the Duo's column, while
-  /// the paper behind them (the screen's background) runs to the edges.
-  /// The bottom inset is each page's own: a fitted page keeps above it, a
-  /// page filling the width scrolls to the edge and pads its end.
   Widget _insetPages(BuildContext context, MushafPackService? service) =>
       Padding(
         padding: MediaQuery.paddingOf(context).copyWith(bottom: 0),
@@ -578,7 +539,6 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView>
             child: PageView.builder(
               allowImplicitScrolling: true,
               key: ObjectKey(_pageController),
-              // Spreads turn the way the reader chose, as single pages do.
               scrollDirection:
                   widget.flipDirection == MushafFlipDirection.vertical
                   ? Axis.vertical
@@ -600,11 +560,8 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView>
               itemBuilder: (context, spreadIndex) {
                 final rightPage = spreadIndex * 2 + 1;
                 final leftPage = spreadIndex * 2 + 2;
-                // The spine sits on the fold; a half-open band stays empty.
                 final fold = FoldInfo.of(context);
                 final band = fold.splitsHorizontally ? fold.bounds.width : 0.0;
-                // Zoomed: the spread fills the width and both pages scroll
-                // together (owner round 3).
                 if (widget.layout.zoomed) {
                   return ColoredBox(
                     color: QuranMushafPageView.paperOf(
@@ -645,7 +602,6 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView>
                               ),
                             ],
                           ),
-                          // The spine, as on an unzoomed spread.
                           if (band <= 0)
                             Positioned.fill(
                               child: Center(
@@ -723,9 +679,6 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView>
     return _framePages(context, pages, single: true);
   }
 
-  /// Places the page view on the screen's folds: one page keeps off a
-  /// vertical hinge; on a tabletop fold the page or spread stands above
-  /// the band with page turns below it.
   Widget _framePages(
     BuildContext context,
     Widget pages, {
@@ -733,8 +686,6 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView>
   }) {
     final fold = FoldInfo.of(context);
     final bounds = fold.bounds;
-    // One page on an open Duo or a half-open Fold: on the right side of
-    // the hinge, never across it.
     if (single && QuranMushafPageView.keepsPageOffHinge(fold)) {
       final media = MediaQuery.of(context);
       final right = math.max(
@@ -749,7 +700,6 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView>
         ],
       );
     }
-    // Tabletop: the page above the band, turning it below.
     if (!fold.isTabletop) return pages;
     return Column(
       children: [
@@ -782,8 +732,6 @@ class _QuranMushafPageViewState extends State<QuranMushafPageView>
   }
 }
 
-/// Below a tabletop fold: the page number and the page turns, within
-/// reach while the page stands above.
 class _TabletopPageControls extends StatelessWidget {
   const _TabletopPageControls({
     required this.page,
@@ -802,7 +750,6 @@ class _TabletopPageControls extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final space = context.tokens.space;
     final theme = Theme.of(context);
-    // Mushaf pages turn right to left: the next page is on the left.
     return Padding(
       padding: EdgeInsets.all(space.md),
       child: Row(
@@ -813,8 +760,6 @@ class _TabletopPageControls extends StatelessWidget {
             tooltip: l10n.previous,
             onPressed: page > 1 ? onPrevious : null,
             icon: const Directionality(
-              // Physical arrows: chevrons mirror in RTL locales, but
-              // Mushaf pages always turn right to left.
               textDirection: TextDirection.ltr,
               child: Icon(Icons.chevron_right_rounded),
             ),
@@ -826,8 +771,6 @@ class _TabletopPageControls extends StatelessWidget {
             tooltip: l10n.next,
             onPressed: page < pageCount ? onNext : null,
             icon: const Directionality(
-              // Physical arrows: chevrons mirror in RTL locales, but
-              // Mushaf pages always turn right to left.
               textDirection: TextDirection.ltr,
               child: Icon(Icons.chevron_left_rounded),
             ),
@@ -838,8 +781,6 @@ class _TabletopPageControls extends StatelessWidget {
   }
 }
 
-/// Shown in place of the pages until the selected Mushaf pack is installed,
-/// including for readers whose old page fonts were removed by an update.
 class _MushafPackRequired extends StatelessWidget {
   final MushafPackService service;
   final Color? customBgColor;
@@ -862,7 +803,6 @@ class _MushafPackRequired extends StatelessWidget {
       case MushafPackStatus.downloading:
       case MushafPackStatus.extracting:
       case MushafPackStatus.loading:
-        // Working: the lamp turns while the pack arrives.
         final downloading = state.status == MushafPackStatus.downloading;
         body = HudaStateView(
           title: l.mushafPackTitle,
@@ -924,8 +864,6 @@ class _QuranMushafPage extends StatefulWidget {
   final int? playingSurahNumber;
   final int? playingAyahNumber;
 
-  /// The ayah found by search, its level and the report that its page
-  /// shows ([QuranMushafPageView.flashAyah]).
   final (int, int)? flashAyah;
   final Animation<double>? flashLevel;
   final VoidCallback? onFlashReady;
@@ -937,13 +875,10 @@ class _QuranMushafPage extends StatefulWidget {
   final Color? customBgColor;
   final Color? customTextColor;
 
-  /// The page fills its width (zoomed) instead of fitting.
   final bool zoomed;
 
-  /// A zoomed page scrolls itself; in a zoomed spread the spread scrolls.
   final bool scrolls;
 
-  /// Side of a double-page spread; null on a single page.
   final bool? rightOfSpread;
 
   const _QuranMushafPage({
@@ -1049,8 +984,6 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
   Color _textColor(bool isDark) =>
       widget.customTextColor ?? Theme.of(context).colorScheme.onSurface;
 
-  /// Background highlight per ayah, with the same precedence the text reader
-  /// used: pressed/playing, then star, note, bookmark, khatma start/end.
   Map<(int, int), Color> _highlights(MushafPageLayout layout, Color accent) {
     final khatmaService = getIt.isRegistered<KhatmaService>()
         ? getIt<KhatmaService>()
@@ -1154,9 +1087,7 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
     final pageImage = _MushafPageImage(
       flash: flashHere ? flash : null,
       flashLevel: widget.flashLevel,
-      // Gold, as the search marks a hit.
       flashColor: Theme.of(context).colorScheme.tertiary,
-      // A zoomed page scrolls: bring the ayah into view before it lights.
       revealFlash: widget.zoomed,
       onFlashReady: widget.onFlashReady,
       file: service.pageFile(pageNumber),
@@ -1178,9 +1109,6 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
     final juzNumber = pageContent.juzNumber;
     final hizbText = pageContent.hizbText;
 
-    // Zoomed (the reader's choice, never by default): the page fills its
-    // width and scrolls; in a spread both pages scroll together, so the
-    // spread scrolls and the page doesn't (owner round 3).
     if (widget.zoomed) {
       final zoomed = _buildZoomedLayout(
         context,
@@ -1214,8 +1142,6 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
     );
   }
 
-  /// A single zoomed page is capped here on wide windows, so it stays a
-  /// page.
   static const double _filledMaxWidth = 900;
 
   Widget _buildFittedLayout(
@@ -1227,8 +1153,6 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
     String? hizbText,
     bool isDark,
   ) {
-    // The page as a facsimile: its header, the page image and its footer
-    // in the page's own units, scaled together to fit the window.
     return Container(
       color: _bgColor(isDark),
       padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
@@ -1281,10 +1205,6 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
     bool isDark, {
     bool scrolls = true,
   }) {
-    // The page fills its width and scrolls; its header and footer are part
-    // of the page, in the page's units (half the window on a spread), so
-    // they scroll with it and never sit over the text (owner round 1). In
-    // a zoomed spread the spread scrolls, not the page.
     final bottomInset = scrolls ? MediaQuery.paddingOf(context).bottom : 0.0;
     return Container(
       color: _bgColor(isDark),
@@ -1372,12 +1292,6 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
     );
   }
 
-  /// A surah's opening on the page: Quran's own headpiece (the ruled gilt
-  /// panel, the cartouche with the name in the surah-name font, a rosette
-  /// in each compartment, a star roundel in each margin), drawn in the
-  /// page's gold over its paper, the same piece that opens a surah in the
-  /// scrolling reader. It replaced a stock banner image (owner round 2).
-  /// Drawn whole: pages turn too often for it to draw itself in.
   Widget _buildSurahBanner(
     BuildContext context,
     int surahNum,
@@ -1393,8 +1307,6 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
       size: size,
       child: Stack(
         children: [
-          // The slot is the headpiece's own: paper under it, as the image
-          // it replaced covered the slot.
           Positioned.fill(
             child: ColoredBox(
               color: _bgColor(Theme.of(context).brightness == Brightness.dark),
@@ -1402,8 +1314,6 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
           ),
           Positioned.fill(
             child: CustomPaint(
-              // In the reader's chosen color, as the headpiece is in the
-              // scrolling reader.
               painter: QuranHeadpiecePainter(
                 color: Theme.of(context).colorScheme.primary,
                 panel: _bgColor(
@@ -1481,7 +1391,6 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
         right: 12 * scale,
       ),
       child: Align(
-        // In a spread both pills sit by the spine, wherever the hizb falls.
         alignment: switch (widget.rightOfSpread) {
           true => Alignment.centerLeft,
           false => Alignment.centerRight,
@@ -1602,31 +1511,25 @@ class _QuranMushafPageState extends State<_QuranMushafPage> {
 
   static const double _baselineWidth = 470;
 
-  /// Room for the header and footer overlays, in the 470-wide page units.
   static const double _pageTopSpace = 40;
   static const double _pageBottomSpace = 50;
 
-  /// Lifts Tajweed ink and colors for dark backgrounds, as the font reader did.
   static const _tajweedDarkFilter = ColorFilter.matrix(<double>[
-    0.3, 0, 0, 0, 180, //
-    0, 0.3, 0, 0, 180, //
-    0, 0, 0.3, 0, 180, //
-    0, 0, 0, 1, 0, //
+    0.3, 0, 0, 0, 180,
+    0, 0.3, 0, 0, 180,
+    0, 0, 0.3, 0, 180,
+    0, 0, 0, 1, 0,
   ]);
 }
 
-/// One Mushaf page image with its themed overlays, sized by its parent to the
-/// pack's aspect ratio. Layout rects are in image pixels.
 class _MushafPageImage extends StatefulWidget {
   final File file;
   final MushafPackLayout packLayout;
   final MushafPageLayout layout;
 
-  /// Mask packs: ink color, and the color of ayah-number glyphs.
   final Color? tint;
   final Color? markerTint;
 
-  /// Color packs: optional whole-page filter (Tajweed dark mode).
   final ColorFilter? filter;
   final Map<(int, int), Color> highlights;
   final Set<(int, int)> hidden;
@@ -1635,15 +1538,12 @@ class _MushafPageImage extends StatefulWidget {
   final void Function(int surah, int ayah) onLongPress;
   final VoidCallback onMissingFile;
 
-  /// The found ayah when it's on this page, with its level and color.
   final (int, int)? flash;
   final Animation<double>? flashLevel;
   final Color flashColor;
 
-  /// Scroll the found ayah into view once the image shows.
   final bool revealFlash;
 
-  /// The found ayah is drawn on screen.
   final VoidCallback? onFlashReady;
 
   const _MushafPageImage({
@@ -1689,8 +1589,6 @@ class _MushafPageImageState extends State<_MushafPageImage> {
     if (oldWidget.flash != widget.flash) _reportFlash();
   }
 
-  /// Once the image holding the found ayah is drawn: bring the ayah into
-  /// view (a zoomed page) and tell the view to light it.
   void _reportFlash() {
     final flash = widget.flash;
     if (flash == null || _imageInfo == null) return;
@@ -1717,8 +1615,6 @@ class _MushafPageImageState extends State<_MushafPageImage> {
     });
   }
 
-  /// Decodes at (at most) the screen's physical width instead of the full
-  /// 1260 px, bucketed so pages share cache keys.
   ImageProvider _provider() {
     final media = MediaQuery.of(context);
     final screenWidth = media.size.width * media.devicePixelRatio;
@@ -1846,7 +1742,6 @@ class _MushafPageImageState extends State<_MushafPageImage> {
     );
   }
 
-  /// Banner slot size in the 470-wide page units the generator used.
   static const _bannerWidth = 462.0;
   static const _bannerHeight = 60.0;
 }
@@ -1869,7 +1764,6 @@ class _MushafPagePainter extends CustomPainter {
   final Set<(int, int)> hidden;
   final Color background;
 
-  /// The found ayah, lit by [flashLevel] (repaints with it, no rebuilds).
   final (int, int)? flash;
   final Animation<double>? flashLevel;
   final Color flashColor;
@@ -1906,9 +1800,6 @@ class _MushafPagePainter extends CustomPainter {
       );
     }
 
-    // Over any other highlight, under the ink, as the search marks a hit:
-    // one wash over the ayah's lines (a single path, so lines that touch
-    // don't double up) and a fine gilt rule along each line's foot.
     final flash = this.flash;
     final level = (flashLevel?.value ?? 0).clamp(0.0, 1.0);
     if (flash != null && level > 0) {
@@ -1948,7 +1839,6 @@ class _MushafPagePainter extends CustomPainter {
       image.height.toDouble(),
     );
     final dst = Offset.zero & size;
-    // Filters apply per draw: no offscreen layer while pages scroll.
     Paint imagePaint(Color? color, ColorFilter? colorFilter) => Paint()
       ..filterQuality = FilterQuality.medium
       ..colorFilter = color != null

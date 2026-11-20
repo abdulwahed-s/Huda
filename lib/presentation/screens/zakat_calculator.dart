@@ -16,11 +16,6 @@ import 'package:huda/presentation/widgets/zakat_calculator/zakat_ledger.dart';
 import 'package:huda/presentation/widgets/zakat_calculator/zakat_parts.dart';
 import 'package:huda/presentation/widgets/zakat_calculator/zakat_result.dart';
 
-/// The zakat calculator: one ledger to fill in and the mizan that weighs it
-/// against the nisab, live. Phones show the result card above the ledger
-/// (and a result strip at the bottom once it's scrolled away); from 840
-/// wide and on folds the ledger and the result sit side by side; tabletop
-/// puts the result above the band and the ledger below it.
 class ZakatCalculator extends StatefulWidget {
   const ZakatCalculator({super.key});
 
@@ -37,8 +32,6 @@ class _ZakatCalculatorState extends State<ZakatCalculator> {
   bool? _wasDue;
   NisabType? _wasBasis;
 
-  /// Set by Clear and Undo, which have their own haptic: the crossing
-  /// they cause stays quiet (one haptic per action).
   bool _quietCross = false;
 
   @override
@@ -54,8 +47,6 @@ class _ZakatCalculatorState extends State<ZakatCalculator> {
     super.dispose();
   }
 
-  /// The strip shows while the result card is above the screen and the
-  /// ledger's own summary at the end isn't on it yet.
   void _updateStrip() {
     if (!_scroll.hasClients) return;
     final view = context.findRenderObject() as RenderBox?;
@@ -95,7 +86,6 @@ class _ZakatCalculatorState extends State<ZakatCalculator> {
       actionLabel: l10n.undo,
       onAction: () {
         _quietCross = true;
-        // The listener clears the flag when the restored state arrives.
         saved.forEach(cubit.updateAssetValue);
         final restored = cubit.state;
         if (restored is ZakatCalculatorLoaded) _fields.fill(restored);
@@ -105,7 +95,6 @@ class _ZakatCalculatorState extends State<ZakatCalculator> {
 
   void _retryPrices() => context.read<ZakatCalculatorCubit>().retryPrices();
 
-  /// Retrying starts the calculation again from empty amounts.
   void _retry() {
     _fields.clearAmounts();
     context.read<ZakatCalculatorCubit>().resetCalculation();
@@ -119,7 +108,6 @@ class _ZakatCalculatorState extends State<ZakatCalculator> {
     if (loaded != null) _fields.fill(loaded);
 
     final actions = [
-      // Disabled (never missing) while loading or with nothing to clear.
       IconButton(
         tooltip: l10n.zakatClearAmounts,
         onPressed: loaded != null && zakatHasAmounts(loaded.calculation)
@@ -137,13 +125,11 @@ class _ZakatCalculatorState extends State<ZakatCalculator> {
     final width = MediaQuery.sizeOf(context).width;
     final wide = AdaptivePanes.showsTwoPanes(width, FoldInfo.of(context));
 
-    // Something clicks into place: the balance tips across the nisab.
     Widget listen(Widget child) =>
         BlocListener<ZakatCalculatorCubit, ZakatCalculatorState>(
           listener: (context, state) {
             if (state is! ZakatCalculatorLoaded) return;
             final due = state.calculation.isZakatDue;
-            // A basis switch has its segment's tick already.
             final quiet = _quietCross || _wasBasis != state.nisabType;
             if (_wasDue != null && _wasDue != due && !quiet) {
               HudaHaptics.selection(context);
@@ -160,7 +146,6 @@ class _ZakatCalculatorState extends State<ZakatCalculator> {
     if ((loaded != null || loading) &&
         !wide &&
         TabletopSplit.applies(context)) {
-      // Loading splits at the band like the content it stands for.
       return listen(
         TabletopSplit(
           top: HudaScaffold(
@@ -173,7 +158,6 @@ class _ZakatCalculatorState extends State<ZakatCalculator> {
                   )
                 : _resultPane(loaded, totals: false),
           ),
-          // The totals go under the ledger, so the top half is the card.
           bottom: Scaffold(
             backgroundColor: Colors.transparent,
             body: loaded == null
@@ -194,8 +178,6 @@ class _ZakatCalculatorState extends State<ZakatCalculator> {
             ZakatCalculatorLoaded() when wide => AdaptivePanes(
               primary: _ledgerPane(state, revealFrom: 0),
               secondary: _resultPane(state),
-              // The ledger leads and takes the larger share; the result
-              // sits beside it like a receipt.
               primaryFraction: 0.56,
               minPrimaryWidth: 420,
               maxPrimaryWidth: 720,
@@ -206,7 +188,6 @@ class _ZakatCalculatorState extends State<ZakatCalculator> {
               message: l10n.zakatCalcError,
               onRetry: _retry,
             ),
-            // Loading takes the shape of the layout that's coming.
             _ when wide => AdaptivePanes(
               primary: _pane((context) => const ZakatSkeleton(result: false)),
               secondary: _pane((context) => const ZakatSkeleton(ledger: false)),
@@ -221,7 +202,6 @@ class _ZakatCalculatorState extends State<ZakatCalculator> {
     );
   }
 
-  /// A scrolling, readable column for the skeleton and the narrow layout.
   Widget _scrollFrame(BuildContext context, Widget child) {
     final space = context.tokens.space;
     final gutter = space.gutter(MediaQuery.sizeOf(context).width);
@@ -233,8 +213,6 @@ class _ZakatCalculatorState extends State<ZakatCalculator> {
     );
   }
 
-  /// Phones and portrait tablets: the result card, the ledger, then the
-  /// ledger's totals; a strip keeps the result in view in between.
   Widget _single(BuildContext context, ZakatCalculatorLoaded state) {
     final space = context.tokens.space;
     final short = MediaQuery.sizeOf(context).height < 480;
@@ -265,8 +243,6 @@ class _ZakatCalculatorState extends State<ZakatCalculator> {
                   HudaReveal(
                     child: ZakatResultCard(key: _resultKey, state: state),
                   ),
-                  // Short windows keep the amount due in view: the banner
-                  // goes under the card.
                   if (short)
                     ZakatPriceBanner(
                       state: state,
@@ -304,9 +280,6 @@ class _ZakatCalculatorState extends State<ZakatCalculator> {
     );
   }
 
-  /// A pane's scroll view, built in the pane's own context, so its
-  /// gutter and insets are the pane's (each pane of [AdaptivePanes] sees
-  /// only its own size and edges).
   Widget _pane(WidgetBuilder content, {Key? key}) => Builder(
     builder: (context) {
       final space = context.tokens.space;
@@ -345,8 +318,6 @@ class _ZakatCalculatorState extends State<ZakatCalculator> {
     ),
   );
 
-  /// The result beside (or above) the ledger: the card and the ledger's
-  /// totals, side by side where the pane is wide.
   Widget _resultPane(
     ZakatCalculatorLoaded state, {
     bool totals = true,
@@ -362,7 +333,6 @@ class _ZakatCalculatorState extends State<ZakatCalculator> {
           children: [
             if (!short) ZakatPriceBanner(state: state, onRetry: _retryPrices),
             HudaReveal(child: ZakatResultCard(state: state)),
-            // Short panes keep the amount due in view.
             if (short)
               ZakatPriceBanner(
                 state: state,
@@ -371,8 +341,6 @@ class _ZakatCalculatorState extends State<ZakatCalculator> {
               ),
           ],
         );
-        // Tabletop's top half: the card centered in it, the thing to
-        // look at above the band.
         if (!totals) {
           final insets = context.scrollPadding(
             EdgeInsets.only(top: space.md, bottom: space.xxl),

@@ -13,12 +13,6 @@ import 'package:huda/presentation/widgets/share/share_image_capture.dart';
 import 'package:huda/presentation/widgets/share/share_image_saver.dart';
 import 'package:share_plus/share_plus.dart';
 
-/// Opens Athkar's share sheet for one dhikr: a live preview of its own
-/// card (as tall as the dhikr needs; owner round 5 dropped the size
-/// choice), the translation on or off, then share as an image or as text,
-/// copy the text, or save the image to the device. The image is
-/// rendered ahead, once the sheet has settled and after each option
-/// change, so sharing or saving it rarely waits (owner round 3).
 Future<void> shareAthkar(
   BuildContext context, {
   required AthkarDetailModel dhikr,
@@ -41,7 +35,6 @@ Future<void> shareAthkar(
   );
 }
 
-/// The sheet's body: the options, the preview and the ways to share.
 class AthkarShareSheet extends StatefulWidget {
   const AthkarShareSheet({
     super.key,
@@ -52,7 +45,6 @@ class AthkarShareSheet extends StatefulWidget {
     required this.titleEn,
   });
 
-  /// The chapter screen's context: captures and toasts run there.
   final BuildContext screenContext;
   final AthkarDetailModel dhikr;
   final int index;
@@ -66,15 +58,12 @@ class AthkarShareSheet extends StatefulWidget {
 class _AthkarShareSheetState extends State<AthkarShareSheet> {
   bool? _withTranslation;
 
-  /// Rendered images with and without the translation, so switching back
-  /// is instant.
   final _renders = <bool, Future<Uint8List>>{};
   Timer? _ahead;
 
   @override
   void initState() {
     super.initState();
-    // After the sheet's entrance, so rendering never costs it a frame.
     _renderAhead(const Duration(milliseconds: 450));
   }
 
@@ -91,8 +80,6 @@ class _AthkarShareSheetState extends State<AthkarShareSheet> {
     });
   }
 
-  /// The image for the current options: rendered once, then reused. A
-  /// failed render is forgotten, so the next tap tries again.
   Future<Uint8List> _render() {
     _ahead?.cancel();
     final key = _showTranslation;
@@ -111,7 +98,6 @@ class _AthkarShareSheetState extends State<AthkarShareSheet> {
 
   bool get _arabicUi => Localizations.localeOf(context).languageCode == 'ar';
 
-  /// On by default, except in Arabic, where the dhikr is already the text.
   bool get _showTranslation =>
       _translation.isNotEmpty && (_withTranslation ?? !_arabicUi);
 
@@ -120,7 +106,6 @@ class _AthkarShareSheetState extends State<AthkarShareSheet> {
       : widget.titleEn;
 
   AthkarShareCard get _card => AthkarShareCard(
-    // The sheet cross-fades the preview, and forgets "Saved", per option.
     key: ValueKey(_showTranslation),
     title: _chapter,
     arabicText: widget.dhikr.arabicText ?? '',
@@ -140,9 +125,6 @@ class _AthkarShareSheetState extends State<AthkarShareSheet> {
 
   String get _fileName => 'athkar_${widget.index}';
 
-  /// The system's share sheet opens as soon as the image is ready; the
-  /// button keeps its loading at least [_loadingHold] (owner round 4: the
-  /// loading should show, not flash), resting under the system sheet.
   Future<void> _shareImage() async {
     final shown = Stopwatch()..start();
     final l10n = AppLocalizations.of(context)!;
@@ -205,10 +187,6 @@ class _AthkarShareSheetState extends State<AthkarShareSheet> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    // A tick box, so it reads as included or not at a glance (owner
-    // round 3: a chip didn't say it could be turned off; round 6: a square
-    // tick, not a switch). The only option: the card has one shape (owner
-    // round 5).
     final controls = _translation.isEmpty
         ? null
         : HudaTickOption(

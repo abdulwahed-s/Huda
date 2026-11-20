@@ -9,11 +9,6 @@ import 'package:huda/presentation/widgets/notifications/notification_access_cont
 
 enum PrayerAttentionTone { error, warning, info }
 
-/// Prayer-time problems the user can feel and fix. Location is not one of
-/// them (the saved place stays in use; the Location sheet changes it), and
-/// notification access lives in the readiness card
-/// (prayer_alerts_ready_card.dart). Routine updating shows on the sky card's
-/// place line, not here.
 enum PrayerAttentionKind { workflow }
 
 @immutable
@@ -76,7 +71,6 @@ List<PrayerAttentionItem> buildPrayerAttentionItems({
   bool canChooseCountry = true,
 }) => [?_workflowItem(l10n, state, callbacks, canChooseCountry)];
 
-/// One problem, its words and icon, most severe first.
 typedef _Problem = ({
   PrayerWorkflowIssue issue,
   IconData icon,
@@ -135,7 +129,6 @@ PrayerAttentionItem? _workflowItem(
   final lead = problems.isEmpty ? null : problems.first;
   final onlyCheck =
       problems.length == 1 && lead!.issue == PrayerWorkflowIssue.verification;
-  // The strip asks the country question itself, under the message.
   final title = retrying
       ? l.prayerRetryingTitle
       : lead?.title ?? l.prayerFixCheckTitle;
@@ -155,10 +148,8 @@ PrayerAttentionItem? _workflowItem(
     title: title,
     message: message,
     details: [
-      // The rest, by name; the lead one is the card's own words.
       for (final p in problems.skip(1)) (icon: p.icon, text: p.title),
     ],
-    // While the user's retry runs, the title says so; no second button.
     primary: problems.isEmpty || retrying
         ? null
         : PrayerAttentionAction(
@@ -195,51 +186,35 @@ class PrayerAlertStatus {
   final bool busy;
 }
 
-/// What a schedule result means to the user, one case per message.
 enum PrayerAlertProblem {
-  /// Scheduled and working.
   none,
 
-  /// Scheduled, but Android may deliver a few minutes late.
   late,
 
-  /// Waiting until the place is verified.
   waitingForPlace,
 
-  /// iOS needs one online handoff of older server-sent alerts.
   needsOnline,
 
-  /// Set through a date; later alerts need one online update.
   bridged,
 
-  /// Huda's other reminders use every slot the device allows.
   noRoom,
 
-  /// Settings changed while scheduling; scheduling again fixes it.
   settingsChanged,
 
-  /// The server was busy.
   busy,
 
-  /// The server couldn't be reached.
   serverUnavailable,
 
-  /// The schedule couldn't be checked.
   verificationFailed,
 
-  /// The device's own scheduling failed.
   localFailure,
 
-  /// The schedule ran out.
   expired,
 
-  /// Nothing scheduled yet.
   noneScheduled,
 
-  /// The device has no prayer alerts at all.
   unsupported,
 
-  /// Something else; Retry is still the next step.
   failed,
 }
 
@@ -249,8 +224,6 @@ const _noRoomMessages = {
   'No prayer alarm capacity is available.',
 };
 
-/// Null while there's nothing to say (no result yet, notifications off,
-/// still being prepared).
 PrayerAlertProblem? prayerAlertProblemOf(
   PrayerScheduleResult? schedule, {
   DateTime? now,
@@ -345,7 +318,6 @@ PrayerAlertStatus? buildPrayerAlertStatus({
       ? '$message ${l10n.prayerAlertsPreviousPlace}'
       : message;
 
-  // After the user's tap: its own words, no button.
   if (retrying) {
     return PrayerAlertStatus(
       tone: PrayerAlertTone.info,
@@ -361,7 +333,6 @@ PrayerAlertStatus? buildPrayerAlertStatus({
     icon: Icons.refresh_rounded,
     onPressed: onRetry,
   );
-  // While automatic work runs, a problem shows as updating, not as failed.
   final updating = state.updating;
   PrayerAlertStatus failed(
     String message, {
@@ -402,7 +373,6 @@ PrayerAlertStatus? buildPrayerAlertStatus({
           ? l10n.prayerNotificationsIosReminder
           : l10n.prayerNotificationsCoverageReminder,
     ),
-    // The note's own fix, right there.
     PrayerAlertProblem.late => ready(
       l10n.prayerAlertsLateNote,
       action: onAllowExactAlarms == null
@@ -425,7 +395,6 @@ PrayerAlertStatus? buildPrayerAlertStatus({
       title: l10n.prayerAlertsUnsupportedTitle,
       message: l10n.prayerAlertsUnsupportedMessage,
     ),
-    // Offline, the app finishes it on its own when the connection returns.
     PrayerAlertProblem.needsOnline => failed(
       offline
           ? l10n.prayerAlertsNeedsOnlineOffline

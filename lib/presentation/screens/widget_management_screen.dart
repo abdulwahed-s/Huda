@@ -11,11 +11,8 @@ import 'package:huda/presentation/widgets/widget_management/prayer_widget_tab.da
 import 'package:huda/presentation/widgets/widget_management/quran_verse_widget_tab.dart';
 import 'package:huda/presentation/widgets/widget_management/widget_settings_parts.dart';
 
-/// Which home-screen widget the page shows.
 enum HomeWidgetKind { quran, prayer }
 
-/// Home screen widgets, in the standard tier: a switch between the two
-/// widgets, then the chosen widget's live preview and settings.
 class WidgetManagementScreen extends StatefulWidget {
   const WidgetManagementScreen({
     super.key,
@@ -37,7 +34,6 @@ class _WidgetManagementScreenState extends State<WidgetManagementScreen> {
     final scale = math.min(MediaQuery.textScalerOf(context).scale(16) / 16, 2);
     final switcher = LayoutBuilder(
       builder: (context, constraints) {
-        // Icons only while both labels still fit beside them.
         final icons = constraints.maxWidth / 2 >= 150 * scale;
         return SegmentedButton<HomeWidgetKind>(
           key: const ValueKey('widgets-switch'),
@@ -77,8 +73,6 @@ class _WidgetManagementScreenState extends State<WidgetManagementScreen> {
     final gutter = space.gutter(width);
     final fold = FoldInfo.of(context);
     final rtl = Directionality.of(context) == TextDirection.rtl;
-    // With two panes the switch belongs to the leading (preview) pane and
-    // keeps to its side of a fold; on one column it's centered.
     final twoPanes = AdaptivePanes.showsTwoPanes(
       width,
       fold,
@@ -89,7 +83,6 @@ class _WidgetManagementScreenState extends State<WidgetManagementScreen> {
         : fold.splitsHorizontally
         ? (rtl ? width - fold.end : fold.start)
         : (width * 0.38).clamp(320.0, 460.0);
-    // In the leading pane only the leading edge's inset applies.
     final left = leading == null || !rtl ? insets.left : 0.0;
     final right = leading == null || rtl ? insets.right : 0.0;
     final bar = Padding(
@@ -109,7 +102,6 @@ class _WidgetManagementScreenState extends State<WidgetManagementScreen> {
       body: HudaRevealScope(
         child: Column(
           children: [
-            // The switch stays put while the page under it changes.
             if (leading == null)
               Center(child: bar)
             else
@@ -120,8 +112,6 @@ class _WidgetManagementScreenState extends State<WidgetManagementScreen> {
             Expanded(
               child: HudaStateSwitcher(
                 stateKey: _kind,
-                // The old page fades out before the new one comes in, so
-                // two sets of settings never show through each other.
                 sequential: true,
                 child: switch (_kind) {
                   HomeWidgetKind.quran => const QuranVerseWidgetTab(

@@ -12,9 +12,6 @@ import 'package:huda/presentation/widgets/share/share_image_capture.dart';
 import 'package:huda/presentation/widgets/share/share_image_saver.dart';
 import 'package:share_plus/share_plus.dart';
 
-/// Opens the share sheet for a chat answer: a preview of Huda AI's card,
-/// then share as an image or as text, or save the image. Copy stays on the
-/// answer itself (one control for it).
 Future<void> shareHudaAiAnswer(
   BuildContext context, {
   required String answer,
@@ -30,7 +27,6 @@ Future<void> shareHudaAiAnswer(
   );
 }
 
-/// Opens the share sheet for a counsel.
 Future<void> shareHudaAiCounsel(
   BuildContext context, {
   required CounselingResponse response,
@@ -46,7 +42,6 @@ Future<void> shareHudaAiCounsel(
   );
 }
 
-/// An answer as plain text to share.
 String hudaAiAnswerText(
   AppLocalizations l10n, {
   required String answer,
@@ -58,8 +53,6 @@ String hudaAiAnswerText(
   l10n.sharedViaHuda,
 ].join('\n\n');
 
-/// A counsel as plain text, its sections named in the app's language
-/// (they were English in every language).
 String hudaAiCounselText(AppLocalizations l10n, CounselingResponse r) {
   String section(String title, List<String> lines) {
     final body = lines.where((line) => line.trim().isNotEmpty).join('\n');
@@ -111,7 +104,6 @@ class _HudaAiShareSheet extends StatefulWidget {
     required this.fileName,
   });
 
-  /// The chat screen's context: captures and toasts run there.
   final BuildContext screenContext;
   final Widget card;
   final double aspect;
@@ -126,13 +118,11 @@ class _HudaAiShareSheetState extends State<_HudaAiShareSheet> {
   Future<Uint8List>? _rendered;
   Timer? _ahead;
 
-  /// The busy state shows at least this long, so it never flickers.
   static const _loadingHold = Duration(milliseconds: 900);
 
   @override
   void initState() {
     super.initState();
-    // Rendered ahead, so sharing rarely waits (as Athkar and Hadith do).
     _ahead = Timer(const Duration(milliseconds: 450), () {
       if (mounted) _render().ignore();
     });

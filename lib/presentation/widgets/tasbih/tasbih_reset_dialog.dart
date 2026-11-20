@@ -10,10 +10,6 @@ import 'package:huda/presentation/widgets/design/huda_app_bars.dart';
 import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:huda/presentation/widgets/tasbih/tasbih_dhikr_row.dart';
 
-/// Asks before setting the selected dhikr's count back to 0. It shows what
-/// is about to go: that dhikr's count and its words, and says
-/// that the other dhikr keep theirs. Centered like any dialog (a flat fold
-/// is one screen); on a half-open fold it keeps to the trailing side.
 void showTasbihResetDialog(BuildContext context) {
   final cubit = context.read<TasbihCubit>();
   final state = cubit.state;
@@ -23,10 +19,8 @@ void showTasbihResetDialog(BuildContext context) {
   showDialog<void>(
     context: context,
     barrierColor: context.tokens.chrome.withValues(alpha: 0.6),
-    // The trailing side of a vertical fold, the bottom of a horizontal one.
     anchorPoint: Offset(rtl ? 0 : size.width, size.height),
     builder: (dialogContext) => Padding(
-      // Beside the iPhone Duo's side column: centered on the content.
       padding: SideChrome.clearance(dialogContext),
       child: TasbihResetDialog(
         note: state.notes[state.selectedNoteIndex],
@@ -58,8 +52,6 @@ class TasbihResetDialog extends StatelessWidget {
     final scheme = Theme.of(context).colorScheme;
     final text = Theme.of(context).textTheme;
 
-    // What is about to go: the count, large, over the dhikr's words, in a
-    // quiet inset (no strand: the dialog stays a plain question).
     final count = MediaQuery.withClampedTextScaling(
       maxScaleFactor: 1.3,
       child: Text(
@@ -90,7 +82,6 @@ class TasbihResetDialog extends StatelessWidget {
       style: OutlinedButton.styleFrom(minimumSize: const Size(0, 48)),
       child: Text(l10n.cancel, textAlign: TextAlign.center),
     );
-    // Destructive, not lit: a deep red at night, and no engraving.
     final reset = FilledButton(
       onPressed: onReset,
       style: FilledButton.styleFrom(
@@ -104,8 +95,6 @@ class TasbihResetDialog extends StatelessWidget {
 
     final buttons = LayoutBuilder(
       builder: (context, constraints) {
-        // Side by side while both labels fit on one line; stacked (Reset
-        // first) when they don't (long words, large text).
         final style = text.labelLarge!;
         final scaler = MediaQuery.textScalerOf(context);
         double label(String s) => (TextPainter(
@@ -165,8 +154,6 @@ class TasbihResetDialog extends StatelessWidget {
       ),
     );
 
-    // Short windows (phone landscape): what goes beside the question, so
-    // the buttons stay in view.
     final short = context.windowClass.isCompactHeight;
     final Widget body = short
         ? Row(
@@ -210,7 +197,6 @@ class TasbihResetDialog extends StatelessWidget {
           );
 
     return Dialog(
-      // Surface and gilt edge come from the screen's dialog theme.
       insetPadding: EdgeInsets.symmetric(
         horizontal: space.xxl,
         vertical: short ? space.md : space.xl,

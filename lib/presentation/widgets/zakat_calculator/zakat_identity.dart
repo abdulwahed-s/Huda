@@ -8,9 +8,6 @@ import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/design/feature_identity.dart';
 import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 
-/// Zakat's voice: the mizan, a balance with your net wealth in one pan and
-/// the nisab in the other, its tongue (lisan) over a graduated arc, on a
-/// ledger's measured lines. See `design/IDENTITIES.md`.
 final FeatureIdentity zakatIdentity = FeatureIdentity(
   id: 'zakat',
   motif: 'A mizan: wealth against the nisab, its tongue over a graduated arc',
@@ -20,33 +17,24 @@ final FeatureIdentity zakatIdentity = FeatureIdentity(
   headerArt: (style) => ZakatMizanPainter(style: style, tilt: 0),
 );
 
-/// The largest tilt of the beam, in radians.
 const double zakatMaxTilt = 9 * math.pi / 180;
 
-/// How far the beam tips toward the wealth pan (positive) or the nisab pan
-/// (negative), from -1 to 1. Level when there is nothing on either side.
 double zakatBalance(double wealth, double nisab) {
   final total = wealth + nisab;
   if (total <= 0) return 0;
   return ((wealth - nisab) / total).clamp(-1.0, 1.0);
 }
 
-/// Amounts as the ledger shows them: the currency code, grouped digits
-/// and two decimals, in Latin digits like the amount fields.
 abstract final class ZakatAmounts {
   static final NumberFormat _format = NumberFormat('#,##0.00', 'en_US');
 
-  /// The code and the digits never part at a line break.
   static String format(String currency, double value) =>
       '$currency\u00A0${_format.format(value)}';
 
-  /// The digits alone, for layouts that set the code apart.
   static String digits(double value) => _format.format(value);
 
   static int cents(double value) => (value * 100).round();
 
-  /// What an amount field shows for a stored value (no grouping, so it
-  /// stays editable).
   static String field(double value) {
     if (value <= 0) return '';
     final fixed = value.toStringAsFixed(2);
@@ -54,7 +42,6 @@ abstract final class ZakatAmounts {
   }
 }
 
-/// The assets in the order the ledger lists them (debts are separate).
 const List<AssetCategory> zakatAssetCategories = [
   AssetCategory.cash,
   AssetCategory.gold,
@@ -104,12 +91,6 @@ extension ZakatNisabText on NisabType {
       this == NisabType.gold ? l10n.goldGrams : l10n.silverGrams;
 }
 
-/// The mizan. Drawn left to right with the wealth pan on the left; flip it
-/// for right-to-left so wealth stays on the reading start.
-///
-/// [tilt] runs from -1 (the nisab pan down) to 1 (the wealth pan down);
-/// values past ±1 overshoot while the beam settles. [heavy] fills the pan
-/// that is down with [heavyColor].
 class ZakatMizanPainter extends CustomPainter {
   const ZakatMizanPainter({
     required this.style,
@@ -121,10 +102,8 @@ class ZakatMizanPainter extends CustomPainter {
   final OrnamentStyle style;
   final double tilt;
 
-  /// The fill of the pan that weighs more; null draws both open.
   final Color? heavyColor;
 
-  /// The wealth pan's line; defaults to the style's color.
   final Color? wealthColor;
 
   @override
@@ -132,7 +111,6 @@ class ZakatMizanPainter extends CustomPainter {
     final w = size.width;
     final h = size.height;
     if (w <= 0 || h <= 0) return;
-    // Fit a 1.6:1 instrument in the box.
     final unit = math.min(w / 1.6, h);
     final origin = Offset((w - unit * 1.6) / 2, (h - unit) / 2);
     Offset at(double x, double y) => origin + Offset(x * unit, y * unit);
@@ -142,7 +120,6 @@ class ZakatMizanPainter extends CustomPainter {
     final pivot = at(0.8, 0.2);
     final angle = tilt * zakatMaxTilt;
 
-    // The graduated arc behind the tongue: nine marks, the middle one long.
     final arcRadius = unit * 0.15;
     for (var i = -4; i <= 4; i++) {
       final a = -math.pi / 2 + i * (math.pi / 24);
@@ -161,7 +138,6 @@ class ZakatMizanPainter extends CustomPainter {
       fine,
     );
 
-    // The stand: a post on a stepped plinth, on the ledger's ground rule.
     final foot = at(0.8, 0.93);
     canvas
       ..drawLine(pivot, foot - Offset(0, unit * 0.05), line)
@@ -178,7 +154,6 @@ class ZakatMizanPainter extends CustomPainter {
       ..drawLine(at(0.05, 0.93), at(0.6, 0.93), fine)
       ..drawLine(at(1.0, 0.93), at(1.55, 0.93), fine);
 
-    // The beam turns about the pivot; the tongue stands square to it.
     final reach = unit * 0.6;
     final dir = Offset(math.cos(angle), -math.sin(angle));
     final start = pivot - dir * reach;
@@ -202,7 +177,6 @@ class ZakatMizanPainter extends CustomPainter {
       ..drawCircle(pivot, unit * 0.028, style.fill())
       ..drawCircle(pivot, unit * 0.045, fine);
 
-    // The pans hang plumb from the beam's ends.
     void pan(Offset hook, {required bool wealth}) {
       final down = wealth ? tilt > 0.02 : tilt < -0.02;
       final color = wealth ? (wealthColor ?? style.color) : style.color;
@@ -244,8 +218,6 @@ class ZakatMizanPainter extends CustomPainter {
       old.wealthColor != wealthColor;
 }
 
-/// A beam that tips past its mark and settles: it overshoots by about a
-/// fifth of the change, swings back once and comes to rest.
 class ZakatSettleCurve extends Curve {
   const ZakatSettleCurve();
 
@@ -256,9 +228,6 @@ class ZakatSettleCurve extends Curve {
   }
 }
 
-/// The balance, animated: the beam tips and settles whenever [wealth] or
-/// [nisab] change, and tips from level when it first appears (the
-/// signature motion). Under reduce motion it shows its resting tilt.
 class ZakatBalance extends StatelessWidget {
   const ZakatBalance({
     super.key,
@@ -315,9 +284,6 @@ class ZakatBalance extends StatelessWidget {
   }
 }
 
-/// The amount due, counting up (or down) to each new value, and from zero
-/// when it first appears: the seed's "the result counts up". Read out as
-/// its final value. Under reduce motion it shows the value at once.
 class ZakatCountUp extends StatelessWidget {
   const ZakatCountUp({
     super.key,

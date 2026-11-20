@@ -19,10 +19,6 @@ import 'package:huda/presentation/widgets/prayer_times/prayer_time_adjustment_bo
     show prayerMethodLabel;
 import 'package:huda/presentation/widgets/surah/quran_mushaf_page_view.dart';
 
-/// The last step: the language and every step, done (with what was
-/// chosen) or skipped ("set it up anytime"). A tap opens that one step to
-/// change it; Done (or Back) returns here, without walking through the
-/// steps after it. "Start using Huda" ends setup and opens Home.
 class SummaryStep extends StatelessWidget {
   const SummaryStep({super.key});
 
@@ -31,7 +27,6 @@ class SummaryStep extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final scope = OnboardingScope.of(context);
     final state = context.watch<OnboardingCubit>().state;
-    // The language first (it's chosen on the welcome), then every choice.
     final steps = [
       OnboardingStep.welcome,
       ...state.steps.where((step) => step.isChoice),
@@ -53,7 +48,6 @@ class SummaryStep extends StatelessWidget {
                 if (i > 0) const Divider(height: 1),
                 _SummaryRow(
                   step: steps[i],
-                  // The language is always set (the app's or the chosen).
                   outcome: steps[i] == OnboardingStep.welcome
                       ? StepOutcome.done
                       : state.outcomeOf(steps[i]),
@@ -90,8 +84,6 @@ class _SummaryRow extends StatelessWidget {
           scope.environment.homePreferences.load().selectedTheme,
         );
       case OnboardingStep.permissions:
-        // Each permission with where it stands: "Location: Allowed ·
-        // Notifications: Not allowed".
         final location = context.watch<PrayerTimesCubit>().state;
         String status(bool allowed) => allowed
             ? l10n.setupPermissionAllowed
@@ -103,7 +95,6 @@ class _SummaryRow extends StatelessWidget {
         final prayer = context.watch<PrayerTimesCubit>().state;
         return prayer is PrayerTimesLoaded ? onboardingPlaceName(prayer) : null;
       case OnboardingStep.asr:
-        // "Automatic · Hanafi": the method, then the Asr school.
         final prayer = context.read<PrayerTimesCubit>();
         final school = prayer.madhabToken == 'hanafi'
             ? l10n.prayerMadhabHanafi
@@ -144,12 +135,9 @@ class _SummaryRow extends StatelessWidget {
     final tokens = context.tokens;
     final scheme = Theme.of(context).colorScheme;
     final done = outcome == StepOutcome.done;
-    // Alerts continued without are an answer, but they're still off.
     final meta = done
         ? (_detail(context, l10n) ?? l10n.done)
         : l10n.setupSkippedLater;
-    // Permissions answered, but one refused: the mark says "partly" (an
-    // unlit ring with a dash), so it agrees with "Not allowed" in the text.
     final partial =
         done &&
         step == OnboardingStep.permissions &&

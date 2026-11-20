@@ -6,9 +6,6 @@ import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 import 'package:huda/presentation/widgets/hadith/hadith_identity.dart';
 
-/// One hadith as the reader shows it: the Arabic chain (isnad) and text
-/// (matn), the English translation, the narrators in the chain, the bab it
-/// sits under and its grade. Read once from the API's model.
 class HadithEntry {
   const HadithEntry({
     required this.number,
@@ -81,15 +78,11 @@ class HadithEntry {
 
   final String number;
 
-  /// The Arabic chain of narrators, when the source marks it.
   final List<HadithTextRun> isnad;
 
-  /// The Arabic text: the matn alone when the chain is marked, else the
-  /// whole narration.
   final List<HadithTextRun> arabic;
   final List<HadithTextRun> translation;
 
-  /// Narrators named in the chain (0 when unmarked).
   final int narrators;
   final String? babTitle;
   final String? babArabic;
@@ -98,8 +91,6 @@ class HadithEntry {
 
   String get arabicText => _plain(arabic);
 
-  /// The Arabic opens with a chain the source doesn't mark ("حدثنا …"), so
-  /// it can't be set apart from the matn.
   bool get unmarkedChain {
     if (isnad.isNotEmpty) return false;
     final bare = arabicText.replaceAll(_harakat, '');
@@ -111,14 +102,12 @@ class HadithEntry {
   String get isnadText => _plain(isnad);
   String get translationText => _plain(translation);
 
-  /// The bab in the app's language, if any.
   String? bab({required bool arabicUi}) =>
       arabicUi ? babArabic ?? babTitle : babTitle ?? babArabic;
 
   static String _plain(List<HadithTextRun> runs) =>
       runs.map((run) => run.text).join().trim();
 
-  /// Without the spaces and breaks left at the edges by the split.
   static List<HadithTextRun> _trim(List<HadithTextRun> runs) {
     final out = List.of(runs);
     while (out.isNotEmpty && out.first.text.trim().isEmpty) {
@@ -143,8 +132,6 @@ class HadithEntry {
     matn: run.matn,
   );
 
-  /// The translation's opening "Narrated …:" line, and the rest. Null
-  /// [head] when the translation doesn't open with one.
   ({String? head, List<HadithTextRun> body}) get narratedSplit {
     final plain = translation.map((run) => run.text).join();
     final end = plain.indexOf('\n');
@@ -166,9 +153,6 @@ class HadithEntry {
   }
 }
 
-/// Styled hadith text: narrators in the ink accent, Quran quotations in
-/// gilt (as copyists illuminated them), bold and italic from the source.
-/// The matn keeps the base weight: its size is its emphasis.
 class HadithRunsText extends StatelessWidget {
   const HadithRunsText({
     super.key,
@@ -210,7 +194,6 @@ class HadithRunsText extends StatelessWidget {
   }
 }
 
-/// A grade's weight, for its tone: strong, good, weak or other.
 enum HadithGradeTone { strong, good, weak, other }
 
 HadithGradeTone hadithGradeTone(String grade) {
@@ -224,9 +207,6 @@ HadithGradeTone hadithGradeTone(String grade) {
   return HadithGradeTone.other;
 }
 
-/// A grade in the app's language, as the source writes it: "Hasan Sahih",
-/// "Sahih (chain)", "Daif" …, with a capital in Latin scripts (the strings
-/// are lower case).
 String hadithGradeLabel(AppLocalizations t, String grade) {
   final label = _gradeLabel(t, grade);
   if (label.isEmpty) return label;
@@ -260,8 +240,6 @@ String _gradeLabel(AppLocalizations t, String grade) {
   return grade.trim();
 }
 
-/// Who graded a hadith, in the app's language: the graders sunnah.com
-/// names, in Arabic for the Arabic UI (others as the source writes them).
 String? hadithGraderName(String? gradedBy, {required bool arabic}) {
   final by = gradedBy?.trim();
   if (by == null || by.isEmpty || !arabic) return by;
@@ -277,12 +255,6 @@ String? hadithGraderName(String? gradedBy, {required bool arabic}) {
   return names[by.toLowerCase()] ?? by;
 }
 
-/// The grade as the folio's colophon: the closing line where hadith books
-/// state their verdict on a narration ("هذا حديث حسن صحيح"). A ruled band
-/// across the foot, in the jadwal's gilt, with the grade at its middle in
-/// its tone's ink (strong in the ink accent, hasan in gilt, weak in the
-/// error tone) and who graded it beside it. Owner round 1: a chip at the
-/// foot read as a tag stuck on, not part of the page.
 class HadithGrade extends StatelessWidget {
   const HadithGrade({super.key, required this.grade, this.gradedBy});
 
@@ -306,7 +278,6 @@ class HadithGrade extends StatelessWidget {
       gradedBy,
       arabic: Localizations.localeOf(context).languageCode == 'ar',
     );
-    // The jadwal's gilt at a hairline: present, not loud.
     final rule = OrnamentStyle.of(
       context,
     ).copyWith(stroke: tokens.stroke.hairline);
@@ -328,8 +299,6 @@ class HadithGrade extends StatelessWidget {
     return Semantics(
       label: '${l10n.status}: $label${by == null ? '' : ', $by'}',
       excludeSemantics: true,
-      // Centered: the text keeps its width (capped), the rules share the
-      // rest. No LayoutBuilder: the share card sizes itself by intrinsics.
       child: Row(
         children: [
           band(true),
@@ -364,8 +333,6 @@ class HadithGrade extends StatelessWidget {
   }
 }
 
-/// One side of the colophon's band: a gilt double rule ending in a small
-/// lozenge in the grade's ink next to the text.
 class _ColophonRulePainter extends CustomPainter {
   const _ColophonRulePainter({
     required this.style,

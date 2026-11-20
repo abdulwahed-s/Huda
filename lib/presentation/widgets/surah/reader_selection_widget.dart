@@ -17,8 +17,6 @@ class ReaderSelectionWidget extends StatelessWidget {
   final bool isLoading;
   final String? offlineMessage;
 
-  /// The reciter list is being fetched, and whether that's after a tap on
-  /// Retry ([retrying]) or on its own.
   final bool loadingReaders;
   final bool retrying;
   final VoidCallback? onRetry;
@@ -98,8 +96,6 @@ class ReaderSelectionWidget extends StatelessWidget {
             child: const Center(child: HudaLampSpinner(size: 28)),
           )
         else if (readers.isEmpty)
-          // Honest status: updating on its own, then an error with Retry,
-          // then "Retrying…" after a tap.
           HudaStatusBanner(
             key: const ValueKey('quran-reciters-status'),
             status: loadingReaders

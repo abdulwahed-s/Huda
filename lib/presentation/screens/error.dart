@@ -72,8 +72,6 @@ class _SafeErrorBoundary extends StatelessWidget {
           );
         }
 
-        // Self-contained: its own app, theme (the default palette, light or
-        // dark with the device) and cubit; nothing from the app around it.
         return BlocProvider(
           create: (_) => ErrorCubit()..sendFlutterError(errorDetails),
           child: MaterialApp(
@@ -138,9 +136,6 @@ class _MinimalErrorFallback extends StatelessWidget {
   }
 }
 
-/// The error screen: what happened in plain words, Restart and Copy, where
-/// the report stands, the technical details and a note for the team. On
-/// wide windows the details and the note sit in their own pane.
 class ErrorPage extends StatefulWidget {
   const ErrorPage({required this.errorMessage, super.key});
 
@@ -169,7 +164,6 @@ class _ErrorPageState extends State<ErrorPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Lantern tokens even where the theme above has none (the harness).
     final theme = Theme.of(context);
     final lantern = theme.extension<HudaTokens>() != null
         ? theme
@@ -205,8 +199,6 @@ class _ErrorPageState extends State<ErrorPage> {
                     showDetails: !wide,
                     errorMessage: widget.errorMessage,
                   );
-                  // A short page centers; side by side, both panes start at
-                  // the same top.
                   if (!wide) {
                     return _Column(
                       center: true,
@@ -327,8 +319,6 @@ class _Summary {
   }
 }
 
-/// A scrolling column at a readable width, edge to edge (the insets are
-/// padding inside the scroll view).
 class _Column extends StatelessWidget {
   const _Column({required this.children, this.center = false});
 

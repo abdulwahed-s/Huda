@@ -4,9 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
-/// Shown while the compass reports it needs calibrating: a light tracing a
-/// figure 8 (how to move the phone) beside what to do. The trace loops only
-/// while calibration is needed (live state) and rests under reduce motion.
 class QiblahCalibrationCard extends StatefulWidget {
   const QiblahCalibrationCard({super.key});
 
@@ -106,7 +103,6 @@ class _QiblahCalibrationCardState extends State<QiblahCalibrationCard>
   }
 }
 
-/// A lemniscate guide with a light running along it, trailing off.
 class _FigureEightPainter extends CustomPainter {
   _FigureEightPainter({
     required this.progress,

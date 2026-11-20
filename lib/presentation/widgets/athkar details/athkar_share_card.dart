@@ -8,18 +8,6 @@ import 'package:huda/presentation/widgets/athkar/athkar_identity.dart';
 import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 import 'package:huda/presentation/widgets/share/share_image_frame.dart';
 
-/// Athkar's share image, night in both themes (the card is an image), on
-/// the chrome with a faint girih field: the chapter at the top, then a
-/// pointed arch as a soft panel with the rosette sun half risen on its
-/// horizon, the dhikr under it, a petal divider before the translation,
-/// and the repetition medallion on the threshold. Hisn al-Muslim and
-/// Huda's mark sign it at the foot. Its frame, pattern and composition are
-/// Athkar's own; only the capture pipeline is shared.
-///
-/// Width: [BrandedShareFrame.width]. As tall as the dhikr needs at a size
-/// that reads, never shorter than a square: the text keeps its size and the
-/// card grows (owner rounds 4 and 5: a fixed square shrank a long dhikr out
-/// of reading, and a second, story size added nothing).
 class AthkarShareCard extends StatelessWidget {
   const AthkarShareCard({
     super.key,
@@ -29,18 +17,14 @@ class AthkarShareCard extends StatelessWidget {
     required this.repeatCount,
   });
 
-  /// The chapter's name, at the top.
   final String title;
   final String arabicText;
 
-  /// Null or empty hides the translation and its divider.
   final String? translatedText;
   final int repeatCount;
 
   static const double width = BrandedShareFrame.width;
 
-  /// The card's height over its width, estimated: the share sheet scrolls
-  /// the preview of a card taller than 9:16.
   static double cardRatio({required String arabic, String? translation}) {
     final t = translation?.trim() ?? '';
     final fit = AthkarCardFit.card(arabic: arabic, translation: t);
@@ -49,7 +33,6 @@ class AthkarShareCard extends StatelessWidget {
       t,
     ).height(AthkarCardFit._cardRoom.width, fit.arabic, fit.translation);
     final content = fit.sun / 2 + 4 + 1.5 + fit.gap + text;
-    // The card's chrome around the arch's text room, at a square.
     const chrome = width - 172;
     return math.max(width, chrome + content) / width;
   }
@@ -57,8 +40,6 @@ class AthkarShareCard extends StatelessWidget {
   static const _medallion = 64.0;
 
   @override
-  // Share images are captured in an overlay with no Material above them.
-  // The card is an image: the reader's text size doesn't apply to it.
   Widget build(BuildContext context) => MediaQuery.withNoTextScaling(
     child: Material(
       type: MaterialType.transparency,
@@ -115,8 +96,6 @@ class AthkarShareCard extends StatelessWidget {
     ],
   );
 
-  /// As tall as its content, at least a square: sized by one intrinsic
-  /// pass, so the text is never scaled.
   Widget _card(BuildContext context) {
     final tokens = context.tokens;
     final gilt = OrnamentStyle.of(context, onChrome: true);
@@ -137,7 +116,6 @@ class AthkarShareCard extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // The sun, half risen over the horizon.
                 SizedBox(
                   height: fit.sun / 2 + 4,
                   child: ClipRect(
@@ -199,7 +177,6 @@ class AthkarShareCard extends StatelessWidget {
   }
 }
 
-/// The dhikr, then a petal divider and the translation, at [fit]'s sizes.
 class _DhikrText extends StatelessWidget {
   const _DhikrText({
     required this.arabic,
@@ -247,9 +224,6 @@ class _DhikrText extends StatelessWidget {
   }
 }
 
-/// A pointed arch as a soft panel: filled faintly, with a double gilt
-/// outline and a threshold line along its foot. Its head is [head] of its
-/// width (at most 38% of its height), so a tall arch keeps its proportion.
 class _ArchPanelPainter extends CustomPainter {
   const _ArchPanelPainter({
     required this.fill,
@@ -295,7 +269,6 @@ class _ArchPanelPainter extends CustomPainter {
       old.fill != fill || old.style != style || old.head != head;
 }
 
-/// Two hairlines with a small 8-petal rosette between them.
 class _PetalDivider extends StatelessWidget {
   const _PetalDivider({required this.color});
 
@@ -335,7 +308,6 @@ class _PetalDivider extends StatelessWidget {
   }
 }
 
-/// "×N" in a 12-point star on the arch's threshold.
 class _RepetitionMedallion extends StatelessWidget {
   const _RepetitionMedallion({required this.times});
 
@@ -405,8 +377,6 @@ class _StarMedallionPainter extends CustomPainter {
   bool shouldRepaint(_StarMedallionPainter old) => old.style != style;
 }
 
-/// The source on the leading side, Huda's mark on the trailing, their
-/// feet on one line.
 class _Attribution extends StatelessWidget {
   const _Attribution({
     required this.source,
@@ -436,13 +406,11 @@ class _Attribution extends StatelessWidget {
   );
 }
 
-/// Huda's logo above its name (owner round 4).
 class _BrandMark extends StatelessWidget {
   const _BrandMark({required this.color, required this.logo});
 
   final Color color;
 
-  /// The logo's height.
   final double logo;
 
   @override
@@ -465,18 +433,13 @@ class _BrandMark extends StatelessWidget {
   );
 }
 
-/// Huda's logo in gilt, lit from above like the lamps, with a faint glow
-/// of its own shape behind it so it sits in the night rather than on it
-/// (owner round 3: the logo, not a stand-in mark, and not plain white).
 class _GiltLogo extends StatelessWidget {
   const _GiltLogo({required this.color, required this.height});
 
   final Color color;
 
-  /// The glyph's height; the asset's padding is cropped away.
   final double height;
 
-  // The glyph's box inside the 1024 square asset.
   static const _glyphWidth = 830 / 1024;
   static const _glyphHeight = 448 / 1024;
 
@@ -508,7 +471,6 @@ class _GiltLogo extends StatelessWidget {
         maxHeight: side,
         child: Stack(
           children: [
-            // The glow: the glyph itself, blurred and faint.
             Opacity(
               opacity: 0.55,
               child: ImageFiltered(
@@ -524,9 +486,6 @@ class _GiltLogo extends StatelessWidget {
   }
 }
 
-/// The sizes on a card, from how many lines the text takes in its room
-/// at each size (arithmetic on character counts, not a measure-and-retry
-/// text widget).
 @immutable
 class AthkarCardFit {
   const AthkarCardFit._({
@@ -536,16 +495,12 @@ class AthkarCardFit {
     required this.gap,
   });
 
-  /// On the card: the largest size that keeps it square, and never below
-  /// 22 for the Arabic, where the card grows instead (owner round 4).
   factory AthkarCardFit.card({
     required String arabic,
     required String translation,
   }) {
     const gap = 18.0;
     final text = _Text(arabic, translation);
-    // A smaller sun keeps a medium dhikr square; a long one grows the
-    // card, so it keeps the whole sun.
     for (final (sun, from, to) in [(76.0, 34.0, 30.0), (52.0, 29.5, 22.0)]) {
       for (var size = from; size >= to; size -= 0.5) {
         final t = (size * 0.55).clamp(13.0, 16.0);
@@ -571,19 +526,13 @@ class AthkarCardFit {
   final double arabic;
   final double translation;
 
-  /// The sun, half risen above the dhikr.
   final double sun;
 
-  /// Between the horizon and the dhikr.
   final double gap;
 
-  // The card's arch text room at a square (from the layout).
   static const _cardRoom = Size(308, 172);
 }
 
-/// A dhikr's height at a size, from its line count. Widths per character
-/// and line heights measured with the bundled fonts (Amiri at 1.9, the
-/// translation at 1.55), with a margin for line ends.
 class _Text {
   _Text(String arabic, this.translation)
     : letters = arabic.replaceAll(_harakat, '').length;

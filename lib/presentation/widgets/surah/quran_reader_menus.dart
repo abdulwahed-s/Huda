@@ -12,9 +12,6 @@ import 'package:huda/presentation/widgets/quran_home/quran_index_widgets.dart';
 import 'package:huda/presentation/widgets/surah/quran_mushaf_page_view.dart';
 import 'package:huda/presentation/widgets/surah/quran_reader_parts.dart';
 
-/// The 114 surahs while reading, the open one selected, in the Surahs
-/// sheet (a side sheet on wide windows). Typing filters by name or number.
-/// It opens scrolled to the open surah.
 class QuranIndexList extends StatefulWidget {
   const QuranIndexList({
     super.key,
@@ -51,8 +48,6 @@ class _QuranIndexListState extends State<QuranIndexList> {
   void _reveal() {
     final tile = _currentKey.currentContext;
     if (tile == null || !mounted) return;
-    // The first surahs are already in view under the search field; don't
-    // scroll the field away for them.
     if (widget.current <= 4) return;
     Scrollable.ensureVisible(tile, alignment: 0.3);
   }
@@ -116,12 +111,6 @@ class _QuranIndexListState extends State<QuranIndexList> {
   }
 }
 
-/// How the Quran is shown: the reading mode (scrolling text, or a Mushaf
-/// of page images that may need a download first), the Mushaf's layout and
-/// page turn, and the scrolling text's font. The Mushaf's pages: one or
-/// two (showing what's on the screen; until the reader chooses, two on
-/// wide windows and open foldables, one on phones; two only on landscape
-/// windows and open foldables) and a separate zoom.
 class QuranDisplaySettings extends StatelessWidget {
   const QuranDisplaySettings({
     super.key,
@@ -143,23 +132,16 @@ class QuranDisplaySettings extends StatelessWidget {
 
   final QuranReadingMode readingMode;
 
-  /// Two pages side by side on the screen now.
   final bool twoPages;
 
-  /// Two pages can show on this screen: false on a portrait screen, where
-  /// Two pages is off and the hint says to turn the screen.
   final bool twoPagesAvailable;
 
-  /// The pages fill the width and scroll.
   final bool zoomed;
 
-  /// One page on a portrait screen: it already fills the width, so zoom
-  /// changes little here.
   final bool pageFillsWidth;
   final MushafFlipDirection flipDirection;
   final String font;
 
-  /// Font family → label.
   final Map<String, String> fonts;
   final MushafPackService? Function(QuranReadingMode mode) packFor;
   final ValueChanged<QuranReadingMode> onReadingMode;
@@ -213,9 +195,6 @@ class QuranDisplaySettings extends StatelessWidget {
           ),
         ),
         if (readingMode.isMushaf) ...[
-          // Pages and zoom are two choices: one or two pages, zoomed or
-          // whole (owner round 3). Two pages only stand side by side on a
-          // landscape screen or an open foldable (owner round 4).
           section(
             l10n.quranPages,
             Column(
@@ -300,9 +279,6 @@ class QuranDisplaySettings extends StatelessWidget {
   }
 }
 
-/// One of a few options as choice chips that wrap (so a long label moves
-/// to the next line whole, never breaks); an option that can't apply here
-/// is off.
 class _Choices<T> extends StatelessWidget {
   const _Choices({
     super.key,
@@ -331,7 +307,6 @@ class _Choices<T> extends StatelessWidget {
         for (final value in values)
           ChoiceChip(
             key: ValueKey('quran-choice-$value'),
-            // Lit when chosen: the mark takes the chip's warm text.
             avatar: Icon(
               icon(value),
               size: 18,
@@ -351,8 +326,6 @@ class _Choices<T> extends StatelessWidget {
   }
 }
 
-/// A selectable option on the page: a hairline tile that turns lit-tinted
-/// with a check when chosen.
 class _OptionTile extends StatelessWidget {
   const _OptionTile({
     required this.selected,
@@ -403,8 +376,6 @@ class _OptionTile extends StatelessWidget {
   }
 }
 
-/// A reading mode, with its pack's state when it reads page images: the
-/// download size, the progress, or "preparing".
 class _ReadingModeTile extends StatelessWidget {
   const _ReadingModeTile({
     required this.mode,
@@ -494,7 +465,6 @@ class _ReadingModeTile extends StatelessWidget {
   }
 }
 
-/// A font for the scrolling text, previewed with the bismillah.
 class _FontTile extends StatelessWidget {
   const _FontTile({
     required this.family,
@@ -526,7 +496,6 @@ class _FontTile extends StatelessWidget {
       ),
     );
     final check = Icon(Icons.check_rounded, color: scheme.primary, size: 20);
-    // At large text the name and the sample stack.
     if (MediaQuery.textScalerOf(context).scale(10) > 14) {
       return _OptionTile(
         selected: selected,
@@ -583,9 +552,6 @@ class _FontTile extends StatelessWidget {
   }
 }
 
-/// Memorizing: hide the ayat and recite each to reveal it (speech
-/// recognition, in beta). Start and stop, and while it runs, whether the
-/// microphone is listening.
 class QuranMemorizePanel extends StatelessWidget {
   const QuranMemorizePanel({
     super.key,

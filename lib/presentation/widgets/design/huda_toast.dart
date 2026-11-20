@@ -3,23 +3,14 @@ import 'package:huda/core/layout/fold.dart';
 import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/presentation/widgets/design/huda_lamp.dart';
 
-/// What a toast reports.
 enum HudaToastKind {
-  /// Done: a saved setting, a copied verse.
   done,
 
-  /// Work running in the background.
   working,
 
-  /// Something failed; offer an action.
   failed,
 }
 
-/// Huda's transient status: a floating capsule of the deep chrome, led by a
-/// lamp (lit and turning while working, a still gilt khatam when done, an
-/// unlit red one when something failed), warm text, and a warm action.
-/// It rises from the bottom edge above the system bars and goes after a
-/// while. Shown with [showHudaToast].
 class HudaToast extends StatelessWidget {
   const HudaToast({
     super.key,
@@ -94,7 +85,6 @@ class HudaToast extends StatelessWidget {
                   const SizedBox(width: 8),
                   TextButton(
                     onPressed: onAction,
-                    // Warm text, not gold: no gold on controls.
                     style: TextButton.styleFrom(
                       foregroundColor: tokens.onChrome,
                       overlayColor: tokens.onChrome,
@@ -115,8 +105,6 @@ class HudaToast extends StatelessWidget {
   }
 }
 
-/// Shows a [HudaToast] through the nearest `ScaffoldMessenger`, floating
-/// above the system bars, replacing the current one.
 void showHudaToast(
   BuildContext context, {
   required String message,
@@ -126,9 +114,6 @@ void showHudaToast(
   Duration duration = const Duration(seconds: 4),
 }) {
   final messenger = ScaffoldMessenger.of(context);
-  // A half-open vertical fold (book) splits the screen: the toast keeps to
-  // the trailing side, like sheets, never on the crease (changed in
-  // `athkar`). A horizontal one already has it at the bottom.
   final fold = FoldInfo.of(context);
   var margin = const EdgeInsets.fromLTRB(16, 0, 16, 12);
   if (fold.avoided && fold.splitsHorizontally) {

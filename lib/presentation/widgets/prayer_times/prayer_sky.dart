@@ -7,21 +7,7 @@ import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/cubit/athan/prayer_times_cubit.dart';
 import 'package:prayer_time_plus/prayer_time_plus.dart';
 
-/// Prayer's identity: the living sky (owner's choice, 2026-11-06, "H, your
-/// color is the sky"). The hero card *is* the sky at this moment: the
-/// theme's own deep tone above, the gilt light near the horizon, the
-/// theme's red at sunset; the sun (or the crescent) where it really is;
-/// stars that glimmer and thin clouds that drift; three ridges of hills.
-/// Each prayer reads true: at Fajr the white thread of dawn lies along the
-/// eastern horizon (2:187) with the morning star; at Maghrib the sun sits
-/// half set on the ridge; by Isha the red (shafaq) has gone.
-///
-/// It's drawn in three layers: a still back (the gradient, the twilight
-/// glows, the Milky Way), a living middle (stars and clouds, repainted at a
-/// low frame rate while the page shows) and a still front (the sun or moon,
-/// the hills). See `design/IDENTITIES.md`.
 
-/// The day's moments, as hours on the place's wall clock (5.5 is 05:30).
 @immutable
 class PrayerSkyTimes {
   const PrayerSkyTimes({
@@ -33,7 +19,6 @@ class PrayerSkyTimes {
     required this.isha,
   });
 
-  /// A plain day for when there are no times yet (setup, loading).
   static const fallback = PrayerSkyTimes(
     fajr: 5,
     sunrise: 6.4,
@@ -50,9 +35,6 @@ class PrayerSkyTimes {
   final double maghrib;
   final double isha;
 
-  /// The times of [state] on the place's wall clock ([wallClock] turns an
-  /// instant into it). Falls back to [fallback] when a time is missing or
-  /// out of order (high latitudes).
   factory PrayerSkyTimes.of(
     PrayerTimesLoaded state,
     DateTime Function(DateTime instant) wallClock,
@@ -105,13 +87,9 @@ class PrayerSkyTimes {
   int get hashCode => Object.hash(fajr, sunrise, dhuhr, asr, maghrib, isha);
 }
 
-/// [time] as an hour of its day (05:30 is 5.5).
 double prayerSkyHour(DateTime time) =>
     time.hour + time.minute / 60 + time.second / 3600;
 
-/// What the page knows about its sky (the times and now), for the small
-/// skies inside it (a problem's lamp). Without it they show a plain day at
-/// the device's time.
 class PrayerSkyScope extends InheritedWidget {
   const PrayerSkyScope({
     super.key,
@@ -131,9 +109,6 @@ class PrayerSkyScope extends InheritedWidget {
       old.times != times || old.hour != hour;
 }
 
-/// The sky's colors at [hour]: top, near the horizon, and how many stars
-/// show. Keyframes at the day's own moments, from the theme: its chrome
-/// (the user's color is the sky), the gilt, and its red at sunset.
 ({Color top, Color bottom, double stars}) prayerSkyColors(
   HudaTokens t,
   Color red,
@@ -198,11 +173,6 @@ class PrayerSkyScope extends InheritedWidget {
 double _ramp(double x, double a, double b) =>
     Curves.easeInOut.transform(((x - a) / (b - a)).clamp(0.0, 1.0));
 
-/// Everything the layers share about one moment of the sky. Every part is
-/// a continuous function of the hour, so the sky never cuts: the sun sinks
-/// behind the hills and its light fades with it, the moon rises in the
-/// east after Maghrib, crosses the night and sets in the west as the dawn
-/// grows, and the stars come and go with the light.
 class _Sky {
   _Sky({
     required this.tokens,
@@ -224,14 +194,11 @@ class _Sky {
     shafaq =
         _ramp(h, times.maghrib - 0.5, times.maghrib) *
         (1 - _ramp(h, times.maghrib + 0.2, times.isha));
-    // The sun: its arc continues under the horizon, behind the hills.
     sunF = (h - times.sunrise) / (times.maghrib - times.sunrise);
     sunUp = math.sin(math.pi * sunF.clamp(-0.3, 1.3));
     sunShown = sunF > -0.3 && sunF < 1.3;
     sunLight = ((sunUp + 0.1) / 0.25).clamp(0.0, 1.0);
     low = (1 - sunUp).clamp(0.0, 1.0);
-    // The moon: rises a little after Maghrib, sets a little after sunrise,
-    // lower than the sun; it fades as the dawn and the day come.
     final night = 24 - times.maghrib + times.sunrise;
     final hh = h < times.sunrise + 1 ? h + 24 : h;
     moonG = (hh - times.maghrib - 0.3) / night;
@@ -248,7 +215,6 @@ class _Sky {
   final PrayerSkyTimes times;
   final double hour;
 
-  /// The leading side is east (the sun rises where reading starts).
   final bool rtl;
   late final Color top;
   late final Color bottom;
@@ -261,10 +227,8 @@ class _Sky {
   late final double sunUp;
   late final bool sunShown;
 
-  /// How much of the sun's light is in the sky (0 once it's well set).
   late final double sunLight;
 
-  /// 1 with the sun on the horizon, 0 at its highest.
   late final double low;
   late final double moonG;
   late final double moonUp;
@@ -273,7 +237,6 @@ class _Sky {
 
   double horizonOf(Size size) => size.height * 0.8;
 
-  /// [x] (0–1 from the leading edge) in this direction.
   double x(Size size, double x) => size.width * (rtl ? 1 - x : x);
 
   Offset sunAt(Size size) => Offset(
@@ -282,7 +245,6 @@ class _Sky {
   );
 
   Offset moonAt(Size size) => Offset(
-    // Its path keeps off the words on the leading side.
     x(size, 0.42 + 0.5 * moonG.clamp(-0.2, 1.2)),
     horizonOf(size) - size.height * 0.03 - moonUp * size.height * 0.62,
   );
@@ -300,7 +262,6 @@ class _Sky {
       other.rtl == rtl;
 }
 
-/// The still back: the gradient, the twilight glows, the Milky Way.
 class _BackPainter extends CustomPainter {
   _BackPainter(this.sky);
 
@@ -322,7 +283,6 @@ class _BackPainter extends CustomPainter {
           stops: const [0, 0.5, 0.8],
         ).createShader(rect),
     );
-    // Fajr: the white thread along the eastern horizon.
     if (sky.dawn > 0) {
       final band = Rect.fromLTRB(0, horizon - h * 0.16, w, horizon + 2);
       canvas.drawRect(
@@ -352,7 +312,6 @@ class _BackPainter extends CustomPainter {
           ).createShader(Rect.fromCircle(center: east, radius: w * 0.5)),
       );
     }
-    // Around Maghrib: the red lingering in the west.
     if (sky.shafaq > 0) {
       final west = Offset(sky.x(size, 0.86), horizon);
       final glow = Color.lerp(sky.warmLight, sky.red, 0.35)!;
@@ -370,7 +329,6 @@ class _BackPainter extends CustomPainter {
           ).createShader(Rect.fromCircle(center: west, radius: w * 0.7)),
       );
     }
-    // The Milky Way, fading in with the dark.
     final milky = ((sky.stars - 0.5) / 0.4).clamp(0.0, 1.0);
     if (milky > 0) {
       final band = Path()
@@ -392,7 +350,6 @@ class _BackPainter extends CustomPainter {
   bool shouldRepaint(covariant _BackPainter old) => !old.sky.same(sky);
 }
 
-/// A small deterministic random sequence.
 class _Seq {
   _Seq(int seed) : _s = seed & 0x7fffffff;
   int _s;
@@ -402,18 +359,12 @@ class _Seq {
   }
 }
 
-/// The living middle, repainted while the page shows ([phase] is seconds):
-/// stars that glimmer at their own pace (a few flare now and then),
-/// shooting stars at night, slow rays and a breathing corona round the
-/// sun, the moon's breathing halo, drifting wisps, and a few birds that
-/// cross at dawn and dusk.
 class _LifePainter extends CustomPainter {
   _LifePainter(this.sky, this.phase) : super(repaint: phase);
 
   final _Sky sky;
   final ValueNotifier<double> phase;
 
-  /// When shooting star [k] begins in its 8 s window (none in the first).
   static double meteorStart(int k) => 2.0 + (k * 2.7) % 3.5;
   static const meteorPeriod = 8.0;
   static const meteorLength = 1.0;
@@ -426,7 +377,6 @@ class _LifePainter extends CustomPainter {
     final time = phase.value;
     final day = sky.sunLight * (1 - sky.stars);
 
-    // Sun: slow rays and a breathing corona (under the disc).
     if (sky.sunShown && sky.sunLight > 0.02) {
       final sun = sky.sunAt(size);
       final r = sky.sunRadius(size);
@@ -476,7 +426,6 @@ class _LifePainter extends CustomPainter {
       );
     }
 
-    // Moon: a halo that breathes slowly.
     if (sky.moonShown && sky.moonLight > 0.02) {
       final m = sky.moonAt(size);
       final rr = sky.moonRadius(size) * (3.6 + 0.4 * math.sin(time * 0.6));
@@ -493,7 +442,6 @@ class _LifePainter extends CustomPainter {
       );
     }
 
-    // Stars.
     if (sky.stars > 0.02) {
       final rnd = _Seq(11);
       final count = (w * h / 520).clamp(24, 420).toInt();
@@ -507,7 +455,6 @@ class _LifePainter extends CustomPainter {
         final base = sky.stars * fade * (0.35 + 0.65 * rnd.next());
         final pace = 0.4 + rnd.next() * 1.2;
         final offset = rnd.next() * math.pi * 2;
-        // A slow glimmer, and now and then a brief flare.
         final flare = math
             .pow(math.max(0, math.sin(time * 0.23 * pace + offset * 3)), 40)
             .toDouble();
@@ -547,7 +494,6 @@ class _LifePainter extends CustomPainter {
       }
     }
 
-    // Shooting stars, one in some windows of 8 s, only in the dark.
     final dark = ((sky.stars - 0.3) / 0.4).clamp(0.0, 1.0);
     if (dark > 0) {
       final k = (time / meteorPeriod).floor();
@@ -561,7 +507,6 @@ class _LifePainter extends CustomPainter {
           sky.x(size, 0.05 + rnd.next() * 0.4),
           horizon * (0.05 + rnd.next() * 0.3),
         );
-        // Toward the reading end, steeply down.
         rnd.next();
         final dir = sky.rtl ? -1.0 : 1.0;
         final v = Offset(dir * 0.82, 0.57);
@@ -595,7 +540,6 @@ class _LifePainter extends CustomPainter {
       }
     }
 
-    // Wisps: soft circles stretched long, drifting and wrapping round.
     final lit = math.max(sky.sunShown ? sky.low * sky.sunLight : 0.0, sky.dawn);
     final night = sky.stars > 0.6;
     final cloud = night
@@ -642,7 +586,6 @@ class _LifePainter extends CustomPainter {
       }
     }
 
-    // Birds at the golden hours: a small flock crossing now and then.
     final golden = math.max(
       sky.sunShown
           ? ((sky.low - 0.5) / 0.3).clamp(0.0, 1.0) * sky.sunLight
@@ -699,8 +642,6 @@ class _LifePainter extends CustomPainter {
   bool shouldRepaint(covariant _LifePainter old) => !old.sky.same(sky);
 }
 
-/// The still front: the sun and the moon (the morning star at dawn), then
-/// the hills that hide whatever is below the horizon.
 class _FrontPainter extends CustomPainter {
   _FrontPainter(this.sky);
 
@@ -794,8 +735,6 @@ class _FrontPainter extends CustomPainter {
             ).createShader(Rect.fromCircle(center: sun, radius: radius * k)),
         );
       }
-      // The disc itself is always whole; under the horizon the hills hide
-      // it, so it sinks and rises instead of popping.
       canvas.drawCircle(sun, radius, Paint()..color = core);
       canvas.drawCircle(
         sun,
@@ -850,14 +789,6 @@ class _FrontPainter extends CustomPainter {
   bool shouldRepaint(covariant _FrontPainter old) => !old.sky.same(sky);
 }
 
-/// The living sky at [hour] for [times].
-///
-/// Opening: a time-lapse of the real sky over the last two hours, sped up
-/// into 1.4 s, so the sky arrives at now the way it really got there (at
-/// Fajr the moon drifts west and fades as the dawn thread grows; at
-/// Maghrib you watch the sun set). Then it lives while the page shows (see
-/// [_LifePainter]), and the sun and moon glide to each new minute. Still
-/// and settled under reduce motion; paused while the page is covered.
 class PrayerSky extends StatefulWidget {
   const PrayerSky({
     super.key,
@@ -870,21 +801,16 @@ class PrayerSky extends StatefulWidget {
   final PrayerSkyTimes times;
   final double hour;
 
-  /// Life and the opening; off for the small skies.
   final bool animate;
 
-  /// A soft shade at the top and over the hills, for text laid on the sky.
   final bool veil;
 
-  /// Forgets the last sky, so the next one opens (the device matrix renders
-  /// one profile right after another).
   @visibleForTesting
   static void debugForgetHandoff() {
     _PrayerSkyState._handoffHour = null;
     _PrayerSkyState._handoffAt = null;
   }
 
-  /// The opening's length and how much of the day it replays.
   static const opening = Duration(milliseconds: 1400);
   static const replay = 2.0;
 
@@ -894,8 +820,6 @@ class PrayerSky extends StatefulWidget {
 
 class _PrayerSkyState extends State<PrayerSky>
     with SingleTickerProviderStateMixin {
-  // A sky that replaces one that just closed (loading → the times) goes
-  // on from where that one was instead of opening again.
   static double? _handoffHour;
   static DateTime? _handoffAt;
 
@@ -906,8 +830,6 @@ class _PrayerSkyState extends State<PrayerSky>
   Duration _last = Duration.zero;
   Duration _lastFrame = Duration.zero;
 
-  // Life repaints about 24 times a second: enough for a soft glimmer, a
-  // meteor and a drift, and cheap.
   static const _frame = Duration(milliseconds: 42);
 
   void _tick(Duration elapsed) {
@@ -919,7 +841,6 @@ class _PrayerSkyState extends State<PrayerSky>
           .clamp(0.0, 1.0);
       changed = true;
     }
-    // Glide to a new minute (a big jump, a new day, snaps).
     final gap = widget.hour - _shown;
     if (gap.abs() > 1e-4) {
       _shown = gap.abs() > 12
@@ -1019,8 +940,6 @@ class _PrayerSkyState extends State<PrayerSky>
   }
 }
 
-/// A small, still sky for marks (a problem's lamp, a result row): the page's
-/// moment when it shares one, else a plain day at the device's time.
 class PrayerSkyDisc extends StatelessWidget {
   const PrayerSkyDisc({super.key, required this.size});
 
@@ -1040,8 +959,6 @@ class PrayerSkyDisc extends StatelessWidget {
   }
 }
 
-/// Where the sun (or, at night, the moon) sits in a [PrayerSkyDisc] of
-/// [size], for marks drawn over it.
 Offset prayerSkyDiscSun(BuildContext context, double size) {
   final scope = PrayerSkyScope.maybeOf(context);
   final sky = _Sky(
@@ -1055,9 +972,6 @@ Offset prayerSkyDiscSun(BuildContext context, double size) {
   return sky.sunLight >= sky.moonLight ? sky.sunAt(s) : sky.moonAt(s);
 }
 
-/// Shade for text on the sky: a little at the top (the eyebrow and the
-/// name) and over the hills (the date), clear in the middle where the sun
-/// and the light are.
 class _VeilPainter extends CustomPainter {
   const _VeilPainter();
 

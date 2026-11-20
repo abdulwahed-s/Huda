@@ -6,10 +6,6 @@ import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 import 'package:huda/presentation/widgets/onboarding/onboarding_frame.dart';
 
-/// Step 9 (FOSS only): crash reports, asked here instead of in Home's
-/// dialog, with the same words and the same two answers, one tap each.
-/// Either answer is final, so Home's dialog won't ask again; "Skip setup"
-/// leaves the question for Home.
 class PrivacyStep extends StatefulWidget {
   const PrivacyStep({super.key});
 

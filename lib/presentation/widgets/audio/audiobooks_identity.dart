@@ -5,12 +5,6 @@ import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/presentation/widgets/design/feature_identity.dart';
 import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 
-/// Audiobooks' voice: the woven ribbon. Two flat threads plaited over and
-/// under, crossing at even steps, an open eye between two crossings, one
-/// eye per chapter; the ribbon ends in a tassel. Recordings are woven
-/// swatches: cloth in the theme's chrome tones with faint warp threads,
-/// the plait running across it and a fringe along the foot. See
-/// `design/IDENTITIES.md`.
 final FeatureIdentity audiobooksIdentity = FeatureIdentity(
   id: 'audiobooks',
   motif:
@@ -22,10 +16,6 @@ final FeatureIdentity audiobooksIdentity = FeatureIdentity(
   headerArt: (style) => AudiobookHangingRibbonsPainter(style: style),
 );
 
-/// The cloth of a recording's swatch: the theme's chrome, a step toward
-/// its primary, a step toward the gilt, or the deeper chrome, picked from
-/// the recording's id so it keeps its cloth. Never a fixed hue. Deep
-/// enough for the gilt plait to keep 3:1 or more.
 Color audiobookCloth(BuildContext context, int seed) {
   final tokens = context.tokens;
   final scheme = Theme.of(context).colorScheme;
@@ -42,10 +32,6 @@ Color audiobookCloth(BuildContext context, int seed) {
   return color;
 }
 
-/// Where a ribbon's eyes are: [eyes] eyes fit its length; the first one
-/// shows chapter [start] (fractional while it slides). Eyes before the
-/// first chapter or after the last one are the weave going on, drawn
-/// quiet.
 @immutable
 class RibbonWindow {
   const RibbonWindow({required this.eyes, required this.start});
@@ -53,9 +39,6 @@ class RibbonWindow {
   final int eyes;
   final double start;
 
-  /// The window for [chapters] chapters on a ribbon [length] long, kept
-  /// around [current]: every chapter when they fit (centered, the weave
-  /// going on around them), otherwise [current] in the middle.
   factory RibbonWindow.fit({
     required double length,
     required int chapters,
@@ -65,7 +48,6 @@ class RibbonWindow {
   }) {
     final room = math.max(3, math.min(maxEyes, (length / minEye).floor()));
     if (chapters <= room) {
-      // Keep one quiet eye at each end, so the ribbon reads as woven on.
       final eyes = chapters + 2 <= room ? chapters + 2 : room;
       return RibbonWindow(eyes: eyes, start: -(eyes - chapters) / 2);
     }
@@ -74,13 +56,6 @@ class RibbonWindow {
   }
 }
 
-/// The plait itself, along the width of its box (mirrored in RTL by the
-/// caller): two threads crossing [window].eyes times, the under thread
-/// breaking at each crossing. Eyes of chapters already heard are filled
-/// ([heard]: chapters heard, the fraction the current one has played);
-/// the [current] chapter's eye is ringed and ticked. [weave] (0–1) draws
-/// the threads in from the start, the eyes filling as it passes them.
-/// The ends fade, so the ribbon runs off its box when [fadeEnds].
 class AudiobookRibbonPainter extends CustomPainter {
   const AudiobookRibbonPainter({
     required this.style,
@@ -102,10 +77,8 @@ class AudiobookRibbonPainter extends CustomPainter {
   final int? current;
   final double weave;
 
-  /// The heard eyes' fill; defaults to the thread's color.
   final Color? fill;
 
-  /// The current eye's ring; defaults to the thread's color.
   final Color? ring;
   final bool fadeEnds;
   final bool rtl;
@@ -145,13 +118,9 @@ class AudiobookRibbonPainter extends CustomPainter {
     final length = size.width;
     final mid = size.height / 2;
     final step = length / window.eyes;
-    // Thread width and swing, from the room across the ribbon.
     final band = math.min(size.height * 0.15, step * 0.24).clamp(1.2, 9.0);
     final swing = math.min(size.height * 0.36, step * 0.5);
     final flat = band >= 3.2;
-    // How far the weave has run: past the far end by one eye at 1, so the
-    // last eye is drawn and filled like the others instead of appearing at
-    // the end (owner round 1).
     final reach = (length + step) * weave.clamp(0.0, 1.0);
     final first = window.start.floor() - 1;
     final last = (window.start + window.eyes).ceil() + 1;
@@ -164,13 +133,11 @@ class AudiobookRibbonPainter extends CustomPainter {
       if (x1 < 0 || x0 > length || x0 > reach) continue;
       final chapter = i >= 0 && i < chapters;
       final alpha = chapter ? 1.0 : 0.32;
-      // The thread that passes over at this eye's leading crossing.
       final overA = i.isEven;
       final sign = i.isEven ? 1.0 : -1.0;
       double y(double t, bool a) =>
           mid + (a ? 1 : -1) * sign * math.sin(math.pi * t) * swing;
 
-      // The eye: filled for chapters heard, by the part heard.
       if (chapter) {
         final heardPart = (heard - i).clamp(0.0, 1.0);
         final woven = ((reach - x1) / step).clamp(0.0, 1.0);
@@ -196,7 +163,6 @@ class AudiobookRibbonPainter extends CustomPainter {
               ..strokeJoin = StrokeJoin.round
               ..color = ringColor.withValues(alpha: ringColor.a * woven),
           );
-          // The chapter tick under the current eye.
           final tick = Paint()
             ..strokeWidth = style.stroke * 1.4
             ..strokeCap = StrokeCap.round
@@ -214,12 +180,9 @@ class AudiobookRibbonPainter extends CustomPainter {
         }
       }
 
-      // The two threads over this eye; the under one breaks at each
-      // crossing, where the other passes over it.
       final gap = (band * 1.1 / step).clamp(0.0, 0.22);
       for (final a in [true, false]) {
         final overHere = a == overA;
-        // Over at the leading crossing means under at the trailing one.
         final from = overHere ? 0.0 : gap;
         final to = overHere ? 1 - gap : 1.0;
         final end = ((reach - x0) / step).clamp(0.0, 1.0);
@@ -236,7 +199,6 @@ class AudiobookRibbonPainter extends CustomPainter {
     }
   }
 
-  /// The lens between the threads' inner edges.
   Path _eyePath(double x0, double step, double mid, double swing, double band) {
     final path = Path();
     const samples = 16;
@@ -270,7 +232,6 @@ class AudiobookRibbonPainter extends CustomPainter {
       s.draw(canvas, Path()..addPolygon(center, false), closed: false);
       return;
     }
-    // A flat thread: its two edges, offset along the normal.
     final left = <Offset>[];
     final right = <Offset>[];
     for (var k = 0; k < center.length; k++) {
@@ -282,7 +243,6 @@ class AudiobookRibbonPainter extends CustomPainter {
       left.add(center[k] + n);
       right.add(center[k] - n);
     }
-    // A faint body between the edges, so it reads as a flat thread.
     final body = Path()..addPolygon([...left, ...right.reversed], true);
     canvas.drawPath(
       body,
@@ -307,11 +267,6 @@ class AudiobookRibbonPainter extends CustomPainter {
       old.rtl != rtl;
 }
 
-/// The cloth of a swatch, behind its ribbon: rounded at the top, its warp
-/// threads faint, a woven border band above and below the ribbon's
-/// course ([variant]: chevrons, dots or a double rule) and a fringe of
-/// loose threads along the foot. [ribbonBand] is where the ribbon runs
-/// (a fraction of the cloth's height, centered).
 class AudiobookClothPainter extends CustomPainter {
   const AudiobookClothPainter({
     required this.cloth,
@@ -322,16 +277,12 @@ class AudiobookClothPainter extends CustomPainter {
 
   final Color cloth;
 
-  /// The gilt: borders and fringe.
   final Color thread;
   final int variant;
   final double radius;
 
-  /// The fringe's share of the swatch's height.
   static const double fringe = 0.1;
 
-  /// Where the ribbon runs on the cloth, as fractions of the swatch's
-  /// height (top, bottom).
   static const (double, double) ribbonBand = (0.25, 0.65);
 
   @override
@@ -355,7 +306,6 @@ class AudiobookClothPainter extends CustomPainter {
           colors: [Color.lerp(cloth, thread, 0.06)!, cloth],
         ).createShader(rect),
     );
-    // A fine gilt edge, so the cloth holds its shape on the night chrome.
     canvas.drawRRect(
       shape.deflate(0.5),
       Paint()
@@ -365,7 +315,6 @@ class AudiobookClothPainter extends CustomPainter {
     );
     canvas.save();
     canvas.clipRRect(shape);
-    // Warp threads.
     final warp = Paint()
       ..strokeWidth = 1
       ..color = thread.withValues(alpha: 0.06);
@@ -373,13 +322,11 @@ class AudiobookClothPainter extends CustomPainter {
     for (var x = pitch / 2; x < size.width; x += pitch) {
       canvas.drawLine(Offset(x, 0), Offset(x, clothHeight), warp);
     }
-    // Border bands above and below the ribbon's course.
     final unit = clothHeight / 100;
     for (final y in [clothHeight * 0.13, clothHeight * 0.85]) {
       _border(canvas, size.width, y, unit);
     }
     canvas.restore();
-    // The fringe: loose threads in groups, each group gathered by a knot.
     final fringeTop = clothHeight;
     final fringeLength = size.height - clothHeight;
     final line = Paint()
@@ -413,7 +360,6 @@ class AudiobookClothPainter extends CustomPainter {
     final h = unit * 3.4;
     switch (variant % 3) {
       case 0:
-        // Chevrons, as tablet weaving makes them.
         final path = Path();
         final w = h * 1.6;
         for (var x = -w; x < width + w; x += w) {
@@ -424,7 +370,6 @@ class AudiobookClothPainter extends CustomPainter {
         }
         canvas.drawPath(path, paint);
       case 1:
-        // A row of diamonds between two rules.
         final w = h * 1.8;
         canvas
           ..drawLine(Offset(0, y - h), Offset(width, y - h), paint)
@@ -463,11 +408,6 @@ class AudiobookClothPainter extends CustomPainter {
       old.radius != radius;
 }
 
-/// The landing header and the state art: two woven ribbons hanging from
-/// the top, of different lengths, each ending in a tassel, their first
-/// eyes filled. [draw] (0–1) lets them down as the shelf opens: each
-/// ribbon unrolls from the top (the second a little after the first),
-/// then its heard eyes fill. Without it they hang finished.
 class AudiobookHangingRibbonsPainter extends CustomPainter {
   const AudiobookHangingRibbonsPainter({required this.style, this.draw})
     : super(repaint: draw);
@@ -519,7 +459,6 @@ class AudiobookHangingRibbonsPainter extends CustomPainter {
     final ribbon = length - tassel;
     if (ribbon <= 0) return;
     canvas.save();
-    // Lay the ribbon along the y axis: its length runs down.
     canvas
       ..translate(top.dx + width / 2, top.dy)
       ..rotate(math.pi / 2);
@@ -532,7 +471,6 @@ class AudiobookHangingRibbonsPainter extends CustomPainter {
       fadeEnds: false,
     ).paint(canvas, Size(ribbon, width));
     canvas.restore();
-    // The tassel: a wrapped knot, then a fan of loose threads.
     final knotTop = top + Offset(0, ribbon);
     final knot = RRect.fromRectAndRadius(
       Rect.fromCenter(

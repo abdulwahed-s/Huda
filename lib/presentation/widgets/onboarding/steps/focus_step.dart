@@ -8,9 +8,6 @@ import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:huda/presentation/widgets/home_customization/home_theme_preview.dart';
 import 'package:huda/presentation/widgets/onboarding/onboarding_frame.dart';
 
-/// Step 2: what Huda is for, which picks the Home theme (Path of Prayer,
-/// Quran Journey or Classic). Saved on Continue through
-/// `HomePreferencesService`, which Home reads.
 class FocusStep extends StatefulWidget {
   const FocusStep({super.key});
 
@@ -71,8 +68,6 @@ class _FocusStepState extends State<FocusStep> {
                 title: FocusStep.titleOf(l10n, theme),
                 selected: _theme == theme,
                 previewWidth: 72,
-                // Home's own preview, laid out at the size it was drawn
-                // for and scaled into the tile.
                 preview: AspectRatio(
                   aspectRatio: 3 / 4,
                   child: FittedBox(
@@ -88,7 +83,6 @@ class _FocusStepState extends State<FocusStep> {
           ],
         ),
         SizedBox(height: space.md),
-        // What the chosen Home puts first, said once under the three.
         HudaStateSwitcher(
           stateKey: _theme,
           child: Row(

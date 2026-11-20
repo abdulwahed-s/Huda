@@ -12,8 +12,6 @@ import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/presentation/widgets/design/huda_lamp.dart';
 import 'package:huda/presentation/widgets/design/huda_sheet.dart';
 
-/// Opens the adhan and alert settings, on [prayer]'s page when given. Edits
-/// save as they are made; anything still pending is saved on close.
 Future<void> showPrayerAlertSheet(
   BuildContext context, {
   String? prayer,
@@ -42,7 +40,6 @@ Future<void> showPrayerAlertSheet(
   await alerts.flush();
 }
 
-/// What every page of the sheet needs.
 class PrayerAlertScope extends InheritedWidget {
   const PrayerAlertScope({
     super.key,
@@ -63,7 +60,6 @@ class PrayerAlertScope extends InheritedWidget {
   static PrayerAlertScope of(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<PrayerAlertScope>()!;
 
-  /// Slides a page in from the reading side.
   void push(Widget page) => navigator.currentState?.push(
     PageRouteBuilder<void>(
       pageBuilder: (context, _, _) => page,
@@ -137,8 +133,6 @@ class _PrayerAlertSheetState extends State<PrayerAlertSheet> {
   }
 }
 
-/// A page of the sheet: header with back, title, save status and close,
-/// over a scrolling list that rebuilds as settings change.
 class PrayerAlertPage extends StatelessWidget {
   const PrayerAlertPage({
     super.key,
@@ -162,7 +156,6 @@ class PrayerAlertPage extends StatelessWidget {
     final theme = Theme.of(context);
     final canPop = Navigator.of(context).canPop();
     final tokens = context.tokens;
-    // The sheet's own surface, so a page sliding in covers the one below.
     return Material(
       color: theme.colorScheme.surfaceContainerLow,
       child: ListenableBuilder(

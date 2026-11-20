@@ -13,8 +13,6 @@ import 'package:huda/presentation/widgets/prayer_alerts/prayer_alert_test_tile.d
 import 'package:huda/presentation/widgets/prayer_alerts/prayer_alert_widgets.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_palette.dart';
 
-/// The first page: whether prayers alert, how, with which sound, and what
-/// differs per prayer. Rarely needed switches are one tap further.
 class PrayerAlertHomePage extends StatelessWidget {
   const PrayerAlertHomePage({super.key});
 
@@ -92,7 +90,6 @@ class PrayerAlertHomePage extends StatelessWidget {
   }
 }
 
-/// Choosing a style that needs a permission explains it first (iOS alarms).
 Future<bool> prayerAlertStyleAllowed(
   BuildContext context,
   PrayerAlertStyle style,
@@ -235,7 +232,6 @@ class _PrayersSection extends StatelessWidget {
   }
 }
 
-/// Reminder minutes before every prayer, and its sound where offered.
 class PrayerBeforeSection extends StatelessWidget {
   const PrayerBeforeSection({
     super.key,
@@ -288,7 +284,6 @@ class PrayerBeforeSection extends StatelessWidget {
   }
 }
 
-/// Desktop Focus: how long it lasts and whether it can be closed early.
 class PrayerFocusSection extends StatelessWidget {
   const PrayerFocusSection({
     super.key,

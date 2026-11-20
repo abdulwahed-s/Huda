@@ -20,11 +20,6 @@ import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:huda/presentation/widgets/design/huda_states.dart';
 import 'package:huda/presentation/widgets/design/huda_toast.dart';
 
-/// The daily checklist: the day's inlaid star with how much is done and
-/// the streak, then the day's items in groups. Phones stack them; from
-/// 840 wide and on folds the day sits beside the items; tabletop puts the
-/// day above the band and the items below. ‹ › and a swipe change the day;
-/// only today's items can be checked.
 class IslamicChecklistScreen extends StatefulWidget {
   const IslamicChecklistScreen({super.key});
 
@@ -33,19 +28,14 @@ class IslamicChecklistScreen extends StatefulWidget {
 }
 
 class _IslamicChecklistScreenState extends State<IslamicChecklistScreen> {
-  // The route provides the cubit (and closes it).
   late final ChecklistCubit _cubit = context.read<ChecklistCubit>();
   Locale? _locale;
   bool _retrying = false;
 
-  /// Custom items removed but still undoable: hidden now, removed from
-  /// storage when their toast ends.
   final Map<String, Timer> _pending = {};
 
-  /// Which way the last day change went, for the slide.
   bool _forward = true;
 
-  /// The day card, so completing the day can bring it into view.
   final _cardKey = GlobalKey(debugLabel: 'checklist-day-card');
 
   @override
@@ -65,7 +55,6 @@ class _IslamicChecklistScreenState extends State<IslamicChecklistScreen> {
 
   @override
   void dispose() {
-    // Leaving ends the Undo window.
     for (final entry in _pending.entries) {
       entry.value.cancel();
       _cubit.removeCustomItem(entry.key);
@@ -94,7 +83,6 @@ class _IslamicChecklistScreenState extends State<IslamicChecklistScreen> {
     if (!done) {
       HudaHaptics.selection(context);
     } else if (after == items.length) {
-      // The day is complete.
       HudaHaptics.medium(context);
       _showCard();
     } else {
@@ -103,9 +91,6 @@ class _IslamicChecklistScreenState extends State<IslamicChecklistScreen> {
     _cubit.toggleItemCompletion(item.id, done);
   }
 
-  /// The day completes where the star can be seen: on phones the last
-  /// item is often far below the card, so the card scrolls back in view
-  /// (only when it's away).
   void _showCard() {
     final card = _cardKey.currentContext;
     if (card == null) return;
@@ -173,7 +158,6 @@ class _IslamicChecklistScreenState extends State<IslamicChecklistScreen> {
     _cubit.loadChecklist();
   }
 
-  /// A swipe on the items changes the day, in reading direction.
   void _swiped(DragEndDetails details) {
     final velocity = details.primaryVelocity ?? 0;
     if (velocity.abs() < 300) return;
@@ -190,7 +174,6 @@ class _IslamicChecklistScreenState extends State<IslamicChecklistScreen> {
     final today = loaded != null && checklistIsToday(loaded.currentDate);
     final tokens = context.tokens;
 
-    // One slot: New item on today, Back to today on any other day.
     final actions = [
       AnimatedSwitcher(
         duration: tokens.motion.of(context, tokens.motion.short),
@@ -211,8 +194,6 @@ class _IslamicChecklistScreenState extends State<IslamicChecklistScreen> {
     ];
 
     final width = MediaQuery.sizeOf(context).width;
-    // Short windows (phone and Duo closed landscape) put the day beside
-    // the items from 600, so the items are in view without scrolling.
     final short = MediaQuery.sizeOf(context).height < 480;
     final twoPaneMin = short ? 600.0 : 840.0;
     final fold = FoldInfo.of(context);
@@ -222,8 +203,6 @@ class _IslamicChecklistScreenState extends State<IslamicChecklistScreen> {
       twoPaneMinWidth: twoPaneMin,
     );
 
-    // Very wide windows without a fold keep the panes together in the
-    // middle instead of spreading them to the window's edges.
     Widget panes({required Widget primary, required Widget secondary}) {
       final split = AdaptivePanes(
         primary: primary,
@@ -327,8 +306,6 @@ class _IslamicChecklistScreenState extends State<IslamicChecklistScreen> {
     );
   }
 
-  /// A scroll view built in its pane's own context, so its gutter and
-  /// insets are the pane's.
   Widget _pane(WidgetBuilder content, {bool swipe = false, Key? key}) =>
       Builder(
         builder: (context) {
@@ -341,8 +318,6 @@ class _IslamicChecklistScreenState extends State<IslamicChecklistScreen> {
             ),
             child: content(context),
           );
-          // The state switcher passes loose constraints; a scroll view would
-          // shrink-wrap its width and leave the column off-center.
           final full = SizedBox(width: double.infinity, child: scroll);
           return swipe
               ? GestureDetector(onHorizontalDragEnd: _swiped, child: full)
@@ -350,7 +325,6 @@ class _IslamicChecklistScreenState extends State<IslamicChecklistScreen> {
         },
       );
 
-  /// Phones and portrait tablets: the day, then its items.
   Widget _single(ChecklistLoaded state) => _pane(
     (context) => ReadableWidth(
       maxWidth: 720,
@@ -366,7 +340,6 @@ class _IslamicChecklistScreenState extends State<IslamicChecklistScreen> {
     swipe: true,
   );
 
-  /// The date row and the day card.
   Widget _overview(ChecklistLoaded state, {bool large = false}) {
     final items = _visible(state);
     return Builder(
@@ -429,7 +402,6 @@ class _IslamicChecklistScreenState extends State<IslamicChecklistScreen> {
     );
   }
 
-  /// A day with nothing to do: the date row to move on, then the state.
   Widget _empty(ChecklistLoaded state) => Builder(
     builder: (context) {
       final l10n = AppLocalizations.of(context)!;
@@ -463,8 +435,6 @@ class _IslamicChecklistScreenState extends State<IslamicChecklistScreen> {
     },
   );
 
-  /// A new day slides in from the side it comes from (mirrored in RTL);
-  /// the old one fades.
   Widget _daySwitch(DateTime date, Widget child) {
     final key = ValueKey('${date.year}-${date.month}-${date.day}');
     return Builder(

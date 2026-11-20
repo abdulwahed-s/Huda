@@ -3,7 +3,6 @@ import 'package:huda/core/services/prayer_alerts/prayer_alerts.dart';
 import 'package:huda/core/services/prayer_audio_library.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
-/// Words and icons for the prayer alert settings, in one place.
 extension PrayerAlertLabels on AppLocalizations {
   String prayerName(String prayer) => switch (prayer) {
     'fajr' => fajr,
@@ -22,7 +21,6 @@ extension PrayerAlertLabels on AppLocalizations {
     PrayerAlertStyle.focus => prayerAlertStyleFocus,
   };
 
-  /// The style's name on this platform ([PrayerAlertCapabilities.styleNames]).
   String alertStyleOn(PrayerAlertStyle style, PrayerAlertCapabilities? on) =>
       _named(on?.styleNames[style]) ?? alertStyle(style);
 
@@ -42,8 +40,6 @@ extension PrayerAlertLabels on AppLocalizations {
     _ => null,
   };
 
-  /// "Adhan · Opening only" (Android) or "Prayer alarm · Opening only"
-  /// (iOS), otherwise the style's name.
   String alertStyleSummary(
     PrayerAlertStyle style,
     PrayerAlertCapabilities? on, {
@@ -64,7 +60,6 @@ extension PrayerAlertLabels on AppLocalizations {
     PrayerAlertStyle.focus => prayerAlertStyleFocusHint,
   };
 
-  /// Title and optional hint of a platform switch.
   (String, String?) alertToggle(String key) => switch (key) {
     'alarmScreenEnabled' => (
       prayerAlertToggleAlarmScreen,
@@ -120,7 +115,6 @@ extension PrayerAlertLabels on AppLocalizations {
         PrayerTestOutcome.failed => prayerAlertTestFailed,
       };
 
-  /// "Whole adhan", "30 s" or "2 min".
   String alertLength(int? seconds, String Function(int) number) {
     if (seconds == null || seconds >= 3600) return prayerAlertLengthWhole;
     if (seconds % 60 == 0) {
@@ -129,7 +123,6 @@ extension PrayerAlertLabels on AppLocalizations {
     return prayerAlertLengthSeconds(number(seconds));
   }
 
-  /// A named warning key from the platform layer.
   String alertWarning(String key) => switch (key) {
     'prayerAlertStartupWarning' => prayerAlertStartupWarning,
     _ => key,
@@ -145,7 +138,6 @@ IconData prayerAlertStyleIcon(PrayerAlertStyle style) => switch (style) {
   PrayerAlertStyle.focus => Icons.self_improvement_rounded,
 };
 
-/// Digits in the user's numerals, for minute and second values.
 String prayerAlertNumber(BuildContext context, int value) {
   final language = Localizations.localeOf(context).languageCode;
   final digits = switch (language) {
@@ -161,7 +153,6 @@ String prayerAlertNumber(BuildContext context, int value) {
   );
 }
 
-/// "3.4 MB", with the user's numerals.
 String prayerAlertSize(BuildContext context, int bytes) {
   final megabytes = bytes / (1024 * 1024);
   final text = megabytes < 10

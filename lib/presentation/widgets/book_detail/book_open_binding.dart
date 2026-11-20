@@ -6,11 +6,6 @@ import 'package:huda/presentation/widgets/books/book_cover.dart';
 import 'package:huda/presentation/widgets/books/books_identity.dart';
 import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 
-/// A book's page as an open binding: the board's inside (the doublure)
-/// on the reading start, the title page beside it. As the page appears,
-/// the closed board lies over the title page and swings open on the spine
-/// (900 ms, once): the signature motion. Mirrored in RTL, where the spine
-/// is on the right. Under reduce motion it is open from the first frame.
 class BookOpenBinding extends StatefulWidget {
   const BookOpenBinding({
     super.key,
@@ -19,13 +14,10 @@ class BookOpenBinding extends StatefulWidget {
     this.coverTitle,
   });
 
-  /// The book's id: picks its leather.
   final int seed;
 
-  /// The title page's content, set on paper.
   final Widget titlePage;
 
-  /// Stamped on the closed board, as on the book's cover in the library.
   final String? coverTitle;
 
   static const Duration opening = Duration(milliseconds: 1000);
@@ -66,7 +58,6 @@ class _BookOpenBindingState extends State<BookOpenBinding>
     final rtl = Directionality.of(context) == TextDirection.rtl;
     final leather = bookLeather(context, widget.seed);
     final paper = bookPaper(context);
-    // A beat for the page to arrive, then the board turns.
     final turn = CurvedAnimation(
       parent: _open,
       curve: const Interval(0.12, 1, curve: Curves.easeInOutCubic),
@@ -79,7 +70,6 @@ class _BookOpenBindingState extends State<BookOpenBinding>
         borderRadius: BorderRadiusDirectional.horizontal(
           end: Radius.circular(radius),
         ),
-        // The gutter's shade at the spine.
         gradient: LinearGradient(
           begin: rtl ? Alignment.centerRight : Alignment.centerLeft,
           end: rtl ? Alignment.centerLeft : Alignment.centerRight,
@@ -113,7 +103,6 @@ class _BookOpenBindingState extends State<BookOpenBinding>
           child: const SizedBox.expand(),
         );
       }
-      // The closed board: the same face as the book's cover.
       final title = widget.coverTitle;
       final variant = bookVariant(widget.seed);
       return CustomPaint(
@@ -169,7 +158,6 @@ class _BookOpenBindingState extends State<BookOpenBinding>
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // The doublure: shown once the board has turned past upright.
             Expanded(
               child: AnimatedBuilder(
                 animation: turn,
@@ -194,7 +182,6 @@ class _BookOpenBindingState extends State<BookOpenBinding>
                 fit: StackFit.passthrough,
                 children: [
                   titlePage,
-                  // The front board, until it has turned past upright.
                   Positioned.fill(
                     child: AnimatedBuilder(
                       animation: turn,
@@ -228,8 +215,6 @@ class _BookOpenBindingState extends State<BookOpenBinding>
   }
 }
 
-/// A small gilt rule with a mandorla at its middle, between the title and
-/// the names on the title page.
 class BookTitleRule extends StatelessWidget {
   const BookTitleRule({super.key});
 
@@ -259,7 +244,6 @@ class _TitleRulePainter extends CustomPainter {
     final c = size.center(Offset.zero);
     final a = size.height * 0.28;
     final b = size.height * 0.5;
-    // A small horizontal almond, its points along the rule.
     final almond = Path();
     for (var i = 0; i <= 32; i++) {
       final t = i / 32;

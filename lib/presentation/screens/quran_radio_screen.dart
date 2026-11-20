@@ -20,9 +20,6 @@ import 'package:huda/presentation/widgets/quran_player/player_bar_widget.dart';
 import 'package:huda/presentation/widgets/quran_player/quran_audio_identity.dart';
 import 'package:huda/presentation/widgets/quran_radio/radio_parts.dart';
 
-/// Quran Radio: the live stations under the open voiceprint, a list on
-/// phones and a grid on wider windows, with the station that's on pinned
-/// at the bottom.
 class QuranRadioScreen extends StatefulWidget {
   const QuranRadioScreen({super.key});
 
@@ -40,7 +37,6 @@ class _QuranRadioScreenState extends State<QuranRadioScreen>
   @override
   void initState() {
     super.initState();
-    // Kept for dispose, when the context can't be read any more.
     _radio = context.read<QuranRadioCubit>();
   }
 
@@ -110,13 +106,10 @@ class _QuranRadioScreenState extends State<QuranRadioScreen>
                     onPlayPause: () => _play(current),
                     onStop: _radio.stopStation,
                   ),
-            // The vine grows in as the radio opens.
             child: HudaDrawIn(
               builder: (context, grow) => TabletopSplit.applies(context)
                   ? HudaScaffold(
                       title: l10n.quranRadio,
-                      // The band and the search above the fold, the
-                      // stations below it.
                       body: QuranAudioTabletop(
                         head: Column(
                           mainAxisSize: MainAxisSize.min,
@@ -180,8 +173,6 @@ class _QuranRadioScreenState extends State<QuranRadioScreen>
         ),
       ),
     );
-    // On a half-open book the field keeps to the leading side, like the
-    // first column of stations below it.
     final fold = FoldInfo.of(context);
     if (!fold.isBook) return field;
     final size = MediaQuery.sizeOf(context);
@@ -275,7 +266,6 @@ class _QuranRadioScreenState extends State<QuranRadioScreen>
               ),
             );
     } else {
-      // Loading, retrying, or not started.
       body = capped(
         SliverAdaptiveGrid(
           minTileWidth: tileWidth,

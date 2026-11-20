@@ -24,9 +24,6 @@ abstract final class FossCrashReportingConsentPrompt {
   }
 }
 
-/// The FOSS build's first-launch question: share crash reports or not.
-/// Led by the lit lamp (an invitation); what is shared, and that nothing
-/// leaves the device until allowed; Allow is lit, Don't allow quiet.
 class CrashReportingConsentDialog extends StatelessWidget {
   const CrashReportingConsentDialog({super.key});
 
@@ -43,8 +40,6 @@ class CrashReportingConsentDialog extends StatelessWidget {
       child: Dialog(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 440),
-          // The answer is required (no dismiss), so the two actions stay
-          // pinned under the explanation, which scrolls on short screens.
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,

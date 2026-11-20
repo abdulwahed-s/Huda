@@ -25,7 +25,6 @@ class TafsirWidget extends StatelessWidget {
 
   final String? offlineMessage;
 
-  /// The sources are being fetched, and whether after a tap on Retry.
   final bool loadingSources;
   final bool retrying;
   final VoidCallback? onRetry;
@@ -107,8 +106,6 @@ class TafsirWidget extends StatelessWidget {
         else if (offlineMessage != null)
           OfflineContentBanner(message: offlineMessage!)
         else
-          // Honest status: updating on its own, then the failure with
-          // Retry, then "Retrying…" after a tap.
           HudaStatusBanner(
             status: loadingSources
                 ? (retrying ? HudaStatus.retrying : HudaStatus.updating)

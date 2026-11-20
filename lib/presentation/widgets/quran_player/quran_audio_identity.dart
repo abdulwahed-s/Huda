@@ -5,13 +5,6 @@ import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/presentation/widgets/design/feature_identity.dart';
 import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 
-/// Quran Audio's identity: the arabesque vine (islimi). A stem runs in a
-/// gentle wave; from every crest a tendril springs into the hollow beside
-/// it and curls into a spiral that ends in a leaf, so the scroll
-/// alternates coil above, coil below. A recitation's vine has two ends;
-/// the radio's runs off both edges. The vine grows in from its start (the
-/// signature motion). Owner round 1 (2026-11-04) chose it over the first
-/// run's waveform. See `design/IDENTITIES.md`.
 final FeatureIdentity quranAudioIdentity = FeatureIdentity(
   id: 'quran-audio',
   motif: 'The arabesque vine: a waving stem whose tendrils curl into coils',
@@ -22,8 +15,6 @@ final FeatureIdentity quranAudioIdentity = FeatureIdentity(
   emptyArt: (style) => ArabesqueVinePainter(style: style, coils: 2),
 );
 
-/// The radio's art: the vine running off both edges, as a broadcast has
-/// no ends.
 final FeatureIdentity quranRadioIdentity = FeatureIdentity(
   id: 'quran-audio',
   motif: 'The open vine: the scroll runs off both edges',
@@ -35,12 +26,6 @@ final FeatureIdentity quranRadioIdentity = FeatureIdentity(
   emptyArt: (style) => ArabesqueVinePainter(style: style, coils: 3, open: true),
 );
 
-/// Draws the vine across its box: [coils] half-waves of the stem (or as
-/// many as keep each coil about as wide as the band is tall), a spiral
-/// tendril in the hollow beside each crest with a leaf at its heart, and a
-/// bud where the stem crosses its middle. [grow] (0–1), or [growth]
-/// without rebuilding, draws it in from its start. [open] runs it off both
-/// edges, faded there. Mirrors in RTL.
 class ArabesqueVinePainter extends CustomPainter {
   ArabesqueVinePainter({
     required this.style,
@@ -54,14 +39,11 @@ class ArabesqueVinePainter extends CustomPainter {
 
   final OrnamentStyle style;
 
-  /// Half-waves across the box; null fits them to the box's shape.
   final int? coils;
   final bool open;
   final double grow;
   final Animation<double>? growth;
 
-  /// The share of the box left empty at the start, where a landing
-  /// header's title may reach into its art slot.
   final double leadingSpace;
   final TextDirection textDirection;
 
@@ -82,7 +64,6 @@ class ArabesqueVinePainter extends CustomPainter {
     final g = (growth?.value ?? grow).clamp(0.0, 1.0);
     if (g <= 0) return;
     canvas.save();
-    // Growing from the start; once grown, nothing is clipped.
     final pad = style.stroke * 4;
     canvas.clipRect(
       Rect.fromLTRB(
@@ -98,11 +79,9 @@ class ArabesqueVinePainter extends CustomPainter {
 
   void _paintVine(Canvas canvas, Rect area) {
     var box = area;
-    // A closed vine ends in a leaf at each end: keep room for them.
     final tip = open ? 0.0 : box.height * 0.22;
     box = Rect.fromLTRB(box.left + tip, box.top, box.right - tip, box.bottom);
     final n = coils ?? math.max(2, (box.width / (box.height * 1.5)).round());
-    // A coil keeps its shape however wide the box is.
     final half = math.min(box.width / n, box.height * 1.6);
     final total = half * n;
     final left = box.left + (box.width - total) / 2;
@@ -117,7 +96,6 @@ class ArabesqueVinePainter extends CustomPainter {
       final x0 = left + i * half;
       final x1 = x0 + half;
       final xm = (x0 + x1) / 2;
-      // Faded toward the edges when it runs on past them.
       final fade = open
           ? (math.min(xm - box.left, box.right - xm) / (half * 0.7)).clamp(
               0.0,
@@ -134,8 +112,6 @@ class ArabesqueVinePainter extends CustomPainter {
         ..color = color;
       final leafFill = Paint()..color = color.withValues(alpha: color.a * 0.35);
 
-      // The stem: up over even half-waves, down over odd ones (s is the
-      // crest's side: -1 above the middle, 1 below).
       final s = i.isEven ? -1.0 : 1.0;
       final k = half * 0.36;
       final lift = amp * 1.33;
@@ -147,9 +123,6 @@ class ArabesqueVinePainter extends CustomPainter {
         ..moveTo(a.dx, a.dy)
         ..cubicTo(b.dx, b.dy, c.dx, c.dy, d.dx, d.dy);
 
-      // The tendril leaves the stem just past the crest and carries on
-      // forward, then curls back into the hollow under (or over) the
-      // crest, turning inward.
       final center = Offset(xm + half * 0.02, cy - s * amp * 0.3);
       const turns = 1.85 * math.pi;
       const steps = 48;
@@ -180,17 +153,14 @@ class ArabesqueVinePainter extends CustomPainter {
         tendril.lineTo(p.dx, p.dy);
       }
 
-      // A leaf at the spiral's heart, along its last turn.
       final end = spiral.last;
       final heart = _leaf(end, end - spiral[spiral.length - 6], r * 0.7);
 
-      // A bud where the stem crosses the middle, on the crest's side.
       final bud = _leaf(d, Offset(half * 0.18, s * amp), r * 0.55);
 
       canvas
         ..drawPath(stem, line)
         ..drawPath(tendril, line);
-      // The ends of a closed vine finish in a leaf along the stem.
       if (!open && i == 0) {
         final first = _leaf(a, a - b, tip * 1.1);
         canvas
@@ -214,7 +184,6 @@ class ArabesqueVinePainter extends CustomPainter {
     }
   }
 
-  /// A pointed leaf of [length] from [base] along [dir].
   static Path _leaf(Offset base, Offset dir, double length) {
     final u = dir.distance == 0 ? const Offset(1, 0) : dir / dir.distance;
     final n = Offset(-u.dy, u.dx);
@@ -252,9 +221,6 @@ class ArabesqueVinePainter extends CustomPainter {
       old.textDirection != textDirection;
 }
 
-/// A single curl of the vine: a tendril coiling in to a leaf. Marks the
-/// surah or station that's sounding; while [playing] (live state only) it
-/// turns slowly, and rests when paused.
 class QuranVoiceGlyph extends StatefulWidget {
   const QuranVoiceGlyph({
     super.key,

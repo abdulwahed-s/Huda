@@ -2,14 +2,6 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-/// The system screens' art: a fine rule between two lozenge terminals,
-/// broken a little before its middle, the far half sunk and tilted like a
-/// cracked inlay. It is the screen's own art, not a spinner: the lamp
-/// marks status.
-///
-/// [drawn] (0–1) draws both halves out from their terminals toward the
-/// break; [mended] (0–1) lifts the far half back into line and closes the
-/// gap with a bright stitch.
 class SystemMendLinePainter extends CustomPainter {
   const SystemMendLinePainter({
     required this.color,
@@ -23,7 +15,6 @@ class SystemMendLinePainter extends CustomPainter {
   final double drawn;
   final double mended;
 
-  /// Where a light runs along the mended rule (0–1), or below 0 for none.
   final double glint;
   final bool rtl;
 
@@ -65,7 +56,6 @@ class SystemMendLinePainter extends CustomPainter {
     }
 
     final d = drawn.clamp(0.0, 1.0);
-    // The near half, from its terminal toward the break.
     final nearEnd = breakAt - gap / 2;
     diamond(Offset(lozenge * 0.7, cy), lozenge * d);
     canvas.drawLine(
@@ -74,7 +64,6 @@ class SystemMendLinePainter extends CustomPainter {
       line,
     );
 
-    // The far half, sunk and turned about its terminal.
     canvas.save();
     final pivot = Offset(w - lozenge * 0.7, cy + sink);
     canvas
@@ -90,7 +79,6 @@ class SystemMendLinePainter extends CustomPainter {
     );
     canvas.restore();
 
-    // The stitch across the break, bright while it closes.
     if (mended > 0) {
       final s = Curves.easeOut.transform(mended);
       final glow = Paint()
@@ -127,10 +115,6 @@ class SystemMendLinePainter extends CustomPainter {
       old.rtl != rtl;
 }
 
-/// [SystemMendLinePainter] with its motion: the halves draw in once as the
-/// screen appears (700 ms); while [mending] (a retry runs) the break closes,
-/// a light runs along the whole rule, and the break opens again, until it
-/// stops. Reduce motion: drawn and broken, mended while [mending].
 class SystemMendLine extends StatefulWidget {
   const SystemMendLine({
     super.key,
@@ -208,7 +192,6 @@ class _SystemMendLineState extends State<SystemMendLine>
           child: AnimatedBuilder(
             animation: Listenable.merge([_draw, _mend]),
             builder: (context, _) {
-              // A cycle: close (0–0.4), the light runs (0.4–0.8), open.
               final t = _mend.value;
               final double mended;
               var glint = -1.0;

@@ -12,7 +12,6 @@ import 'package:huda/presentation/widgets/design/huda_states.dart';
 import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 import 'package:huda/presentation/widgets/quran_home/quran_identity.dart';
 
-/// A surah as the Quran screens show it, in the reader's language.
 @immutable
 class QuranSurahRef {
   const QuranSurahRef({
@@ -43,24 +42,17 @@ class QuranSurahRef {
     );
   }
 
-  /// Surah [number] from the bundled index (routes often pass only a
-  /// number and a name).
   factory QuranSurahRef.number(int number, String language) =>
       QuranSurahRef.of(index[(number - 1).clamp(0, 113)], language);
 
-  /// The 114 surahs, built once from the bundled data.
   static final List<QuranModel> index = SurahBuilder.buildQuranIndex();
 
   final int number;
 
-  /// The Arabic name ("الفاتحة").
   final String arabic;
 
-  /// The name in the reader's script: transliterated, or Arabic in Arabic
-  /// and Urdu.
   final String title;
 
-  /// What the name means, in the reader's language (none in Arabic).
   final String? translation;
   final int ayat;
   final bool meccan;
@@ -68,13 +60,10 @@ class QuranSurahRef {
 
   QuranModel get asModel => model ?? index[number - 1];
 
-  /// "Meccan · 7 verses".
   String meta(AppLocalizations l10n) =>
       '${meccan ? l10n.meccan : l10n.medinan} · ${l10n.verseCountLabel(ayat)}';
 }
 
-/// The surah's name as the Mushaf's headings write it: the surah-name
-/// font's ligature for "surahNNN". Decorative; the row says the name.
 class QuranSurahCalligraphy extends StatelessWidget {
   const QuranSurahCalligraphy({
     super.key,
@@ -103,9 +92,6 @@ class QuranSurahCalligraphy extends StatelessWidget {
   );
 }
 
-/// A surah in the index: its number in a rosette, its names, where it was
-/// revealed and how many verses, and its name in the heading's calligraphy
-/// at the end. Selected while it's the open surah.
 class QuranSurahTile extends StatelessWidget {
   const QuranSurahTile({
     super.key,
@@ -119,7 +105,6 @@ class QuranSurahTile extends StatelessWidget {
   final void Function(BuildContext tileContext) onTap;
   final bool selected;
 
-  /// A row in a side pane or sheet: no calligraphy, tighter.
   final bool dense;
 
   @override
@@ -226,7 +211,6 @@ class QuranSurahTile extends StatelessWidget {
   }
 }
 
-/// A surah tile while the index loads, in the tile's shape.
 class QuranSurahTileSkeleton extends StatelessWidget {
   const QuranSurahTileSkeleton({super.key, this.announce = false});
 
@@ -263,8 +247,6 @@ class QuranSurahTileSkeleton extends StatelessWidget {
   }
 }
 
-/// An ayah found by its words: where it is, then the ayah with the words
-/// that matched washed in gilt.
 class QuranAyahHitTile extends StatelessWidget {
   const QuranAyahHitTile({
     super.key,
@@ -280,16 +262,11 @@ class QuranAyahHitTile extends StatelessWidget {
   final String text;
   final void Function(BuildContext tileContext) onTap;
 
-  /// What was searched; its matches in [text] are highlighted.
   final String query;
 
-  /// Matches from this far in start the excerpt shortly before them, so
-  /// the four lines show the highlight.
   static const int _excerptAfter = 120;
   static const int _excerptLead = 50;
 
-  /// [text], or its excerpt from shortly before the first match when that
-  /// lies deep in a long ayah, with the matches' ranges in what's shown.
   ({String shown, List<(int, int)> marks}) _excerpt() {
     final ranges = TextUtils.normalizedMatchRanges(text, query);
     if (ranges.isEmpty) return (shown: text, marks: const []);
@@ -297,7 +274,6 @@ class QuranAyahHitTile extends StatelessWidget {
     var lead = '';
     final first = ranges.first.$1;
     if (first > _excerptAfter) {
-      // Back to a word start a little before the match.
       final space = text.lastIndexOf(' ', first - _excerptLead);
       if (space > 0) {
         from = space + 1;
@@ -371,8 +347,6 @@ class QuranAyahHitTile extends StatelessWidget {
   }
 }
 
-/// Where the reader stopped: the surah and ayah, opened again at that
-/// ayah with one tap. The surah's headpiece calligraphy sits at its end.
 class QuranContinueCard extends StatelessWidget {
   const QuranContinueCard({
     super.key,
@@ -408,7 +382,6 @@ class QuranContinueCard extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // A gilt rule at the start, like a marginal band.
                   DecoratedBox(
                     decoration: BoxDecoration(
                       color: scheme.tertiary,
@@ -444,7 +417,6 @@ class QuranContinueCard extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: space.sm),
-                  // Mirrors itself in right-to-left text.
                   Icon(Icons.arrow_forward_rounded, color: scheme.primary),
                 ],
               ),
@@ -456,9 +428,6 @@ class QuranContinueCard extends StatelessWidget {
   }
 }
 
-/// On a half-open book fold, keeps [child] (a search field, a card, a row
-/// of chips) to the leading half, so nothing crosses the band. Elsewhere it
-/// takes the full width. Assumes its column is centered in the window.
 class QuranLeadingHalf extends StatelessWidget {
   const QuranLeadingHalf({super.key, required this.child});
 
@@ -485,10 +454,6 @@ class QuranLeadingHalf extends StatelessWidget {
   }
 }
 
-/// Arabic with some words marked as a reader marks a copy: a rounded gilt
-/// wash behind each marked run, line by line, with a fine gilt rule along
-/// its foot. Painted from the paragraph's own line boxes, behind text set
-/// in one style, so the words join across a mark and keep their harakat.
 class QuranMarkedText extends StatelessWidget {
   const QuranMarkedText({
     super.key,
@@ -500,7 +465,6 @@ class QuranMarkedText extends StatelessWidget {
 
   final String text;
 
-  /// Ranges of [text] to mark (start inclusive, end exclusive).
   final List<(int, int)> marks;
   final TextStyle style;
   final int? maxLines;
@@ -518,8 +482,6 @@ class QuranMarkedText extends StatelessWidget {
     if (marks.isEmpty) return label;
     final scheme = Theme.of(context).colorScheme;
     final dark = Theme.of(context).brightness == Brightness.dark;
-    // Measured where it paints, at the width the text got: a LayoutBuilder
-    // here would break the hit card's IntrinsicHeight.
     return CustomPaint(
       painter: _MarkPainter(
         text: TextSpan(
@@ -566,7 +528,6 @@ class _MarkPainter extends CustomPainter {
   double? _width;
   List<Rect> _runs = const [];
 
-  /// Each mark's lines, as the [Text] above lays them out at [width].
   List<Rect> _runsAt(double width) {
     if (_width == width) return _runs;
     final painter = TextPainter(
@@ -585,7 +546,6 @@ class _MarkPainter extends CustomPainter {
         TextSelection(baseOffset: start, extentOffset: end),
         boxHeightStyle: ui.BoxHeightStyle.max,
       );
-      // One run per line: the boxes of a line joined.
       final lines = <double, Rect>{};
       for (final box in boxes) {
         final rect = box.toRect();
@@ -609,8 +569,6 @@ class _MarkPainter extends CustomPainter {
       ..strokeWidth = 1.5
       ..strokeCap = StrokeCap.round;
     for (final run in runs) {
-      // A little air either side; the line's leading trimmed so the
-      // marks of two lines don't touch.
       final h = run.height;
       final rect = Rect.fromLTRB(
         run.left - 4,

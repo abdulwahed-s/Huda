@@ -29,15 +29,11 @@ import 'package:huda/core/routes/app_route.dart';
 import 'package:huda/core/quran/quran.dart' as quran;
 
 class AyahBottomSheetModalTabbed extends StatefulWidget {
-  /// Share is an action, not a tab: the reader closes this sheet and
-  /// opens Quran's share sheet with the ayah's translation and tafsir.
   final void Function(String? translation, String? tafsir)? onShare;
 
-  /// Fetches the reciters again; [readersLoading] while it runs.
   final VoidCallback? onRetryReaders;
   final bool readersLoading;
 
-  /// The same for the tafsir and translation sources.
   final VoidCallback? onRetryTafsir;
   final bool tafsirLoading;
   final VoidCallback? onRetryTranslation;
@@ -198,7 +194,6 @@ class _AyahBottomSheetModalTabbedState
   bool _isKhatmaEnd = false;
   int _selectedTabIndex = 0;
 
-  /// Retry was tapped, so a reload reads "Retrying…", not "Updating…".
   bool _readersRetried = false;
   bool _tafsirRetried = false;
   bool _translationRetried = false;
@@ -325,9 +320,6 @@ class _AyahBottomSheetModalTabbedState
           ),
         ],
         SizedBox(height: space.md),
-        // Every action in one row that wraps: the sections, and Share last
-        // in the same chip (it opens the share sheet instead of a section;
-        // owner round 2).
         Wrap(
           spacing: space.xs,
           runSpacing: space.xs,
@@ -336,7 +328,6 @@ class _AyahBottomSheetModalTabbedState
               if (i != 4)
                 ChoiceChip(
                   key: ValueKey('quran-ayah-tab-$i'),
-                  // Lit when chosen: the mark takes the chip's warm text.
                   avatar: Icon(
                     icon,
                     size: 18,
@@ -373,7 +364,6 @@ class _AyahBottomSheetModalTabbedState
     );
   }
 
-  /// The ayah, its rosette at the end, as on the reading page.
   Widget _ayahText(BuildContext context) {
     var text = widget.ayah.text ?? '';
     if (widget.ayah.numberInSurah == 1 &&
@@ -410,7 +400,6 @@ class _AyahBottomSheetModalTabbedState
     );
   }
 
-  /// A part of a tab: a small label with its mark, then the content.
   Widget _section(IconData icon, String title, Widget child) {
     final space = context.tokens.space;
     final scheme = Theme.of(context).colorScheme;
@@ -647,7 +636,6 @@ class _AyahBottomSheetModalTabbedState
     );
   }
 
-  /// This ayah's text in a translation or tafsir edition, if loaded.
   String? _textOf(tafsir.TafsirModel? model) {
     final surahs = model?.data?.surahs;
     if (surahs == null) return null;
@@ -773,7 +761,6 @@ class _AyahBottomSheetModalTabbedState
     );
   }
 
-  /// The matched words in the primary ink, bold.
   Widget _buildHighlightedAyahText(String verse, List<dynamic> matchWords) {
     final scheme = Theme.of(context).colorScheme;
     final words = verse.split(' ');

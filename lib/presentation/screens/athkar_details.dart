@@ -23,11 +23,6 @@ import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:huda/presentation/widgets/design/huda_states.dart';
 import 'package:huda/presentation/widgets/design/huda_toast.dart';
 
-/// A chapter of athkar to read and count: each dhikr is said by tapping
-/// its card until its medallion fills, then it folds away. Standard tier
-/// (a reader). On wide windows an overview pane holds the chapter's
-/// progress and every dhikr beside the reader. See
-/// `design/features/athkar/brief.md`.
 class AthkarDetails extends StatefulWidget {
   const AthkarDetails({
     super.key,
@@ -38,18 +33,13 @@ class AthkarDetails extends StatefulWidget {
 
   final String athkarId;
 
-  /// The chapter's Arabic name.
   final String title;
 
-  /// The chapter's English name; may be empty.
   final String titleEn;
 
-  /// Creates the page's cubit. A seam for the redesign harness, which
-  /// can't reach the network.
   @visibleForTesting
   static AthkarDetailsCubit Function() createCubit = AthkarDetailsCubit.new;
 
-  /// The page with its cubit, as the route and the list's tiles open it.
   static Widget page({
     required String athkarId,
     required String title,
@@ -64,17 +54,14 @@ class AthkarDetails extends StatefulWidget {
 }
 
 class _AthkarDetailsState extends State<AthkarDetails> {
-  /// Repetitions left per dhikr, and how many each starts with.
   List<int>? _remaining;
   List<int>? _totals;
 
-  /// Done dhikr shown as their one-line row.
   final Set<int> _folded = {};
   final List<GlobalKey> _cardKeys = [];
   final _readerScroll = ScrollController();
   final _completionKey = GlobalKey();
 
-  /// The reader's half on tabletop, with its own messenger for toasts.
   final _bottomHalf = GlobalKey();
   late final AthkarAudio _audio;
 
@@ -123,7 +110,6 @@ class _AthkarDetailsState extends State<AthkarDetails> {
 
   void _prepare(List<AthkarDetailModel> details) {
     if (_remaining != null) return;
-    // A dhikr without a count is said once.
     _totals = [for (final d in details) math.max(1, d.repeat ?? 1)];
     _remaining = List.of(_totals!);
     _cardKeys
@@ -137,15 +123,11 @@ class _AthkarDetailsState extends State<AthkarDetails> {
     setState(() => remaining[index]--);
     if (remaining[index] == 0) {
       HudaHaptics.medium(context);
-      // Let the medallion fill, then fold the dhikr away.
       const motion = HudaMotion();
       final wait = motion.of(context, const Duration(milliseconds: 450));
       Timer(wait, () {
         if (!mounted || _remaining![index] != 0) return;
         setState(() => _folded.add(index));
-        // Once it has folded: scroll a little so the next dhikr shows
-        // (owner round 1), or, after the last one, bring the completion
-        // card into view (only as far as needed), where the sun rises.
         final next = _nextAfter(index);
         Timer(const HudaMotion().of(context, const HudaMotion().long), () {
           if (!mounted) return;
@@ -207,8 +189,6 @@ class _AthkarDetailsState extends State<AthkarDetails> {
     }
   }
 
-  /// The first dhikr still to say after [index]; only forward, so the
-  /// reader never jumps back to one skipped above.
   int? _nextAfter(int index) {
     final remaining = _remaining!;
     for (var i = index + 1; i < remaining.length; i++) {
@@ -217,8 +197,6 @@ class _AthkarDetailsState extends State<AthkarDetails> {
     return null;
   }
 
-  /// Scrolls the reader a little when the next dhikr's top isn't already
-  /// near the top of the view, so it shows after the one above folds.
   void _bringNext(GlobalKey key) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final target = key.currentContext;
@@ -240,7 +218,6 @@ class _AthkarDetailsState extends State<AthkarDetails> {
     });
   }
 
-  /// Where toasts show: the reader's half on tabletop, else the screen.
   BuildContext get _toastContext => _bottomHalf.currentContext ?? context;
 
   void _reveal(GlobalKey key, {bool atEnd = false}) {
@@ -269,8 +246,6 @@ class _AthkarDetailsState extends State<AthkarDetails> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final state = context.watch<AthkarDetailsCubit>().state;
-    // Tabletop: the chapter panel above the band, the dhikr to read and
-    // count below it (with its own messenger, so toasts show there).
     if (AthkarTabletop.applies(context) &&
         (state is AthkarDetailsLoaded || state is AthkarDetailsLoading)) {
       final details = state is AthkarDetailsLoaded
@@ -344,11 +319,6 @@ class _AthkarDetailsState extends State<AthkarDetails> {
     );
   }
 
-  /// How many columns of dhikr the reader shows (owner round 2: wide
-  /// windows show more dhikr, not margins). One on phones, short windows
-  /// and portrait tablets; two from 840 wide and on any vertical fold
-  /// (split at it); three from 1400. Large text needs the width of a
-  /// smaller window, so it falls back to fewer columns.
   int _columns(BuildContext context, double width) {
     if (context.windowClass.isCompactHeight) return 1;
     final scale = MediaQuery.textScalerOf(context).scale(1).clamp(1.0, 2.0);
@@ -359,7 +329,6 @@ class _AthkarDetailsState extends State<AthkarDetails> {
     return 1;
   }
 
-  /// Several columns stay together, centered, up to this width.
   static const double _maxColumnsWidth = 1600;
 
   Widget _centered(Widget child) => Center(
@@ -369,8 +338,6 @@ class _AthkarDetailsState extends State<AthkarDetails> {
     ),
   );
 
-  /// The chapter banner over the columns, as wide as they are; on a
-  /// half-open book fold it keeps to the leading half.
   Widget _banner(Widget child) => LayoutBuilder(
     builder: (context, constraints) {
       final fold = FoldInfo.of(context);
@@ -393,8 +360,6 @@ class _AthkarDetailsState extends State<AthkarDetails> {
     },
   );
 
-  /// Loading, in the shape the chapter will take: the banner over the
-  /// columns on wide windows, and enough cards to fill the screen.
   Widget _skeleton(BuildContext context) {
     final space = context.tokens.space;
     return LayoutBuilder(
@@ -432,7 +397,6 @@ class _AthkarDetailsState extends State<AthkarDetails> {
     );
   }
 
-  /// The cards alone, for tabletop's lower half.
   Widget _readerSkeleton(BuildContext context) {
     final space = context.tokens.space;
     return LayoutBuilder(
@@ -464,7 +428,6 @@ class _AthkarDetailsState extends State<AthkarDetails> {
   Widget _header(List<AthkarDetailModel> details) => AthkarChapterHeader(
     title: widget.title,
     titleEn: widget.titleEn,
-    // Short windows: one title line and the progress beside its count.
     compact: context.windowClass.isCompactHeight,
     done: _remaining!.where((r) => r <= 0).length,
     total: details.length,
@@ -482,7 +445,6 @@ class _AthkarDetailsState extends State<AthkarDetails> {
     );
   }
 
-  /// The chapter panel's pane (tabletop's top half).
   Widget _panelPane(BuildContext context, Widget panel) {
     final space = context.tokens.space;
     return ListView(
@@ -494,10 +456,6 @@ class _AthkarDetailsState extends State<AthkarDetails> {
     );
   }
 
-  /// The dhikr cards and, after the last one, the completion card. One
-  /// column at the reading measure with the header above it, or
-  /// [columns] columns under the chapter banner. Tabletop's lower half has
-  /// no [header] (the panel is above the band).
   Widget _reader(
     BuildContext context,
     List<AthkarDetailModel> details, {
@@ -529,8 +487,6 @@ class _AthkarDetailsState extends State<AthkarDetails> {
               onCount: () => _count(i),
               onUnfold: () => setState(() => _folded.remove(i)),
               onReset: () => _reset(i),
-              // The screen's context: the sheet needs the fold to keep to
-              // its side of a half-open one (the tabletop halves hide it).
               onShare: () => shareAthkar(
                 this.context,
                 dhikr: details[i],
@@ -546,8 +502,6 @@ class _AthkarDetailsState extends State<AthkarDetails> {
           ),
         ),
     ];
-    // Continue: the completion card opens below the last dhikr once it
-    // folds away.
     final completion = HudaStateSwitcher(
       stateKey: allDone,
       alignment: Alignment.topCenter,

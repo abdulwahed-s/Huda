@@ -11,8 +11,6 @@ import 'package:huda/presentation/widgets/design/huda_surfaces.dart';
 import 'package:huda/presentation/widgets/design/huda_toast.dart';
 import 'package:huda/presentation/widgets/zakat_calculator/zakat_identity.dart';
 
-/// The amount fields' controllers, kept by the screen so input survives
-/// folding, rotating and resizing between layouts.
 class ZakatFields {
   ZakatFields() {
     for (final category in AssetCategory.values) {
@@ -24,9 +22,6 @@ class ZakatFields {
   final TextEditingController goldPrice = TextEditingController();
   final TextEditingController silverPrice = TextEditingController();
 
-  /// Fills empty amount fields from the cubit (the first build, an Undo),
-  /// and keeps the price fields on the cubit's prices (a market update, a
-  /// currency change, "Use market price") without touching what's typed.
   void fill(ZakatCalculatorLoaded state) {
     for (final category in AssetCategory.values) {
       final controller = amounts[category]!;
@@ -41,7 +36,6 @@ class ZakatFields {
 
   static void _sync(TextEditingController controller, double price) {
     final shown = ZakatAmounts.field(price);
-    // Compared as shown (two decimals), so typing "124.6" isn't rewritten.
     if (ZakatAmounts.field(_parse(controller.text)) != shown) {
       controller.text = shown;
     }
@@ -62,12 +56,8 @@ class ZakatFields {
   }
 }
 
-/// Accepts the decimal comma many keypads show (de, fr, tr, ru, es).
 double _parse(String text) => double.tryParse(text.replaceAll(',', '.')) ?? 0;
 
-/// The ledger to fill in: what you own, what you owe, and the nisab it's
-/// weighed against (basis, the metal's price, the currency). One column of
-/// sections; each line puts its field beside the label where there's room.
 class ZakatLedger extends StatelessWidget {
   const ZakatLedger({
     super.key,
@@ -80,12 +70,8 @@ class ZakatLedger extends StatelessWidget {
   final ZakatCalculatorLoaded state;
   final ZakatFields fields;
 
-  /// Opens the currency picker: the screen's context, which sees the fold
-  /// (panes and tabletop halves hide it), so the sheet keeps off a
-  /// half-open one.
   final BuildContext overlayContext;
 
-  /// The reveal index of the first section.
   final int revealFrom;
 
   @override
@@ -166,8 +152,6 @@ class ZakatLedger extends StatelessWidget {
                   ],
                 ),
               ),
-              // Only the price the nisab is weighed with; the other metal's
-              // comes back with its basis.
               HudaStateSwitcher(
                 stateKey: basis,
                 sequential: true,
@@ -183,8 +167,6 @@ class ZakatLedger extends StatelessWidget {
                   onChanged: (text) => gold
                       ? cubit.updateGoldPrice(_parse(text))
                       : cubit.updateSilverPrice(_parse(text)),
-                  // A typed price, and the way back to the market's. (The
-                  // market's source and status live on the result card.)
                   footer: state.nisabPriceIsManual
                       ? Wrap(
                           crossAxisAlignment: WrapCrossAlignment.center,
@@ -220,8 +202,6 @@ class ZakatLedger extends StatelessWidget {
   }
 }
 
-/// One ledger line: a mark, the label and what it covers, and an amount
-/// field (beside the label where there's room, under it otherwise).
 class ZakatAmountLine extends StatelessWidget {
   const ZakatAmountLine({
     super.key,
@@ -241,7 +221,6 @@ class ZakatAmountLine extends StatelessWidget {
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
 
-  /// Under the description (a price's source).
   final Widget? footer;
 
   @override
@@ -294,9 +273,7 @@ class ZakatAmountLine extends StatelessWidget {
         ),
         decoration: InputDecoration(
           isDense: true,
-          // Latin figures like every amount ("0.00" in every language).
           hintText: ZakatAmounts.digits(0),
-          // A placeholder, plainly not an entered amount.
           hintStyle: theme.textTheme.titleMedium?.copyWith(
             fontWeight: FontWeight.w400,
             color: scheme.onSurfaceVariant.withValues(alpha: 0.55),
@@ -351,7 +328,6 @@ class ZakatAmountLine extends StatelessWidget {
               label,
               SizedBox(height: space.sm),
               Padding(
-                // Under the text, not the mark.
                 padding: EdgeInsetsDirectional.only(start: 38 + space.md),
                 child: field,
               ),
@@ -363,8 +339,6 @@ class ZakatAmountLine extends StatelessWidget {
   }
 }
 
-/// Currencies whose world rate can be far from local gold prices: check
-/// yours.
 class _LocalPriceNote extends StatelessWidget {
   const _LocalPriceNote({required this.currency});
 
@@ -403,8 +377,6 @@ class _LocalPriceNote extends StatelessWidget {
   }
 }
 
-/// The currency of the amounts and the market prices. The whole line opens
-/// the picker in the shared sheet, which keeps clear of a half-open fold.
 class _CurrencyLine extends StatelessWidget {
   const _CurrencyLine({required this.state, required this.overlayContext});
 
@@ -430,8 +402,6 @@ class _CurrencyLine extends StatelessWidget {
             cubit.changeCurrency(code);
           }
           Navigator.of(sheet).pop();
-          // Nothing disappears silently: a typed price was in the old
-          // currency, so the market's replaces it.
           if (typed && code != state.selectedCurrency) {
             showHudaToast(
               overlayContext,
@@ -500,10 +470,6 @@ class _CurrencyLine extends StatelessWidget {
   }
 }
 
-/// The currency picker: a search over every currency (by code or by name
-/// in the app's language), the suggested ones first (the current one, the
-/// device region's, the app language's usual ones), then all the rest by
-/// name.
 class ZakatCurrencyPicker extends StatefulWidget {
   const ZakatCurrencyPicker({
     super.key,
@@ -549,7 +515,6 @@ class _ZakatCurrencyPickerState extends State<ZakatCurrencyPicker> {
     final tokens = context.tokens;
     final space = tokens.space;
     final searching = _query.trim().isNotEmpty;
-    // Suggestions while browsing; one list, all of it, while searching.
     final suggested = searching
         ? const <String>[]
         : ZakatCurrencies.suggested(
@@ -585,7 +550,6 @@ class _ZakatCurrencyPickerState extends State<ZakatCurrencyPicker> {
                 ),
                 child: Row(
                   children: [
-                    // The code sizes to its text and never breaks.
                     ConstrainedBox(
                       constraints: const BoxConstraints(minWidth: 48),
                       child: Text(
@@ -620,8 +584,6 @@ class _ZakatCurrencyPickerState extends State<ZakatCurrencyPicker> {
       borderRadius: tokens.radius.control,
       borderSide: BorderSide(color: scheme.outlineVariant),
     );
-    // A steady height: the search stays put above the list while it
-    // filters, and the list scrolls under it.
     final height = (MediaQuery.sizeOf(context).height * 0.55).clamp(
       200.0,
       460.0,

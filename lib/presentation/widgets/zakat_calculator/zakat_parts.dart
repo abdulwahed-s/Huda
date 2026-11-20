@@ -11,8 +11,6 @@ import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 import 'package:huda/presentation/widgets/zakat_calculator/zakat_identity.dart';
 import 'package:huda/presentation/widgets/zakat_calculator/zakat_result.dart';
 
-/// "About Zakat": what zakat is and how the nisab works, with the mizan at
-/// rest above it.
 Future<void> showZakatAbout(BuildContext context) {
   final l10n = AppLocalizations.of(context)!;
   return showHudaSheet<void>(
@@ -44,8 +42,6 @@ Future<void> showZakatAbout(BuildContext context) {
   );
 }
 
-/// Loading, in the shape of what's coming: the result card, then a ledger
-/// section of lines.
 class ZakatSkeleton extends StatelessWidget {
   const ZakatSkeleton({
     super.key,
@@ -54,11 +50,9 @@ class ZakatSkeleton extends StatelessWidget {
     this.totals = true,
   });
 
-  /// Two panes show each part in its own pane.
   final bool result;
   final bool ledger;
 
-  /// The totals card under the result (not in tabletop's top half).
   final bool totals;
 
   @override
@@ -77,7 +71,6 @@ class ZakatSkeleton extends StatelessWidget {
       ),
     );
     return HudaSkeleton(
-      // Read "Loading" once when both panes show a part.
       announce: ledger,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -102,9 +95,6 @@ class ZakatSkeleton extends StatelessWidget {
   }
 }
 
-/// Phones: the result, pinned to the bottom edge while the result card is
-/// scrolled away (and above the keyboard while typing), so every amount
-/// shows its effect. Tapping it scrolls back to the card.
 class ZakatResultStrip extends StatelessWidget {
   const ZakatResultStrip({
     super.key,
@@ -147,8 +137,6 @@ class ZakatResultStrip extends StatelessWidget {
               button: true,
               label: '${l10n.zakatShowResult}. $status',
               child: Padding(
-                // The background reaches the edge; the content rests above
-                // the navigation bar and clear of the side insets.
                 padding: EdgeInsets.fromLTRB(
                   space.md + insets.left,
                   space.sm,
@@ -212,14 +200,11 @@ class ZakatResultStrip extends StatelessWidget {
   }
 }
 
-/// Where the nisab's metal price comes from: updating (with the lamp
-/// spinner), the market's and its day, or the person's own.
 class ZakatPriceSource extends StatelessWidget {
   const ZakatPriceSource({super.key, required this.state, this.prefix});
 
   final ZakatCalculatorLoaded state;
 
-  /// Leads the line ("Gold · USD 124.62 per gram").
   final String? prefix;
 
   @override
@@ -229,7 +214,6 @@ class ZakatPriceSource extends StatelessWidget {
     final scheme = theme.colorScheme;
     final tokens = context.tokens;
     final date = state.priceDate;
-    // Only the automatic update: a retry has the banner's "Retrying…".
     final working =
         !state.nisabPriceIsManual &&
         state.priceStatus == ZakatPriceStatus.updating;
@@ -265,9 +249,6 @@ class ZakatPriceSource extends StatelessWidget {
   }
 }
 
-/// The market prices couldn't be updated (with Retry), or are being
-/// retried after a tap. Nothing while they're current or updating on
-/// their own (the price line says so).
 class ZakatPriceBanner extends StatelessWidget {
   const ZakatPriceBanner({
     super.key,
@@ -279,7 +260,6 @@ class ZakatPriceBanner extends StatelessWidget {
   final ZakatCalculatorLoaded state;
   final VoidCallback onRetry;
 
-  /// Under the result card (short windows, so the amount stays in view).
   final bool below;
 
   @override
@@ -312,8 +292,6 @@ class ZakatPriceBanner extends StatelessWidget {
               ),
             ),
     );
-    // Reveal: the page eases aside for the banner instead of jumping
-    // (instant under reduce motion, where a zero AnimatedSize throws).
     if (duration == Duration.zero) return switcher;
     return AnimatedSize(
       duration: duration,
@@ -324,7 +302,6 @@ class ZakatPriceBanner extends StatelessWidget {
   }
 }
 
-/// The day market prices are from, kept on one line ("Fri, Oct 30").
 String zakatPriceDay(BuildContext context, DateTime date) =>
     MaterialLocalizations.of(
       context,

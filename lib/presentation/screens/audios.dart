@@ -26,11 +26,6 @@ import 'package:huda/presentation/widgets/design/huda_app_bars.dart';
 import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:huda/presentation/widgets/design/huda_states.dart';
 
-/// The audio library: the catalogue's recordings as woven swatches, a
-/// page at a time, in one language or all; the last recording to
-/// continue; the bar of what's playing pinned under it. Landing tier; the
-/// header carries the hanging ribbons. See
-/// `design/features/audiobooks/brief.md`.
 class AudiosScreen extends StatefulWidget {
   const AudiosScreen({super.key});
 
@@ -44,8 +39,6 @@ class _AudiosScreenState extends State<AudiosScreen> {
   String? _language;
   final _top = GlobalKey();
 
-  /// After a tap on Retry, until the cubit answers: the failure stays on
-  /// screen with "Retrying…" instead of turning into a skeleton.
   bool _retrying = false;
   AudiosState? _failure;
 
@@ -110,7 +103,6 @@ class _AudiosScreenState extends State<AudiosScreen> {
       child: HudaRevealScope(
         child: BlocConsumer<AudiosCubit, AudiosState>(
           listener: (context, state) {
-            // A language with no recordings: show every language instead.
             if (state is AudiosLoaded &&
                 state.audiosResponse.data.isEmpty &&
                 _language != null) {
@@ -127,7 +119,6 @@ class _AudiosScreenState extends State<AudiosScreen> {
             final shown = _retrying && _isLoading(state) && failure != null
                 ? failure
                 : state;
-            // The ribbons are let down as the shelf opens.
             return HudaDrawIn(
               duration: const Duration(milliseconds: 1000),
               curve: Curves.linear,
@@ -177,8 +168,6 @@ class _AudiosScreenState extends State<AudiosScreen> {
   Widget _body(BuildContext context, AudiosState state) {
     final l10n = AppLocalizations.of(context)!;
     final space = context.tokens.space;
-    // A full-page state fills the room left, clear of the bottom inset
-    // (the page's end padding comes after it, off screen).
     Widget fill(Widget child) => SliverFillRemaining(
       hasScrollBody: true,
       child: Padding(
@@ -274,7 +263,6 @@ class _AudiosScreenState extends State<AudiosScreen> {
         _open(card, id: audio.id, language: audio.language, title: audio.title),
   );
 
-  /// The author, or whoever prepared the recording first.
   static String? _author(List<(String, String?)> people) {
     for (final (type, name) in people) {
       if (type == 'author' && (name ?? '').isNotEmpty) return name;
@@ -299,8 +287,6 @@ class _AudiosScreenState extends State<AudiosScreen> {
   }
 }
 
-/// The library's content column: the gutters and side insets, capped and
-/// centered, ending above the bottom inset.
 class _Page extends StatelessWidget {
   const _Page({required this.children});
 
@@ -329,7 +315,6 @@ class _Page extends StatelessWidget {
   }
 }
 
-/// The recording to continue, when there is one, and the language chip.
 class _Top extends StatelessWidget {
   const _Top({
     required this.state,
@@ -341,8 +326,6 @@ class _Top extends StatelessWidget {
   final String? language;
   final ValueChanged<String?> onLanguage;
 
-  /// The content's full width, but on one side of a half-open vertical
-  /// fold (owner round 1: it was capped at 640).
   static double _cardWidth(BuildContext context) {
     final fold = FoldInfo.of(context);
     if (!fold.avoided || !fold.splitsHorizontally) return double.infinity;
@@ -364,8 +347,6 @@ class _Top extends StatelessWidget {
         state is AudiosOfflineEmpty ||
         state is AudiosOffline;
     final lastPlayed = getIt<AudioProgressService>().getLastPlayed();
-    // Only beside the recordings: a failure or the skeleton keeps the top
-    // for its own message.
     final showContinue =
         lastPlayed != null && lastPlayed.title != null && state is AudiosLoaded;
     return Padding(
@@ -414,8 +395,6 @@ class _Top extends StatelessWidget {
   }
 }
 
-/// The swatches in a grid that reflows: two a row on phones, up to eight
-/// on wide windows, even with a fold.
 class _Tiles extends StatelessWidget {
   const _Tiles({required this.count, required this.tile, this.reveal = true});
 

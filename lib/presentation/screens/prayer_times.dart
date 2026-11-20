@@ -51,7 +51,6 @@ class PrayerTimes extends StatefulWidget {
 
   final bool openSettingsOnLoad;
 
-  /// Notification access without the platform, for the device matrix.
   @visibleForTesting
   final NotificationAccessController Function(
     NotificationsCubit cubit,
@@ -59,7 +58,6 @@ class PrayerTimes extends StatefulWidget {
   )?
   debugAccess;
 
-  /// A fixed "now" for the device matrix, so shots show a normal day.
   @visibleForTesting
   final DateTime Function()? debugClock;
 
@@ -75,7 +73,6 @@ class _PrayerTimesState extends State<PrayerTimes> with WidgetsBindingObserver {
 
   bool _setupShown = false;
 
-  /// The user's own answer to "Where are you?" is running.
   bool _locating = false;
   bool _choosing = false;
 
@@ -135,8 +132,6 @@ class _PrayerTimesState extends State<PrayerTimes> with WidgetsBindingObserver {
     }
   }
 
-  /// Back from Settings with location allowed: the times load by
-  /// themselves (the user already chose "Use my location").
   Future<void> _retryLocationIfAccessRestored() async {
     if (!await canLocateWithoutAsking() || !mounted) return;
     await _useLocation();
@@ -165,13 +160,10 @@ class _PrayerTimesState extends State<PrayerTimes> with WidgetsBindingObserver {
       unawaited(_prayerTimesCubit.refreshNotificationSchedule());
       return;
     }
-    // A problem the user has seen stays until they act; nothing asks again.
     if (state is PrayerTimesLoading ||
         (state is PrayerTimesNeedsPlace && state.problem != null)) {
       return;
     }
-    // Times first: with location already allowed this finds the place by
-    // itself; otherwise it waits for "Where are you?" (no prompt).
     await _prayerTimesCubit.loadPrayerTimes();
   }
 
@@ -301,9 +293,6 @@ class _PrayerLoadedViewState extends State<_PrayerLoadedView> {
       countdown,
     ) {
       if (!mounted) return;
-      // The countdown ticks by itself (`PrayerCountdown`); the page only
-      // changes when the prayer does, or with the minute (the sun, the
-      // rows, "started N min ago").
       final now = widget.clock();
       final previous = _countdown;
       final changed =
@@ -334,7 +323,6 @@ class _PrayerLoadedViewState extends State<_PrayerLoadedView> {
     nextPrayer: _countdown?.prayer?.name,
   );
 
-  // The page's moment, for every sky on it (the hero, a problem's lamp).
   @override
   Widget build(BuildContext context) {
     final zone = widget.cubit.prayerTimeZoneId;
@@ -369,7 +357,6 @@ class _PrayerLoadedViewState extends State<_PrayerLoadedView> {
       formatDate: (value) =>
           materialL10n.formatMediumDate(value.isUtc ? value.toLocal() : value),
       onEnableNotifications: () => access.requestNotifications(context),
-      // The ready card asks for it, with the explanation; don't repeat it.
       notificationsAskedElsewhere: PrayerAlertsReadyCard.showing(
         cubit.cacheHelper,
         buildPrayerReadinessItems(
@@ -385,8 +372,6 @@ class _PrayerLoadedViewState extends State<_PrayerLoadedView> {
     final canShare = !state.provisional && cubit.verifiedExportSnapshot != null;
     final space = context.tokens.space;
 
-    // Errors lead the page; information (verification, the widget, the
-    // country question) waits under the sky, so the times come first.
     final errorFirst = items.any(
       (item) => item.tone == PrayerAttentionTone.error,
     );
@@ -426,8 +411,6 @@ class _PrayerLoadedViewState extends State<_PrayerLoadedView> {
       status: alertStatus,
       onOpen: ([prayer]) => _openAlerts(prayer),
     );
-    // How the times are calculated: a card like the alerts' (owner round
-    // 2), not an app bar icon.
     final settings = PrayerTimeSettingsCard(
       cubit: cubit,
       onOpen: () => showPrayerTimeAdjustmentSheet(context),
@@ -500,7 +483,6 @@ class _PrayerLoadedViewState extends State<_PrayerLoadedView> {
     final width = MediaQuery.sizeOf(context).width;
     final fold = FoldInfo.of(context);
 
-    // Tabletop: the sky above the band, everything else below it.
     if (TabletopSplit.applies(context)) {
       return TabletopSplit(
         top: Padding(
@@ -511,7 +493,6 @@ class _PrayerLoadedViewState extends State<_PrayerLoadedView> {
       );
     }
 
-    // Wide: the day beside the alerts and options.
     if (AdaptivePanes.showsTwoPanes(width, fold)) {
       return AdaptivePanes(
         primaryFraction: 0.62,
@@ -522,7 +503,6 @@ class _PrayerLoadedViewState extends State<_PrayerLoadedView> {
       );
     }
 
-    // Medium: one column for the day, then two for the rest.
     if (width >= 600) {
       return scroll(
         Column(
@@ -544,7 +524,6 @@ class _PrayerLoadedViewState extends State<_PrayerLoadedView> {
       );
     }
 
-    // Phones: how the times are calculated right under them.
     return scroll(
       column([...day, times, settings, ready, alerts, ...more]),
     );
@@ -561,8 +540,6 @@ class _Chevron extends StatelessWidget {
   );
 }
 
-/// Setup: an empty sky (no times yet) over the steps; side by side on wide
-/// windows.
 class _PrayerSetupView extends StatelessWidget {
   const _PrayerSetupView({required this.step, required this.cityOnly});
 
@@ -578,7 +555,6 @@ class _PrayerSetupView extends StatelessWidget {
       EdgeInsets.fromLTRB(gutter, space.xs, gutter, space.xxl),
     );
 
-    // Tabletop: the empty sky above the band, the steps below it.
     if (TabletopSplit.applies(context)) {
       return TabletopSplit(
         top: Padding(
@@ -597,10 +573,6 @@ class _PrayerSetupView extends StatelessWidget {
       );
     }
 
-    // Wide: one composition, the sky beside the steps, centered and
-    // capped, so a large window isn't two small islands.
-    // A vertical fold: the sky on one side, the steps on the other, split
-    // at the fold (nothing on a half-open band).
     final fold = FoldInfo.of(context);
     if (fold.splitsHorizontally && AdaptivePanes.showsTwoPanes(width, fold)) {
       return AdaptivePanes(
@@ -627,7 +599,6 @@ class _PrayerSetupView extends StatelessWidget {
         builder: (context, viewport) => SingleChildScrollView(
           padding: padding,
           child: ConstrainedBox(
-            // Centered in the window when it fits, scrolling when not.
             constraints: BoxConstraints(
               minHeight: math.max(0, viewport.maxHeight - padding.vertical),
             ),
@@ -675,7 +646,6 @@ class _PrayerSetupView extends StatelessWidget {
 
 Future<void> _noAction() async {}
 
-/// Only used to ask whether a readiness step is showing.
 const _noReadinessActions = PrayerReadinessActions(
   requestNotifications: _noAction,
   openNotificationSettings: _noAction,

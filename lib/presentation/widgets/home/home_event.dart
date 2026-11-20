@@ -12,16 +12,9 @@ import 'package:huda/presentation/widgets/design/huda_sheet.dart';
 import 'package:huda/presentation/widgets/home/home_actions.dart';
 import 'package:huda/presentation/widgets/home/home_event_scene.dart';
 
-/// The day's special event on Home, in every style: a banner painted with
-/// the event's own scene (`HomeEventScenePainter`), its name and line in
-/// the app's language. The whole banner opens the event's sheet; there's
-/// no button on it. The scene comes in once per event (its light, then its
-/// lamps). Its words keep to the start, clear of a fold. Nothing when
-/// there's no event.
 class HomeEventCard extends StatelessWidget {
   const HomeEventCard({super.key, this.padding = EdgeInsets.zero});
 
-  /// Around the banner when there is one (none when there isn't).
   final EdgeInsetsGeometry padding;
 
   @override
@@ -51,8 +44,6 @@ class HomeEventCard extends StatelessWidget {
   }
 }
 
-/// Plays an event's scene in once per event while the app runs; later
-/// builds show it settled. Settled under reduce motion.
 class HomeEventReveal extends StatefulWidget {
   const HomeEventReveal({
     super.key,
@@ -101,7 +92,6 @@ class _HomeEventRevealState extends State<HomeEventReveal>
   Widget build(BuildContext context) => widget.builder(context, _controller);
 }
 
-/// An event's scene, played in once ([HomeEventReveal]).
 class HomeEventScene extends StatelessWidget {
   const HomeEventScene({
     super.key,
@@ -113,7 +103,6 @@ class HomeEventScene extends StatelessWidget {
   final String eventKey;
   final HomeEventStage stage;
 
-  /// Which reveal this is (each plays once per event).
   final String? revealKey;
 
   @override
@@ -137,13 +126,6 @@ class HomeEventScene extends StatelessWidget {
   }
 }
 
-/// The event's banner. See [HomeEventCard].
-///
-/// The scene's picture sits in a stage at the end (two fifths of the
-/// banner, up to 180 on compact banners and 300 on wide ones); the words
-/// take the rest at the start, over a soft shade. A thin gilt frame runs
-/// inside the edge. At large text, or when the banner is very narrow, the
-/// scene becomes a band above the words.
 class HomeEventBanner extends StatelessWidget {
   const HomeEventBanner({super.key, required this.event});
 
@@ -164,7 +146,6 @@ class HomeEventBanner extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final width = constraints.maxWidth;
-        // Short windows (phones on their side) get a shorter banner.
         final short = media.size.height < 480;
         final wide = width >= 600 && !short;
         final pad = wide ? space.xl : space.lg;
@@ -184,7 +165,6 @@ class HomeEventBanner extends StatelessWidget {
                         ?.copyWith(color: tokens.onChrome, height: 1.15),
               ),
               SizedBox(height: space.xs),
-              // A short gilt rule between the name and its line.
               Container(
                 width: 28,
                 height: 1.5,
@@ -218,7 +198,6 @@ class HomeEventBanner extends StatelessWidget {
                       eventKey: event.eventKey,
                       stage: HomeEventStage.center,
                     ),
-                    // The sky melts into the chrome under it.
                     DecoratedBox(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
@@ -243,9 +222,6 @@ class HomeEventBanner extends StatelessWidget {
           );
         } else {
           final stage = HomeEventScenePainter.endStageWidth(width);
-          // The words take the start up to the stage, and never cross a
-          // fold the banner spans (it's centered in the window, as Home's
-          // content is).
           var room = width - stage - pad - space.xs;
           final fold = FoldInfo.of(context);
           if (fold.splitsHorizontally) {
@@ -265,7 +241,6 @@ class HomeEventBanner extends StatelessWidget {
                 Positioned.fill(
                   child: HomeEventScene(eventKey: event.eventKey),
                 ),
-                // A shade behind the words, clear over the stage.
                 Positioned.fill(
                   child: DecoratedBox(
                     decoration: BoxDecoration(
@@ -313,7 +288,6 @@ class HomeEventBanner extends StatelessWidget {
                 child: Stack(
                   children: [
                     body,
-                    // The thin gilt frame inside the edge.
                     Positioned.fill(
                       child: IgnorePointer(
                         child: Padding(
@@ -344,9 +318,6 @@ class HomeEventBanner extends StatelessWidget {
 
 final _openSheets = <NavigatorState, bool>{};
 
-/// The event's sheet: its scene, the greeting and line, the verse or
-/// hadith it comes from between two gilt rules with its translation and
-/// source, and what to do on the day.
 Future<void> showHomeEventSheet(
   BuildContext context,
   IslamicEventConfig event,
@@ -462,7 +433,6 @@ class HomeEventSheetBody extends StatelessWidget {
   }
 }
 
-/// An event's name, by its key.
 String homeEventTitle(AppLocalizations l10n, String eventKey) =>
     switch (eventKey) {
       'ramadan' => l10n.eventRamadan,
@@ -480,7 +450,6 @@ String homeEventTitle(AppLocalizations l10n, String eventKey) =>
       _ => l10n.eventSpecialOccasion,
     };
 
-/// An event's line, by its key.
 String homeEventSubtitle(AppLocalizations l10n, String eventKey) =>
     switch (eventKey) {
       'ramadan' => l10n.eventRamadanSubtitle,
@@ -498,8 +467,6 @@ String homeEventSubtitle(AppLocalizations l10n, String eventKey) =>
       _ => l10n.eventSpecialOccasionSubtitle,
     };
 
-/// What an event's sheet says: the verse or hadith, its translation and
-/// source, and what to do on the day.
 class HomeEventContent {
   const HomeEventContent({
     required this.arabicText,

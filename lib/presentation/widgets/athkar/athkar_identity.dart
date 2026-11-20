@@ -8,14 +8,10 @@ import 'package:huda/presentation/widgets/design/feature_identity.dart';
 import 'package:huda/presentation/widgets/design/huda_motion.dart';
 import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 
-/// Petals of the rosette sun and of the repetition medallion.
 const int athkarPetals = 8;
 
-/// How high the sun stands at rest: half risen on the horizon.
 const double athkarSunAtRest = 0.5;
 
-/// Athkar's voice (see `design/IDENTITIES.md`): an 8-petal rosette sun
-/// rising on a horizon, framed by a pointed horizon arch. Light and sky.
 final FeatureIdentity athkarIdentity = FeatureIdentity(
   id: 'athkar',
   motif: 'An 8-petal rosette sun rising on a horizon, in a horizon arch',
@@ -25,9 +21,6 @@ final FeatureIdentity athkarIdentity = FeatureIdentity(
   headerArt: (style) => AthkarHorizonPainter(style: style),
 );
 
-/// The horizon arch with the rosette sun: [rise] 0 is set below the
-/// horizon, 0.5 half risen (at rest), 1 fully risen. Animate it by passing
-/// the same value as a [repaint] listenable through [riseOf].
 class AthkarHorizonPainter extends CustomPainter {
   AthkarHorizonPainter({
     required this.style,
@@ -39,10 +32,8 @@ class AthkarHorizonPainter extends CustomPainter {
   final OrnamentStyle style;
   final double rise;
 
-  /// Drives [rise] when set (the signature motion).
   final ValueListenable<double>? riseOf;
 
-  /// Draws the arch around the sun; off for small marks.
   final bool arch;
 
   @override
@@ -53,7 +44,6 @@ class AthkarHorizonPainter extends CustomPainter {
     final rise = riseOf?.value ?? this.rise;
     final s = style.stroke;
 
-    // The arch: two outlines, the jambs running off the bottom.
     var inner = Rect.fromLTRB(s, s, w - s, h + 1);
     if (arch) {
       final archWidth = math.min(w, h * 1.1);
@@ -69,7 +59,6 @@ class AthkarHorizonPainter extends CustomPainter {
       style.draw(canvas, OrnamentGeometry.pointedArch(inner), closed: false);
     }
 
-    // The horizon, across the arch.
     final horizon = arch ? inner.top + inner.height * 0.62 : h * 0.62;
     final reach = arch ? inner.width / 2 : w * 0.46;
     final cx = w / 2;
@@ -78,7 +67,6 @@ class AthkarHorizonPainter extends CustomPainter {
       ..lineTo(cx + reach, horizon);
     style.draw(canvas, line, closed: false);
 
-    // Quiet ground under the horizon, so the arch below it isn't blank.
     if (arch) {
       final ground = style.copyWith(
         color: style.color.withValues(alpha: style.color.a * 0.45),
@@ -96,7 +84,6 @@ class AthkarHorizonPainter extends CustomPainter {
       }
     }
 
-    // The sun, clipped by the horizon.
     final r = math.min(reach * 0.62, horizon * (arch ? 0.42 : 0.6));
     if (r <= 2) return;
     final center = Offset(cx, horizon + r * (1 - 2 * rise.clamp(0.0, 1.0)));
@@ -115,7 +102,6 @@ class AthkarHorizonPainter extends CustomPainter {
       old.arch != arch;
 }
 
-/// The rosette sun: a double disc, 8 petals, a center and 16 short rays.
 void paintAthkarSun(Canvas canvas, OrnamentStyle style, Offset c, double r) {
   const turn = -math.pi / 2;
   style.draw(canvas, Path()..addOval(Rect.fromCircle(center: c, radius: r)));
@@ -137,7 +123,6 @@ void paintAthkarSun(Canvas canvas, OrnamentStyle style, Offset c, double r) {
     canvas,
     Path()..addOval(Rect.fromCircle(center: c, radius: r * 0.14)),
   );
-  // Short rays between the petals' tips, outside the disc.
   final rays = Path();
   for (var i = 0; i < athkarPetals * 2; i++) {
     final a = turn + i * math.pi / athkarPetals;
@@ -150,7 +135,6 @@ void paintAthkarSun(Canvas canvas, OrnamentStyle style, Offset c, double r) {
   style.draw(canvas, rays, closed: false);
 }
 
-/// The rosette sun alone, filling its box with its rays.
 class AthkarSunPainter extends CustomPainter {
   const AthkarSunPainter({required this.style});
 
@@ -167,8 +151,6 @@ class AthkarSunPainter extends CustomPainter {
   bool shouldRepaint(AthkarSunPainter old) => old.style != style;
 }
 
-/// A sun that rises from below the horizon to [to] once, when it's first
-/// shown: the signature motion. Under reduce motion it stands at [to].
 class AthkarRisingSun extends StatefulWidget {
   const AthkarRisingSun({
     super.key,
@@ -179,14 +161,12 @@ class AthkarRisingSun extends StatefulWidget {
     this.delay = Duration.zero,
   });
 
-  /// Builds the art from the rise listenable.
   final Widget Function(BuildContext context, ValueListenable<double> rise)
   builder;
   final double from;
   final double to;
   final Duration duration;
 
-  /// Waits this long before rising (until the art has scrolled into view).
   final Duration delay;
 
   @override
@@ -248,10 +228,6 @@ class _AthkarRisingSunState extends State<AthkarRisingSun>
   Widget build(BuildContext context) => widget.builder(context, _value);
 }
 
-/// The repetition medallion: 8 petals around the count that light in
-/// proportion as the dhikr is said ([progress] 0–1), clockwise from the
-/// top (counter-clockwise in RTL). When [progress] reaches 1 the center
-/// is lit and the petals bloom once.
 class AthkarMedallionPainter extends CustomPainter {
   const AthkarMedallionPainter({
     required this.progress,
@@ -268,7 +244,6 @@ class AthkarMedallionPainter extends CustomPainter {
   final Color disc;
   final bool clockwise;
 
-  /// 0–1–0 over the completion bloom.
   final double bloom;
 
   @override
@@ -299,7 +274,6 @@ class AthkarMedallionPainter extends CustomPainter {
     canvas.drawCircle(c, inner, line);
   }
 
-  /// An almond petal from [from] to [to] along angle [a].
   Path _petal(Offset c, double a, double from, double to) {
     final dir = Offset(math.cos(a), math.sin(a));
     final side = Offset(-dir.dy, dir.dx);
@@ -329,9 +303,6 @@ class AthkarMedallionPainter extends CustomPainter {
       old.bloom != bloom;
 }
 
-/// A dhikr's repetition medallion: the petals light as it's said and the
-/// numeral counts down what's left; done, the center lights with a check
-/// and the petals bloom once. Decorative: the card says the count.
 class AthkarMedallion extends StatelessWidget {
   const AthkarMedallion({
     super.key,
@@ -345,8 +316,6 @@ class AthkarMedallion extends StatelessWidget {
   final int total;
   final double size;
 
-  /// Shown in the center instead of the count left (the chapter's
-  /// medallion shows "1/6").
   final String? label;
 
   @override
@@ -371,7 +340,6 @@ class AthkarMedallion extends StatelessWidget {
           duration: motion.of(context, motion.medium),
           curve: motion.standard,
           builder: (context, value, _) => TweenAnimationBuilder<double>(
-            // The bloom plays once when the dhikr is done.
             tween: Tween(end: done ? 1 : 0),
             duration: motion.of(context, motion.long),
             builder: (context, bloom, _) => CustomPaint(
@@ -398,7 +366,6 @@ class AthkarMedallion extends StatelessWidget {
                           bloom,
                         ),
                       )
-                    // The numeral stays inside the center disc (100 too).
                     : SizedBox.square(
                         dimension: size * 0.46,
                         child: FittedBox(

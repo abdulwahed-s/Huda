@@ -14,8 +14,6 @@ import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/notifications/notification_access_controller.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_setup_checklist.dart';
 
-/// Everything that can stop prayer alerts from arriving, in the order the
-/// user should fix them. Each is explained before anything is asked.
 enum PrayerReadinessKind {
   notifications,
   prayerChannels,
@@ -47,7 +45,6 @@ class PrayerReadinessItem {
   final ({String title, String text, IconData icon})? warning;
 }
 
-/// The platform state readiness depends on, read from the existing bridges.
 @immutable
 class PrayerReadinessInputs {
   const PrayerReadinessInputs({
@@ -132,7 +129,6 @@ List<PrayerReadinessItem> buildPrayerReadinessItems({
               ),
       ),
     );
-    // Everything below depends on notifications being allowed.
     return items;
   }
 
@@ -295,9 +291,6 @@ List<PrayerReadinessItem> buildPrayerReadinessItems({
   return items;
 }
 
-/// What readiness listens to: notification access and this platform's
-/// prayer bridge. Shared by the ready card and onboarding's reliability
-/// step, so items vanish in both as soon as they are granted.
 Listenable prayerReadinessSources(NotificationAccessController access) =>
     Listenable.merge([
       access,
@@ -307,7 +300,6 @@ Listenable prayerReadinessSources(NotificationAccessController access) =>
       if (PlatformUtils.isLinux) LinuxPrayerTrayBridge.status,
     ]);
 
-/// The platform state readiness reads right now.
 PrayerReadinessInputs currentPrayerReadinessInputs(NotificationAccess? access) =>
     PrayerReadinessInputs(
       access: access,
@@ -328,8 +320,6 @@ Future<void> _reconcilePrayerReadiness() async {
   }
 }
 
-/// What each readiness item's button does, through the existing access
-/// controller and bridges.
 PrayerReadinessActions prayerReadinessActions(
   BuildContext context,
   NotificationAccessController access,
@@ -361,9 +351,6 @@ PrayerReadinessActions prayerReadinessActions(
   ),
 );
 
-/// One explained step at a time to get prayer alerts working, shown on
-/// Prayer Times after the times. "Not now" hides a step for good; the alert
-/// status keeps saying what is off.
 class PrayerAlertsReadyCard extends StatefulWidget {
   const PrayerAlertsReadyCard({
     super.key,
@@ -376,7 +363,6 @@ class PrayerAlertsReadyCard extends StatefulWidget {
 
   static const _snoozePrefix = 'prayer_ready_snoozed_';
 
-  /// Answers from the previous setup checklist still count.
   static bool snoozed(CacheHelper cache, PrayerReadinessKind kind) {
     bool flag(String key) => cache.getData(key: key) == true;
     return flag('$_snoozePrefix${kind.name}') ||
@@ -386,11 +372,9 @@ class PrayerAlertsReadyCard extends StatefulWidget {
             flag('prayer_setup_reliability_answered');
   }
 
-  /// "Not now" for one kind: the card doesn't ask about it again.
   static Future<void> snooze(CacheHelper cache, PrayerReadinessKind kind) =>
       cache.saveData(key: '$_snoozePrefix${kind.name}', value: true);
 
-  /// Whether the card shows an item of this kind right now.
   static bool showing(
     CacheHelper cache,
     List<PrayerReadinessItem> items,
