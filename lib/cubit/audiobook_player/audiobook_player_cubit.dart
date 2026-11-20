@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:audio_session/audio_session.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import 'package:huda/core/bootstrap/audio_service_ready.dart';
 import 'package:huda/core/services/audio_coordinator.dart';
@@ -93,11 +92,6 @@ class AudiobookPlayerCubit extends Cubit<AudiobookPlayerState> {
         for (final t in offline.tracks) {
           if (t.isDownloaded) localByOrder[t.order] = t.localPath;
         }
-      }
-
-      final bool hasLocal = localByOrder.isNotEmpty;
-      if (Platform.isAndroid && hasLocal) {
-        await _requestStoragePermission();
       }
 
       int nextMediaId = 0;
@@ -274,15 +268,6 @@ class AudiobookPlayerCubit extends Cubit<AudiobookPlayerState> {
     _positionSub = null;
     _indexSub?.cancel();
     _indexSub = null;
-  }
-
-  Future<void> _requestStoragePermission() async {
-    if (Platform.isAndroid) {
-      final status = await Permission.storage.request();
-      if (status.isPermanentlyDenied) {
-        await openAppSettings();
-      }
-    }
   }
 
   @override

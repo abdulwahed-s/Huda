@@ -8,7 +8,6 @@ import 'package:just_audio/just_audio.dart';
 import 'package:just_audio_background/just_audio_background.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:huda/core/bootstrap/audio_service_ready.dart';
 import 'package:huda/core/quran/quran.dart';
 import 'package:huda/core/services/audio_coordinator.dart';
@@ -77,15 +76,6 @@ class QuranPlayerCubit extends Cubit<QuranPlayerState> {
       int nextMediaId = 0;
       List<String> surahNumbers = moshaf.surahList.toString().split(',');
       final appDir = await _downloadDir;
-
-      if (Platform.isAndroid) {
-        final hasLocal = surahNumbers.any((e) =>
-            File('${appDir.path}/${_localFileName(reciter, moshaf, e)}')
-                .existsSync());
-        if (hasLocal) {
-          await _requestStoragePermission();
-        }
-      }
 
       List<Map<String, dynamic>> reciterLinks = surahNumbers.map((e) {
         final localPath =
@@ -219,10 +209,6 @@ class QuranPlayerCubit extends Cubit<QuranPlayerState> {
     required String url,
   }) async {
     try {
-      if (Platform.isAndroid) {
-        await _requestStoragePermission();
-      }
-
       final appDir = await _downloadDir;
       final fullPath =
           '${appDir.path}/${_localFileName(reciter, moshaf, suraNumber)}';
@@ -266,10 +252,6 @@ class QuranPlayerCubit extends Cubit<QuranPlayerState> {
     required Moshaf moshaf,
   }) async {
     try {
-      if (Platform.isAndroid) {
-        await _requestStoragePermission();
-      }
-
       List<String> surahNumbers = moshaf.surahList.toString().split(',');
       final appDir = await _downloadDir;
       final dio = Dio();
@@ -359,15 +341,6 @@ class QuranPlayerCubit extends Cubit<QuranPlayerState> {
 
   void resumePlayer() {
     audioPlayer.play();
-  }
-
-  Future<void> _requestStoragePermission() async {
-    if (Platform.isAndroid) {
-      final status = await Permission.storage.request();
-      if (status.isPermanentlyDenied) {
-        await openAppSettings();
-      }
-    }
   }
 
   @override
