@@ -32,6 +32,8 @@ bool FlutterWindow::OnCreate() {
       flutter_controller_->engine()->messenger(), GetHandle());
   prayer_taskbar_bridge_ = std::make_unique<PrayerTaskbarBridge>(
       flutter_controller_->engine()->messenger(), GetHandle());
+  gallery_image_saver_ = std::make_unique<GalleryImageSaver>(
+      flutter_controller_->engine()->messenger());
   notification_taps_ =
       std::make_unique<flutter::MethodChannel<flutter::EncodableValue>>(
           flutter_controller_->engine()->messenger(),
@@ -71,6 +73,7 @@ void FlutterWindow::OnDestroy() {
   notification_taps_.reset();
   notification_bridge_.reset();
   prayer_taskbar_bridge_.reset();
+  gallery_image_saver_.reset();
   prayer_system_channel_.reset();
   if (flutter_controller_) {
     flutter_controller_ = nullptr;

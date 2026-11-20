@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "gallery_image_saver.h"
 #include "win32_window.h"
 #include "prayer_taskbar_bridge.h"
 #include "windows_notification_bridge.h"
@@ -38,6 +39,7 @@ private:
       notification_taps_;
   std::unique_ptr<PrayerTaskbarBridge> prayer_taskbar_bridge_;
   std::unique_ptr<WindowsNotificationBridge> notification_bridge_;
+  std::unique_ptr<GalleryImageSaver> gallery_image_saver_;
 };
 
 #endif // RUNNER_FLUTTER_WINDOW_H_
