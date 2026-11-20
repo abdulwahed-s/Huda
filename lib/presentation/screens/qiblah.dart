@@ -26,13 +26,16 @@ class QiblahScreenState extends State<QiblahScreen> {
 
   bool _retrying = false;
 
-  bool _awaitingSettings = false;
-
   late final AppLifecycleListener _lifecycle = AppLifecycleListener(
     onResume: () {
-      if (!_awaitingSettings || !mounted) return;
-      _awaitingSettings = false;
-      context.read<QiblahCubit>().loadQiblah();
+      if (!mounted) return;
+      final cubit = context.read<QiblahCubit>();
+      final state = cubit.state;
+      if (state is QiblahLocationServiceOff ||
+          state is QiblahPermissionDenied ||
+          state is QiblahPermissionDeniedForever) {
+        cubit.loadQiblah();
+      }
     },
   );
 
@@ -58,12 +61,10 @@ class QiblahScreenState extends State<QiblahScreen> {
   }
 
   void _openLocationSettings() {
-    _awaitingSettings = true;
     Geolocator.openLocationSettings();
   }
 
   void _openAppSettings() {
-    _awaitingSettings = true;
     Geolocator.openAppSettings();
   }
 
