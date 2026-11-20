@@ -52,6 +52,7 @@ class NotificationAccessController extends ChangeNotifier
   NotificationAccess? _access;
   bool _isRequestInProgress = false;
   bool _disposed = false;
+  int _generation = 0;
   final Completer<void> _ready = Completer<void>();
 
   Future<void> get ready => _ready.future;
@@ -65,6 +66,7 @@ class NotificationAccessController extends ChangeNotifier
   }
 
   Future<void> refresh() async {
+    final generation = ++_generation;
     final notificationsEnabled = await cubit.getIsNotificationEnabled();
     final exactAlarmsAllowed = PlatformUtils.isAndroid
         ? await cubit.canScheduleExactNotifications()
@@ -98,7 +100,7 @@ class NotificationAccessController extends ChangeNotifier
         await NotificationPermissions.state() ==
             NotificationPermissionState.settingsOnly;
 
-    if (_disposed) return;
+    if (_disposed || generation != _generation) return;
 
     final previous = _access;
     final shouldReschedule =
@@ -152,9 +154,11 @@ class NotificationAccessController extends ChangeNotifier
     if (_isRequestInProgress) return;
     _isRequestInProgress = true;
     notifyListeners();
-    await request();
-    if (_disposed) return;
-    await refresh();
+    try {
+      await request();
+    } finally {
+      if (!_disposed) await refresh();
+    }
   }
 
   @override
