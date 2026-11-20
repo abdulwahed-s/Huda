@@ -2220,6 +2220,34 @@ class AppLocalizationsDe extends AppLocalizations {
       'Ein flüssigeres, ausgereifteres Erlebnis in der gesamten App.';
 
   @override
+  String get whatsNew500Feature1 =>
+      'Ein völlig neuer Look in der gesamten App.';
+
+  @override
+  String get whatsNew500Feature2 =>
+      'Adhan auswählen und Hinweise für jedes Gebet festlegen.';
+
+  @override
+  String get whatsNew500Feature3 =>
+      'Iqamah-Zeiten für die eigene Moschee festlegen.';
+
+  @override
+  String get whatsNew500Feature4 =>
+      'Den Koran auf Hafs-, Tajweed- oder IndoPak-Seiten lesen.';
+
+  @override
+  String get whatsNew500Feature5iOS =>
+      'Gebetswecker können jetzt den vollständigen Adhan abspielen.';
+
+  @override
+  String get whatsNew500Feature5Android =>
+      'Gebetszeiten zum Samsung-Sperrbildschirm hinzufügen.';
+
+  @override
+  String get whatsNew500Feature5Desktop =>
+      'Gebetszeiten jetzt direkt in der Menüleiste oder Taskleiste.';
+
+  @override
   String showingDownloadedBooks(int count) {
     return 'Zeige $count heruntergeladene Bücher';
   }

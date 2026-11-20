@@ -2200,6 +2200,32 @@ class AppLocalizationsBn extends AppLocalizations {
       'অ্যাপজুড়ে আরও মসৃণ ও পরিমার্জিত অভিজ্ঞতা।';
 
   @override
+  String get whatsNew500Feature1 => 'পুরো অ্যাপজুড়ে একদম নতুন রূপ।';
+
+  @override
+  String get whatsNew500Feature2 =>
+      'আপনার আজান বেছে নিন এবং প্রতিটি নামাজের জন্য সতর্কতা সেট করুন।';
+
+  @override
+  String get whatsNew500Feature3 => 'আপনার মসজিদের ইকামতের সময় সেট করুন।';
+
+  @override
+  String get whatsNew500Feature4 =>
+      'হাফস, তাজবিদ বা ইন্দো-পাক মুসহাফের পৃষ্ঠায় কুরআন পড়ুন।';
+
+  @override
+  String get whatsNew500Feature5iOS =>
+      'নামাজের অ্যালার্মে এখন পুরো আজান বাজতে পারে।';
+
+  @override
+  String get whatsNew500Feature5Android =>
+      'Samsung লক স্ক্রিনে নামাজের সময় যোগ করুন।';
+
+  @override
+  String get whatsNew500Feature5Desktop =>
+      'নামাজের সময় এখন আপনার মেনু বার বা টাস্কবারে।';
+
+  @override
   String showingDownloadedBooks(int count) {
     return 'ডাউনলোড করা $count বই দেখানো হচ্ছে';
   }

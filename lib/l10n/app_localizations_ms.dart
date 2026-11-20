@@ -2199,6 +2199,33 @@ class AppLocalizationsMs extends AppLocalizations {
       'Pengalaman yang lebih lancar dan kemas di seluruh aplikasi.';
 
   @override
+  String get whatsNew500Feature1 =>
+      'Rupa baharu sepenuhnya di seluruh aplikasi.';
+
+  @override
+  String get whatsNew500Feature2 =>
+      'Pilih azan anda dan tetapkan amaran untuk setiap solat.';
+
+  @override
+  String get whatsNew500Feature3 => 'Tetapkan waktu iqamah untuk masjid anda.';
+
+  @override
+  String get whatsNew500Feature4 =>
+      'Baca al-Quran dalam halaman Hafs, Tajwid atau IndoPak.';
+
+  @override
+  String get whatsNew500Feature5iOS =>
+      'Penggera solat kini boleh memainkan azan penuh.';
+
+  @override
+  String get whatsNew500Feature5Android =>
+      'Tambah waktu solat pada Skrin Kunci Samsung.';
+
+  @override
+  String get whatsNew500Feature5Desktop =>
+      'Waktu solat kini di bar menu atau bar tugas anda.';
+
+  @override
   String showingDownloadedBooks(int count) {
     return 'Menunjukkan $count buku yang dimuat turun';
   }

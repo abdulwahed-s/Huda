@@ -2201,6 +2201,32 @@ class AppLocalizationsRu extends AppLocalizations {
       'Более плавная и продуманная работа во всём приложении.';
 
   @override
+  String get whatsNew500Feature1 => 'Совершенно новый облик всего приложения.';
+
+  @override
+  String get whatsNew500Feature2 =>
+      'Выберите азан и настройте оповещения для каждой молитвы.';
+
+  @override
+  String get whatsNew500Feature3 => 'Укажите время икамата для вашей мечети.';
+
+  @override
+  String get whatsNew500Feature4 =>
+      'Читайте Коран на страницах Хафс, Таджвид или ИндоПак.';
+
+  @override
+  String get whatsNew500Feature5iOS =>
+      'Будильники молитв теперь могут воспроизводить азан полностью.';
+
+  @override
+  String get whatsNew500Feature5Android =>
+      'Добавьте время молитв на экран блокировки Samsung.';
+
+  @override
+  String get whatsNew500Feature5Desktop =>
+      'Время молитв теперь в строке меню или на панели задач.';
+
+  @override
   String showingDownloadedBooks(int count) {
     return 'Показано $count загруженных книг';
   }

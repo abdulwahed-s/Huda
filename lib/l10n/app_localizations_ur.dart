@@ -2190,6 +2190,32 @@ class AppLocalizationsUr extends AppLocalizations {
   String get whatsNew430Feature2 => 'پوری ایپ میں زیادہ ہموار اور بہتر تجربہ۔';
 
   @override
+  String get whatsNew500Feature1 => 'پوری ایپ میں بالکل نئی شکل۔';
+
+  @override
+  String get whatsNew500Feature2 =>
+      'اپنی اذان منتخب کریں اور ہر نماز کے لیے الرٹس سیٹ کریں۔';
+
+  @override
+  String get whatsNew500Feature3 => 'اپنی مسجد کے اقامت کے اوقات سیٹ کریں۔';
+
+  @override
+  String get whatsNew500Feature4 =>
+      'قرآن کو حفص، تجوید یا انڈو پاک صفحات میں پڑھیں۔';
+
+  @override
+  String get whatsNew500Feature5iOS =>
+      'نماز کے الارم اب پوری اذان چلا سکتے ہیں۔';
+
+  @override
+  String get whatsNew500Feature5Android =>
+      'Samsung لاک اسکرین پر نماز کے اوقات شامل کریں۔';
+
+  @override
+  String get whatsNew500Feature5Desktop =>
+      'نماز کے اوقات اب آپ کے مینو بار یا ٹاسک بار میں۔';
+
+  @override
   String showingDownloadedBooks(int count) {
     return '$count ڈاؤن لوڈ کی گئی کتابیں دکھا رہا ہے';
   }

@@ -286,6 +286,47 @@ class WhatsNewContent {
       ],
       buttonText: (context) => AppLocalizations.of(context)!.gotIt,
     ),
+    '5.0.0': WhatsNewContent(
+      version: '5.0.0',
+      title: (context) => AppLocalizations.of(context)!.whatsNewTitle,
+      features: [
+        WhatsNewFeature(
+          title: (context) => AppLocalizations.of(context)!.whatsNew500Feature1,
+          icon: Icons.auto_awesome_outlined,
+        ),
+        WhatsNewFeature(
+          title: (context) => AppLocalizations.of(context)!.whatsNew500Feature2,
+          icon: Icons.notifications_active_outlined,
+        ),
+        WhatsNewFeature(
+          title: (context) => AppLocalizations.of(context)!.whatsNew500Feature3,
+          icon: Icons.mosque_outlined,
+        ),
+        WhatsNewFeature(
+          title: (context) => AppLocalizations.of(context)!.whatsNew500Feature4,
+          icon: Icons.menu_book_outlined,
+        ),
+        if (PlatformUtils.isIOS)
+          WhatsNewFeature(
+            title: (context) =>
+                AppLocalizations.of(context)!.whatsNew500Feature5iOS,
+            icon: Icons.alarm_on_outlined,
+          ),
+        if (PlatformUtils.isAndroid)
+          WhatsNewFeature(
+            title: (context) =>
+                AppLocalizations.of(context)!.whatsNew500Feature5Android,
+            icon: Icons.widgets_outlined,
+          ),
+        if (PlatformUtils.isMacOS || PlatformUtils.isWindows)
+          WhatsNewFeature(
+            title: (context) =>
+                AppLocalizations.of(context)!.whatsNew500Feature5Desktop,
+            icon: Icons.schedule_outlined,
+          ),
+      ],
+      buttonText: (context) => AppLocalizations.of(context)!.gotIt,
+    ),
   };
 
   static WhatsNewContent? getForVersion(String version) {

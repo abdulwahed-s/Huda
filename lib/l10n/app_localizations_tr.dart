@@ -2198,6 +2198,33 @@ class AppLocalizationsTr extends AppLocalizations {
       'Uygulama genelinde daha akıcı ve özenli bir deneyim.';
 
   @override
+  String get whatsNew500Feature1 =>
+      'Uygulamanın tamamında yepyeni bir görünüm.';
+
+  @override
+  String get whatsNew500Feature2 =>
+      'Ezanınızı seçin ve her namaz için uyarıları ayarlayın.';
+
+  @override
+  String get whatsNew500Feature3 => 'Camiinizin ikamet vakitlerini ayarlayın.';
+
+  @override
+  String get whatsNew500Feature4 =>
+      'Kur’an’ı Hafs, Tecvid veya IndoPak sayfalarında okuyun.';
+
+  @override
+  String get whatsNew500Feature5iOS =>
+      'Namaz alarmları artık ezanın tamamını çalabiliyor.';
+
+  @override
+  String get whatsNew500Feature5Android =>
+      'Namaz vakitlerini Samsung Kilit Ekranı’na ekleyin.';
+
+  @override
+  String get whatsNew500Feature5Desktop =>
+      'Namaz vakitleri artık menü çubuğunda veya görev çubuğunda.';
+
+  @override
   String showingDownloadedBooks(int count) {
     return 'İndirilen $count kitap gösteriliyor';
   }

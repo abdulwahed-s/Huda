@@ -4128,6 +4128,48 @@ abstract class AppLocalizations {
   /// **'A smoother, more polished experience throughout the app.'**
   String get whatsNew430Feature2;
 
+  /// What's new feature 1 for v5.0.0
+  ///
+  /// In en, this message translates to:
+  /// **'A fresh new look across the whole app.'**
+  String get whatsNew500Feature1;
+
+  /// What's new feature 2 for v5.0.0
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your Adhan and set alerts for each prayer.'**
+  String get whatsNew500Feature2;
+
+  /// What's new feature 3 for v5.0.0
+  ///
+  /// In en, this message translates to:
+  /// **'Set Iqamah times for your mosque.'**
+  String get whatsNew500Feature3;
+
+  /// What's new feature 4 for v5.0.0
+  ///
+  /// In en, this message translates to:
+  /// **'Read the Quran in Hafs, Tajweed, or IndoPak pages.'**
+  String get whatsNew500Feature4;
+
+  /// What's new feature 5 for v5.0.0 (iOS)
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer alarms can now play the full Adhan.'**
+  String get whatsNew500Feature5iOS;
+
+  /// What's new feature 5 for v5.0.0 (Android)
+  ///
+  /// In en, this message translates to:
+  /// **'Add prayer times to your Samsung Lock Screen.'**
+  String get whatsNew500Feature5Android;
+
+  /// What's new feature 5 for v5.0.0 (macOS and Windows)
+  ///
+  /// In en, this message translates to:
+  /// **'Prayer times now live in your menu bar or taskbar.'**
+  String get whatsNew500Feature5Desktop;
+
   /// Shows the number of available downloaded books
   ///
   /// In en, this message translates to:

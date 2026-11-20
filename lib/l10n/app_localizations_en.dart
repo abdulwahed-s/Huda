@@ -2191,6 +2191,32 @@ class AppLocalizationsEn extends AppLocalizations {
       'A smoother, more polished experience throughout the app.';
 
   @override
+  String get whatsNew500Feature1 => 'A fresh new look across the whole app.';
+
+  @override
+  String get whatsNew500Feature2 =>
+      'Choose your Adhan and set alerts for each prayer.';
+
+  @override
+  String get whatsNew500Feature3 => 'Set Iqamah times for your mosque.';
+
+  @override
+  String get whatsNew500Feature4 =>
+      'Read the Quran in Hafs, Tajweed, or IndoPak pages.';
+
+  @override
+  String get whatsNew500Feature5iOS =>
+      'Prayer alarms can now play the full Adhan.';
+
+  @override
+  String get whatsNew500Feature5Android =>
+      'Add prayer times to your Samsung Lock Screen.';
+
+  @override
+  String get whatsNew500Feature5Desktop =>
+      'Prayer times now live in your menu bar or taskbar.';
+
+  @override
   String showingDownloadedBooks(int count) {
     return 'Showing $count downloaded books';
   }

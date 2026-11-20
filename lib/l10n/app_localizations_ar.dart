@@ -2167,6 +2167,31 @@ class AppLocalizationsAr extends AppLocalizations {
       'تجربة أكثر سلاسة وتحسينًا في أنحاء التطبيق.';
 
   @override
+  String get whatsNew500Feature1 => 'مظهر جديد كليًا في أنحاء التطبيق.';
+
+  @override
+  String get whatsNew500Feature2 => 'اختر صوت الأذان واضبط التنبيهات لكل صلاة.';
+
+  @override
+  String get whatsNew500Feature3 => 'اضبط أوقات الإقامة لمسجدك.';
+
+  @override
+  String get whatsNew500Feature4 =>
+      'اقرأ القرآن بصفحات مصحف حفص أو التجويد أو المصحف الهندي.';
+
+  @override
+  String get whatsNew500Feature5iOS =>
+      'يمكن لمنبّهات الصلاة الآن تشغيل الأذان كاملًا.';
+
+  @override
+  String get whatsNew500Feature5Android =>
+      'أضف مواقيت الصلاة إلى شاشة القفل في أجهزة Samsung.';
+
+  @override
+  String get whatsNew500Feature5Desktop =>
+      'مواقيت الصلاة الآن في شريط القوائم أو شريط المهام.';
+
+  @override
   String showingDownloadedBooks(int count) {
     return 'عرض $count من الكتب المحمّلة';
   }

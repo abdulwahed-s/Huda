@@ -1253,6 +1253,13 @@
   "whatsNew420Feature6": "إعادة تصميم تجربة إرسال الملاحظات والإبلاغ عن المشكلات",
   "whatsNew430Feature1": "مواقيت الصلاة والأدوات أكثر موثوقية.",
   "whatsNew430Feature2": "تجربة أكثر سلاسة وتحسينًا في أنحاء التطبيق.",
+  "whatsNew500Feature1": "مظهر جديد كليًا في أنحاء التطبيق.",
+  "whatsNew500Feature2": "اختر صوت الأذان واضبط التنبيهات لكل صلاة.",
+  "whatsNew500Feature3": "اضبط أوقات الإقامة لمسجدك.",
+  "whatsNew500Feature4": "اقرأ القرآن بصفحات مصحف حفص أو التجويد أو المصحف الهندي.",
+  "whatsNew500Feature5iOS": "يمكن لمنبّهات الصلاة الآن تشغيل الأذان كاملًا.",
+  "whatsNew500Feature5Android": "أضف مواقيت الصلاة إلى شاشة القفل في أجهزة Samsung.",
+  "whatsNew500Feature5Desktop": "مواقيت الصلاة الآن في شريط القوائم أو شريط المهام.",
   "showingDownloadedBooks": "عرض {count} من الكتب المحمّلة",
   "@showingDownloadedBooks": {
     "description": "Shows the number of available downloaded books",
