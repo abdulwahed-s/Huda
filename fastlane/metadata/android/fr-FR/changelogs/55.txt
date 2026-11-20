@@ -1,0 +1,5 @@
+Huda 5.0 est entièrement repensé, avec des mises en page pour tablettes et pliables.
+Alertes de prière hors ligne, avec bibliothèque d’adhans, son et volume par prière et test de réception.
+Les nouveaux réglages d’iqama affichent la prière en cours et le temps écoulé dans les notifications et widgets.
+Nouvelles pages du Mushaf aux styles Hafs, Tajweed et IndoPak.
+Widgets pour l’écran verrouillé Samsung, écran d’adhan repensé et configuration guidée.

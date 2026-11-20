@@ -1,0 +1,5 @@
+Huda 5.0 is a complete redesign, with a new look on every screen and layouts that adapt to tablets and foldables.
+Prayer alerts are rebuilt to work offline, with an Adhan library, per-prayer sound and volume, and a delivery test.
+New Iqamah settings keep the current prayer and elapsed time on notifications and widgets.
+New Mushaf pages in Hafs, Tajweed, and IndoPak styles for smoother Quran reading.
+Samsung Lock Screen widgets, a redesigned Adhan screen, and guided setup.

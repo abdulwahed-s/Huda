@@ -1,0 +1,5 @@
+Huda 5.0 baştan sona yeniden tasarlandı; tabletlere ve katlanabilir cihazlara uyumlu.
+Namaz uyarıları çevrimdışı çalışacak şekilde yeniden geliştirildi: ezan kütüphanesi, her namaz için ses ve ses düzeyi, teslim testi.
+Yeni ikamet ayarları, mevcut namazı ve geçen süreyi bildirimlerde ve widget’larda gösterir.
+Daha akıcı Kur’an okuması için Hafs, Tecvid ve IndoPak stillerinde yeni Mushaf sayfaları.
+Samsung Kilit Ekranı widget’ları, yeniden tasarlanan ezan ekranı ve rehberli kurulum.

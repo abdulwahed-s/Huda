@@ -1,0 +1,5 @@
+Huda 5.0 direka semula sepenuhnya, dengan susun atur untuk tablet dan peranti lipat.
+Amaran solat kini berfungsi di luar talian, dengan pustaka azan, bunyi dan kelantangan setiap solat serta ujian penghantaran.
+Tetapan iqamah baharu memaparkan solat semasa dan masa berlalu dalam pemberitahuan dan widget.
+Halaman Mushaf baharu dalam gaya Hafs, Tajwid dan IndoPak untuk bacaan al-Quran yang lebih lancar.
+Widget Skrin Kunci Samsung, skrin azan yang direka semula dan persediaan berpandu.

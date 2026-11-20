@@ -1,0 +1,5 @@
+Huda 5.0 se rediseñó por completo, con diseños para tabletas y plegables.
+Alertas de oración sin conexión, con biblioteca de adhan, sonido y volumen por oración y prueba de entrega.
+Los nuevos ajustes de iqama muestran la oración actual y el tiempo transcurrido en notificaciones y widgets.
+Nuevas páginas del Mushaf en estilos Hafs, Tajweed e IndoPak.
+Widgets para la pantalla de bloqueo de Samsung, pantalla de adhan rediseñada y configuración guiada.

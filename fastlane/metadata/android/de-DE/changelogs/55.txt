@@ -1,0 +1,5 @@
+Huda 5.0 ist komplett neu gestaltet, mit Layouts für Tablets und Faltgeräte.
+Gebetshinweise funktionieren jetzt offline – mit Adhan-Bibliothek, Ton und Lautstärke pro Gebet und Zustelltest.
+Neue Iqamah-Einstellungen zeigen das aktuelle Gebet und die vergangene Zeit in Benachrichtigungen und Widgets.
+Neue Mushaf-Seiten im Hafs-, Tajweed- und IndoPak-Stil für flüssigeres Koranlesen.
+Samsung-Sperrbildschirm-Widgets, ein neu gestalteter Adhan-Bildschirm und eine geführte Einrichtung.
