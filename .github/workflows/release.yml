@@ -377,6 +377,7 @@ jobs:
           APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
           APP_STORE_CONNECT_KEY_P8: ${{ secrets.APP_STORE_CONNECT_KEY_P8 }}
           IPA_DIR: ${{ github.workspace }}/build/ios/ipa
+          APP_STORE_SKIP_SUBMIT: "1"
         run: cd ios && bundle exec fastlane deploy
 
   # ──────────────────────────────────────────────────────────

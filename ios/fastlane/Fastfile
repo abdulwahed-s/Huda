@@ -128,6 +128,11 @@ platform :ios do
       UI.important("This build already exists in App Store Connect. Continuing to submit the uploaded build.")
     end
 
+    if ENV["APP_STORE_SKIP_SUBMIT"] == "1"
+      UI.important("APP_STORE_SKIP_SUBMIT=1: build uploaded, not submitted. Finish and submit in App Store Connect.")
+      next
+    end
+
     submit_uploaded_build(upload_options: upload_options)
   end
 end
