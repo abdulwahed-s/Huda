@@ -70,7 +70,20 @@ class QuranJourneyHome extends StatelessWidget {
         khatma: state.khatma,
         actions: actions,
       );
-      reading = HomeContinueCard(place: place);
+      final khatma = configuration.orderedSections.contains(
+        HomeSectionId.khatmaProgress,
+      );
+      reading = HomeContinueCard(
+        place: place,
+        attachment: khatma
+            ? HomeKhatmaRibbon(
+                khatma: state.khatma,
+                actions: actions,
+                showStart: !place.fromKhatma,
+                attached: true,
+              )
+            : null,
+      );
       for (final section in configuration.orderedSections) {
         switch (section) {
           case HomeSectionId.dailyAyah:
@@ -80,14 +93,6 @@ class QuranJourneyHome extends StatelessWidget {
                 actions: actions,
                 large: roomy,
                 lines: panes && !short ? 4 : 3,
-              ),
-            );
-          case HomeSectionId.khatmaProgress:
-            sections.add(
-              HomeKhatmaRibbon(
-                khatma: state.khatma,
-                actions: actions,
-                showStart: !place.fromKhatma,
               ),
             );
           default:

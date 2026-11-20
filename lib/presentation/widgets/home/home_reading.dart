@@ -81,9 +81,11 @@ String homeReadingWhere(BuildContext context, int surah, int ayah) {
 }
 
 class HomeContinueCard extends StatelessWidget {
-  const HomeContinueCard({super.key, required this.place});
+  const HomeContinueCard({super.key, required this.place, this.attachment});
 
   final HomeReadingPlace place;
+
+  final Widget? attachment;
 
   @override
   Widget build(BuildContext context) {
@@ -105,122 +107,128 @@ class HomeContinueCard extends StatelessWidget {
     } catch (_) {
       page = 1;
     }
-    final radius = BorderRadius.circular(tokens.radius.lg);
+    final corner = Radius.circular(tokens.radius.lg);
+    final radius = attachment == null
+        ? BorderRadius.all(corner)
+        : BorderRadius.vertical(top: corner);
     const ribbon = Size(16, 44);
-    return Semantics(
+    final card = Semantics(
       button: true,
       label: [place.eyebrow, title, ?where].join(', '),
       excludeSemantics: true,
-      child: HudaPressable(
-        child: Material(
-          key: const ValueKey('quran-reading-card'),
-          color: tokens.chrome,
-          shape: RoundedRectangleBorder(
-            borderRadius: radius,
-            side: BorderSide(color: tokens.gilt.withValues(alpha: 0.3)),
-          ),
-          clipBehavior: Clip.antiAlias,
-          child: Ink(
-            decoration: BoxDecoration(gradient: tokens.chromeGradient),
-            child: InkWell(
-              key: const ValueKey('quran-primary-action'),
-              onTap: place.open,
-              splashColor: tokens.gilt.withValues(alpha: 0.12),
-              highlightColor: tokens.gilt.withValues(alpha: 0.06),
-              child: Stack(
-                children: [
-                  PositionedDirectional(
-                    start: space.lg,
-                    top: 0,
-                    child: CustomPaint(
-                      size: ribbon,
-                      painter: _BookmarkPainter(gilt: tokens.gilt),
-                    ),
+      child: Material(
+        key: const ValueKey('quran-reading-card'),
+        color: tokens.chrome,
+        shape: RoundedRectangleBorder(
+          borderRadius: radius,
+          side: BorderSide(color: tokens.gilt.withValues(alpha: 0.3)),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: Ink(
+          decoration: BoxDecoration(gradient: tokens.chromeGradient),
+          child: InkWell(
+            key: const ValueKey('quran-primary-action'),
+            onTap: place.open,
+            splashColor: tokens.gilt.withValues(alpha: 0.12),
+            highlightColor: tokens.gilt.withValues(alpha: 0.06),
+            child: Stack(
+              children: [
+                PositionedDirectional(
+                  start: space.lg,
+                  top: 0,
+                  child: CustomPaint(
+                    size: ribbon,
+                    painter: _BookmarkPainter(gilt: tokens.gilt),
                   ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(
-                      space.lg + ribbon.width + space.md,
-                      space.md,
-                      space.md,
-                      space.md,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  HudaEyebrow(
-                                    place.eyebrow,
-                                    color: tokens.gilt,
+                ),
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(
+                    space.lg + ribbon.width + space.md,
+                    space.md,
+                    space.md,
+                    space.md,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                HudaEyebrow(place.eyebrow, color: tokens.gilt),
+                                SizedBox(height: space.xxs),
+                                Text(
+                                  title,
+                                  style: theme.textTheme.titleLarge?.copyWith(
+                                    color: tokens.onChrome,
+                                    height: 1.2,
                                   ),
-                                  SizedBox(height: space.xxs),
-                                  Text(
-                                    title,
-                                    style: theme.textTheme.titleLarge?.copyWith(
-                                      color: tokens.onChrome,
-                                      height: 1.2,
-                                    ),
-                                  ),
-                                  if (where != null)
-                                    Text(
-                                      where,
-                                      style: theme.textTheme.bodySmall
-                                          ?.copyWith(
-                                            color: tokens.onChromeMuted,
-                                          ),
-                                    ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(width: space.sm),
-                            DecoratedBox(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: tokens.onChrome,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: tokens.gilt.withValues(alpha: 0.35),
-                                    blurRadius: 14,
-                                  ),
-                                ],
-                              ),
-                              child: SizedBox.square(
-                                dimension: 44,
-                                child: Icon(
-                                  Icons.arrow_forward_rounded,
-                                  size: 22,
-                                  color: tokens.chrome,
                                 ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: space.sm),
-                        SizedBox(
-                          height: 10,
-                          child: CustomPaint(
-                            painter: _MushafPlacePainter(
-                              place: (page - 1) / 603,
-                              gilt: tokens.gilt,
-                              quiet: tokens.onChromeMuted,
-                              rtl: rtl,
+                                if (where != null)
+                                  Text(
+                                    where,
+                                    style: theme.textTheme.bodySmall?.copyWith(
+                                      color: tokens.onChromeMuted,
+                                    ),
+                                  ),
+                              ],
                             ),
                           ),
+                          SizedBox(width: space.sm),
+                          DecoratedBox(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: tokens.onChrome,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: tokens.gilt.withValues(alpha: 0.35),
+                                  blurRadius: 14,
+                                ),
+                              ],
+                            ),
+                            child: SizedBox.square(
+                              dimension: 44,
+                              child: Icon(
+                                Icons.arrow_forward_rounded,
+                                size: 22,
+                                color: tokens.chrome,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: space.sm),
+                      SizedBox(
+                        height: 10,
+                        child: CustomPaint(
+                          painter: _MushafPlacePainter(
+                            place: (page - 1) / 603,
+                            gilt: tokens.gilt,
+                            quiet: tokens.onChromeMuted,
+                            rtl: rtl,
+                          ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
+      ),
+    );
+    final tab = attachment;
+    if (tab == null) return HudaPressable(child: card);
+    return HudaPressable(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [card, tab],
       ),
     );
   }
@@ -532,11 +540,46 @@ class HomeKhatmaRibbon extends StatelessWidget {
     required this.khatma,
     required this.actions,
     this.showStart = true,
+    this.attached = false,
   });
 
   final KhatmaSnapshot khatma;
   final HomeActions actions;
   final bool showStart;
+
+  final bool attached;
+
+  Widget _frame(
+    BuildContext context, {
+    required VoidCallback onTap,
+    required EdgeInsetsGeometry padding,
+    required Widget child,
+  }) {
+    if (!attached) {
+      return HudaCard(
+        key: const ValueKey('quran-khatma-region'),
+        onTap: onTap,
+        padding: padding,
+        child: child,
+      );
+    }
+    final tokens = context.tokens;
+    return Material(
+      key: const ValueKey('quran-khatma-region'),
+      color: Theme.of(context).cardTheme.color,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(tokens.radius.lg),
+        ),
+        side: BorderSide(color: tokens.gilt.withValues(alpha: 0.3)),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(padding: padding, child: child),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -550,8 +593,8 @@ class HomeKhatmaRibbon extends StatelessWidget {
     final active =
         khatma.isActive && !khatma.isCompleted && khatma.totalDays > 0;
     if (!active) {
-      return HudaCard(
-        key: const ValueKey('quran-khatma-region'),
+      return _frame(
+        context,
         onTap: () => showKhatmaSheet(context),
         padding: EdgeInsets.zero,
         child: HudaContentRow(
@@ -588,8 +631,8 @@ class HomeKhatmaRibbon extends StatelessWidget {
       button: true,
       label: [l10n.khatmaProgress, dayOf, '$percent%', ?start].join(', '),
       excludeSemantics: true,
-      child: HudaCard(
-        key: const ValueKey('quran-khatma-region'),
+      child: _frame(
+        context,
         onTap: open,
         padding: EdgeInsets.fromLTRB(space.lg, space.md, space.lg, space.md),
         child: Column(
