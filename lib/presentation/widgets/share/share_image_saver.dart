@@ -3,20 +3,22 @@ import 'package:flutter/services.dart';
 /// Saves a share image to the device's photos (the "Save image" action of
 /// the share sheets).
 ///
-/// **Placeholder** (owner, 2026-10-31): the native side comes later, one
-/// handler per platform on the `com.aw.huda/gallery` channel:
+/// One native handler per platform on the `com.aw.huda/gallery` channel:
+/// method `saveImage`, arguments `{'bytes': Uint8List (PNG), 'name': String
+/// (file name without extension)}`, returns `true` once saved.
 ///
-/// * method `saveImage`, arguments `{'bytes': Uint8List (PNG), 'name':
-///   String (file name without extension)}`, returns `true` once saved.
-/// * Android: insert into `MediaStore.Images` under `Pictures/Huda` (no
-///   permission from Android 10).
-/// * iOS: `PHPhotoLibrary` add-only, with `NSPhotoLibraryAddUsageDescription`
-///   in `Info.plist`.
-/// * macOS, Windows, Linux: write to the Downloads folder.
+/// * Android: `MediaStore.Images` under `Pictures/Huda` (no permission from
+///   Android 10; WRITE_EXTERNAL_STORAGE asked for on 7-9),
+///   `GalleryImageSaver.kt`.
+/// * iOS: Photos, add-only (`NSPhotoLibraryAddUsageDescription`),
+///   `GalleryImageChannel` in `AppDelegate.swift`.
+/// * macOS: Downloads (sandbox `files.downloads.read-write`),
+///   `GalleryImageChannel` in `MainFlutterWindow.swift`.
+/// * Windows, Linux: Downloads, `gallery_image_saver.cpp` / `.cc`.
 ///
-/// Until a platform has its handler, [save] returns
-/// [ShareImageSaveResult.unavailable] and the sheet says saving isn't
-/// available yet.
+/// Desktops never replace a file: a taken name gets a number. A platform
+/// without a handler (web) returns [ShareImageSaveResult.unavailable] and the
+/// sheet says saving isn't available yet.
 abstract final class ShareImageSaver {
   static const MethodChannel channel = MethodChannel('com.aw.huda/gallery');
 

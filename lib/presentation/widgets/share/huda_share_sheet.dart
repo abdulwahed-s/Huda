@@ -197,7 +197,8 @@ class _HudaShareSheetBodyState extends State<HudaShareSheetBody> {
       LayoutBuilder(
         builder: (context, constraints) {
           final copy = widget.onCopyText != null;
-          final save = widget.onSaveImage != null && canShareImage;
+          // Saving needs no share target: Linux saves to Downloads too.
+          final save = widget.onSaveImage != null;
           final stacked =
               constraints.maxWidth <
               (copy || save ? 280 : 0) *
