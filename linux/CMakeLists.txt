@@ -128,6 +128,7 @@ install(DIRECTORY "${PROJECT_BUILD_DIR}/${FLUTTER_ASSET_DIR_NAME}"
 # user's data directory and marks that copy executable at runtime.
 install(FILES
   "${CMAKE_CURRENT_SOURCE_DIR}/../assets/linux/huda_prayer_notification_helper.sh"
+  "${CMAKE_CURRENT_SOURCE_DIR}/../assets/linux/huda_icon.png"
   DESTINATION
     "${INSTALL_BUNDLE_DATA_DIR}/${FLUTTER_ASSET_DIR_NAME}/assets/linux"
   PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ WORLD_READ

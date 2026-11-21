@@ -66,11 +66,19 @@ static void my_application_activate(GApplication* application) {
 
   gtk_window_set_default_size(window, 1280, 720);
 
-  // Set the window icon (works for both debug and release modes).
-  if (g_file_test("assets", G_FILE_TEST_IS_DIR)) {
-    gtk_window_set_icon_from_file(window, "assets/dev/huda_center.png", NULL);
+  // Window icon: installed next to the binary by CMake (assets/linux), so
+  // resolve it from the executable, not the working directory (the snap and
+  // desktop launchers start elsewhere). `flutter run` falls back to the repo.
+  g_autofree gchar* exe = g_file_read_link("/proc/self/exe", nullptr);
+  g_autofree gchar* exe_dir = exe != nullptr ? g_path_get_dirname(exe) : nullptr;
+  g_autofree gchar* icon = exe_dir != nullptr
+      ? g_build_filename(exe_dir, "data", "flutter_assets", "assets", "linux",
+                         "huda_icon.png", nullptr)
+      : nullptr;
+  if (icon != nullptr && g_file_test(icon, G_FILE_TEST_EXISTS)) {
+    gtk_window_set_icon_from_file(window, icon, nullptr);
   } else {
-    gtk_window_set_icon_from_file(window, "data/flutter_assets/assets/dev/huda_center.png", NULL);
+    gtk_window_set_icon_from_file(window, "assets/linux/huda_icon.png", nullptr);
   }
 
   gtk_widget_show(GTK_WIDGET(window));
