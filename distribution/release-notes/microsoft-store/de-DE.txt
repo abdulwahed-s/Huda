@@ -1,5 +1,6 @@
-Gebetszeiten, Benachrichtigungen und Widgets sind zuverlässiger; Standorte lassen sich offline prüfen.
-Überarbeitete Gebetseinrichtung und Zeitübersicht mit teilbarem Gebetskalender.
-Koran offline lesen und hören wurde verbessert, einschließlich Übersetzungen, Tafsir und der Wiedergabe ausgewählter Ayahs.
-Hadithe sind besser lesbar und lassen sich jetzt als Bild teilen.
-Verbesserungen an Oberfläche und Bedienung in der gesamten App.
+Huda 5.0 ist komplett neu gestaltet – mit neuem Look auf jedem Bildschirm.
+Gebets-Countdown in der Taskleiste mit schnellem Gebets-Popup.
+Native Windows-Gebetsbenachrichtigungen mit Adhan, auch wenn Huda geschlossen ist.
+Fokus-Sitzungen fürs Gebet und Erinnerungen an Athkar und mehr.
+Neue Iqamah-Einstellungen und Mushaf-Seiten im Hafs-, Tajweed- und IndoPak-Stil.
+Geteilte Bilder werden jetzt im Ordner „Downloads“ gespeichert.

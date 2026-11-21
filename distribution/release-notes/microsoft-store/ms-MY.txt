@@ -1,5 +1,6 @@
-Waktu solat, pemberitahuan dan widget lebih boleh dipercayai, dengan pengesahan lokasi luar talian.
-Persediaan solat dan garis masa baharu, serta kalendar solat yang boleh dikongsi.
-Bacaan dan audio al-Quran luar talian dipertingkatkan, termasuk terjemahan, tafsir dan main balik julat ayat pilihan.
-Teks hadis lebih mudah dibaca dan kini boleh dikongsi sebagai imej.
-Penambahbaikan antara muka dan pengalaman pengguna di seluruh aplikasi.
+Huda 5.0 direka semula sepenuhnya, dengan rupa baharu pada setiap skrin.
+Kiraan detik solat di bar tugas dengan tetingkap timbul solat yang pantas.
+Pemberitahuan solat asli Windows dengan azan, walaupun Huda ditutup.
+Sesi Fokus untuk solat dan peringatan zikir serta banyak lagi.
+Tetapan iqamah baharu dan halaman Mushaf dalam gaya Hafs, Tajwid dan IndoPak.
+Imej yang dikongsi kini disimpan ke folder Muat Turun.

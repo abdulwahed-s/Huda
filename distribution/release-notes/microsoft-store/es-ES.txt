@@ -1,5 +1,6 @@
-Horarios de oración, notificaciones y widgets más fiables, con verificación de ubicación sin conexión.
-Nueva configuración y cronología de oración, con un calendario que puedes compartir.
-Mejoras en la lectura y el audio del Corán sin conexión, incluidas traducciones, tafsir y reproducción de aleyas seleccionadas.
-Los hadices son más fáciles de leer y ahora se pueden compartir como imagen.
-Mejoras de interfaz y experiencia de uso en toda la aplicación.
+Huda 5.0 llega con un rediseño completo y un nuevo aspecto en cada pantalla.
+Cuenta atrás de oración en la barra de tareas con una ventana rápida de oración.
+Notificaciones nativas de Windows con el adhan, incluso con Huda cerrada.
+Sesiones de concentración para la oración y recordatorios de athkar y más.
+Nuevos ajustes de iqama y páginas del Mushaf en estilos Hafs, Tajweed e IndoPak.
+Las imágenes compartidas ahora se guardan en la carpeta Descargas.

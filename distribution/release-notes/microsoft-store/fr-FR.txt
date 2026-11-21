@@ -1,5 +1,6 @@
-Horaires de prière, notifications et widgets plus fiables, avec vérification du lieu hors ligne.
-Configuration et vue chronologique de la prière repensées, avec calendrier partageable.
-Lecture et écoute du Coran hors ligne améliorées, avec traductions, tafsir et lecture des versets choisis.
-Les hadiths sont plus lisibles et peuvent être partagés sous forme d’image.
-Améliorations de l’interface et de l’expérience dans toute l’application.
+Huda 5.0 est entièrement repensé, avec un nouveau look sur chaque écran.
+Compte à rebours de prière dans la barre des tâches avec une fenêtre rapide.
+Notifications Windows natives avec l’adhan, même lorsque Huda est fermé.
+Sessions de concentration pour la prière et rappels d’athkar, et plus encore.
+Nouveaux réglages d’iqama et pages du Mushaf aux styles Hafs, Tajweed et IndoPak.
+Les images partagées sont désormais enregistrées dans le dossier Téléchargements.
