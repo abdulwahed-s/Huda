@@ -1,5 +1,6 @@
-Namaz vakitleri, bildirimler ve widget’lar daha güvenilir; konum çevrimdışı doğrulanabiliyor.
-Namaz kurulumu ve zaman çizelgesi yenilendi; namaz takvimini paylaşabilirsiniz.
-Çeviriler, tefsir ve seçili ayetleri oynatma dâhil çevrimdışı Kur’an okuma ve dinleme iyileştirildi.
-Hadis metinleri daha okunaklı; artık görsel olarak paylaşılabilir.
-Uygulama genelinde arayüz ve kullanım deneyimi iyileştirildi.
+Huda 5.0 baştan sona yeniden tasarlandı; her ekranda yeni bir görünüm.
+Klavyeyle gezinme destekli yeni menü çubuğu namaz geri sayımı.
+Masaüstü ve Bildirim Merkezi için yeni Kur’an ve namaz widget’ları.
+Ezanın tamamıyla namaz bildirimleri ve namaz için Odak oturumları.
+Yeni ikamet ayarları ve Hafs, Tecvid ve IndoPak stillerinde Mushaf sayfaları.
+Paylaşılan görseller artık İndirilenler klasörüne kaydediliyor.
