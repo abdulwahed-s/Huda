@@ -1,5 +1,6 @@
-Horarios de oración, notificaciones y widgets más fiables, con verificación de ubicación sin conexión.
-Nueva configuración y cronología de oración, con un calendario que puedes compartir.
-Mejoras en la lectura y el audio del Corán sin conexión, incluidas traducciones, tafsir y reproducción de aleyas seleccionadas.
-Los hadices son más fáciles de leer y ahora se pueden compartir como imagen.
-Mejoras de interfaz y experiencia de uso en toda la aplicación.
+Huda 5.0 llega con un rediseño completo: nuevo aspecto en cada pantalla, tema negro puro y diseños que se adaptan al iPad.
+Las alarmas de oración ahora pueden reproducir el adhan completo con las alarmas de iOS, incluso en modo silencio o Concentración.
+Las alertas de oración se rehicieron para funcionar sin conexión, con biblioteca de adhan, sonido y volumen por oración y prueba de entrega.
+Los nuevos ajustes de iqama muestran la oración actual y el tiempo transcurrido en notificaciones y widgets.
+Nuevas páginas del Mushaf en estilos Hafs, Tajweed e IndoPak para leer el Corán con más fluidez.
+Consulta los horarios de oración con Siri o Atajos, programa alarmas de Suhur y guarda imágenes compartidas en Fotos.

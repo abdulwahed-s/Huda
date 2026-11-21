@@ -1,5 +1,6 @@
-Waktu solat, pemberitahuan dan widget lebih boleh dipercayai, dengan pengesahan lokasi luar talian.
-Persediaan solat dan garis masa baharu, serta kalendar solat yang boleh dikongsi.
-Bacaan dan audio al-Quran luar talian dipertingkatkan, termasuk terjemahan, tafsir dan main balik julat ayat pilihan.
-Teks hadis lebih mudah dibaca dan kini boleh dikongsi sebagai imej.
-Penambahbaikan antara muka dan pengalaman pengguna di seluruh aplikasi.
+Huda 5.0 direka semula sepenuhnya, dengan rupa baharu pada setiap skrin, tema hitam pekat dan susun atur untuk iPad.
+Penggera solat kini boleh memainkan azan penuh melalui penggera iOS, walaupun dalam mod Senyap atau Fokus.
+Amaran solat dibina semula untuk berfungsi di luar talian, dengan pustaka azan, bunyi dan kelantangan setiap solat serta ujian penghantaran.
+Tetapan iqamah baharu memaparkan solat semasa dan masa berlalu dalam pemberitahuan dan widget.
+Halaman Mushaf baharu dalam gaya Hafs, Tajwid dan IndoPak untuk bacaan al-Quran yang lebih lancar.
+Tanya Siri atau Pintasan tentang waktu solat, tetapkan penggera sahur dan simpan imej yang dikongsi ke Foto.

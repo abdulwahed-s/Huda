@@ -1,5 +1,6 @@
-Horaires de prière, notifications et widgets plus fiables, avec vérification du lieu hors ligne.
-Configuration et vue chronologique de la prière repensées, avec calendrier partageable.
-Lecture et écoute du Coran hors ligne améliorées, avec traductions, tafsir et lecture des versets choisis.
-Les hadiths sont plus lisibles et peuvent être partagés sous forme d’image.
-Améliorations de l’interface et de l’expérience dans toute l’application.
+Huda 5.0 est entièrement repensé : nouveau look sur chaque écran, thème noir pur et mises en page adaptées à l’iPad.
+Les alarmes de prière peuvent désormais jouer l’adhan complet via les alarmes iOS, même en mode silencieux ou Concentration.
+Alertes de prière reconstruites pour fonctionner hors ligne, avec bibliothèque d’adhans, son et volume par prière et test de réception.
+Les nouveaux réglages d’iqama affichent la prière en cours et le temps écoulé dans les notifications et widgets.
+Nouvelles pages du Mushaf aux styles Hafs, Tajweed et IndoPak pour une lecture du Coran plus fluide.
+Demandez les horaires de prière à Siri ou Raccourcis, programmez des alarmes du Souhour et enregistrez les images partagées dans Photos.

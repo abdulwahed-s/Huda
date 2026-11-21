@@ -1,5 +1,6 @@
-Gebetszeiten, Benachrichtigungen und Widgets sind zuverlässiger; Standorte lassen sich offline prüfen.
-Überarbeitete Gebetseinrichtung und Zeitübersicht mit teilbarem Gebetskalender.
-Koran offline lesen und hören wurde verbessert, einschließlich Übersetzungen, Tafsir und der Wiedergabe ausgewählter Ayahs.
-Hadithe sind besser lesbar und lassen sich jetzt als Bild teilen.
-Verbesserungen an Oberfläche und Bedienung in der gesamten App.
+Huda 5.0 ist komplett neu gestaltet – mit neuem Look auf jedem Bildschirm, reinem Schwarz-Design und Layouts für das iPad.
+Gebetswecker können jetzt den vollständigen Adhan über iOS-Wecker abspielen, auch im Stumm- oder Fokusmodus.
+Gebetshinweise wurden neu entwickelt und funktionieren offline – mit Adhan-Bibliothek, Ton und Lautstärke pro Gebet und Zustelltest.
+Neue Iqamah-Einstellungen zeigen das aktuelle Gebet und die vergangene Zeit in Benachrichtigungen und Widgets.
+Neue Mushaf-Seiten im Hafs-, Tajweed- und IndoPak-Stil für flüssigeres Koranlesen.
+Gebetszeiten über Siri oder Kurzbefehle abfragen, native Sahur-Wecker stellen und geteilte Bilder in Fotos sichern.
