@@ -18,7 +18,7 @@ import 'package:huda/presentation/widgets/error/error_report.dart';
 import 'package:huda/presentation/widgets/error/system_identity.dart';
 import 'package:restart_app/restart_app.dart';
 
-const Color _kErrorBackground = Color(0xFF0c1d2b);
+const Color _kErrorBackground = Color(0xFF1D1914);
 
 bool _renderingError = false;
 

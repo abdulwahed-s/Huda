@@ -147,7 +147,7 @@ flutter_launcher_icons:
     image_path: "assets/images/huda_center.png"
 
 flutter_native_splash:
-  color: "#0c1d2b"
+  color: "#1D1914"
   image: "assets/dev/huda_splash.png"
   android: true
   ios: true
@@ -156,9 +156,9 @@ flutter_native_splash:
   android_gravity: center
   ios_content_mode: center
   android_12:
-    color: "#0c1d2b"
+    color: "#1D1914"
     image: "assets/dev/huda_splash.png"
-    icon_background_color: "#0c1d2b"
+    icon_background_color: "#1D1914"
 
 flutter:
   config:

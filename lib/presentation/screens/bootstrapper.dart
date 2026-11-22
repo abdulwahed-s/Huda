@@ -19,7 +19,13 @@ import 'package:huda/presentation/widgets/design/huda_lamp.dart';
 import 'package:huda/presentation/widgets/design/huda_states.dart';
 import 'package:huda/presentation/widgets/error/system_identity.dart';
 
-const Color _bootBackground = Color(0xFF0c1d2b);
+// Matches the native splash and the app icon: warm ink, gilt wordmark.
+const Color _bootBackground = Color(0xFF1D1914);
+const LinearGradient _bootGilt = LinearGradient(
+  begin: Alignment.topLeft,
+  end: Alignment.bottomRight,
+  colors: [Color(0xFFEAD799), Color(0xFFCC9933)],
+);
 const String _bootLogo = 'assets/images/huda.png';
 
 class Bootstrapper extends StatefulWidget {
@@ -246,14 +252,18 @@ class _BootLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset(
-      _bootLogo,
-      width: size,
-      height: size,
-      errorBuilder: (_, _, _) => SizedBox(
+    return ShaderMask(
+      blendMode: BlendMode.srcIn,
+      shaderCallback: _bootGilt.createShader,
+      child: Image.asset(
+        _bootLogo,
         width: size,
         height: size,
-        child: Icon(Icons.mosque, size: size * 0.6, color: Colors.white70),
+        errorBuilder: (_, _, _) => SizedBox(
+          width: size,
+          height: size,
+          child: Icon(Icons.mosque, size: size * 0.6, color: Colors.white70),
+        ),
       ),
     );
   }
