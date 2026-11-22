@@ -7,10 +7,21 @@ import 'package:huda/presentation/widgets/design/huda_states.dart';
 import 'package:huda/presentation/widgets/design/ornament/ornaments.dart';
 import 'package:locale_names/locale_names.dart';
 
-String bookLanguageName(BuildContext context, String code) {
+/// The language's name in the app's language. IslamHouse sends English names
+/// for most interface languages, so its [fallback] is only used for codes the
+/// local table doesn't know.
+String bookLanguageName(
+  BuildContext context,
+  String code, {
+  String? fallback,
+}) {
   if (code.isEmpty) return '';
   final name = Locale(code).displayLanguageIn(Localizations.localeOf(context));
-  if (name.isEmpty) return code.toUpperCase();
+  if (name.isEmpty || name == code) {
+    return fallback != null && fallback.isNotEmpty
+        ? fallback
+        : code.toUpperCase();
+  }
   return name[0].toUpperCase() + name.substring(1);
 }
 

@@ -355,9 +355,12 @@ class AudiobooksLanguageChip extends StatelessWidget {
   ) {
     if (state is AudioLanguagesLoaded) {
       for (final lang in state.languages) {
-        final name = lang.langtranslation;
-        if (lang.langsymbol == code && name != null && name.isNotEmpty) {
-          return name;
+        if (lang.langsymbol == code) {
+          return bookLanguageName(
+            context,
+            code,
+            fallback: lang.langtranslation,
+          );
         }
       }
     }
@@ -466,9 +469,11 @@ class _LanguageListState extends State<_LanguageList> {
 
   Widget _languageRow(BuildContext context, AudioLanguageModel lang) {
     final code = lang.langsymbol ?? '';
-    final name = (lang.langtranslation ?? '').isEmpty
-        ? bookLanguageName(context, code)
-        : lang.langtranslation!;
+    final name = bookLanguageName(
+      context,
+      code,
+      fallback: lang.langtranslation,
+    );
     return _row(context, code, name);
   }
 
