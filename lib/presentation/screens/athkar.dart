@@ -275,7 +275,10 @@ class _AthkarScreenState extends State<AthkarScreen> {
       final results = [
         for (final item in athkar)
           if (item.titleAr.toLowerCase().contains(query) ||
-              item.titleEn.toLowerCase().contains(query))
+              item.titleEn.toLowerCase().contains(query) ||
+              item.translations.values.any(
+                (title) => title.toLowerCase().contains(query),
+              ))
             item,
       ];
       if (results.isEmpty) {

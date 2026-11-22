@@ -19,9 +19,9 @@ class AthkarCategoryTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final arabic = Localizations.localeOf(context).languageCode == 'ar';
-    final english = item.titleEn.trim();
-    final title = arabic || english.isEmpty ? item.titleAr : english;
+    final language = Localizations.localeOf(context).languageCode;
+    final arabic = language == 'ar';
+    final title = item.displayTitle(language);
     return HudaCard(
       key: ValueKey('athkar-chapter-${item.id}'),
       padding: EdgeInsets.zero,
@@ -32,7 +32,7 @@ class AthkarCategoryTile extends StatelessWidget {
             (_) => AthkarDetails.page(
               athkarId: '${item.id}',
               title: item.titleAr,
-              titleEn: item.titleEn,
+              titleEn: arabic ? item.titleEn : title,
             ),
           ),
           arabicTitle: arabic ? null : item.titleAr,
