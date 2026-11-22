@@ -197,7 +197,10 @@ class _PrayersSection extends StatelessWidget {
                   on &&
                       prayer.style != PrayerAlertStyle.silent &&
                       prayer.style != PrayerAlertStyle.focus
-                  ? scope.library.reciter(prayer.reciterId)?.name(locale)
+                  ? l10n.reciterName(
+                      scope.library.reciter(prayer.reciterId),
+                      locale,
+                    )
                   : null;
               return PrayerSettingRow(
                 key: ValueKey('prayer-alert-prayer-${entry.key}'),

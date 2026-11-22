@@ -1667,6 +1667,7 @@
   "prayerAlertReset": "Restablecer {prayer}",
   "prayerAlertMoreFor": "Más para {prayer}",
   "prayerAlertDefault": "Predeterminado",
+  "prayerAlertDefaultAdhan": "Adhan predeterminado",
   "prayerAlertOn": "Sí",
   "prayerAlertBeforeMinutes": "{minutes} min antes",
   "prayerAlertBeforeHint": "Un recordatorio suave para que te prepares",

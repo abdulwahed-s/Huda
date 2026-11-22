@@ -2028,6 +2028,7 @@
   "prayerAlertReset": "إعادة {prayer} إلى الافتراضي",
   "prayerAlertMoreFor": "المزيد لصلاة {prayer}",
   "prayerAlertDefault": "افتراضي",
+  "prayerAlertDefaultAdhan": "الأذان الافتراضي",
   "prayerAlertOn": "تشغيل",
   "prayerAlertBeforeMinutes": "قبل {minutes} د",
   "prayerAlertBeforeHint": "تذكير لطيف لتستعدّ",

@@ -177,9 +177,10 @@ class _PrayerAlertSoundPageState extends State<PrayerAlertSoundPage> {
                 PrayerChoiceRow(
                   key: const ValueKey('prayer-alert-sound-default'),
                   title: l10n.prayerAlertSameAsAll,
-                  subtitle: library
-                      .reciter(settings.reciterId)
-                      ?.name(Localizations.localeOf(context).languageCode),
+                  subtitle: l10n.reciterName(
+                    library.reciter(settings.reciterId),
+                    Localizations.localeOf(context).languageCode,
+                  ),
                   selected: selected == null,
                   onTap: () => _choose(null),
                 ),
@@ -335,7 +336,7 @@ class _ReciterRow extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      reciter.name(locale),
+                      l10n.reciterName(reciter, locale)!,
                       style: theme.textTheme.bodyLarge?.copyWith(
                         fontWeight: FontWeight.w600,
                         color: palette.ink,

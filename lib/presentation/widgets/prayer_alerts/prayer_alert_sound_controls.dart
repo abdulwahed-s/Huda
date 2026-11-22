@@ -56,7 +56,7 @@ class PrayerSoundSection extends StatelessWidget {
           icon: Icons.graphic_eq_rounded,
           title: l10n.prayerAlertRecording,
           subtitle: [
-            reciter?.name(locale) ?? '…',
+            l10n.reciterName(reciter, locale) ?? '…',
             if (own != null && !own.ownReciter) l10n.prayerAlertSameAsAll,
             if (status.state == PrayerSoundState.downloading)
               l10n.prayerAlertSoundDownloading(

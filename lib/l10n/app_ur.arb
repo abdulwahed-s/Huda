@@ -1667,6 +1667,7 @@
   "prayerAlertReset": "{prayer} کو ڈیفالٹ پر واپس کریں",
   "prayerAlertMoreFor": "{prayer} کے لیے مزید",
   "prayerAlertDefault": "ڈیفالٹ",
+  "prayerAlertDefaultAdhan": "ڈیفالٹ اذان",
   "prayerAlertOn": "آن",
   "prayerAlertBeforeMinutes": "{minutes} منٹ پہلے",
   "prayerAlertBeforeHint": "تیاری کے لیے ایک ہلکی یاد دہانی",

@@ -1651,6 +1651,7 @@
   "prayerAlertReset": "Сбросить {prayer} к общим настройкам",
   "prayerAlertMoreFor": "Ещё для {prayer}",
   "prayerAlertDefault": "По умолчанию",
+  "prayerAlertDefaultAdhan": "Азан по умолчанию",
   "prayerAlertOn": "Вкл.",
   "prayerAlertBeforeMinutes": "За {minutes} мин",
   "prayerAlertBeforeHint": "Мягкое напоминание, чтобы подготовиться",

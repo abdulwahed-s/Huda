@@ -4653,6 +4653,9 @@ class AppLocalizationsMs extends AppLocalizations {
   String get prayerAlertDefault => 'Lalai';
 
   @override
+  String get prayerAlertDefaultAdhan => 'Azan Lalai';
+
+  @override
   String get prayerAlertOn => 'Hidup';
 
   @override

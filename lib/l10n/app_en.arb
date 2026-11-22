@@ -4438,6 +4438,7 @@
     }
   },
   "prayerAlertDefault": "Default",
+  "prayerAlertDefaultAdhan": "Default Adhan",
   "prayerAlertOn": "On",
   "prayerAlertBeforeMinutes": "{minutes} min before",
   "@prayerAlertBeforeMinutes": {

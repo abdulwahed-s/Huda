@@ -1651,6 +1651,7 @@
   "prayerAlertReset": "{prayer} varsayılana dönsün",
   "prayerAlertMoreFor": "{prayer} için diğer",
   "prayerAlertDefault": "Varsayılan",
+  "prayerAlertDefaultAdhan": "Varsayılan Ezan",
   "prayerAlertOn": "Açık",
   "prayerAlertBeforeMinutes": "{minutes} dk önce",
   "prayerAlertBeforeHint": "Hazırlanman için nazik bir hatırlatma",

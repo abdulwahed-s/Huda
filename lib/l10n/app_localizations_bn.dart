@@ -4641,6 +4641,9 @@ class AppLocalizationsBn extends AppLocalizations {
   String get prayerAlertDefault => 'ডিফল্ট';
 
   @override
+  String get prayerAlertDefaultAdhan => 'ডিফল্ট আজান';
+
+  @override
   String get prayerAlertOn => 'চালু';
 
   @override

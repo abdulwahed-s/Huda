@@ -4590,6 +4590,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get prayerAlertDefault => 'افتراضي';
 
   @override
+  String get prayerAlertDefaultAdhan => 'الأذان الافتراضي';
+
+  @override
   String get prayerAlertOn => 'تشغيل';
 
   @override

@@ -4,6 +4,15 @@ import 'package:huda/core/services/prayer_audio_library.dart';
 import 'package:huda/l10n/app_localizations.dart';
 
 extension PrayerAlertLabels on AppLocalizations {
+  /// The catalog only names reciters in English and Arabic; the bundled
+  /// adhan has a generic name, so it is translated for every locale.
+  String? reciterName(PrayerAudioReciter? reciter, String locale) =>
+      reciter == null
+      ? null
+      : reciter.isBundled
+      ? prayerAlertDefaultAdhan
+      : reciter.name(locale);
+
   String prayerName(String prayer) => switch (prayer) {
     'fajr' => fajr,
     'dhuhr' => dhuhr,

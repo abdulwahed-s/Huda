@@ -8394,6 +8394,12 @@ abstract class AppLocalizations {
   /// **'Default'**
   String get prayerAlertDefault;
 
+  /// No description provided for @prayerAlertDefaultAdhan.
+  ///
+  /// In en, this message translates to:
+  /// **'Default Adhan'**
+  String get prayerAlertDefaultAdhan;
+
   /// No description provided for @prayerAlertOn.
   ///
   /// In en, this message translates to:

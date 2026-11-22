@@ -4637,6 +4637,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get prayerAlertDefault => 'Varsayılan';
 
   @override
+  String get prayerAlertDefaultAdhan => 'Varsayılan Ezan';
+
+  @override
   String get prayerAlertOn => 'Açık';
 
   @override

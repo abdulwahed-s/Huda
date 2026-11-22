@@ -1738,6 +1738,7 @@
   "prayerAlertReset": "Tetapkan semula {prayer} kepada lalai",
   "prayerAlertMoreFor": "Lagi untuk {prayer}",
   "prayerAlertDefault": "Lalai",
+  "prayerAlertDefaultAdhan": "Azan Lalai",
   "prayerAlertOn": "Hidup",
   "prayerAlertBeforeMinutes": "{minutes} min sebelum",
   "prayerAlertBeforeHint": "Peringatan lembut supaya anda bersedia",

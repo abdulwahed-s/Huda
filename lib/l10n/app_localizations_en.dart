@@ -4638,6 +4638,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get prayerAlertDefault => 'Default';
 
   @override
+  String get prayerAlertDefaultAdhan => 'Default Adhan';
+
+  @override
   String get prayerAlertOn => 'On';
 
   @override

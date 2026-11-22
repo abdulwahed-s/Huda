@@ -4710,6 +4710,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get prayerAlertDefault => 'Par défaut';
 
   @override
+  String get prayerAlertDefaultAdhan => 'Adhan par défaut';
+
+  @override
   String get prayerAlertOn => 'Oui';
 
   @override

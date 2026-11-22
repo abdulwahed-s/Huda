@@ -4656,6 +4656,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get prayerAlertDefault => 'По умолчанию';
 
   @override
+  String get prayerAlertDefaultAdhan => 'Азан по умолчанию';
+
+  @override
   String get prayerAlertOn => 'Вкл.';
 
   @override

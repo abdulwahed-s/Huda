@@ -4629,6 +4629,9 @@ class AppLocalizationsUr extends AppLocalizations {
   String get prayerAlertDefault => 'ڈیفالٹ';
 
   @override
+  String get prayerAlertDefaultAdhan => 'ڈیفالٹ اذان';
+
+  @override
   String get prayerAlertOn => 'آن';
 
   @override

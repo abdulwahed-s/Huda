@@ -1754,6 +1754,7 @@
   "prayerAlertReset": "{prayer} ডিফল্টে ফিরিয়ে আনুন",
   "prayerAlertMoreFor": "{prayer}-এর জন্য আরও",
   "prayerAlertDefault": "ডিফল্ট",
+  "prayerAlertDefaultAdhan": "ডিফল্ট আজান",
   "prayerAlertOn": "চালু",
   "prayerAlertBeforeMinutes": "{minutes} মিনিট আগে",
   "prayerAlertBeforeHint": "প্রস্তুত হওয়ার জন্য একটি মৃদু অনুস্মারক",

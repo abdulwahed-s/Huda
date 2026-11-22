@@ -70,7 +70,7 @@ class _PrayerAlertSummaryCardState extends State<PrayerAlertSummaryCard> {
         settings.prayers.values.any((prayer) => prayer.custom);
     final reciter = settings == null || !settings.usesAudio
         ? null
-        : library.reciter(settings.reciterId)?.name(locale);
+        : l10n.reciterName(library.reciter(settings.reciterId), locale);
     final summary = settings == null
         ? null
         : !enabled

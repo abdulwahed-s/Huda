@@ -1628,6 +1628,7 @@
   "prayerAlertReset": "{prayer} auf Standard zurücksetzen",
   "prayerAlertMoreFor": "Mehr für {prayer}",
   "prayerAlertDefault": "Standard",
+  "prayerAlertDefaultAdhan": "Standard-Adhan",
   "prayerAlertOn": "An",
   "prayerAlertBeforeMinutes": "{minutes} Min. vorher",
   "prayerAlertBeforeHint": "Eine sanfte Erinnerung, damit du dich vorbereiten kannst",
