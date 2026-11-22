@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="assets/dev/huda.png" alt="Huda App Logo" width="120" height="120">
+  <img src="assets/dev/github/huda_icon.png" alt="Huda App Logo" width="120" height="120">
   
 # Huda - Islamic Companion App
 
@@ -40,13 +40,13 @@
 
 ## 📸 Screenshots
 
-| Home                                              | Quran Reader                                        | Prayer Times                                        |
-| ------------------------------------------------- | --------------------------------------------------- | --------------------------------------------------- |
-| ![Home Screen](assets/dev/github/home-screen.png) | ![Quran Reader](assets/dev/github/quran-reader.png) | ![Prayer Times](assets/dev/github/prayer-times.png) |
+| Home | Quran Reader | Prayer Times | Qibla Direction | Hadith |
+| --- | --- | --- | --- | --- |
+| ![Home](assets/dev/github/01_home.png) | ![Quran Reader](assets/dev/github/02_mushaf_reader.png) | ![Prayer Times](assets/dev/github/03_prayer_times.png) | ![Qibla Direction](assets/dev/github/04_qiblah.png) | ![Hadith](assets/dev/github/05_hadith.png) |
 
-| Qiblah Compass                                          | Islamic Reminder                                    | Daily Checklist                                       |
-| ------------------------------------------------------- | --------------------------------------------------- | ----------------------------------------------------- |
-| ![Qiblah Compass](assets/dev/github/qiblah-compass.png) | ![Islamic Reminder](assets/dev/github/reminder.png) | ![Islamic Checklist](assets/dev/github/checklist.png) |
+| Athkar | Huda AI | Daily Checklist | Miqaat Lock | Islamic Library |
+| --- | --- | --- | --- | --- |
+| ![Athkar](assets/dev/github/06_athkar.png) | ![Huda AI](assets/dev/github/07_huda_ai.png) | ![Daily Checklist](assets/dev/github/08_checklist.png) | ![Miqaat Lock](assets/dev/github/09_miqaat_lock.png) | ![Islamic Library](assets/dev/github/10_library.png) |
 
 ---
 
