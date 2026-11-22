@@ -94,7 +94,7 @@ parts:
       bash /tmp/huda-dotnet-install.sh --version 10.0.401 --install-dir "$CRAFT_PART_BUILD/.dotnet" --no-path
       export HUDA_DOTNET="$CRAFT_PART_BUILD/.dotnet/dotnet"
       cd "$CRAFT_PART_SRC"
-      xv/tool/build_linux_prayer_tray.sh --native-only
+      linux/prayer_tray/build.sh --native-only
       craftctl default
       install -Dm755 "$CRAFT_PART_SRC/assets/linux/huda_prayer_notification_helper.sh" \
         "$CRAFT_PART_INSTALL/bin/huda-prayer-notification-helper"
