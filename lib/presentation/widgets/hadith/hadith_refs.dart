@@ -31,7 +31,8 @@ class HadithCollectionRef {
       slug: data.name ?? '',
       title: title.isEmpty ? data.name ?? '' : title,
       arabicTitle: arabic,
-      intro: languageCode == 'ar' ? null : intro,
+      // sunnah.com only writes intros in English; other languages skip them.
+      intro: languageCode == 'en' ? intro : null,
       hadithCount: data.totalAvailableHadith,
     );
   }
