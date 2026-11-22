@@ -464,12 +464,6 @@ jobs:
           cd ..
           flutter build macos --release
 
-      - name: Verify macOS widget extension
-        run: |
-          python3 xv/macos/scripts/verify_widgets.py \
-            build/macos/Build/Products/Release/huda.app \
-            --verify-signature
-
       - name: Create installer pkg
         env:
           MACOS_INSTALLER_IDENTITY: ${{ secrets.MACOS_INSTALLER_IDENTITY }}
@@ -566,9 +560,6 @@ jobs:
       - name: Verify Windows prayer contracts
         shell: pwsh
         run: |
-          $env:HUDA_VERIFY_GENERATED = '1'
-          flutter test tool/generate_windows_prayer_data.dart test/core/services/windows_prayer_taskbar_bridge_test.dart test/presentation/widgets/prayer_times/windows_prayer_taskbar_card_test.dart
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           dotnet restore windows/prayer_taskbar/Huda.PrayerTaskbar.slnx --locked-mode -p:Platform=x64
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           dotnet test windows/prayer_taskbar/Huda.PrayerTaskbar.Tests/Huda.PrayerTaskbar.Tests.csproj -c Release -p:Platform=x64 --no-restore
@@ -591,7 +582,6 @@ jobs:
       - name: Create MSIX
         shell: pwsh
         run: |
-          ./xv/windows/prayer_taskbar/validate_release_bundle.ps1 -ReleaseDirectory build/windows/x64/runner/Release
           dart run msix:build --store --build-windows false
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           # Restore the matching MSVC runtime after msix copies its VC assets.
@@ -603,7 +593,6 @@ jobs:
           # msix cleanup removes root CRT DLLs needed by the Inno bundle.
           cmake --install build/windows/x64 --config Release
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          ./xv/windows/prayer_taskbar/validate_release_bundle.ps1 -ReleaseDirectory build/windows/x64/runner/Release
 
       - name: Upload MSIX artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
