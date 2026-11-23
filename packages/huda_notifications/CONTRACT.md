@@ -50,7 +50,7 @@ defaults:
   "fadeInSeconds": 0,
   "stopAfterSeconds": null,
   "alarmScreenEnabled": true,
-  "flipToStopEnabled": false,
+  "flipToStopEnabled": true,
   "respectRingerMode": false,
   "respectDoNotDisturb": true,
   "vibrate": true,
