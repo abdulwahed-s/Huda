@@ -629,6 +629,19 @@ abstract final class LinuxPrayerTrayBridge {
     if (raw == null) throw StateError('Tray did not acknowledge configuration');
     status.value = LinuxPrayerTrayStatus.fromMap(raw);
     if (raw['error'] != null) throw StateError(raw['error'] as String);
+    // A companion that was just started reads the file a moment later.
+    for (var attempt = 0;
+        attempt < 10 &&
+            preferences.value.enabled &&
+            status.value.serviceAvailable &&
+            status.value.appliedRevision < _revision;
+        attempt++) {
+      await Future<void>.delayed(const Duration(milliseconds: 200));
+      final latest = await channel.invokeMapMethod<String, dynamic>(
+        'getStatus',
+      );
+      if (latest != null) status.value = LinuxPrayerTrayStatus.fromMap(latest);
+    }
     if (preferences.value.enabled &&
         (!status.value.serviceAvailable ||
             status.value.appliedRevision != _revision)) {
