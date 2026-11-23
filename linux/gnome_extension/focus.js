@@ -12,6 +12,13 @@ import * as Format from './format.js';
 const BUS = 'com.aw.huda.PrayerTray';
 const PATH = '/com/aw/huda/PrayerExperience';
 const IFACE = 'com.aw.huda.PrayerExperience1';
+// An unlocked desktop session. Distributions run their own session mode on
+// top of 'user' (Ubuntu runs 'ubuntu'), so its parent counts too.
+function userSession() {
+    const mode = Main.sessionMode;
+    return !mode.isLocked && !mode.isGreeter &&
+        (mode.currentMode === 'user' || mode.parentMode === 'user');
+}
 function call(owner, member, args, signature = 's', cancel = null) {
     return new Promise((resolve, reject) => {
         Gio.DBus.session.call(owner, PATH, IFACE, member,
@@ -42,7 +49,7 @@ export class PrayerFocus {
         this._appearance = new Gio.Settings({schema_id: 'org.gnome.desktop.interface'});
         this._appearanceSignal = this._appearance.connect('changed::color-scheme', () => this._restyle());
         this._sessionSignal = Main.sessionMode.connect('updated', () => {
-            if (Main.sessionMode.isLocked || Main.sessionMode.currentMode !== 'user') this._close();
+            if (!userSession()) this._close();
             this._report().catch(console.error);
         });
         this._monitorsSignal = Main.layoutManager.connect('monitors-changed', () => {
@@ -64,7 +71,7 @@ export class PrayerFocus {
     async _report() {
         if (!this._alive || !this._owner) return;
         await call(this._owner, 'ReportEnvironment', [JSON.stringify({
-            available: true, unlocked: !Main.sessionMode.isLocked && Main.sessionMode.currentMode === 'user',
+            available: true, unlocked: userSession(),
             displays: Main.layoutManager.monitors.map(monitor => ({
                 id: `monitor-${monitor.index}`, name: `${monitor.index + 1} · ${monitor.width} × ${monitor.height}`,
             })),
@@ -274,7 +281,7 @@ export class PrayerFocus {
     }
     destroy() {
         if (!this._alive) return;
-        if (this._owner) call(this._owner, 'ReportEnvironment', [JSON.stringify({available: false, unlocked: !Main.sessionMode.isLocked && Main.sessionMode.currentMode === 'user', displays: []})]).catch(console.error);
+        if (this._owner) call(this._owner, 'ReportEnvironment', [JSON.stringify({available: false, unlocked: userSession(), displays: []})]).catch(console.error);
         this._alive = false; this._cancel?.cancel(); this._close();
         if (this._watch) Gio.bus_unwatch_name(this._watch);
         GLib.Source.remove(this._environmentTick);
