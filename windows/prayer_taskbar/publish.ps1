@@ -39,8 +39,14 @@ try {
             throw "The self-contained companion is missing $asset."
         }
     }
-    Copy-Item -LiteralPath (Join-Path $repositoryRoot 'xv/windows/prayer_taskbar/THIRD_PARTY_NOTICES.md') -Destination $OutputDirectory
-    Copy-Item -LiteralPath (Join-Path $repositoryRoot 'xv/windows/prayer_taskbar/Licenses') -Destination $OutputDirectory -Recurse -Force
+    foreach ($notice in @('THIRD_PARTY_NOTICES.md', 'Licenses')) {
+        $noticeSource = Join-Path $projectRoot $notice
+        if (Test-Path -LiteralPath $noticeSource) {
+            Copy-Item -LiteralPath $noticeSource -Destination $OutputDirectory -Recurse -Force
+        } else {
+            Write-Warning "Companion notice asset is absent from this checkout: $notice"
+        }
+    }
     $assetsPath = Join-Path $projectRoot 'Huda.PrayerTaskbar/obj/project.assets.json'
     $assets = Get-Content -LiteralPath $assetsPath -Raw | ConvertFrom-Json
     foreach ($library in $assets.libraries.PSObject.Properties) {
