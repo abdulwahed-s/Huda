@@ -53,8 +53,10 @@ public sealed record LinuxPrayerExperience
         };
     }
 
-    /// Every prayer's settings, for checking the recordings they need.
-    public IEnumerable<LinuxPrayerExperience> Effective => Prayers.Select(For);
+    /// Every prayer's settings, for checking the recordings they need. A
+    /// method, not a property: the status JSON serializes every public
+    /// property, and each result has this again (an endless object cycle).
+    public IEnumerable<LinuxPrayerExperience> Effective() => Prayers.Select(For);
     public void Validate()
     {
         if (Version != 1 || Mode is not ("silent" or "adhan" or "focus") ||

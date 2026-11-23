@@ -343,7 +343,7 @@ internal sealed class PrayerExperienceHost : IPathMethodHandler, IAsyncDisposabl
                         if (proposed.Experience.AllowLockedAudio) throw new InvalidDataException("Locked playback has not been verified on this desktop.");
                         if (proposed.Experience.Enabled && !_notifications.SilentSupported) throw new IOException("Silent desktop notification capability unavailable.");
                         if (proposed.Experience.Enabled)
-                            foreach (var effective in proposed.Experience.Effective
+                            foreach (var effective in proposed.Experience.Effective()
                                 .Where(item => item.Enabled && item.NeedsAudio)
                                 .DistinctBy(item => (item.ReciterId, item.AudioVersion)))
                                 await _audio.Resolve(effective, false);

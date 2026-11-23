@@ -18,6 +18,18 @@ public sealed class ExperienceTests
                 ScheduleRevision = 100, ConfigurationSignature = "linux-test" } };
     }
     [Fact]
+    public void SettingsSerializeWithoutACycle()
+    {
+        // The companion's status JSON includes these settings: a computed
+        // property that returns more settings made serialization endless.
+        var settings = new LinuxPrayerExperience { Configured = true, Mode = "focus",
+            Overrides = new() { ["asr"] = new() { Mode = "adhan" } } };
+        var json = JsonSerializer.Serialize(settings, TrayConfiguration.JsonOptions);
+        Assert.DoesNotContain("effective", json, StringComparison.OrdinalIgnoreCase);
+        Assert.Equal(5, settings.Effective().Count());
+        Assert.Equal("adhan", settings.Effective().ElementAt(2).Mode);
+    }
+    [Fact]
     public void DefaultsPreserveLegacyAndExplicitBackgroundChoice()
     {
         var old = TrayTests.Default(); old.Validate(); Assert.Null(old.Experience);
