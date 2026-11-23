@@ -752,12 +752,15 @@ jobs:
 
       - name: Extract GNOME prayer extension
         run: |
-          unsquashfs -d tray-extension-artifact "${{ steps.snapcraft.outputs.snap }}" data/huda-prayer-tray-4.3.0.zip
+          unsquashfs -d tray-extension-artifact "${{ steps.snapcraft.outputs.snap }}" \
+            data/huda-prayer-tray-4.3.0.zip data/install-huda-prayer-panel.sh
 
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: linux-prayer-extension
-          path: tray-extension-artifact/data/huda-prayer-tray-4.3.0.zip
+          path: |
+            tray-extension-artifact/data/huda-prayer-tray-4.3.0.zip
+            tray-extension-artifact/data/install-huda-prayer-panel.sh
           if-no-files-found: error
           overwrite: true
 
@@ -928,6 +931,13 @@ jobs:
 
           find release-artifacts/linux-prayer-extension -name "*.zip" -exec \
             cp {} "release-assets/Huda-${VERSION}-gnome-prayer-tray.zip" \; 2>/dev/null || true
+
+          # Fixed names, so releases/latest/download/<name> always works:
+          # install-huda-prayer-panel.sh downloads the panel from there.
+          find release-artifacts/linux-prayer-extension -name "*.zip" -exec \
+            cp {} release-assets/huda-gnome-prayer-panel.zip \; 2>/dev/null || true
+          find release-artifacts/linux-prayer-extension -name "install-huda-prayer-panel.sh" -exec \
+            cp {} release-assets/install-huda-prayer-panel.sh \; 2>/dev/null || true
 
           find release-artifacts/ios-ipa -name "*.ipa" -exec \
             cp {} "release-assets/Huda-${VERSION}-ios.ipa" \; 2>/dev/null || true

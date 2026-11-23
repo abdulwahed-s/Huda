@@ -1,7 +1,7 @@
 {
   "uuid": "prayer-tray@huda",
   "name": "Huda Prayer Panel",
-  "description": "Huda prayer times, live Adhan controls and Prayer Focus in GNOME.",
+  "description": "Huda prayer times, live Adhan controls and Prayer Focus in GNOME. Requires the Huda app.",
   "shell-version": ["46", "50"],
   "version": 2,
   "version-name": "4.3.0",

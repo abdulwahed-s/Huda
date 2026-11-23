@@ -120,6 +120,16 @@ flutter run
 * Adhan notifications and countdown timers
 * Multiple calculation methods
 
+#### 🐧 GNOME prayer panel (Linux)
+
+On GNOME, Huda can show the next prayer in the top bar, with Adhan controls, even while the app is closed. Huda offers this during setup, and later under **Prayer Times → Prayer panel**. To install it yourself, run this in a terminal:
+
+```bash
+curl -fsSL https://github.com/abdulwahed-s/Huda/releases/latest/download/install-huda-prayer-panel.sh | bash
+```
+
+If the terminal says to log out, log out and back in: the panel then turns on by itself. Prayer notifications work on every desktop, with or without the panel.
+
 ### 🧭 Qiblah Compass
 
 * Accurate Qiblah direction
