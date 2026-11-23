@@ -4269,17 +4269,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get linuxPrayerTrayRestart => 'Gebetspanel neu starten';
 
   @override
-  String get linuxPrayerTraySetupIntro =>
-      'Einmalige Einrichtung. Die Panel-Erweiterung ist in Huda enthalten.';
-
-  @override
-  String get linuxPrayerTrayInstallStepTitle => 'Panel installieren';
-
-  @override
-  String get linuxPrayerTrayInstallStep =>
-      'Kopiere den Befehl unten. Öffne das Terminal, füge ihn ein und drücke Enter.';
-
-  @override
   String get linuxPrayerTrayCopyCommand => 'Befehl kopieren';
 
   @override
@@ -4287,40 +4276,37 @@ class AppLocalizationsDe extends AppLocalizations {
       'Befehl kopiert. Füge ihn im Terminal ein und drücke Enter.';
 
   @override
-  String get linuxPrayerTrayEnableStepTitle => 'Erweiterung einschalten';
-
-  @override
-  String get linuxPrayerTrayEnableStep =>
-      'Öffne die App Erweiterungen und schalte „Huda Prayer Panel“ ein.';
-
-  @override
-  String get linuxPrayerTrayLoginHint =>
-      'Falls sie noch nicht aufgeführt ist, melde dich vom Desktop ab und wieder an. Öffne danach Erweiterungen erneut.';
-
-  @override
-  String get linuxPrayerTrayFinishStepTitle => 'Zu Huda zurückkehren';
-
-  @override
-  String get linuxPrayerTrayFinishStep =>
-      'Kehre hierher zurück und wähle „Einrichtung prüfen“, um das Gebets-Panel einzuschalten.';
-
-  @override
-  String get linuxPrayerTrayCheckSetup => 'Einrichtung prüfen';
-
-  @override
-  String get linuxPrayerTraySetupNotReady =>
-      'Das Panel ist noch nicht bereit. Schließe die Schritte oben ab und prüfe erneut.';
-
-  @override
-  String get linuxPrayerTrayDownloadStep =>
-      'Lade aus Hudas Veröffentlichungen die Datei mit der Endung „gnome-prayer-tray.zip“ herunter. Öffne das Terminal, füge den Befehl unten ein, ergänze ein Leerzeichen, ziehe die ZIP-Datei hinein und drücke Enter.';
-
-  @override
-  String get linuxPrayerTrayDownloads => 'Downloads öffnen';
-
-  @override
   String get linuxPrayerTrayUpdateStep =>
       'Aktualisiere Huda auf eine Version, die deine GNOME-Version unterstützt, bevor du das Panel erneut installierst.';
+
+  @override
+  String get linuxPanelIntro =>
+      'Sieh das nächste Gebet in der oberen Leiste, mit Adhan-Hinweisen auch bei geschlossenem Huda. Einmalige Einrichtung, etwa eine Minute.';
+
+  @override
+  String get linuxPanelCopyStep => 'Einrichtungsbefehl kopieren';
+
+  @override
+  String get linuxPanelTerminalStep =>
+      'Öffne das Terminal (Strg+Alt+T), füge ihn mit Strg+Umschalt+V ein und drücke Enter';
+
+  @override
+  String get linuxPanelAutoStep =>
+      'Das war’s. Huda erkennt selbst, wenn das Panel läuft.';
+
+  @override
+  String get linuxPanelWaiting => 'Warte auf das Panel …';
+
+  @override
+  String get linuxPanelLogoutHint =>
+      'Wenn das Terminal dich bittet, dich abzumelden, melde dich ab und wieder an. Das Panel schaltet sich dann selbst ein, du kannst also jetzt fortfahren.';
+
+  @override
+  String get linuxPanelReady =>
+      'Das Gebetspanel ist aktiv. Schau oben auf deinen Bildschirm.';
+
+  @override
+  String get linuxPanelAfterLogin => 'Wird nach der nächsten Anmeldung aktiv';
 
   @override
   String get linuxPrayerExperienceQuitInfo =>

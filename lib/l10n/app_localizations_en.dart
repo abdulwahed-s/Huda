@@ -4215,17 +4215,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get linuxPrayerTrayRestart => 'Restart prayer panel';
 
   @override
-  String get linuxPrayerTraySetupIntro =>
-      'One-time setup. The panel extension is included with Huda.';
-
-  @override
-  String get linuxPrayerTrayInstallStepTitle => 'Install the panel';
-
-  @override
-  String get linuxPrayerTrayInstallStep =>
-      'Copy the command below. Open Terminal, paste it and press Enter.';
-
-  @override
   String get linuxPrayerTrayCopyCommand => 'Copy command';
 
   @override
@@ -4233,40 +4222,37 @@ class AppLocalizationsEn extends AppLocalizations {
       'Command copied. Paste it in Terminal and press Enter.';
 
   @override
-  String get linuxPrayerTrayEnableStepTitle => 'Turn on the extension';
-
-  @override
-  String get linuxPrayerTrayEnableStep =>
-      'Open the Extensions app and turn on “Huda Prayer Panel”.';
-
-  @override
-  String get linuxPrayerTrayLoginHint =>
-      'If it is not listed yet, log out of your desktop and log back in, then open Extensions again.';
-
-  @override
-  String get linuxPrayerTrayFinishStepTitle => 'Return to Huda';
-
-  @override
-  String get linuxPrayerTrayFinishStep =>
-      'Come back here and select “Check setup” to turn on your prayer panel.';
-
-  @override
-  String get linuxPrayerTrayCheckSetup => 'Check setup';
-
-  @override
-  String get linuxPrayerTraySetupNotReady =>
-      'The panel is not ready yet. Complete the steps above, then check again.';
-
-  @override
-  String get linuxPrayerTrayDownloadStep =>
-      'Download the file ending in “gnome-prayer-tray.zip” from Huda’s releases. Open Terminal, paste the command below, add a space, then drag in the ZIP file and press Enter.';
-
-  @override
-  String get linuxPrayerTrayDownloads => 'Open downloads';
-
-  @override
   String get linuxPrayerTrayUpdateStep =>
       'Update Huda to a release that supports your GNOME version before reinstalling the panel.';
+
+  @override
+  String get linuxPanelIntro =>
+      'See the next prayer in your top bar, with adhan alerts even when Huda is closed. One-time setup, about a minute.';
+
+  @override
+  String get linuxPanelCopyStep => 'Copy the setup command';
+
+  @override
+  String get linuxPanelTerminalStep =>
+      'Open Terminal (Ctrl+Alt+T), paste it with Ctrl+Shift+V and press Enter';
+
+  @override
+  String get linuxPanelAutoStep =>
+      'That’s it. Huda notices by itself when the panel is on.';
+
+  @override
+  String get linuxPanelWaiting => 'Waiting for the panel…';
+
+  @override
+  String get linuxPanelLogoutHint =>
+      'If Terminal asks you to log out, log out and back in. The panel then turns on by itself, so you can continue now.';
+
+  @override
+  String get linuxPanelReady =>
+      'The prayer panel is on. Look at the top of your screen.';
+
+  @override
+  String get linuxPanelAfterLogin => 'Turns on after your next login';
 
   @override
   String get linuxPrayerExperienceQuitInfo =>

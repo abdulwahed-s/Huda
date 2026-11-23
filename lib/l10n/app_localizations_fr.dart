@@ -4281,17 +4281,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get linuxPrayerTrayRestart => 'Redémarrer le panneau de prière';
 
   @override
-  String get linuxPrayerTraySetupIntro =>
-      'Configuration à effectuer une seule fois. L’extension du panneau est incluse avec Huda.';
-
-  @override
-  String get linuxPrayerTrayInstallStepTitle => 'Installer le panneau';
-
-  @override
-  String get linuxPrayerTrayInstallStep =>
-      'Copiez la commande ci-dessous. Ouvrez Terminal, collez-la et appuyez sur Entrée.';
-
-  @override
   String get linuxPrayerTrayCopyCommand => 'Copier la commande';
 
   @override
@@ -4299,40 +4288,37 @@ class AppLocalizationsFr extends AppLocalizations {
       'Commande copiée. Collez-la dans Terminal et appuyez sur Entrée.';
 
   @override
-  String get linuxPrayerTrayEnableStepTitle => 'Activer l’extension';
-
-  @override
-  String get linuxPrayerTrayEnableStep =>
-      'Ouvrez l’application Extensions et activez « Huda Prayer Panel ».';
-
-  @override
-  String get linuxPrayerTrayLoginHint =>
-      'Si elle n’apparaît pas encore, déconnectez-vous du bureau puis reconnectez-vous. Rouvrez ensuite Extensions.';
-
-  @override
-  String get linuxPrayerTrayFinishStepTitle => 'Revenir à Huda';
-
-  @override
-  String get linuxPrayerTrayFinishStep =>
-      'Revenez ici et choisissez « Vérifier la configuration » pour activer le panneau de prière.';
-
-  @override
-  String get linuxPrayerTrayCheckSetup => 'Vérifier la configuration';
-
-  @override
-  String get linuxPrayerTraySetupNotReady =>
-      'Le panneau n’est pas encore prêt. Terminez les étapes ci-dessus, puis vérifiez à nouveau.';
-
-  @override
-  String get linuxPrayerTrayDownloadStep =>
-      'Téléchargez le fichier dont le nom se termine par « gnome-prayer-tray.zip » depuis les versions de Huda. Ouvrez Terminal, collez la commande ci-dessous, ajoutez un espace, faites glisser le fichier ZIP et appuyez sur Entrée.';
-
-  @override
-  String get linuxPrayerTrayDownloads => 'Ouvrir les téléchargements';
-
-  @override
   String get linuxPrayerTrayUpdateStep =>
       'Mettez Huda à jour vers une version compatible avec votre version de GNOME avant de réinstaller le panneau.';
+
+  @override
+  String get linuxPanelIntro =>
+      'Voyez la prochaine prière dans la barre supérieure, avec les alertes d’Adhan même quand Huda est fermé. Configuration unique, environ une minute.';
+
+  @override
+  String get linuxPanelCopyStep => 'Copiez la commande d’installation';
+
+  @override
+  String get linuxPanelTerminalStep =>
+      'Ouvrez le Terminal (Ctrl+Alt+T), collez-la avec Ctrl+Maj+V et appuyez sur Entrée';
+
+  @override
+  String get linuxPanelAutoStep =>
+      'C’est tout. Huda détecte tout seul quand le panneau est actif.';
+
+  @override
+  String get linuxPanelWaiting => 'En attente du panneau…';
+
+  @override
+  String get linuxPanelLogoutHint =>
+      'Si le Terminal vous demande de vous déconnecter, déconnectez-vous puis reconnectez-vous. Le panneau s’activera alors tout seul : vous pouvez continuer dès maintenant.';
+
+  @override
+  String get linuxPanelReady =>
+      'Le panneau de prière est actif. Regardez en haut de votre écran.';
+
+  @override
+  String get linuxPanelAfterLogin => 'S’active après votre prochaine connexion';
 
   @override
   String get linuxPrayerExperienceQuitInfo =>

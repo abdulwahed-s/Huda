@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:huda/core/services/prayer_iqamah_settings.dart';
 
@@ -22,6 +23,15 @@ import 'package:huda/l10n/app_localizations.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_calendar_method_label.dart';
 import 'package:huda/presentation/widgets/prayer_times/prayer_palette.dart';
 import 'package:synchronized/synchronized.dart';
+
+/// Whether this session runs GNOME Shell, the only desktop with the panel.
+/// Other desktops still get prayer notifications from the companion.
+bool linuxPrayerPanelSupported([Map<String, String>? environment]) {
+  final env = environment ?? Platform.environment;
+  final desktop = '${env['XDG_CURRENT_DESKTOP']}:${env['XDG_SESSION_DESKTOP']}'
+      .toUpperCase();
+  return desktop.contains('GNOME');
+}
 
 enum LinuxPrayerTrayStyle { iconOnly, iconNameCountdown, iconNameClock }
 

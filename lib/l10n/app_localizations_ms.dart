@@ -4230,17 +4230,6 @@ class AppLocalizationsMs extends AppLocalizations {
   String get linuxPrayerTrayRestart => 'Mulakan semula panel solat';
 
   @override
-  String get linuxPrayerTraySetupIntro =>
-      'Persediaan sekali sahaja. Sambungan panel disertakan bersama Huda.';
-
-  @override
-  String get linuxPrayerTrayInstallStepTitle => 'Pasang panel';
-
-  @override
-  String get linuxPrayerTrayInstallStep =>
-      'Salin arahan di bawah. Buka Terminal, tampalkannya dan tekan Enter.';
-
-  @override
   String get linuxPrayerTrayCopyCommand => 'Salin arahan';
 
   @override
@@ -4248,40 +4237,37 @@ class AppLocalizationsMs extends AppLocalizations {
       'Arahan disalin. Tampalkannya dalam Terminal dan tekan Enter.';
 
   @override
-  String get linuxPrayerTrayEnableStepTitle => 'Aktifkan sambungan';
-
-  @override
-  String get linuxPrayerTrayEnableStep =>
-      'Buka aplikasi Extensions dan aktifkan “Huda Prayer Panel”.';
-
-  @override
-  String get linuxPrayerTrayLoginHint =>
-      'Jika belum disenaraikan, log keluar daripada desktop dan log masuk semula, kemudian buka Extensions sekali lagi.';
-
-  @override
-  String get linuxPrayerTrayFinishStepTitle => 'Kembali ke Huda';
-
-  @override
-  String get linuxPrayerTrayFinishStep =>
-      'Kembali ke sini dan pilih “Semak persediaan” untuk mengaktifkan panel solat.';
-
-  @override
-  String get linuxPrayerTrayCheckSetup => 'Semak persediaan';
-
-  @override
-  String get linuxPrayerTraySetupNotReady =>
-      'Panel belum sedia. Lengkapkan langkah di atas, kemudian semak semula.';
-
-  @override
-  String get linuxPrayerTrayDownloadStep =>
-      'Muat turun fail yang namanya berakhir dengan “gnome-prayer-tray.zip” daripada keluaran Huda. Buka Terminal, tampal arahan di bawah, tambah ruang, kemudian seret fail ZIP masuk dan tekan Enter.';
-
-  @override
-  String get linuxPrayerTrayDownloads => 'Buka muat turun';
-
-  @override
   String get linuxPrayerTrayUpdateStep =>
       'Kemas kini Huda kepada keluaran yang menyokong versi GNOME anda sebelum memasang semula panel.';
+
+  @override
+  String get linuxPanelIntro =>
+      'Lihat solat seterusnya di bar atas, dengan amaran azan walaupun Huda ditutup. Persediaan sekali sahaja, kira-kira seminit.';
+
+  @override
+  String get linuxPanelCopyStep => 'Salin arahan persediaan';
+
+  @override
+  String get linuxPanelTerminalStep =>
+      'Buka Terminal (Ctrl+Alt+T), tampal dengan Ctrl+Shift+V dan tekan Enter';
+
+  @override
+  String get linuxPanelAutoStep =>
+      'Itu sahaja. Huda akan mengesan sendiri apabila panel aktif.';
+
+  @override
+  String get linuxPanelWaiting => 'Menunggu panel…';
+
+  @override
+  String get linuxPanelLogoutHint =>
+      'Jika Terminal meminta anda log keluar, log keluar dan log masuk semula. Panel akan aktif sendiri, jadi anda boleh teruskan sekarang.';
+
+  @override
+  String get linuxPanelReady =>
+      'Panel solat aktif. Lihat bahagian atas skrin anda.';
+
+  @override
+  String get linuxPanelAfterLogin => 'Aktif selepas log masuk seterusnya';
 
   @override
   String get linuxPrayerExperienceQuitInfo =>

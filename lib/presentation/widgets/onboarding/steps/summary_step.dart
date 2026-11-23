@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:huda/core/services/linux_prayer_tray_bridge.dart';
 import 'package:huda/core/theme/app_colors.dart';
 import 'package:huda/core/theme/huda_tokens.dart';
 import 'package:huda/cubit/athan/prayer_times_cubit.dart';
@@ -105,6 +106,12 @@ class _SummaryRow extends StatelessWidget {
         return (scope.access.access?.notificationsEnabled ?? false)
             ? l10n.prayerSetupAlertsOn
             : l10n.setupAlertsOff;
+      case OnboardingStep.prayerPanel:
+        // Done means the command ran; GNOME on Wayland loads a new
+        // extension only at the next login.
+        return LinuxPrayerTrayBridge.status.value.extensionState == 'enabled'
+            ? l10n.linuxPrayerTrayAvailable
+            : l10n.linuxPanelAfterLogin;
       case OnboardingStep.reliability:
         return l10n.prayerSetupReliableOn;
       case OnboardingStep.mushaf:

@@ -570,6 +570,33 @@ void _drawPartial(
           ..add(Path()..addArc(box, math.pi * 0.86, math.pi * 0.2))
           ..add(Path()..addArc(box, -math.pi * 0.06, math.pi * 0.2));
       }
+    case OnboardingStep.prayerPanel:
+      // A screen with the prayer panel open from its top bar.
+      lines
+        ..add(
+          Path()..addRRect(
+            RRect.fromRectAndRadius(
+              Rect.fromPoints(p(0.1, 0.18), p(0.9, 0.72)),
+              Radius.circular(0.04 * s),
+            ),
+          ),
+        )
+        ..add(line([p(0.1, 0.27), p(0.9, 0.27)]))
+        ..add(crescent(0.6, 0.225, 0.022))
+        ..add(line([p(0.65, 0.225), p(0.8, 0.225)]))
+        ..add(
+          Path()..addRRect(
+            RRect.fromRectAndRadius(
+              Rect.fromPoints(p(0.54, 0.31), p(0.84, 0.6)),
+              Radius.circular(0.025 * s),
+            ),
+          ),
+        )
+        ..add(line([p(0.5, 0.72), p(0.5, 0.82)]))
+        ..add(line([p(0.34, 0.84), p(0.66, 0.84)]));
+      for (final y in const [0.38, 0.45, 0.52]) {
+        lines.add(line([p(0.59, y), p(0.79, y)]));
+      }
     case OnboardingStep.reliability:
       lines
         ..add(

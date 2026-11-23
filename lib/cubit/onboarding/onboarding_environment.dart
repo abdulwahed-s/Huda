@@ -6,6 +6,8 @@ import 'package:huda/core/cache/cache_helper.dart';
 import 'package:huda/core/services/crash_reporter.dart';
 import 'package:huda/core/services/crash_reporting_consent.dart';
 import 'package:huda/core/services/home_preferences_service.dart';
+import 'package:huda/core/services/linux_prayer_tray_bridge.dart'
+    show linuxPrayerPanelSupported;
 import 'package:huda/core/services/mushaf_pack_service.dart';
 import 'package:huda/core/services/prayer_alerts/prayer_alerts.dart';
 import 'package:huda/core/services/service_locator.dart';
@@ -39,6 +41,7 @@ class OnboardingEnvironment {
     this.isFoss = false,
     this.isAndroid = false,
     this.canOpenSettings = true,
+    this.showPrayerPanel = false,
     this.alerts,
   });
 
@@ -49,6 +52,7 @@ class OnboardingEnvironment {
     isAndroid: PlatformUtils.isAndroid,
     // Linux has no settings page to open for these permissions.
     canOpenSettings: !PlatformUtils.isLinux,
+    showPrayerPanel: PlatformUtils.isLinux && linuxPrayerPanelSupported(),
     appVersion: () async => (await PackageInfo.fromPlatform()).version,
     onWifi: () async {
       final links = await Connectivity().checkConnectivity();
@@ -89,6 +93,10 @@ class OnboardingEnvironment {
 
   /// Whether "Open settings" can open the system's page.
   final bool canOpenSettings;
+
+  /// Linux on GNOME: the wizard offers the top-bar prayer panel. Other
+  /// desktops have no panel; their prayer notifications need no setup.
+  final bool showPrayerPanel;
 
   final Future<String> Function() appVersion;
 

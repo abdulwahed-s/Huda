@@ -4171,17 +4171,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get linuxPrayerTrayRestart => 'إعادة تشغيل لوحة الصلاة';
 
   @override
-  String get linuxPrayerTraySetupIntro =>
-      'إعداد لمرة واحدة. إضافة اللوحة مرفقة مع هدى.';
-
-  @override
-  String get linuxPrayerTrayInstallStepTitle => 'ثبّت اللوحة';
-
-  @override
-  String get linuxPrayerTrayInstallStep =>
-      'انسخ الأمر أدناه. افتح الطرفية، والصقه، ثم اضغط Enter.';
-
-  @override
   String get linuxPrayerTrayCopyCommand => 'نسخ الأمر';
 
   @override
@@ -4189,40 +4178,36 @@ class AppLocalizationsAr extends AppLocalizations {
       'تم نسخ الأمر. الصقه في الطرفية واضغط Enter.';
 
   @override
-  String get linuxPrayerTrayEnableStepTitle => 'فعّل الإضافة';
-
-  @override
-  String get linuxPrayerTrayEnableStep =>
-      'افتح تطبيق «الإضافات» وفعّل «Huda Prayer Panel».';
-
-  @override
-  String get linuxPrayerTrayLoginHint =>
-      'إذا لم تظهر في القائمة، سجّل الخروج من سطح المكتب ثم سجّل الدخول وافتح «الإضافات» مجددًا.';
-
-  @override
-  String get linuxPrayerTrayFinishStepTitle => 'ارجع إلى هدى';
-
-  @override
-  String get linuxPrayerTrayFinishStep =>
-      'ارجع إلى هنا واختر «التحقّق من الإعداد» لتشغيل لوحة الصلاة.';
-
-  @override
-  String get linuxPrayerTrayCheckSetup => 'التحقّق من الإعداد';
-
-  @override
-  String get linuxPrayerTraySetupNotReady =>
-      'اللوحة ليست جاهزة بعد. أكمل الخطوات أعلاه ثم تحقّق مجددًا.';
-
-  @override
-  String get linuxPrayerTrayDownloadStep =>
-      'نزّل الملف الذي ينتهي اسمه بـ «gnome-prayer-tray.zip» من إصدارات هدى. افتح الطرفية، والصق الأمر أدناه، وأضف مسافة، ثم اسحب ملف ZIP إلى الطرفية واضغط Enter.';
-
-  @override
-  String get linuxPrayerTrayDownloads => 'فتح التنزيلات';
-
-  @override
   String get linuxPrayerTrayUpdateStep =>
       'حدّث هدى إلى إصدار يدعم إصدار جنوم لديك قبل إعادة تثبيت اللوحة.';
+
+  @override
+  String get linuxPanelIntro =>
+      'اعرض الصلاة القادمة في الشريط العلوي، مع تنبيهات الأذان حتى عندما يكون هدى مغلقًا. إعداد لمرة واحدة، يستغرق نحو دقيقة.';
+
+  @override
+  String get linuxPanelCopyStep => 'انسخ أمر الإعداد';
+
+  @override
+  String get linuxPanelTerminalStep =>
+      'افتح الطرفية (Ctrl+Alt+T)، والصقه بـ Ctrl+Shift+V ثم اضغط Enter';
+
+  @override
+  String get linuxPanelAutoStep =>
+      'هذا كل شيء. سيلاحظ هدى تلقائيًا عندما تعمل اللوحة.';
+
+  @override
+  String get linuxPanelWaiting => 'بانتظار اللوحة…';
+
+  @override
+  String get linuxPanelLogoutHint =>
+      'إذا طلبت منك الطرفية تسجيل الخروج، فسجّل الخروج ثم ادخل مجددًا. ستعمل اللوحة بعدها تلقائيًا، لذا يمكنك المتابعة الآن.';
+
+  @override
+  String get linuxPanelReady => 'لوحة الصلاة تعمل. انظر إلى أعلى الشاشة.';
+
+  @override
+  String get linuxPanelAfterLogin => 'تعمل بعد تسجيل الدخول التالي';
 
   @override
   String get linuxPrayerExperienceQuitInfo =>

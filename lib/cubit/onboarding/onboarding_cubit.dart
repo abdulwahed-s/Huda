@@ -14,6 +14,7 @@ class OnboardingCubit extends Cubit<OnboardingState> {
         OnboardingState(
           steps: _stepsFor(
             privacy: environment.isFoss,
+            panel: environment.showPrayerPanel,
             reliability: false,
             reminders: false,
           ),
@@ -36,11 +37,13 @@ class OnboardingCubit extends Cubit<OnboardingState> {
 
   static List<OnboardingStep> _stepsFor({
     required bool privacy,
+    required bool panel,
     required bool reliability,
     required bool reminders,
   }) => [
     for (final step in OnboardingStep.values)
       if ((step != OnboardingStep.privacy || privacy) &&
+          (step != OnboardingStep.prayerPanel || panel) &&
           (step != OnboardingStep.reliability || reliability) &&
           (step != OnboardingStep.reminders || reminders))
         step,
@@ -63,6 +66,7 @@ class OnboardingCubit extends Cubit<OnboardingState> {
         if (keep.contains(step) ||
             _stepsFor(
               privacy: environment.isFoss,
+              panel: environment.showPrayerPanel,
               reliability: _reliability,
               reminders: _reminders,
             ).contains(step))

@@ -4217,17 +4217,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get linuxPrayerTrayRestart => 'Namaz panelini yeniden başlat';
 
   @override
-  String get linuxPrayerTraySetupIntro =>
-      'Tek seferlik kurulum. Panel eklentisi Huda ile birlikte gelir.';
-
-  @override
-  String get linuxPrayerTrayInstallStepTitle => 'Paneli kurun';
-
-  @override
-  String get linuxPrayerTrayInstallStep =>
-      'Aşağıdaki komutu kopyalayın. Terminal’i açın, yapıştırın ve Enter’a basın.';
-
-  @override
   String get linuxPrayerTrayCopyCommand => 'Komutu kopyala';
 
   @override
@@ -4235,40 +4224,37 @@ class AppLocalizationsTr extends AppLocalizations {
       'Komut kopyalandı. Terminal’e yapıştırın ve Enter’a basın.';
 
   @override
-  String get linuxPrayerTrayEnableStepTitle => 'Eklentiyi etkinleştirin';
-
-  @override
-  String get linuxPrayerTrayEnableStep =>
-      'Eklentiler uygulamasını açın ve “Huda Prayer Panel”i etkinleştirin.';
-
-  @override
-  String get linuxPrayerTrayLoginHint =>
-      'Henüz listelenmiyorsa masaüstü oturumundan çıkıp tekrar giriş yapın, ardından Eklentiler’i yeniden açın.';
-
-  @override
-  String get linuxPrayerTrayFinishStepTitle => 'Huda’ya dönün';
-
-  @override
-  String get linuxPrayerTrayFinishStep =>
-      'Buraya dönüp namaz panelini açmak için “Kurulumu kontrol et”i seçin.';
-
-  @override
-  String get linuxPrayerTrayCheckSetup => 'Kurulumu kontrol et';
-
-  @override
-  String get linuxPrayerTraySetupNotReady =>
-      'Panel henüz hazır değil. Yukarıdaki adımları tamamlayıp yeniden kontrol edin.';
-
-  @override
-  String get linuxPrayerTrayDownloadStep =>
-      'Huda sürümlerinden adı “gnome-prayer-tray.zip” ile biten dosyayı indirin. Terminal’i açın, aşağıdaki komutu yapıştırın, bir boşluk ekleyin, ZIP dosyasını içine sürükleyin ve Enter’a basın.';
-
-  @override
-  String get linuxPrayerTrayDownloads => 'İndirmeleri aç';
-
-  @override
   String get linuxPrayerTrayUpdateStep =>
       'Paneli yeniden kurmadan önce Huda’yı GNOME sürümünüzü destekleyen bir sürüme güncelleyin.';
+
+  @override
+  String get linuxPanelIntro =>
+      'Sonraki namazı üst çubukta görün, Huda kapalıyken bile ezan bildirimleri alın. Tek seferlik kurulum, yaklaşık bir dakika.';
+
+  @override
+  String get linuxPanelCopyStep => 'Kurulum komutunu kopyalayın';
+
+  @override
+  String get linuxPanelTerminalStep =>
+      'Terminal’i açın (Ctrl+Alt+T), Ctrl+Shift+V ile yapıştırın ve Enter’a basın';
+
+  @override
+  String get linuxPanelAutoStep =>
+      'Hepsi bu. Panel açıldığında Huda bunu kendisi fark eder.';
+
+  @override
+  String get linuxPanelWaiting => 'Panel bekleniyor…';
+
+  @override
+  String get linuxPanelLogoutHint =>
+      'Terminal oturumu kapatmanızı isterse çıkış yapıp tekrar giriş yapın. Panel kendiliğinden açılır, şimdi devam edebilirsiniz.';
+
+  @override
+  String get linuxPanelReady =>
+      'Namaz paneli açık. Ekranınızın üst kısmına bakın.';
+
+  @override
+  String get linuxPanelAfterLogin => 'Sonraki girişinizden sonra açılır';
 
   @override
   String get linuxPrayerExperienceQuitInfo =>

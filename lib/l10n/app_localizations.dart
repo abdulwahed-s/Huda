@@ -7674,24 +7674,6 @@ abstract class AppLocalizations {
   /// **'Restart prayer panel'**
   String get linuxPrayerTrayRestart;
 
-  /// No description provided for @linuxPrayerTraySetupIntro.
-  ///
-  /// In en, this message translates to:
-  /// **'One-time setup. The panel extension is included with Huda.'**
-  String get linuxPrayerTraySetupIntro;
-
-  /// No description provided for @linuxPrayerTrayInstallStepTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Install the panel'**
-  String get linuxPrayerTrayInstallStepTitle;
-
-  /// No description provided for @linuxPrayerTrayInstallStep.
-  ///
-  /// In en, this message translates to:
-  /// **'Copy the command below. Open Terminal, paste it and press Enter.'**
-  String get linuxPrayerTrayInstallStep;
-
   /// No description provided for @linuxPrayerTrayCopyCommand.
   ///
   /// In en, this message translates to:
@@ -7704,65 +7686,59 @@ abstract class AppLocalizations {
   /// **'Command copied. Paste it in Terminal and press Enter.'**
   String get linuxPrayerTrayCommandCopied;
 
-  /// No description provided for @linuxPrayerTrayEnableStepTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Turn on the extension'**
-  String get linuxPrayerTrayEnableStepTitle;
-
-  /// No description provided for @linuxPrayerTrayEnableStep.
-  ///
-  /// In en, this message translates to:
-  /// **'Open the Extensions app and turn on “Huda Prayer Panel”.'**
-  String get linuxPrayerTrayEnableStep;
-
-  /// No description provided for @linuxPrayerTrayLoginHint.
-  ///
-  /// In en, this message translates to:
-  /// **'If it is not listed yet, log out of your desktop and log back in, then open Extensions again.'**
-  String get linuxPrayerTrayLoginHint;
-
-  /// No description provided for @linuxPrayerTrayFinishStepTitle.
-  ///
-  /// In en, this message translates to:
-  /// **'Return to Huda'**
-  String get linuxPrayerTrayFinishStepTitle;
-
-  /// No description provided for @linuxPrayerTrayFinishStep.
-  ///
-  /// In en, this message translates to:
-  /// **'Come back here and select “Check setup” to turn on your prayer panel.'**
-  String get linuxPrayerTrayFinishStep;
-
-  /// No description provided for @linuxPrayerTrayCheckSetup.
-  ///
-  /// In en, this message translates to:
-  /// **'Check setup'**
-  String get linuxPrayerTrayCheckSetup;
-
-  /// No description provided for @linuxPrayerTraySetupNotReady.
-  ///
-  /// In en, this message translates to:
-  /// **'The panel is not ready yet. Complete the steps above, then check again.'**
-  String get linuxPrayerTraySetupNotReady;
-
-  /// No description provided for @linuxPrayerTrayDownloadStep.
-  ///
-  /// In en, this message translates to:
-  /// **'Download the file ending in “gnome-prayer-tray.zip” from Huda’s releases. Open Terminal, paste the command below, add a space, then drag in the ZIP file and press Enter.'**
-  String get linuxPrayerTrayDownloadStep;
-
-  /// No description provided for @linuxPrayerTrayDownloads.
-  ///
-  /// In en, this message translates to:
-  /// **'Open downloads'**
-  String get linuxPrayerTrayDownloads;
-
   /// No description provided for @linuxPrayerTrayUpdateStep.
   ///
   /// In en, this message translates to:
   /// **'Update Huda to a release that supports your GNOME version before reinstalling the panel.'**
   String get linuxPrayerTrayUpdateStep;
+
+  /// No description provided for @linuxPanelIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'See the next prayer in your top bar, with adhan alerts even when Huda is closed. One-time setup, about a minute.'**
+  String get linuxPanelIntro;
+
+  /// No description provided for @linuxPanelCopyStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy the setup command'**
+  String get linuxPanelCopyStep;
+
+  /// No description provided for @linuxPanelTerminalStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Terminal (Ctrl+Alt+T), paste it with Ctrl+Shift+V and press Enter'**
+  String get linuxPanelTerminalStep;
+
+  /// No description provided for @linuxPanelAutoStep.
+  ///
+  /// In en, this message translates to:
+  /// **'That’s it. Huda notices by itself when the panel is on.'**
+  String get linuxPanelAutoStep;
+
+  /// No description provided for @linuxPanelWaiting.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for the panel…'**
+  String get linuxPanelWaiting;
+
+  /// No description provided for @linuxPanelLogoutHint.
+  ///
+  /// In en, this message translates to:
+  /// **'If Terminal asks you to log out, log out and back in. The panel then turns on by itself, so you can continue now.'**
+  String get linuxPanelLogoutHint;
+
+  /// No description provided for @linuxPanelReady.
+  ///
+  /// In en, this message translates to:
+  /// **'The prayer panel is on. Look at the top of your screen.'**
+  String get linuxPanelReady;
+
+  /// No description provided for @linuxPanelAfterLogin.
+  ///
+  /// In en, this message translates to:
+  /// **'Turns on after your next login'**
+  String get linuxPanelAfterLogin;
 
   /// No description provided for @linuxPrayerExperienceQuitInfo.
   ///

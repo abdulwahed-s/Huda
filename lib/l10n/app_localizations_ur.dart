@@ -4208,17 +4208,6 @@ class AppLocalizationsUr extends AppLocalizations {
   String get linuxPrayerTrayRestart => 'نماز پینل دوبارہ شروع کریں';
 
   @override
-  String get linuxPrayerTraySetupIntro =>
-      'صرف ایک بار سیٹ اپ کرنا ہے۔ پینل کی ایکسٹینشن ہدیٰ کے ساتھ شامل ہے۔';
-
-  @override
-  String get linuxPrayerTrayInstallStepTitle => 'پینل انسٹال کریں';
-
-  @override
-  String get linuxPrayerTrayInstallStep =>
-      'نیچے دیا گیا کمانڈ کاپی کریں۔ ٹرمینل کھولیں، اسے پیسٹ کریں اور Enter دبائیں۔';
-
-  @override
   String get linuxPrayerTrayCopyCommand => 'کمانڈ کاپی کریں';
 
   @override
@@ -4226,40 +4215,36 @@ class AppLocalizationsUr extends AppLocalizations {
       'کمانڈ کاپی ہو گیا۔ ٹرمینل میں پیسٹ کریں اور Enter دبائیں۔';
 
   @override
-  String get linuxPrayerTrayEnableStepTitle => 'ایکسٹینشن فعال کریں';
-
-  @override
-  String get linuxPrayerTrayEnableStep =>
-      'Extensions ایپ کھولیں اور “Huda Prayer Panel” فعال کریں۔';
-
-  @override
-  String get linuxPrayerTrayLoginHint =>
-      'اگر ابھی فہرست میں نہیں ہے تو ڈیسک ٹاپ سے لاگ آؤٹ کر کے دوبارہ لاگ ان کریں، پھر Extensions دوبارہ کھولیں۔';
-
-  @override
-  String get linuxPrayerTrayFinishStepTitle => 'ہدیٰ میں واپس آئیں';
-
-  @override
-  String get linuxPrayerTrayFinishStep =>
-      'یہاں واپس آ کر نماز کا پینل فعال کرنے کے لیے “سیٹ اپ چیک کریں” منتخب کریں۔';
-
-  @override
-  String get linuxPrayerTrayCheckSetup => 'سیٹ اپ چیک کریں';
-
-  @override
-  String get linuxPrayerTraySetupNotReady =>
-      'پینل ابھی تیار نہیں ہے۔ اوپر کے مراحل مکمل کریں، پھر دوبارہ چیک کریں۔';
-
-  @override
-  String get linuxPrayerTrayDownloadStep =>
-      'ہدیٰ کی ریلیز سے وہ فائل ڈاؤن لوڈ کریں جس کا نام “gnome-prayer-tray.zip” پر ختم ہوتا ہے۔ ٹرمینل کھولیں، نیچے دیا گیا کمانڈ پیسٹ کریں، ایک اسپیس ڈالیں، پھر ZIP فائل کو اس میں ڈریگ کریں اور Enter دبائیں۔';
-
-  @override
-  String get linuxPrayerTrayDownloads => 'ڈاؤن لوڈز کھولیں';
-
-  @override
   String get linuxPrayerTrayUpdateStep =>
       'پینل دوبارہ انسٹال کرنے سے پہلے ہدیٰ کو ایسے ورژن پر اپ ڈیٹ کریں جو آپ کے GNOME ورژن کو سپورٹ کرتا ہو۔';
+
+  @override
+  String get linuxPanelIntro =>
+      'اوپر والی بار میں اگلی نماز دیکھیں، اور ہدیٰ بند ہونے پر بھی اذان کی اطلاعات پائیں۔ ایک بار کا سیٹ اپ، تقریباً ایک منٹ۔';
+
+  @override
+  String get linuxPanelCopyStep => 'سیٹ اپ کمانڈ کاپی کریں';
+
+  @override
+  String get linuxPanelTerminalStep =>
+      'Terminal کھولیں (Ctrl+Alt+T)، اسے Ctrl+Shift+V سے پیسٹ کریں اور Enter دبائیں';
+
+  @override
+  String get linuxPanelAutoStep =>
+      'بس اتنا ہی۔ پینل آن ہوتے ہی ہدیٰ خود پہچان لے گا۔';
+
+  @override
+  String get linuxPanelWaiting => 'پینل کا انتظار ہے…';
+
+  @override
+  String get linuxPanelLogoutHint =>
+      'اگر Terminal لاگ آؤٹ کرنے کو کہے تو لاگ آؤٹ کر کے دوبارہ لاگ ان کریں۔ پینل خود آن ہو جائے گا، اس لیے آپ ابھی آگے بڑھ سکتے ہیں۔';
+
+  @override
+  String get linuxPanelReady => 'نماز پینل آن ہے۔ اپنی اسکرین کے اوپر دیکھیں۔';
+
+  @override
+  String get linuxPanelAfterLogin => 'اگلے لاگ ان کے بعد آن ہوگا';
 
   @override
   String get linuxPrayerExperienceQuitInfo =>

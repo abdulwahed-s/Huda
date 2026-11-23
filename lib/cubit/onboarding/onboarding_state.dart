@@ -11,6 +11,7 @@ enum OnboardingStep {
   location,
   asr,
   alerts,
+  prayerPanel,
   reliability,
   mushaf,
   reminders,

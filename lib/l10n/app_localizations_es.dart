@@ -4264,17 +4264,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get linuxPrayerTrayRestart => 'Reiniciar panel de oración';
 
   @override
-  String get linuxPrayerTraySetupIntro =>
-      'Configuración inicial. La extensión del panel viene incluida con Huda.';
-
-  @override
-  String get linuxPrayerTrayInstallStepTitle => 'Instala el panel';
-
-  @override
-  String get linuxPrayerTrayInstallStep =>
-      'Copia el comando de abajo. Abre Terminal, pégalo y pulsa Enter.';
-
-  @override
   String get linuxPrayerTrayCopyCommand => 'Copiar comando';
 
   @override
@@ -4282,40 +4271,38 @@ class AppLocalizationsEs extends AppLocalizations {
       'Comando copiado. Pégalo en Terminal y pulsa Enter.';
 
   @override
-  String get linuxPrayerTrayEnableStepTitle => 'Activa la extensión';
-
-  @override
-  String get linuxPrayerTrayEnableStep =>
-      'Abre la aplicación Extensiones y activa «Huda Prayer Panel».';
-
-  @override
-  String get linuxPrayerTrayLoginHint =>
-      'Si aún no aparece, cierra la sesión del escritorio y vuelve a iniciarla. Después abre Extensiones de nuevo.';
-
-  @override
-  String get linuxPrayerTrayFinishStepTitle => 'Vuelve a Huda';
-
-  @override
-  String get linuxPrayerTrayFinishStep =>
-      'Vuelve aquí y selecciona «Comprobar configuración» para activar el panel de oración.';
-
-  @override
-  String get linuxPrayerTrayCheckSetup => 'Comprobar configuración';
-
-  @override
-  String get linuxPrayerTraySetupNotReady =>
-      'El panel aún no está listo. Completa los pasos anteriores y vuelve a comprobarlo.';
-
-  @override
-  String get linuxPrayerTrayDownloadStep =>
-      'Descarga el archivo cuyo nombre termina en «gnome-prayer-tray.zip» desde las versiones de Huda. Abre Terminal, pega el comando de abajo, añade un espacio, arrastra el archivo ZIP y pulsa Enter.';
-
-  @override
-  String get linuxPrayerTrayDownloads => 'Abrir descargas';
-
-  @override
   String get linuxPrayerTrayUpdateStep =>
       'Actualiza Huda a una versión compatible con tu versión de GNOME antes de reinstalar el panel.';
+
+  @override
+  String get linuxPanelIntro =>
+      'Ve la próxima oración en la barra superior, con avisos de Adhan incluso con Huda cerrado. Configuración única, de un minuto aproximadamente.';
+
+  @override
+  String get linuxPanelCopyStep => 'Copia el comando de configuración';
+
+  @override
+  String get linuxPanelTerminalStep =>
+      'Abre la Terminal (Ctrl+Alt+T), pégalo con Ctrl+Mayús+V y pulsa Intro';
+
+  @override
+  String get linuxPanelAutoStep =>
+      'Eso es todo. Huda detecta por sí solo cuando el panel está activo.';
+
+  @override
+  String get linuxPanelWaiting => 'Esperando al panel…';
+
+  @override
+  String get linuxPanelLogoutHint =>
+      'Si la Terminal te pide cerrar sesión, ciérrala y vuelve a iniciarla. El panel se activará solo, así que puedes continuar ahora.';
+
+  @override
+  String get linuxPanelReady =>
+      'El panel de oración está activo. Mira la parte superior de tu pantalla.';
+
+  @override
+  String get linuxPanelAfterLogin =>
+      'Se activa tras tu próximo inicio de sesión';
 
   @override
   String get linuxPrayerExperienceQuitInfo =>

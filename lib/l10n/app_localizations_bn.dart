@@ -4220,17 +4220,6 @@ class AppLocalizationsBn extends AppLocalizations {
   String get linuxPrayerTrayRestart => 'নামাজের প্যানেল আবার চালু করুন';
 
   @override
-  String get linuxPrayerTraySetupIntro =>
-      'একবার সেটআপ করলেই হবে। প্যানেলের এক্সটেনশন হুদার সঙ্গেই আছে।';
-
-  @override
-  String get linuxPrayerTrayInstallStepTitle => 'প্যানেল ইনস্টল করুন';
-
-  @override
-  String get linuxPrayerTrayInstallStep =>
-      'নিচের কমান্ডটি কপি করুন। Terminal খুলে পেস্ট করুন এবং Enter চাপুন।';
-
-  @override
   String get linuxPrayerTrayCopyCommand => 'কমান্ড কপি করুন';
 
   @override
@@ -4238,40 +4227,37 @@ class AppLocalizationsBn extends AppLocalizations {
       'কমান্ড কপি হয়েছে। Terminal-এ পেস্ট করে Enter চাপুন।';
 
   @override
-  String get linuxPrayerTrayEnableStepTitle => 'এক্সটেনশন চালু করুন';
-
-  @override
-  String get linuxPrayerTrayEnableStep =>
-      'Extensions অ্যাপ খুলে “Huda Prayer Panel” চালু করুন।';
-
-  @override
-  String get linuxPrayerTrayLoginHint =>
-      'তালিকায় না থাকলে ডেস্কটপ থেকে লগ আউট করে আবার লগ ইন করুন, তারপর Extensions আবার খুলুন।';
-
-  @override
-  String get linuxPrayerTrayFinishStepTitle => 'হুদায় ফিরে আসুন';
-
-  @override
-  String get linuxPrayerTrayFinishStep =>
-      'এখানে ফিরে এসে নামাজের প্যানেল চালু করতে “সেটআপ যাচাই করুন” বেছে নিন।';
-
-  @override
-  String get linuxPrayerTrayCheckSetup => 'সেটআপ যাচাই করুন';
-
-  @override
-  String get linuxPrayerTraySetupNotReady =>
-      'প্যানেল এখনও প্রস্তুত নয়। ওপরের ধাপগুলো শেষ করে আবার যাচাই করুন।';
-
-  @override
-  String get linuxPrayerTrayDownloadStep =>
-      'হুদার রিলিজ থেকে “gnome-prayer-tray.zip” দিয়ে শেষ হওয়া ফাইলটি ডাউনলোড করুন। Terminal খুলে নিচের কমান্ডটি পেস্ট করুন, একটি স্পেস দিন, তারপর ZIP ফাইলটি টেনে এনে Enter চাপুন।';
-
-  @override
-  String get linuxPrayerTrayDownloads => 'ডাউনলোড খুলুন';
-
-  @override
   String get linuxPrayerTrayUpdateStep =>
       'প্যানেল আবার ইনস্টল করার আগে আপনার GNOME সংস্করণ সমর্থন করে এমন হুদা সংস্করণে আপডেট করুন।';
+
+  @override
+  String get linuxPanelIntro =>
+      'উপরের বারে পরবর্তী নামাজ দেখুন, হুদা বন্ধ থাকলেও আজানের সতর্কতা পাবেন। একবারের সেটআপ, প্রায় এক মিনিট।';
+
+  @override
+  String get linuxPanelCopyStep => 'সেটআপ কমান্ড কপি করুন';
+
+  @override
+  String get linuxPanelTerminalStep =>
+      'Terminal খুলুন (Ctrl+Alt+T), Ctrl+Shift+V দিয়ে পেস্ট করুন এবং Enter চাপুন';
+
+  @override
+  String get linuxPanelAutoStep =>
+      'এটুকুই। প্যানেল চালু হলে হুদা নিজেই বুঝতে পারবে।';
+
+  @override
+  String get linuxPanelWaiting => 'প্যানেলের জন্য অপেক্ষা করা হচ্ছে…';
+
+  @override
+  String get linuxPanelLogoutHint =>
+      'Terminal লগ আউট করতে বললে লগ আউট করে আবার লগ ইন করুন। তখন প্যানেল নিজেই চালু হবে, তাই এখন এগিয়ে যেতে পারেন।';
+
+  @override
+  String get linuxPanelReady =>
+      'নামাজের প্যানেল চালু আছে। স্ক্রিনের উপরের দিকে দেখুন।';
+
+  @override
+  String get linuxPanelAfterLogin => 'পরবর্তী লগ ইনের পরে চালু হবে';
 
   @override
   String get linuxPrayerExperienceQuitInfo =>

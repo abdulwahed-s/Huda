@@ -4234,17 +4234,6 @@ class AppLocalizationsRu extends AppLocalizations {
   String get linuxPrayerTrayRestart => 'Перезапустить панель молитв';
 
   @override
-  String get linuxPrayerTraySetupIntro =>
-      'Однократная настройка. Расширение панели уже входит в Huda.';
-
-  @override
-  String get linuxPrayerTrayInstallStepTitle => 'Установите панель';
-
-  @override
-  String get linuxPrayerTrayInstallStep =>
-      'Скопируйте команду ниже. Откройте Терминал, вставьте её и нажмите Enter.';
-
-  @override
   String get linuxPrayerTrayCopyCommand => 'Копировать команду';
 
   @override
@@ -4252,40 +4241,37 @@ class AppLocalizationsRu extends AppLocalizations {
       'Команда скопирована. Вставьте её в Терминал и нажмите Enter.';
 
   @override
-  String get linuxPrayerTrayEnableStepTitle => 'Включите расширение';
-
-  @override
-  String get linuxPrayerTrayEnableStep =>
-      'Откройте приложение «Расширения» и включите «Huda Prayer Panel».';
-
-  @override
-  String get linuxPrayerTrayLoginHint =>
-      'Если его ещё нет в списке, выйдите из сеанса рабочего стола и войдите снова, затем вновь откройте «Расширения».';
-
-  @override
-  String get linuxPrayerTrayFinishStepTitle => 'Вернитесь в Huda';
-
-  @override
-  String get linuxPrayerTrayFinishStep =>
-      'Вернитесь сюда и выберите «Проверить настройку», чтобы включить панель молитв.';
-
-  @override
-  String get linuxPrayerTrayCheckSetup => 'Проверить настройку';
-
-  @override
-  String get linuxPrayerTraySetupNotReady =>
-      'Панель ещё не готова. Выполните шаги выше и проверьте снова.';
-
-  @override
-  String get linuxPrayerTrayDownloadStep =>
-      'Скачайте из выпусков Huda файл с окончанием «gnome-prayer-tray.zip». Откройте Терминал, вставьте команду ниже, добавьте пробел, перетащите ZIP-файл и нажмите Enter.';
-
-  @override
-  String get linuxPrayerTrayDownloads => 'Открыть загрузки';
-
-  @override
   String get linuxPrayerTrayUpdateStep =>
       'Перед повторной установкой панели обновите Huda до выпуска, поддерживающего вашу версию GNOME.';
+
+  @override
+  String get linuxPanelIntro =>
+      'Видите следующую молитву на верхней панели и получайте оповещения азана, даже когда Huda закрыта. Однократная настройка, около минуты.';
+
+  @override
+  String get linuxPanelCopyStep => 'Скопируйте команду установки';
+
+  @override
+  String get linuxPanelTerminalStep =>
+      'Откройте Терминал (Ctrl+Alt+T), вставьте её через Ctrl+Shift+V и нажмите Enter';
+
+  @override
+  String get linuxPanelAutoStep =>
+      'Вот и всё. Huda сама заметит, когда панель заработает.';
+
+  @override
+  String get linuxPanelWaiting => 'Ожидание панели…';
+
+  @override
+  String get linuxPanelLogoutHint =>
+      'Если Терминал попросит выйти из сеанса, выйдите и войдите снова. Панель включится сама, так что можно продолжать.';
+
+  @override
+  String get linuxPanelReady =>
+      'Панель молитв включена. Посмотрите на верх экрана.';
+
+  @override
+  String get linuxPanelAfterLogin => 'Включится после следующего входа';
 
   @override
   String get linuxPrayerExperienceQuitInfo =>
