@@ -38,8 +38,8 @@ internal object PrayerPolicy {
     private val defaults: Map<String, Any?> = linkedMapOf(
         "enabled" to true, "defaultMode" to "full", "reciterId" to "huda-default", "audioVersion" to "v1",
         "volumeGain" to 1.0, "fadeInSeconds" to 0L, "stopAfterSeconds" to null,
-        "alarmScreenEnabled" to false, "flipToStopEnabled" to true,
-        "respectRingerMode" to true, "respectDoNotDisturb" to true, "vibrate" to true,
+        "alarmScreenEnabled" to true, "flipToStopEnabled" to true,
+        "respectRingerMode" to false, "respectDoNotDisturb" to true, "vibrate" to true,
         "stopOnHeadsetDisconnect" to true, "showNextPrayer" to true,
         // Ignore the persisted legacy "followUpEnabled" field.
         "showMissedSummary" to false, "followUpEnabled" to false, "localeCode" to "en",

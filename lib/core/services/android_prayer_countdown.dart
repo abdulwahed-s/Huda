@@ -10,7 +10,7 @@ enum PrayerCountdownStyle { progress, timetable, minimal }
 @immutable
 class PrayerCountdownSettings {
   const PrayerCountdownSettings({
-    this.enabled = false,
+    this.enabled = true,
     this.style = PrayerCountdownStyle.progress,
     this.lockScreen = true,
     this.showSunrise = true,

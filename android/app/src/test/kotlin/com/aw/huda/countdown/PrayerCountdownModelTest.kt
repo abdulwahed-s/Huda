@@ -107,7 +107,7 @@ class PrayerCountdownModelTest {
     @Test
     fun settingsKeepTheOldSwitchAndDefaultToProgressInTheBody() {
         val defaults = PrayerCountdownSettings.fromPrefs(emptyMap<String, Any>())
-        assertFalse(defaults.enabled)
+        assertTrue(defaults.enabled)
         assertEquals(PrayerCountdownStyle.PROGRESS, defaults.style)
         assertTrue(defaults.lockScreen)
         assertTrue(defaults.showSunrise)
@@ -116,13 +116,13 @@ class PrayerCountdownModelTest {
 
         val saved = PrayerCountdownSettings.fromPrefs(
             mapOf(
-                "flutter.persistent_prayer_countdown_enabled" to true,
+                "flutter.persistent_prayer_countdown_enabled" to false,
                 "flutter.prayer_countdown_style" to "timetable",
                 "flutter.prayer_countdown_lock_screen" to false,
                 "flutter.locale" to "ar",
             ),
         )
-        assertTrue(saved.enabled)
+        assertFalse(saved.enabled)
         assertEquals(PrayerCountdownStyle.TIMETABLE, saved.style)
         assertFalse(saved.lockScreen)
         assertEquals("ar", saved.language)

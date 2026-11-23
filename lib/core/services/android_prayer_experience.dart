@@ -17,10 +17,10 @@ class AndroidPrayerExperience {
     'volumeGain': 1.0,
     'fadeInSeconds': 0,
     'stopAfterSeconds': null,
-    'alarmScreenEnabled': false,
+    'alarmScreenEnabled': true,
     // On by default; it does nothing on phones without the sensors.
     'flipToStopEnabled': true,
-    'respectRingerMode': true,
+    'respectRingerMode': false,
     'respectDoNotDisturb': true,
     'vibrate': true,
     'stopOnHeadsetDisconnect': true,

@@ -49,9 +49,9 @@ defaults:
   "volumeGain": 1.0,
   "fadeInSeconds": 0,
   "stopAfterSeconds": null,
-  "alarmScreenEnabled": false,
+  "alarmScreenEnabled": true,
   "flipToStopEnabled": false,
-  "respectRingerMode": true,
+  "respectRingerMode": false,
   "respectDoNotDisturb": true,
   "vibrate": true,
   "stopOnHeadsetDisconnect": true,
@@ -78,7 +78,7 @@ edit helper interprets null as removal. Gain is finite 0–1; fade is integer
 Only enabled/Off eligibility changes enter the Android timestamp configuration
 signature. Gain applies to active playback; cutoff can shorten it. Off/Silent
 stop automatic active audio. Reciter/length/fade and other interaction changes
-apply to a subsequent session. Ringer respect can be disabled explicitly; DND
+apply to a subsequent session. Ringer respect can be enabled explicitly; DND
 respect is always true. Selecting Silent in the UI sets vibration false until
 the user changes it.
 

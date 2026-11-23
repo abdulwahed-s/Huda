@@ -39,7 +39,7 @@ internal data class PrayerCountdownSettings(
         internal fun fromPrefs(values: Map<String, *>): PrayerCountdownSettings {
             fun bool(key: String, default: Boolean) = values["$PREFIX$key"] as? Boolean ?: default
             return PrayerCountdownSettings(
-                enabled = bool(ENABLED_KEY, false),
+                enabled = bool(ENABLED_KEY, true),
                 style = PrayerCountdownStyle.fromStorage(values["$PREFIX$STYLE_KEY"] as? String),
                 lockScreen = bool(LOCK_SCREEN_KEY, true),
                 showSunrise = bool(SHOW_SUNRISE_KEY, true),
