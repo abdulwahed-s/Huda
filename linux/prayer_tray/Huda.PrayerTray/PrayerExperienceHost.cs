@@ -10,7 +10,7 @@ using ConfigurationStore = Huda.PrayerTray.Core.ConfigurationStore;
 namespace Huda.PrayerTray;
 
 internal sealed record ExperienceCommand(string Action, string SessionId, LinuxPrayerExperience? Settings = null,
-    double? Volume = null);
+    double? Volume = null, string? Prayer = null);
 internal sealed record ShellEnvironment(bool Unlocked, bool Available, IReadOnlyList<Dictionary<string, string>> Displays);
 internal sealed record FocusAcknowledgment(string SessionId, long Revision, bool Presented, string? Error = null);
 internal sealed class PrayerSession(string id, bool preview, string origin, PrayerEvent prayer, LinuxPrayerExperience settings,
@@ -440,11 +440,14 @@ internal sealed class PrayerExperienceHost : IPathMethodHandler, IAsyncDisposabl
             if (_live is { FocusState: "pending" or "presented" } || _player.Status is { State: "loading" or "playing", SessionId: var liveAudio } && liveAudio == _live?.Id)
                 throw new InvalidDataException("A scheduled prayer takes precedence over previews.");
             command.Settings.Validate();
+            // The prayer the person picked under "Try it"; older Huda versions send none.
+            var key = command.Prayer ?? "dhuhr";
+            if (!LinuxPrayerExperience.Prayers.Contains(key)) throw new InvalidDataException("Unknown preview prayer.");
             if (_locked != false || _session.Sleeping) throw new IOException("An unlocked active desktop is required for previews.");
             if (_preview is { } old) await End(old);
             var config = _store.Current ?? throw new IOException("Committed prayer settings unavailable.");
             var now = _clockSource.GetCurrentInstant();
-            _preview = new(command.SessionId, true, origin, new("dhuhr",
+            _preview = new(command.SessionId, true, origin, new(key,
                 now.InZone(DateTimeZoneProviders.Tzdb[config.Location?.TimeZoneId ?? "UTC"]).Date, now), command.Settings,
                 config with { Experience = command.Settings });
             await Deliver(_preview, command.Action); return;

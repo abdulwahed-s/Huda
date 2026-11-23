@@ -274,6 +274,7 @@ class LinuxPrayerAlertPlatform
         'previewNotification',
         sessionId: session,
         settings: effective.copyWith(configured: true, overrides: const {}),
+        prayer: prayer,
       );
       return result.audioError != null && effective.needsAudio
           ? PrayerTestOutcome.audioMissing

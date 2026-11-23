@@ -145,6 +145,7 @@ abstract final class LinuxPrayerNotificationGateway {
     required String sessionId,
     LinuxPrayerExperience? settings,
     double? volume,
+    String? prayer,
   }) async {
     final raw = await LinuxPrayerTrayBridge.channel
         .invokeMapMethod<String, dynamic>('experienceCommand', {
@@ -153,6 +154,7 @@ abstract final class LinuxPrayerNotificationGateway {
             'sessionId': sessionId,
             if (settings != null) 'settings': settings.toMap(),
             if (volume != null) 'volume': volume,
+            if (prayer != null) 'prayer': prayer,
           }),
         });
     if (raw?['error'] != null || raw?['experienceStatus'] is! String) {
