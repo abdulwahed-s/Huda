@@ -1,4 +1,7 @@
 <Solution>
+  <Configurations>
+    <Platform Name="x64" />
+  </Configurations>
   <Project Path="Huda.PrayerTaskbar.Core/Huda.PrayerTaskbar.Core.csproj" />
   <Project Path="Huda.PrayerTaskbar/Huda.PrayerTaskbar.csproj" />
   <Project Path="Huda.PrayerTaskbar.Tests/Huda.PrayerTaskbar.Tests.csproj" />
