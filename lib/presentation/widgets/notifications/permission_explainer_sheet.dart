@@ -10,9 +10,12 @@ Future<bool> showPermissionExplainer(
   required String message,
   String? continueLabel,
 }) async {
+  // App Review 5.1.1(iv): the system prompt always follows this message, so the
+  // sheet has a single "Continue" and can't be dismissed to delay the prompt.
   final result = await showModalBottomSheet<bool>(
     context: context,
-    showDragHandle: true,
+    isDismissible: false,
+    enableDrag: false,
     useSafeArea: true,
     isScrollControlled: true,
     constraints: const BoxConstraints(maxWidth: 520),
@@ -47,7 +50,7 @@ class _PermissionExplainer extends StatelessWidget {
     final tokens = theme.extension<HudaTokens>();
     final lantern = tokens != null;
     return Padding(
-      padding: const EdgeInsetsDirectional.fromSTEB(24, 0, 24, 20),
+      padding: const EdgeInsetsDirectional.fromSTEB(24, 24, 24, 20),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -100,12 +103,6 @@ class _PermissionExplainer extends StatelessWidget {
                     ),
                   ),
             child: Text(continueLabel ?? l10n.permissionExplainerContinue),
-          ),
-          const SizedBox(height: 4),
-          TextButton(
-            key: const ValueKey('permission-explainer-not-now'),
-            onPressed: () => Navigator.of(context).pop(false),
-            child: Text(l10n.permissionExplainerNotNow),
           ),
         ],
       ),
