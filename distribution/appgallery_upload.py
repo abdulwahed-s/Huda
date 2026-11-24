@@ -17,7 +17,7 @@ LOCALE_MAP = {
     "whatsnew-es-ES": "es-ES",
     "whatsnew-fr-FR": "fr-FR",
     "whatsnew-bn-BD": "bn-BD",
-    "whatsnew-ms":    "ms-MY",
+    "whatsnew-ms":    ("ms", "ms-MY"),
     "whatsnew-ru-RU": "ru-RU",
     "whatsnew-tr-TR": "tr-TR",
     "whatsnew-ur":    "ur",
@@ -118,16 +118,21 @@ def main():
 
     # 5. Release notes — PUT app-language-info with lang + newFeatures in body
     for filepath in sorted(glob.glob(os.path.join(args.whatsnew, "whatsnew-*"))):
-        lang = LOCALE_MAP.get(os.path.basename(filepath))
-        if not lang:
+        langs = LOCALE_MAP.get(os.path.basename(filepath))
+        if not langs:
             continue
+        if isinstance(langs, str):
+            langs = (langs,)
         text = open(filepath, encoding="utf-8").read().strip()
-        r = requests.put(f"{BASE}/app-language-info?appId={app_id}",
-                         headers=auth_headers,
-                         json={"lang": lang, "newFeatures": text})
-        ok = r.ok and r.json().get("ret", {}).get("code", 0) == 0
-        print(f"{'✓' if ok else '⚠'} Release notes [{lang}]"
-              + ("" if ok else f": {r.status_code} {r.text[:200]}"))
+        for lang in langs:
+            r = requests.put(f"{BASE}/app-language-info?appId={app_id}",
+                             headers=auth_headers,
+                             json={"lang": lang, "newFeatures": text})
+            ok = r.ok and r.json().get("ret", {}).get("code", 0) == 0
+            print(f"{'✓' if ok else '⚠'} Release notes [{lang}]"
+                  + ("" if ok else f": {r.status_code} {r.text}"))
+            if ok:
+                break
 
     # 6. Submit
     if args.no_submit:
