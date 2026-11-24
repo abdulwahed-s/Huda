@@ -73,7 +73,14 @@ class _OnboardingShellState extends State<OnboardingShell> {
     final back = !state.canGoBack || state.finishing || state.reviewing
         ? null
         : cubit.back;
-    final skip = state.isLast || state.finishing || state.reviewing
+    // No "skip all" on the permissions step: App Review 5.1.1(iv) requires the
+    // system prompts to follow the explanation (the step offers its own skip
+    // once both prompts have been shown).
+    final skip =
+        state.isLast ||
+            state.finishing ||
+            state.reviewing ||
+            state.current == OnboardingStep.permissions
         ? null
         : () => _confirmSkip(context);
     final width = MediaQuery.sizeOf(context).width;

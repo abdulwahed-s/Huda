@@ -171,20 +171,22 @@ class _PermissionsStepState extends State<PermissionsStep> {
             alertsStatus != OnboardingPermissionStatus.notAsked;
         final OnboardingAction primary;
         if (locationStatus == OnboardingPermissionStatus.notAsked) {
+          // App Review 5.1.1(iv): the button before a system prompt says
+          // "Continue", never "Allow".
           primary = OnboardingAction(
-            l10n.travelAllowLocation,
+            l10n.continueButton,
             key: const ValueKey('onboarding-allow-location'),
             onPressed: _askLocation,
           );
         } else if (locating) {
           primary = OnboardingAction(
-            l10n.travelAllowLocation,
+            l10n.continueButton,
             busyLabel: l10n.setupLocating,
           );
         } else if (alertsStatus == OnboardingPermissionStatus.notAsked ||
             _requesting) {
           primary = OnboardingAction(
-            l10n.setupAllowNotifications,
+            l10n.continueButton,
             key: const ValueKey('onboarding-allow-notifications'),
             busyLabel: _requesting ? l10n.setupPermissionAsking : null,
             onPressed: _askNotifications,
@@ -199,11 +201,16 @@ class _PermissionsStepState extends State<PermissionsStep> {
         }
         final continuing =
             primary.key == const ValueKey('onboarding-permissions-continue');
+        // App Review 5.1.1(iv): after this message the system prompts must
+        // follow, so there is no skip until both have been shown.
+        final promptsPending =
+            locationStatus == OnboardingPermissionStatus.notAsked ||
+            alertsStatus == OnboardingPermissionStatus.notAsked;
 
         return OnboardingStepFrame(
           message: l10n.setupPermissionsMessage,
           primary: primary,
-          quiet: continuing
+          quiet: continuing || promptsPending
               ? null
               : OnboardingAction(
                   l10n.setupSkipStep,
