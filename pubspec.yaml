@@ -2,7 +2,7 @@ name: huda
 description: "A Islamic Companion App."
 publish_to: "none"
 
-version: 5.0.0+55
+version: 5.0.0+56
 
 environment:
   sdk: ^3.8.0
