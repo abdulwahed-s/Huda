@@ -39,7 +39,7 @@ class QiblahAllowLocationView extends StatelessWidget {
       icon: Icons.near_me_rounded,
       title: l10n.qiblahAllowTitle,
       explanation: l10n.qiblahAllowMessage,
-      allowLabel: l10n.qiblahAllowLocation,
+      allowLabel: l10n.continueButton,
       onAllow: onAllow,
     );
   }
